@@ -699,32 +699,32 @@
                 // Dialog title
                 this.titleLabelWidget = new OO.ui.LabelWidget({
                     label: CiteUnseen.convByVar({
+                        en: '[Cite Unseen] Add Custom Citation Category Rules',
                         hant: '[Cite Unseen] 添加自訂來源分類規則',
                         hans: '[Cite Unseen] 添加自定义来源分类规则',
-                        en: '[Cite Unseen] Add Custom Citation Category Rules',
                         ja: '[Cite Unseen] カスタム引用カテゴリルールを追加',
                     }), classes: ['cite-unseen-dialog-title'],
                 });
                 this.titleLabelWidget.$element.append($('<span>')
                     .text(CiteUnseen.convByVar({
+                        en: ' (This is temporary; for customizing existing citation categories, see "',
                         hant: '（此為臨時生效；若需自訂已有的來源分類，請參見「',
                         hans: '（此为临时生效；若需自定义已有的来源分类，请参见「',
-                        en: ' (This is temporary; for customizing existing citation categories, see "',
                         ja: '（これは一時的なものであり、既存の引用カテゴリをカスタマイズするには「',
                     }))
                     .css({ 'font-size': '0.75em', 'font-weight': 'normal' })
                     .append($('<a>')
                         .text(CiteUnseen.convByVar({
+                            en: 'Customization Guide',
                             hant: '進階自訂教程',
                             hans: '进阶自定义教程',
-                            en: 'Customization Guide',
                             ja: 'カスタマイズガイド',
                         }))
-                        .attr('href', '//zh.wikipedia.org/wiki/User:SuperGrey/gadgets/CiteUnseen'))
+                        .attr('href', '//meta.wikimedia.org/wiki/Meta:Cite_Unseen'))
                     .append(CiteUnseen.convByVar({
+                        en: '.")',
                         hant: '」。）',
                         hans: '」。）',
-                        en: '.")',
                         ja: '」。）',
                     }))
                 );
@@ -732,17 +732,17 @@
                 // Action buttons
                 this.cancelButton = new OO.ui.ButtonWidget({
                     label: CiteUnseen.convByVar({
+                        en: 'Cancel',
                         hant: '取消',
                         hans: '取消',
-                        en: 'Cancel',
                         ja: 'キャンセル',
                     }), flags: ['safe', 'close'], action: 'cancel',
                 });
                 this.saveButton = new OO.ui.ButtonWidget({
                     label: CiteUnseen.convByVar({
+                        en: 'Save',
                         hant: '儲存',
                         hans: '保存',
-                        en: 'Save',
                         ja: '保存',
                     }),
                     flags: ['primary', 'progressive'],
@@ -1279,7 +1279,7 @@
                 };
             }
 
-            await mw.loader.getScript('//zh.wikipedia.org/w/index.php?title=User:SuperGrey/gadgets/CiteUnseen/sources.js&action=raw&ctype=text/javascript');
+            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=Meta:Cite_Unseen/sources.js&action=raw&ctype=text/javascript');
             return await CiteUnseenData.getCategorizedRules();
         },
 
