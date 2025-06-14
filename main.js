@@ -1,211 +1,1182 @@
-function runCiteUnseen() {
-    // Start timer that will be output to console at end of script:
-    console.time('CiteUnseen runtime');
+(function () {
 
-    // Store all references:
-    let refs = document.querySelectorAll("cite, span.reference-text > a.external:first-of-type");
+    const CiteUnseen = {
+        /**
+         * Parse a COinS string and convert it to an object.
+         * @param query {String} - COinS string
+         * @returns {Object} - Parsed object
+         */
+        parseCoinsString: function (query) {
+            const result = {};
+            // Split the string by '&'
+            const pairs = query.split('&');
+            pairs.forEach(pair => {
+                if (!pair) return;
+                // Split at the first '='
+                const index = pair.indexOf('=');
+                let key, value;
+                if (index === -1) {
+                    key = pair;
+                    value = "";
+                } else {
+                    key = pair.substring(0, index);
+                    value = pair.substring(index + 1);
+                }
+                // Replace '+' with space and decode both key and value
+                key = key.replace(/\+/g, ' ');
+                value = value.replace(/\+/g, ' ');
+                if (!result[key]) {
+                    result[key] = value;
+                } else {
+                    if (typeof result[key] === 'string') {
+                        result[key] = [result[key]];
+                    }
+                    result[key].push(value);
+                }
+            });
+            return result;
+        },
 
-    // JSON objects with domain and string categorizaitons:
-    let categorizedDomains = { "advocacy": ["1752group.com", "1in6.org", "21stcenturydems.org", "38degrees.org.uk", "500queerscientists.com", "50can.org", "60plus.org", "80-20initiative.net", "8thdaycenter.org", "a4nr.org", "aa.co.za", "aaa.com", "aaafund.org", "aaainc.org", "aacl.us", "aaees.org", "aaldef.org", "aapsonline.org", "aarp.org", "aba.com", "abahlali.org", "abd.org.uk", "abortionno.org", "abortionrightscampaign.ie", "acb.org", "acc.eco", "acceptromania.ro", "accessiblemeds.org", "accessnow.org", "accf-online.org", "accf.org", "accuracy.org", "ace-ej.org", "aceee.org", "acespace.org", "acf.org", "achr.net", "acl.org.au", "acli.com", "aclj.org", "aclu.org", "aclum.org", "acog.org", "acorninternational.org", "acpeds.org", "acri.org", "acri.org.il", "acslaw.org", "acsonline.org", "acterra.org", "actforamerica.org", "actonline.org", "actupny.com", "adaction.org", "adaptssi.org", "addthewords.org", "adf.org.qa", "adflegal.org", "adha.org", "adk.org", "adl.org", "advanceamerica.com", "advancingjustice-la.org", "ae911truth.org", "aegistrust.org", "aei.org", "aep.org.uk", "aer.ph", "aere.org", "aerotoxic.org", "afa.net", "afad-online.org", "afb.org", "afed.org.uk", "afer.org", "affirmation.org", "affordable-housing-party.org", "afia.org", "afj.org", "aflcio.org", "afriforum.co.za", "afterschoolalliance.org", "agifus.com", "aglp.org", "ahiworld.org", "aicfoundation.com", "aila.org", "aimovement.org", "aipac.org", "airportwatch.org.uk", "akdh.ch", "akia.aero", "ala.org", "alaforveterans.org", "alaskanstogether.org", "alb-net.com", "albavolunteer.org", "aleph.org.au", "alga.org.au", "alhurra.com", "ali.org", "alicebtoklas.org", "all.org", "allabouttrans.org.uk", "allout.org", "alnour.com.lb", "alp.org", "alpa.org", "alranz.org", "alternatifbilisim.org", "alternet.org", "amadeu-antonio-stiftung.de", "americafirstpolicies.org", "americanassembly.org", "americancrossroads.org", "americaneedsfatima.org", "americanforests.org", "americanfuturefund.com", "americanhiking.org", "americanimmigrationcouncil.org", "americaninstituteofbisexuality.org", "americanmustacheinstitute.org", "americannaziparty.com", "americanopportunity.org", "americanprairie.org", "americanprogress.org", "americanrightsatwork.org", "americanselect.org", "americansforprosperity.org", "americansforresponsiblesolutions.org", "americansfortruth.com", "americansolutions.com", "americantaskforce.org", "americanvision.org", "americaspower.org", "americavotes.org", "ameu.org", "amnesty.org", "amnesty.org.ph", "ampalestine.org", "amvets.org", "anca.org.au", "ancd.org.au", "ancientforestalliance.org", "ancpac.org", "anec.eu", "anghaeltacht.net", "anglicansforlife.org", "animals24-7.org", "anishinabek.ca", "annefrank.com", "anpi.it", "answercoalition.org", "anticapitalist.ru", "anticuts.com", "antifascistarchive.com", "antiracistaction.org", "aobm.org", "aontu.ie", "aopa.org", "apathyisboring.com", "apiequalitync.org", "apiqwtc.org", "appalachiantrail.org", "approvereferendum71.org", "apspuhuru.org", "arborday.org", "arcc-cdac.ca", "arcfc.org", "archcitydefenders.org", "arcigay.it", "arcuk.org.uk", "arcusfoundation.org", "ari.aynrand.org", "arizonaborderrecon.org", "armeniasputnik.am", "asatonline.org", "asbpa.org", "ascl.org.uk", "ase.org", "asiancdc.org", "aslef.org.uk", "aslrra.org", "aspiesforfreedom.com", "assatasdaughters.org", "assyrianpolicy.org", "astraeafoundation.org", "asyousow.org", "atheist-refugees.com", "atheist.ie", "atheists.org", "atime.es", "atl.org.uk", "atlantabike.org", "atr.org", "atticuscircle.org", "atwhatcost.org", "au.org", "aucd.org", "audubon.org", "aul.org", "ausbanking.org.au", "auschwitz.org", "australianmarriageequality.org", "autosafety.org", "autreat.com", "avaaz.org", "aver.us", "awiderbridge.org", "awnnetwork.org", "ayisozluk.com", "aytzim.org", "azadiradio.org", "azchamber.com", "babc.org", "backlash.org.uk", "ballot.org", "bamn.com", "banthebomb.org", "barackobama.com", "bastards.org", "bat-kol.org", "batcon.org", "bayareabisexualnetwork.org", "bazelon.org", "bbcm.org", "bbi.syr.edu", "bccla.org", "bda.org", "bdi.eu", "bds.org.np", "beacontn.org", "beanangel.ro", "becketfund.org", "bectu.org.uk", "beit-haverim.com", "belngo.info", "bertelsmann-stiftung.de", "bestforbritain.org", "bettertransport.org.uk", "bfawu.org", "bialogue.org", "bicyclecoalition.org", "bigbrotherwatch.org.uk", "bikeeastbay.org", "bikeleague.org", "binetusa.org", "bio.org", "biofuelwatch.org.uk", "biologicaldiversity.org", "bioneers.org", "bipartisanpolicy.org", "biresource.org", "birlikte.info", "blackandpink.org", "blacklivesmatter.com", "blackradicalcongress.org", "blacktie.org", "blindart.net", "blue-alliance.org", "bluearmy.com", "blueventures.org", "bma.org.uk", "bohnettfoundation.org", "boldnebraska.org", "boldprogressives.org", "boone-crockett.org", "bostonabcd.org", "boycottworkfare.org", "bpfna.org", "bpi.com", "bradleyfdn.org", "bradyunited.org", "brandeiscenter.com", "brandnewcongress.org", "breakingground.org", "brennancenter.org", "brightblue.org.uk", "bringbackbritishrail.org", "brookings.edu", "bsa.org", "bunniyom.com", "businesscouncil.com", "businessforscotland.co.uk", "businessroundtable.org", "bvrla.co.uk", "c-h-e.org.uk", "c4m.org.uk", "caabu.org", "caasf.org", "cageuk.org", "cagw.org", "cair.com", "cal.org.za", "calaware.org", "calcasa.org", "calgaryqueerartssociety.com", "californiansagainsthate.com", "calnurses.org", "caltax.org", "camera.org", "campaignlifecoalition.com", "campusantiwar.net", "campuspride.org", "can.org.nz", "canadian-republic.ca", "canadians4accountability.org", "canf.org", "capability-scotland.org.uk", "capsweb.org", "care.org.uk", "career.org", "carf.org.uk", "carp.ca", "casa-acae.com", "casa.org.au", "catalist.us", "cathmed.org", "catholic.com", "catholicsforchoice.org", "catholicunion.org.uk", "catholicvote.org", "cauce.org", "caus.org", "cba.ca", "cbeinternational.org", "cbpp.org", "cc-ds.org", "cc.org", "ccfd.ca", "ccla.org", "ccnd.gn.apc.org", "ccrjustice.org", "ccrl.ca", "ccrweb.ca", "cda.org", "cei.org", "celticleague.net", "centerforajustsociety.org", "centerforinquiry.org", "centerformedicalprogress.org", "centerforpolitics.org", "centerforsecuritypolicy.org", "cenvironment.blogspot.com", "cepf.net", "cepr.net", "ceres.org", "cerf.science", "cfib.ca", "cfoi.co.uk", "cfoi.org.uk", "cgtn.com", "chalcedon.edu", "cherishlife.org.au", "chesapeakebay.net", "chicagoabortionfund.com", "chicagoprogressivecaucus.com", "childrenshealthcare.org", "china.org.cn", "chinaaid.org", "chinadaily.com.cn", "chinadailyasia.com", "chinadailyhk.com", "chinalaborwatch.org", "chinanews.com", "chingusai.net", "choose-life.org", "chra-achru.ca", "christian.org.uk", "christianaction.org", "christianconcern.com", "christianvoice.org.uk", "churchofeuthanasia.org", "cih.org", "cija.ca", "cir-usa.org", "cis.org", "cis.org.au", "citizengo.org", "citizenscampaign.org", "citizensfor.com", "citizensunited.org", "civicworldwide.org", "civilrights.org", "civitas-institut.com", "ciwa.ca", "ciwr.org", "cjpac.ca", "cjpme.org", "cla-net.org", "clags.org", "clasp.org", "clb.org.hk", "cleanaircampaign.org", "cleanwateraction.org", "clear-uk.org", "clearpath.org", "climate-standards.org", "climatecounts.org", "climatehawksvote.com", "clubforgrowth.org", "clvu.org", "cmds.ceu.hu", "cmep.org", "cmrlink.org", "cmsny.org", "cncnews.cn", "cnib.ca", "cnpa.com", "cnre.eu", "cnt.es", "co2science.org", "coalitionformarriage.com.au", "coalitionforpublicsafety.org", "coalitionforthehomeless.org", "coastalstates.org", "coc.nl", "cohre.org", "cohsf.org", "coiste.ie", "colage.org", "coloradorighttolife.org", "coloredconventions.org", "comer.org", "commercialradio.com.au", "commoncause.org", "commonsensemedia.org", "communityair.org", "communitychange.org", "communitylivingontario.ca", "compassonline.org.uk", "comptia.org", "conbio.org", "concealedcampus.org", "concernedafricascholars.org", "concernedwomen.org", "concordcoalition.org", "conelmazodando.com.ve", "conginst.org", "congressionalleadershipfund.org", "conscienceonline.org.uk", "conservamerica.org", "conservation.org", "conservationfund.org", "conservativegroupforeurope.org.uk", "conservativemuslimforum.com", "conservativeusa.org", "constitutionparty.com", "constitutionproject.org", "consumerfed.org", "cookcountydems.com", "cooperationjackson.org", "core-online.org", "corecities.com", "corporateaccountability.org", "corporations.org", "councilforthenationalinterest.org", "counterextremism.com", "countryside-alliance.org.uk", "couragecampaign.org", "courageousconservativespac.com", "cows.org", "cpac.conservative.org", "cpaffc.org.cn", "cpdweb.org", "cpoa.org", "cpre.org.uk", "crae.org.uk", "craftivist-collective.com", "cragop.org", "crarr.org", "cre.org.uk", "criirad.org", "criticalresistance.org", "crla.org", "crmvet.org", "crnc.org", "crooked.com", "crooksandliars.com", "csbaonline.org", "csgkoeln.de", "csw.org.uk", "ctcommuterrailcouncil.org", "ctfamily.org", "ctj.org", "cufi.org", "cwcy.org", "cwf-fcf.org", "cyberdissidents.org", "cyclinguk.org", "cymdeithas.cymru", "dacorumheritage.org.uk", "dailysabah.com", "dairyfarmers.ca", "darksky.org", "dav.org", "dawncanada.net", "daxtonsfriends.com", "dayenu.org.au", "dayone.co.uk", "dbcflorida.org", "dcra.ca", "decarceratepa.info", "deepgreenresistance.org", "defenders.org", "defendingdemocracytogether.org", "defendingdissent.org", "degarfoundation.org", "delawareestuary.org", "delegatesunbound.com", "demandprogress.org", "demmajorityforisrael.org", "democracyalliance.org", "democracyforamerica.com", "democracymatters.ie", "democracymatters.org", "democracymovement.org.uk", "democracywithoutborders.org", "democraticmayors.org", "democrats.org", "democratsabroad.org", "democratsforlife.org", "demos.org", "dems.gov", "deplorablepride.org", "destinychurch.org.nz", "dfs.no", "diaa.asn.au", "diabetes.org", "dickshovel.com", "digital.org.au", "digitalcontentnext.org", "digitalrights.ie", "disabilitylabour.org.uk", "disabilityrightsuk.org", "disabledinaction.org", "disabledmotoring.org", "disabledpeoplesinternational.org", "dlcc.org", "dogbitelaw.com", "dogsbite.org", "dogwoodalliance.org", "downsizedc.org", "dpac.uk.net", "dredf.org", "drsforamerica.org", "dsausa.org", "dscc.org", "dsw.org", "ducks.org", "dunst.dk", "dvarp.org", "dvlf.org", "e-alliance.ch", "e3network.org", "eagleforum.org", "eapn.eu", "eappi.org", "earth-policy.org", "earthfirstjournal.news", "earthtrust.org", "ecohealthalliance.org", "ecologic.org", "ecomb.org", "economistsforfreetrade.com", "edenprojects.org", "edf.org", "edra.org", "edri.org", "educateandcelebrate.org", "educationalpolicy.org", "eei.org", "eetfoundation.org", "eewc.com", "efa.org.au", "efc.ca", "eff.org", "egale.ca", "egaliteetreconciliation.fr", "ejp.eu", "ekklesiaproject.org", "elaw.org", "electionscience.org", "electoral-reform.org.uk", "ellabakercenter.org", "elpc.org", "ema-online.org", "embargoed.org", "emilyslist.org", "emilyslist.org.au", "ems.org", "en.idi.org.il", "en.immi.is", "en.odfoundation.eu", "enar-eu.org", "endeavour.com.au", "endeavourforum.org.au", "endthekilling.ca", "energy-net.org", "engine.is", "english.unica.com.br", "ens.it", "envirolink.org", "environmentamerica.org", "epc.eu", "epic.org", "eqca.org", "equalcitizens.us", "equality-network.org", "equalityarizona.org", "equalityfederation.org", "equalityflorida.org", "equalityhawaii.org", "equalityillinois.org", "equalitymaine.org", "equalitymaryland.org", "equalitymi.org", "equalitync.org", "equalityni.org", "equalitypa.org", "equalitytexas.org", "equalitytrust.org.uk", "equalityutah.org", "equaljusticeunderlaw.org", "equallove.info", "equity.org.uk", "eshelonline.org", "eslp.org", "estatetaxsimplification.org", "estuaries.org", "eswglobal.org", "eta.co.uk", "etcgroup.org", "eurocities.eu", "euromedmonitor.org", "european-pirateparty.eu", "europeanlesbianconference.org", "europeanmovement.co.uk", "europeanmovement.eu", "eurotowns.org", "euthanasia.cc", "everytown.org", "excelined.org", "exodusglobalalliance.org", "expose-news.com", "fabians.org.au", "fair.org", "faireconomy.org", "fairlabor.org", "fairness.org", "fairtax.org", "fairtest.org", "fairuk.org", "fairus.org", "fairvote.ca", "fairvote.org", "fairwisconsin.com", "faithfulwordbaptist.org", "familiesusa.org", "familyequality.org", "familyfirst.org.nz", "familyfund.org.uk", "familyresearchinst.org", "famm.org", "fapa.org", "farenet.org", "farmland.org", "fas.org", "fatalpitbullattacks.com", "fathers-4-justice.org", "fb.org", "fbu.org.uk", "fca.org", "fclu.org", "fcnl.org", "fda.org.uk", "fdd.org", "fear.org", "fedsoc.org", "felgtb.org", "feminist.org", "feministsforlife.org", "fepproject.org", "fern.org", "fflag.org.uk", "ffo.no", "ffrf.org", "fiftyshadesofgay.co.in", "fija.org", "flexyourrights.org", "floridaactioncommittee.org", "floridacarry.org", "flp.com.cn", "fnf.org.uk", "focusonthefamily.ca", "focusonthefamily.com", "foe.org", "foe.org.au", "foe.scot", "foeeurope.org", "foei.org", "foodcomm.org.uk", "fooddemocracynow.org", "footprintnetwork.org", "for.org.uk", "foreffectivegov.org", "forest-trends.org", "foresthistory.org", "forestonline.org", "forhealthfreedom.org", "forl.co.uk", "fortyandeight.org", "forum-asia.org", "forum18.org", "forumforequality.org", "fosbr.org.uk", "fosis.org.uk", "fra.europa.eu", "fractracker.org", "framingredpower.org", "frc.org", "free-eco.org", "freeburmarangers.org", "freebyu.org", "freecongress.org", "freeculture.org", "freedom2b.org", "freedomdefense.typepad.com", "freedomforuminstitute.org", "freedomtomarry.org", "freedomtrain.org", "freedomworks.org", "freeenterpriseactionfund.com", "freemuslims.org", "freespeechcoalition.com", "freesyria.org", "friends-bwca.org", "friends.ca", "friendsofcoal.org", "friendsofsouthasia.org", "friendsofthepeak.org.uk", "frso.org", "ftrf.site-ym.com", "fundwildnature.org", "furd.org", "fusewashington.org", "fwr.de", "gafta.com", "galck.org", "galen.org", "galloways.org.uk", "gapa.org", "gapimny.org", "gardenstateequality.org", "gatestoneinstitute.org", "gaybombay.org", "gayecho.com", "gayleft1970s.org", "gc4hr.org", "geichina.org", "genderrightsmaryland.org", "genprogress.org", "gensqueeze.ca", "geohaz.org", "georgiacarry.org", "getora.org", "getup.org.au", "ggb.org.br", "giffords.org", "gillfoundation.org", "gip-global.org", "glaa.org", "glaad.org", "glad.org", "glapn.org", "glbthistory.org", "glen.ie", "glhalloffame.org", "glifaa.org", "glma.org", "global-vision.net", "globalexchange.org", "globalnetworkinitiative.org", "globalrights.org", "globaltimes.cn", "globalwaterpolicy.org", "globio.org", "glsen.org", "gmb.org.uk", "gmcdp.com", "gnu.rep.kp", "godhatesfags.com", "golosbeslana.ru", "gonh.org", "gop.com", "gop.gov", "gopac.org", "gotmercury.org", "gp.org", "gpg.com", "gpus.org", "granma.cu", "grassrootscampaigns.com", "greenamerica.org", "greenforall.org", "greeninstitute.net", "greenmap.org", "greenpeacefoundation.org", "grtl.org", "gsanetwork.org", "gsinstitute.org", "gsrat.net", "gswar1812.org", "gulflabor.org", "gunowners.org", "gunvictimsaction.org", "handsoffvenezuela.org", "handsupunited.org", "hatter.hu", "havruta.org.il", "hbf.co.uk", "hcav.am", "healthcare-now.org", "healthcoalition.ca", "healtheffects.org", "healthliberationnow.com", "heartland.org", "heimssyn.is", "heinzctr.org", "helem.net", "helsinki.org.rs", "henshaws.org.uk", "heritage.org", "heritageaction.com", "highways.org", "hinduamerican.org", "hirschfeld-eddy-stiftung.de", "hkcd.com", "hlc.org", "hobsonspledge.nz", "hollywoodrepublicans.com", "home.isi.org", "home60515.com", "hookersforhillary.com", "hopenothate.org.uk", "hoshen.org", "hot-dog.org", "hotline.org.tw", "housefreedomfund.com", "hpfhr.org", "hqudc.org", "hrc.org", "hrnicholls.com.au", "hrrc.org", "hsdems.org", "huanqiu.com", "huckpac.com", "hudson.org", "humansandnature.org", "humsafar.org", "iacenter.org", "iamroadsmart.com", "ianz.org.nz", "iaovc.org", "iava.org", "iccl.ie", "icit-digital.org", "icmec.org", "idcpc.org.cn", "iea.org.uk", "ieer.org", "ienearth.org", "iera.org", "iest.org", "ifamericansknew.org", "ifconews.org", "ihlia.nl", "ihra.org.au", "ihrc.org.uk", "iiaba.net", "ijdh.org", "ijvcanada.org", "ilga-europe.org", "ilga.org", "ilglaw.org", "ilisu.org.uk", "illinoisfamily.org", "ilvoices.com", "imamsonline.com", "immigrantjustice.org", "immigrationcontrol.org", "immigrationequality.org", "inar.ie", "inc.ie", "incite-national.org", "inclusive-church.org.uk", "incr.com", "independentmercia.org", "independentpartyofdelaware.com", "individualist.org.uk", "indivisible.org", "indybay.org", "indypride.org", "informinc.org", "instaurationonline.com", "institute.global", "insurgence.net", "inter-lgbt.org", "interactadvocates.org", "interfaithalliance.org", "internationaldisabilityalliance.org", "internetassociation.org", "investigativeproject.org", "ioby.org", "ionainstitute.ie", "ipco.org.br", "ipjustice.org", "ips-dc.org", "iranhumanrights.org", "iraqhurr.org", "irelanduscouncil.com", "iri.org", "irishnationalcaucus.org", "irqr.ca", "isb.org.uk", "islamic-sharia.org", "islamicforumeurope.com", "islamicinformationcenter.org", "islamicparty.com", "israelcampusroundtable.org", "israeliamerican.org", "israellawcenter.org", "itgetsbetter.org", "iusw.org", "ivaw.org", "iwa.wales", "iwdc.org", "iwf.org", "iwgb.org.uk", "iwgia.org", "iwla.org", "iww.org", "jacpac.org", "jamaicansforjustice.org", "jclu.org", "jcpa.org", "jcua.org", "jesuitvolunteers.org", "jewishdems.org", "jflag.org", "jobcreatorsnetwork.com", "joeacanfora.com", "joh.org.il", "johnsinclair.us", "jpfo.org", "jqyouth.org", "jstreet.org", "jubileeusa.org", "justiceaction.org.au", "justiceatstake.org", "justicedemocrats.com", "kairospalestine.ps", "kaleidoscopeaustralia.com", "kansasequalitycoalition.org", "kaosgldernegi.org", "keepirelandopen.org", "keepsundayspecial.org.uk", "kentuckyfairness.org", "keshetonline.org", "kff.org", "kftc.org", "kgreens.org", "khrc.net", "kickitout.org", "kingidentity.com", "kisa.org.cy", "knightsout.org", "knowthyneighbor.org", "koebergalert.org", "komalainternational.org", "korematsuinstitute.org", "kph.org.pl", "krf.no", "kurdwatch.ezks.org", "kvener.no", "kyequality.org", "la-articles.org.uk", "labi.org", "labourcampaignforelectoralreform.org.uk", "labourleave.org.uk", "labrisz.hu", "labucketbrigade.org", "lac.org.na", "lambdaistanbul.org", "lambdalegal.org", "lambdaliterary.org", "landrights.org", "landtrustalliance.org", "lanuovaecologia.it", "lasvegaspride.org", "latin-amerikagruppene.no", "latinainstitute.org", "latinovictory.us", "lavoisier.com.au", "lawcf.org", "lawyerscommittee.org", "lbda.org", "lc.org", "ldausa.org", "ldfi.org.uk", "leadershipinstitute.org", "league.org.uk", "leagueofthesouth.com", "learnaboutsam.org", "leave.eu", "leavemeansleave.eu", "legabibo.org", "legacy.com.au", "legalmomentum.org", "legion.org", "legit.ca", "lesbianavengers.com", "lespantheresroses.org", "levice.cz", "lfi.org.uk", "lgbt-cicilline.house.gov", "lgbt-ep.eu", "lgbt.dk", "lgbt.foundation", "lgbt.libdems.org.uk", "lgbt.org.il", "lgbtbar.org", "lgbtcampus.org", "lgbtconservatives.org.uk", "lgbtconsortium.org.uk", "lgbtihealth.org.au", "lgbtlabour.org.uk", "lgbtnet.org", "lgbtory.ca", "lgbtpride.or.kr", "lgcm.org.uk", "lgpregioncentre.org", "lgsm.org", "liberal.ca", "liberalforum.eu", "liberalreform.org.uk", "libertycoalition.net", "licra.org", "lifeafterhate.org", "lifechain.org", "lifecharity.org.uk", "lifewatch.org", "littlesisters.ca", "liveaction.org", "liverpoolmuslimsociety.org.uk", "livingstongroupdc.com", "livingstreets.org.uk", "lmbtszovetseg.hu", "lnt.org", "lobbying-register.uk", "lobbyingtransparency.org", "logcabin.org", "londoncenter.org", "lpradicals.org", "lrta.org", "lsvd.de", "lulac.org", "luxembourgforum.org", "lwv.org", "lwvmissouri.org", "m4bl.org", "mabonline.net", "macedonian.org", "madagascarfaunaflora.org", "madd.ca", "madd.org", "maderasrfc.org", "maggieslist.org", "mainewomen.org", "malcolm-x.org", "maldef.org", "manager.co.th", "mankind.org.uk", "mapa.org", "maquilasolidarity.org", "marchforlife.org", "marchforourlives.com", "marriageequality.org", "marxists.org", "massequality.org", "massresistance.org", "masstpc.org", "matthewshepard.org", "mcb.org.uk", "mccl.org", "mcli.org", "mdac.org", "meatinstitute.org", "mecc.org", "medact.org", "mediamatters.org", "mediawatchuk.org.uk", "meemgroup.org", "meforum.org", "mencap.org.uk", "mfc.org", "mfso.org", "mglc.org.au", "michaeljournal.org", "migrationpolicy.org", "migrationwatchuk.org", "militaryreligiousfreedom.org", "milkclub.org", "milkfoundation.org", "millionpuppetmarch.com", "milwaukeeurbangardens.org", "minab.org.uk", "mindfreedom.org", "minhajuk.org", "miningwatch.ca", "minutemanhq.com", "minutemanproject.com", "miphealth.org.uk", "miscarriagesofjustice.org", "missionamerica.com", "mla.com.au", "mlagb.com", "mlcsl.co.uk", "moaa.org", "moboysstate.org", "monarchist.ca", "monarchist.org.au", "monarchyinternational.net", "montrosecenter.org", "moreunited.org.uk", "mosse.nl", "motherearthwaterwalk.com", "mothersforpeace.org", "mothersunion.org", "motorists.org", "mountainjustice.org", "moveon.org", "movetoamend.org", "movimentgraffitti.org", "mpac.org", "mpacuk.org", "mpirg.org", "mpp.org", "mrap.fr", "mtst.org", "museumsgalleriesscotland.org.uk", "musiciansunion.org.uk", "muslim-ed-trust.org.uk", "muslimalliance.org", "musliminstitute.org", "muslimsforamerica.us", "naacp.org", "naaee.org", "naafa.org", "naar.org.uk", "nad.org", "nagps.org", "naht.org.uk", "nam.org", "nami.org", "naors.co.uk", "napawf.org", "napo.org", "napo.org.uk", "narcoa.org", "narfe.org", "narsol.org", "nasuwt.org.uk", "nata.aero", "natall.com", "nationalcitizens.ca", "nationalgunrights.org", "nationalhealthcouncil.org", "nationalparentsorganization.org", "nationalparks.org", "nationalpartnership.org", "nationalpitbullvictimawareness.org", "nationalpopularvote.com", "nationalreview.com", "nationaltrust.je", "nationalwomansparty.org", "nationalyounglords.com", "nationformarriage.org", "nativeseeds.org", "natoassociation.ca", "nature.org", "nautilusint.org", "navyleague.org.au", "nawbo.org", "nazandmattfoundation.org", "nazindia.org", "nbjc.org", "ncac.org", "ncbl.org", "nccm.ca", "nchc.org", "nclc.org", "nclrights.org", "ncnw.org", "ncoa.org", "ncpssm.org", "ncseglobal.org", "ncsj.org", "nct.org.uk", "ncta.com", "ncusar.org", "ncwit.org", "ndn.org", "neaction.org", "nebraskafamilyalliance.org", "necnp.org", "neco.org", "neea.org", "negawatt.org", "nei.org", "network23.org", "networklobby.org", "neu.org.uk", "nevadadesertexperience.org", "newamerica.org", "newconservative.org.nz", "newdealleaders.org", "newleaderscouncil.org", "newonline.org", "news.cn", "news.tvb.com", "newsds.org", "nfb.org", "nfrw.org", "nftc.org", "nglcc.org", "niacouncil.org", "nif.org", "nifla.org", "nilc.org", "niot.org", "nippon-mirai.jp", "nirs.org", "njdc.org", "nlc.org", "nlgja.org", "nmp.org.uk", "no2id.net", "nodeathpenalty.org", "noglstp.org", "noi.org", "noisefree.org", "nomoredeaths.org", "norpac.net", "northernplains.org", "notdeadyet.org", "now.org", "nowar-paix.ca", "noyafieldsfamily.org", "noyb.eu", "npalliance.org", "npca.org", "npcuk.org", "npg.org", "nprcouncil.org", "nqapia.org", "nra.org", "nrcm.org", "nrdc.org", "nrep.org", "nrlc.org", "nrpa.org", "nrsc.org", "nsm88.org", "nsr.no", "nsra.co.uk", "nssf.org", "nswbc.org", "nswp.org", "ntd.com", "ntu.org", "nuj.org.uk", "nujp.org", "nul.org", "numbersusa.com", "nwhn.org", "nwsc.org.hk", "nyabn.org", "nyacyouth.org", "nyclu.org", "nycommunities.org", "nycparentsunion.org", "nylpi.org", "nypirg.org", "nysrpa.org", "nyyrc.com", "nzoss.org.nz", "oathkeepers.org", "ocap.ca", "oceanarksint.org", "oceanchampions.org", "oclp.hk", "ohiolife.org", "ohpi.org.au", "oiac.org", "omnicenter.org", "oneinten.org", "oneiowa.org", "oneparty.net", "onepeoplesproject.com", "onevirginia2021.org", "onewisconsinnow.org", "ontariohealthcoalition.ca", "openrightsgroup.org", "opensource.org", "opensourceecology.org", "operationrescue.org", "operationsaveamerica.org", "originalelf.com", "orionsociety.org", "osiny.org", "ostem.org", "ourrevolution.com", "outa.co.za", "outandequal.org", "outfront.org", "outhistory.org", "outrage.org.uk", "outserve-sldn.org", "oxcis.ac.uk", "paaia.org", "pacificlegal.org", "pagop.org", "palestinecampaign.org", "palmettofamily.org", "pana.ie", "panewsmedia.org", "parentstv.org", "parity-uk.org", "parkfoundation.org", "patentfairness.org", "patentsmatter.com", "patrioticmillionaires.org", "paxchristi.net", "pcar.org", "pcs.org.uk", "pdamerica.org", "peaceandtolerance.org", "peacehost.net", "peccapics.com", "peer.org", "pennies.org", "pensionrights.org", "people.cn", "people.ie", "peopleandplanet.org", "peoples-vote.uk", "peoplesaction.org", "peoplespolicyproject.org", "perc.org", "peregrinefund.org", "pfaw.org", "pflag.org", "pflagcanada.ca", "pgi.org", "pgib.ca", "pheasantsforever.org", "philrights.org", "phtv.ifeng.com", "picturethehomeless.org", "pinkdot.sg", "piraadipartei.ee", "pirateparty.org.uk", "pirati.cz", "plagal.org", "planestupid.com", "plannedparenthood.org", "plasticpollutioncoalition.org", "plq.org", "pnhp.org", "pnrra.org", "poauk.org.uk", "polarisinstitute.org", "policyresearch.org.uk", "pomnim.com", "pop.org", "popcouncil.org", "populardemocracy.org", "populareconomics.org", "population.org.au", "populationconnection.org", "populationmatters.org", "potomacriverkeepernetwork.org", "power2010.org.uk", "powerupfilms.org", "pp-international.net", "pravdabeslana.ru", "prb.org", "prc.org.uk", "preservationaction.org", "presstv.co.uk", "presstv.com", "presstv.ir", "presstv.tv", "prideatwork.org", "prideinstem.org", "prideistanbul.org", "pridenw.org", "priestsforlife.org", "proasyl.de", "prochoiceamerica.org", "programmersguild.org", "progressivelibrariansguild.org", "progressivemajority.org", "progressivemaryland.org", "progressivepolicy.org", "progressjersey.blogspot.com", "progressnow.org", "progressonline.org.uk", "projectnooneleaves.org", "prolifeaction.org", "prolifecampaign.ie", "promoonline.org", "propagandacritic.com", "prospect.org.uk", "protect.org", "protectingtaxpayers.org", "proudpolitics.org", "prwatch.org", "psaonline.org", "psr.org", "psywar.org", "publicadvocateusa.org", "publicgardens.org", "publicinterestlegal.org", "publicinterestwatch.org", "publicknowledge.org", "publiclab.org", "publicpolicypolling.com", "publicspace.ca", "publishwhatyoupay.org", "pucl.org", "pudr.org", "pureearth.org", "purplestrategies.com", "pwd.org.au", "qcea.org", "qhalloffame.ca", "queermontenegro.org", "queersagainstapartheid.org", "quilliaminternational.com", "quintessenz.at", "r2k.org.za", "rac.org", "racearchive.manchester.ac.uk", "racfoundation.org", "racingpride.com", "radabnr.org", "radicalmiddle.com", "radiosawa.com", "railfuture.org.uk", "railpassengers.org", "railusers.ie", "rainbowhealth.org", "rainbowpush.org", "rainbowrailroad.ca", "rainforest-alliance.org", "rainn.org", "rapecrisis.org.uk", "rare.org", "raspberrypi.org", "rationalist.org.uk", "rc.org", "rcrc.org", "rdi.org", "realwomenca.com", "reclaimpridenyc.org", "redactionarchive.org", "redbetances.com", "redeemthevote.com", "redfish.media", "redice.tv", "reducespending.org", "refugeassociation.org", "refugeerights.org", "refuseandresist.org", "reichsbanner.de", "releaseinternational.org", "religiousliberty.info", "renegadebroadcasting.com", "renewparty.org.uk", "representwomen.org", "reproductiverights.org", "republic.org.uk", "republicanassemblies.org", "republicanmainstreet.org", "republicansabroad.no", "respectabilityusa.com", "rethinkvenezuela.com", "reverb.org", "rewilding.org", "rfa.org", "rferl.org", "rff.org", "rideauinstitute.ca", "rightnowwomen.org", "rightsandresources.org", "righttolife.org.nz", "rinj.org", "riponsociety.org", "rjchq.org", "rlc.org", "rmef.org", "rmgo.org", "rmt.org.uk", "rnclife.org", "rnha.org", "rnib.org.uk", "rnla.org", "robinwood.de", "rockthevote.com", "rootstrikers.org", "rosefdn.org", "royaldeaf.org.uk", "royaljersey.co.uk", "rsf.org", "rslc.gop", "rslnational.org", "rstreet.org", "rt.com", "rt.rs", "ruptly.tv", "russiatoday.com", "russiatoday.ru", "rutherford.org", "rwjf.org", "ry.org.nz", "sabin.org", "sacc.org.uk", "sacom.hk", "sacouncil.com", "sacred-texts.com", "saf.org", "safeschoolscoalition.org.au", "safespeed.org.uk", "safinacenter.org", "safs.ca", "saha.org", "saldef.org", "salganyc.org", "samaracanada.com", "samas.no", "samtokin78.is", "sanfound.org", "sapphokolkata.in", "sarahpac.com", "save.lgbt", "savecalifornia.com", "saveoursuburbs.org.au", "saveplants.org", "saverestaurants.com", "savethefish.org", "savetheinternet.com", "sba-list.org", "scaife.com", "scci.org", "scdi.org.uk", "scenic.org", "schoolandstate.org", "science.cleapss.org.uk", "scope.org.uk", "scotch-whisky.org.uk", "scotlandfoodanddrink.org", "scotlandinunion.co.uk", "scottishrenewables.com", "scottishwildlifetrust.org.uk", "scv.org", "seafoodwatch.org", "seaplanes.org", "searchneutrality.org", "secularprolife.org", "secure.actblue.com", "sempervirens.org", "senateconservatives.com", "sentencingproject.org", "sepp.org", "servicemembersunited.org", "seta.fi", "severnside-rail.org.uk", "sexualminoritiesuganda.com", "sfcommunityhealth.org", "sfe.org.uk", "sgr.org.uk", "shiarightswatch.org", "shovalgroup.org", "sian.no", "siecus.org", "sierraclub.org", "sikhcoalition.org", "silentnomoreawareness.org", "sinosz.hu", "siol-nan-gaidheal.org", "sistersong.net", "skytruth.org", "slp.at", "smokiesinformation.org", "snakeriveralliance.org", "snapnetwork.org", "snccdigital.org", "snd-us.com", "snowbirds.org", "snp.org", "soaw.org", "socialist.news", "socialistalternative.org", "socialliberal.net", "socialplanningtoronto.org", "societe-jersiaise.org", "societyofauthors.org", "socm.org", "solidarity-party.org", "solidaritytradeunion.org", "sortirdunucleaire.org", "sos-homophobie.org", "sos-racisme.org", "sos-rasisme.no", "soulforce.org", "sourds-socialistes.fr", "southallblacksisters.org.uk", "southeasternlegal.org", "southerncouncil.org", "southernenvironment.org", "southernersonnewground.org", "spannertrust.org", "sparcopen.org", "sparkle.org.uk", "splcenter.org", "spoc.ca", "spokes.org.nz", "sportetcitoyennete.com", "spreadtheword.global", "spuc.org.uk", "sputnik.by", "sputnik.kz", "sputniknews.cn", "sputniknews.com", "sputniknews.ru", "squatter.org.uk", "srf.org", "srlp.org", "srtrc.org", "ssbx.org", "sst.org.nz", "stand.earth", "standupamericanow.org", "standwithmainstreet.com", "standwithus.com", "startout.org", "statecraft.org.uk", "steel.org", "stellamaris.no", "stiftung-marktwirtschaft.de", "stipdelft.nl", "stonewall.org.uk", "stonewallyoungdems.org", "stophateuk.org", "stopracism.ca", "storybookdads.org.uk", "strandreleasing.com", "streetroots.org", "strongerin.co.uk", "strongtowns.org", "struggle.pk", "stud.cz", "studentpeaceaction.org", "studentsforliberty.org", "studentsforlife.org", "survivedandpunished.org", "survivorsoftorture.org", "sustainus.org", "sustrans.org.uk", "svlg.org", "svn.org", "swcs.org", "swiftvets.com", "swopusa.org", "swords-to-plowshares.org", "syriantaskforce.org", "t4america.org", "taayush.org", "takebacktheland.org", "takungpao.com.hk", "talltimbers.org", "taxpayer.net", "taxpayers.org.au", "taxpayersalliance.com", "tbha.org", "tc-america.org", "tchrd.org", "teachers.org.uk", "teamlpac.com", "technyc.org", "teenagerepublicans.org", "tehila.org.il", "televisionwatch.org", "tellus.org", "terreform.org", "texascivilrightsproject.org", "tfa.net", "tfdp.net", "tfn.org", "tfp.org", "theacru.org", "theadvocates.org", "theamericanfreedomparty.us", "theaoi.com", "theatlanticbridge.com", "theawarenesscenter.blogspot.com", "thecall.com", "theccf.co.uk", "thecep.org.uk", "thechicagourbanleague.org", "thecitycircle.com", "thecityuk.com", "theclearinghouse.org", "thecondomproject.org", "thecornerhouse.org.uk", "thecre.com", "thefire.org", "thefpa.co.uk", "thegsba.org", "theicarusproject.net", "theicct.org", "theisraelproject.org", "thelawfareproject.org", "thenrai.in", "theoceanproject.org", "thepaper.cn", "thepeoplesassembly.org.uk", "thepfa.com", "thepinktriangletrust.com", "theraf.org", "therapeuticchoice.com", "therightstuff.biz", "therpa.co.uk", "thesca.org", "thesisters.org", "thesocialcontract.com", "thestreettrust.org", "thesurvivorstrust.org", "thetanuxi.org", "thetaskforce.org", "thetruthaboutguns.com", "theunia-acl.com", "thomasmore.org", "thomasmoresociety.org", "tides.org", "times-up.org", "tlw.org", "tnep.org", "togetherforyes.ie", "torchantifa.org", "torontoenvironment.org", "tpl.org", "tpusa.com", "traditionalbritain.org", "trainridersne.org", "transactivists.org", "transafrica.org", "transequality.org", "transgendervictoria.com", "translifeline.org", "transmediawatch.org", "transparencycanada.ca", "transportaction.ca", "transstudent.org", "treatmentadvocacycenter.org", "trees.org", "trevvy.com", "tridentploughshares.org", "truecolorsunited.org", "truthinscience.org.uk", "truthwinsout.org", "ttcriders.ca", "tuc.org.uk", "tv.cctv.com", "uaf.org.uk", "uavs.org", "ucfsga.com", "ucp.org", "ucsa.org", "ucsusa.org", "ucu.org.uk", "ukma.org.uk", "uknda.org", "umaamerica.net", "unac.org", "und.nodak.edu", "unipd-centrodirittiumani.it", "unison.org.uk", "uniteamerica.org", "unitedagainstnucleariran.com", "unitedfamilies.org", "unitedforpeace.org", "unitedsikhs.org", "unitetheunion.org", "universalhealthct.org", "unlockdemocracy.org.uk", "unponteper.it", "upstate-citizens.org", "urbaneden.org", "usacc.org", "usaction.org", "usas.org", "uschamber.com", "uscib.org", "usdaw.org.uk", "usgbc.org", "usglc.org", "usinpac.com", "uspsa.org", "usstudents.org", "uvwunion.org.uk", "uyghuramerican.org", "vabio.org", "vanmierlostichting.d66.nl", "vcdl.org", "vda.de", "veteransforbritain.uk", "vfa.de", "vfw.org", "victimsofcommunism.org", "victoryfund.org", "videofag.com", "villagecommunityboathouse.org", "vimeo.com/45479858", "viscardicenter.org", "visionamerica.us", "vlv.org.uk", "vob.org", "voewg.at", "voiceforlife.org.nz", "voiceofrussia.com", "voiceproject.org", "voicetheunion.org.uk", "voteleavetakecontrol.org", "voyageurs.org", "vpc.org", "vshl.org", "vvaw.org", "vvn-bda.de", "warresisters.org", "washingtonmainstream.org", "washingtonpeacecenter.org", "waspi.co.uk", "wasuproject.org.uk", "water1st.org", "waterforsouthsudan.org", "waterkeeper.org", "wenweipo.com", "westernjournalism.com", "wheatworld.org", "whitecoats4blacklives.org", "whiterose.saddleworth.net", "wiesenthal.com", "wild.org", "wildearthguardians.org", "wilderness.org", "wildlandsnetwork.org", "wildlifealliance.org", "wildlifemessengers.org", "wildmontana.org", "wildwhiteclouds.org", "wise-paris.org", "wokingmuslim.org", "womenagainstregistry.org", "womensaid.org.uk", "womensway.org", "wordonfire.org", "worldcongress.org", "worldfederalistscanada.org", "worldsurfingreserves.org", "writersguild.org.uk", "wrj.org", "wwctu.org", "wws.org", "xinhuanet.com", "xinmin.cn", "xnet-x.net", "y.dsausa.org", "yaf.com", "yaf.org", "yaffed.org", "yazda.org", "yct.org", "yda.org", "ydnc.org", "yesforwales.com", "yfoundations.org.au", "yorkshireridingssociety.org.uk", "youcanplayproject.org", "youthunlimited.org", "yre.org.uk", "yrnf.com"], "blogs": ["africanprintinfashion.com", "austinemedia.com", "bellanaija.com", "blog.naver.com", "blogger.com", "buzznigeria.com", "gmusicplus.com", "habr.com", "helpdeskgeek.com", "highstakesdb.com", "informationng.com", "insider.foxnews.com", "lindaikejisblog.com", "livejournal.com", "medium.com", "nickiswift.com", "npr.org/blogs", "patribotics.blog", "politicalticker.blogs.cnn.com", "ratingsryan.com", "techdirt.com", "unrevealedfiles.com", "youthvillageng.com"], "books": ["books.google.com"], "community": ["digitaljournal.com", "examiner.com", "globalvoices.org", "newsparticipation.com", "wikinews.org", "wikitribune.com"], "editable": ["boardgamegeek.com", "commons.wikimedia.org", "discogs.com", "fandom.com", "gamepedia.com", "imdb.com", "incubator.wikimedia.org", "localwiki.org", "mediawiki.org", "meta.wikimedia.org", "miraheze.org", "namu.wiki", "orthodoxwiki.org", "planetmath.org", "rigvedawiki.net", "species.wikimedia.org", "unionpedia.org", "wikia.com", "wikia.org", "wikibooks.org", "wikicities.com", "wikidata.org", "wikihow.com", "wikinews.org", "wikipedia.org", "wikiquote.org", "wikisource.org", "wikitech.wikimedia.org", "wikitravel.org", "wikiversity.org", "wikivoyage.org", "wiktionary.org"], "government": ["aa.com.tr", "admin.ch", "agenciabrasil.ebc.com.br", "bernama.com", "bjd.com.cn", "bjreview.com", "cctvplus.com", "cgtn.com", "chinaculture.org", "chinadaily.com.cn", "chinadailyasia.com", "chinadailyhk.com", "chinanews.com", "cna.com.tw", "cri.cn", "dvidshub.net", "ecns.cn", "focustaiwan.tw", "gc.ca", "globaltimes.cn", "gmw.cn", "go.id", "go.jp", "go.kr", "gob", "gob.", "gouv", "gouv.", "gov", "gov.", "govt", "govt.", "gub", "gub.", "gv.at", "hina.hr", "hkcd.com", "huanqiu.com", "iana.ir", "icana.ir", "ifengus.com", "irib.ir", "irna.ir", "kcna.kp", "kcna.kp", "kenyanews.go.ke", "kpl.net.la", "mil", "mil.", "nan.ng", "news.cn", "news.vnanet.vn", "people.cn", "pia.gov.ph", "pna.gov.ph", "presstv.co.uk", "presstv.com", "presstv.ir", "presstv.tv", "rg.ru", "ria.ru", "ria.ru", "rtvm.gov.ph", "shanghaidaily.com", "shine.cn", "state.nj.us", "tass.com", "tass.ru", "tdh.gov.tm", "telam.com.ar", "voanews.com", "xinhuanet.com", "россиясегодня.рф"], "news": ["7news.com.au", "9news.com.au", "abc.es", "abc.net.au/news", "abcnews.com", "abcnews.go.com", "afr.com", "aljazeera.com", "aljazeera.net", "amarujala.com", "ap.org", "apnews.com", "articles.latimes.com", "bangkokpost.com", "bbc.co.uk", "bbc.com", "bhaskar.com", "boston.com", "businessmirror.com.ph", "bworldonline.com", "cbc.ca/news", "cbcnews.ca", "cbsnews.com", "chicagotribune.com", "citynews.ca", "cnbc.com", "cnn.com", "cnnespanol.cnn.com", "cnnindonesia.com", "cnnphilippines.com", "content.time.com", "couriermail.com.au", "csmonitor.com", "ctvnews.ca", "dailytelegraph.com.au", "dailythanthi.com", "derstandard.at", "diariodealmeria.es", "diepresse.com", "dispatch.com", "eenadu.net", "elconfidencial.com", "elcorreo.com", "elcorreogallego.es", "eldiario.es", "elmundo.es", "elpais.com", "elperiodico.cat", "elperiodico.com", "euronews.com", "faz.net", "foxnews.com", "ft.com", "gazeta.pl", "globalnews.ca", "gmanetwork.com/news", "guardian.co.uk", "guardian.com", "haaretz.co.il", "haaretz.com", "herald.ie", "heraldsun.com.au", "huffingtonpost.ca", "huffingtonpost.co.uk", "huffingtonpost.com", "huffingtonpost.com.au", "huffingtonpost.de", "huffpost.com", "huffpostbrasil.com", "humanite.fr", "ici.radio-canada.ca/info", "independent.co.uk", "independent.ie", "inquirer.net", "interaksyon.com", "irishexaminer.com", "irishtimes.com", "jagran.com", "japantimes.co.jp", "jpost.com", "kompas.com", "kompas.id", "koreaherald.com", "koreatimes.co.kr", "krone.at", "kurier.at", "kyodonews.net", "la-croix.com", "lapresse.ca", "latimes.com", "lavanguardia.com", "lavozdegalicia.es", "ledevoir.com", "lefigaro.fr", "lemonde.fr", "leparisien.fr", "liberation.fr", "livehindustan.com", "macleans.ca", "malaymail.com", "manilastandard.net", "manilatimes.net", "manoramaonline.com", "mathrubhumi.com", "mb.com.ph", "mercurynews.com", "msnbc.msn.com", "nationmultimedia.com", "nbcnews.com", "newrepublic.com", "news.abs-cbn.com", "news.sky.com", "news.yahoo.com", "newsweek.com", "npr.org", "nst.com.my", "nytimes.com", "nzherald.co.nz", "oregonlive.com", "phillymag.com", "philstar.com", "politico.com", "politico.eu", "post-gazette.com", "press.co.nz", "qz.com", "rappler.com", "reuters.com", "sacbee.com", "salon.com", "sandiegouniontribune.com", "sbs.com.au/news", "seattlepi.com", "seattletimes.com", "sfchronicle.com", "sfgate.com", "slate.com", "smh.com.au", "spiegel.de", "starbulletin.com", "straitstimes.com", "sueddeutsche.de", "tagesspiegel.de", "telegraph.co.uk", "theage.com.au", "theatlantic.com", "theaustralian.com.au", "thedailybeast.com", "thedailystar.net", "theglobeandmail.com", "theguardian.co.uk", "theguardian.com", "theherald.com.au", "thehill.com", "thehindu.com", "thejakartapost.com", "thestar.com", "thestar.com.my", "thesundaytimes.co.uk", "thetimes.co.uk", "time.com", "timesofindia.indiatimes.com", "timesonline.co.uk", "tribune.net.ph", "tribuneindia.com", "usatoday.com/story", "usnews.com", "vox.com", "washingtonexaminer.com", "washingtonpost.com", "welt.de", "wsj.com", "wyborcza.pl", "yediot.co.il", "ynet.co.il", "ynetnews.com", "zeit.de"], "opinions": ["archive.nytimes.com/roomfordebate.blogs.nytimes.com", "nytimes.com/roomfordebate", "roomfordebate.blogs.nytimes.com", "theguardian.com/commentisfree"], "predatory": ["academicjournals.com", "academicjournals.net", "academicjournals.org", "academicpub.org", "academicresearchjournals.org", "aiac.org.au", "aicit.org", "alliedacademies.org", "arcjournals.org", "ashdin.com", "aspbs.com", "avensonline.org", "biomedres.info", "biopublisher.ca", "bowenpublishing.com", "ccsenet.org", "cennser.org", "chitkara.edu.in", "clinmedjournals.org", "cluteinstitute.com", "cosmosscholars.com", "cpinet.info", "cscanada.net", "davidpublisher.org", "etpub.com", "eujournal.org", "grdspublishing.org", "growingscience.com", "hanspub.org", "hoajonline.com", "hrmars.com", "iacsit.org", "iamure.com", "idosi.org", "igi-global.com", "iises.net", "imedpub.com", "informaticsjournals.com", "innspub.net", "intechopen.com", "intechweb.org", "interesjournals.org", "internationaljournalssrg.org", "ispacs.com", "ispub.com", "julypress.com", "juniperpublishers.com", "kowsarpub.com", "kspjournals.org", "m-hikari.com", "macrothink.org", "mecs-press.org", "medcraveonline.com", "oapublishinglondon.com", "oatext.com", "omicsonline.org", "ospcindia.org", "researchleap.com", "sapub.org", "scholarpublishing.org", "scholink.org", "scialert.net", "scidoc.org", "sciedu.ca", "sciencedomain.org", "sciencedomains.org", "sciencepg.com", "sciencepub.net", "sciencepubco.com", "sciencepublication.org", "sciencepublishinggroup.com", "scipg.net", "scipress.com", "scirp.org", "scopemed.com", "sersc.org", "sphinxsai.com", "ssjournals.com", "thesai.org", "waset.org", "witpress.com", "worldwidejournals.com", "xandhpublishing.com", "xiahepublishing.com", "zantworldpress.com"], "press": ["1888pressrelease.com", "acnnewswire.com", "eprnews.com", "express-press-release.net", "gov.uk/government/news", "home.treasury.gov/news", "icrowdnewswire.com", "infoxen.com", "marketpressrelease.com", "newsvoir.com", "newswire.com/newsroom", "openpr.com/news", "pr.com/article", "pressat.co.uk", "prmac.com", "prnewswire.co.uk", "prnewswire.com", "prunderground.com", "prurgent.com", "prweb.com/releases", "theopenpress.com", "verticalnewsnetwork.com", "webwire.com"], "rspBlacklisted": ["banned.video", "batteryuniversity.com", "bestgore.com", "biggovernment.com", "breitbart.com", "company-histories.com", "examiner.com", "famousbirthdays.com", "fundinguniverse.com", "globalresearch.ca", "globalresearch.org", "healthline.com", "infowars.com", "infowars.net", "infowars.tv", "lenta.ru", "liveleak.com", "lulu.com", "mondialisation.ca", "mylife.com", "naturalnews.com", "newstarget.com", "newswars.com", "opindia.com", "opindia.in", "reunion.com", "swarajyamag.com", "thepointsguy.com", "thepointsguy.com/news", "thepointsguy.com/reviews", "veteranstoday.com", "zoominfo.com"], "rspDeprecated": ["anna-news.info", "armeniasputnik.am", "b.baidu.com", "baike.baidu.com", "banned.video", "bestgore.com", "bharat.republicworld.com", "biggovernment.com", "breitbart.com", "cgtn.com", "cinemos.com", "crunchbase.com", "dailycaller.com", "dailycallernewsfoundation.org", "dailym.ai", "dailymail.co.uk", "dailymail.co.uk/mailonsunday", "dailymail.com.au", "dailystar.co.uk", "dreamteamfc.com", "epoch.org.il", "epochtimes.com", "findarticles.com/p/news-articles/daily-mail-london-england-the", "frontpagemag.com", "frontpagemagazine.com", "glitchwave.com", "globaltimes.cn", "healthline.com", "hispantv.com", "hispantv.ir", "huanqiu.com", "infowars.com", "infowars.net", "infowars.tv", "jihadwatch.org", "journal-neo.org", "last.fm", "lenta.ru", "lifesitenews.com", "mailonsunday.co.uk", "mailplus.co.uk", "mintpressnews.cn", "mintpressnews.com", "mintpressnews.es", "mintpressnews.ru", "nationalenquirer.com", "newsblaze.com", "newsblaze.com.au", "newsbreak.com", "newsmax.com", "newsmaxtv.com", "newsoftheworld.co.uk", "newsoftheworld.com", "newswars.com", "nndb.com", "ntd.com", "ntdtv.ca", "ntdtv.com", "ntdtv.com.tw", "oann.com", "occupydemocrats.com", "okeefemediagroup.com", "pressreader.com/ireland/irish-daily-mail", "pressreader.com/uk/daily-mail", "pressreader.com/uk/scottish-daily-mail", "pressreader.com/uk/the-mail-on-sunday", "pressreader.com/uk/the-scottish-mail-on-sunday", "presstv.com", "presstv.ir", "projectveritas.com", "rateyourmusic.com", "redfish.media", "republicworld.com", "royalcentral.co.uk", "rt.com", "rt.rs", "ruptly.tv", "russiatoday.com", "russiatoday.ru", "sonemic.com", "sputnik.by", "sputnik.kz", "sputniknews.cn", "sputniknews.com", "sputniknews.ru", "sunnation.co.uk", "takimag.com", "telesurenglish.net", "telesurtv.net", "the-sun.com", "theepochtimes.com", "thegatewaypundit.com", "thegrayzone.com", "thescottishsun.co.uk", "thestar.ie", "thesun.co.uk", "thesun.ie", "thesun.mobi", "thisismoney.co.uk", "travelmail.co.uk", "unz.com", "unz.org", "vdare.com", "veteranstoday.com", "voiceofrussia.com", "voltairenet.org", "wapbaike.baidu.com", "wnd.com", "worldnetdaily.com", "zerohedge.com"], "rspGenerallyReliable": ["abcnews.com", "abcnews.go.com", "adl.org", "afp.com", "aljazeera.com", "aljazeera.net", "amnesty.org", "amnesty.org.ph", "aon.com", "ap.org", "apnews.com", "arstechnica.co.uk", "arstechnica.com", "avclub.com", "avn.com", "axios.com", "bbc.co.uk", "bbc.com", "behindthevoiceactors.com", "bellingcat.com", "bloomberg.com", "burkespeerage.com", "businessweek.com", "buzzfeednews.com", "catalyst-journal.com", "climatefeedback.org", "cnn.com", "codastory.com", "commonsensemedia.org", "csmonitor.com", "deadline.com", "deadlinehollywooddaily.com", "debretts.com", "deseretnews.com", "digitalspy.co.uk", "digitalspy.com", "dw.com/en", "economist.com", "engadget.com", "ew.com", "ft.com", "gamasutra.com", "gamedeveloper.com", "gameinformer.com", "gamerankings.com", "gizmodo.com", "grubstreet.com", "guardian.co.uk", "haaretz.co.il", "haaretz.com", "hollywoodreporter.com", "idolator.com", "ifcncodeofprinciples.poynter.org", "ign.com", "independent.co.uk", "indianexpress.com", "ipscuba.net", "ipsnews.net", "ipsnoticias.net", "iranicaonline.org", "jacobinmag.com", "jamanetwork.com", "journalism.org", "kirkusreviews.com", "kommersant.com", "kommersant.ru", "kommersant.uk", "latimes.com", "metacritic.com", "mg.co.za", "monde-diplomatique.fr", "mondediplo.com", "motherjones.com", "msnbc.com", "nationalgeographic.com", "nbcnews.com", "newrepublic.com", "news.sky.com", "news.yahoo.com", "newscientist.com", "newslaundry.com", "newyorker.com", "npr.org", "nydailynews.com", "nymag.com", "nytimes.com", "nzherald.co.nz", "people-press.org", "people.com", "pewforum.org", "pewglobal.org", "pewhispanic.org", "pewinternet.org", "pewresearch.org", "pewsocialtrends.org", "pinknews.co.uk", "playboy.com", "politico.com", "politifact.com", "polygon.com", "propublica.org", "qz.com", "rappler.com", "reason.com", "religionnews.com", "reuters.com", "rfa.org", "rottentomatoes.com", "rte.ie", "sciencebasedmedicine.org", "scientificamerican.com", "scmp.com", "scotusblog.com", "slate.com", "slate.fr", "smh.com.au", "snopes.com", "space.com", "spiegel.de", "splcenter.org", "telegraph.co.uk", "theage.com.au", "theatlantic.com", "theaustralian.com.au", "theconversation.com", "thecut.com", "thediplomat.com", "theglobeandmail.com", "theguardian.co.uk", "theguardian.com", "thehill.com", "thehindu.com", "theintercept.com", "thejc.com", "themarysue.com", "thenation.com", "theregister.co.uk", "thesundaytimes.co.uk", "thetimes.co.uk", "theverge.com", "thewire.in", "thewirehindi.com", "thewireurdu.com", "thewrap.com", "time.com", "timesonline.co.uk", "torrentfreak.com", "tvguide.com", "tvguidemagazine.com", "usatoday.com", "usnews.com", "vanityfair.com", "variety.com", "venturebeat.com", "voanews.com", "vogue.com", "vox.com", "vulture.com", "washingtonpost.com", "weeklystandard.com", "wired.co.uk", "wired.com", "wsj.com", "wyborcza.pl", "zdnet.com"], "rspGenerallyUnreliable": ["112.international", "112.ua", "adfontesmedia.com", "alternet.org", "amazon.ca", "amazon.cn", "amazon.co.jp", "amazon.co.uk", "amazon.com", "amazon.com.au", "amazon.com.br", "amazon.com.mx", "amazon.com.sg", "amazon.com.tr", "amazon.de", "amazon.es", "amazon.fr", "amazon.in", "amazon.it", "amazon.nl", "ancestry.com", "anphoblacht.com", "answers.com", "antiwar.com", "antiwar.org", "antwerpen-indymedia.be", "arxiv.org", "askubuntu.com", "batteryuniversity.com", "bigmuddyimc.org", "bild.de", "bitterwinter.org", "blogspot.com", "broadwayworld.com", "californiaglobe.com", "celebritynetworth.com", "cesnur.net", "cesnur.org", "chat.openai.com", "cnsnews.com", "coindesk.com", "company-histories.com", "conservativereview.com", "consortiumnews.com", "council.rollingstone.com", "counterpunch.com", "counterpunch.org", "cracked.com", "crwflags.com", "dailykos.com", "dailysabah.com", "dailywire.com", "discogs.com", "electronicintifada.net", "examiner.com", "express.co.uk", "facebook.com", "familysearch.org", "famousbirthdays.com", "fandom.com", "findagrave.com", "findmypast.co.uk", "flickr.com", "fotw.info", "fundinguniverse.com", "gawker.com", "gbnews.com", "gbnews.uk", "geni.com", "globalresearch.ca", "globalresearch.org", "globalsecurity.org", "goodreads.com", "heatst.com", "history.com", "ibtimes.co.in", "ibtimes.co.uk", "ibtimes.com", "ibtimes.com.au", "ibtimes.com.cn", "ibtimes.sg", "imc-africa.mayfirst.org", "imdb.com", "indybay.org", "indymedia.ie", "indymedia.nl", "indymedia.no", "indymedia.org", "indymedia.org.uk", "indymedia.us", "indymediapr.org", "inquisitr.com", "investopedia.com", "jewishvirtuallibrary.org", "joshuaproject.net", "knowyourmeme.com", "linkedin.com", "livejournal.com", "liveleak.com", "lulu.com", "marquiswhoswho.com", "mashable.com/ad", "mathoverflow.net", "mediabiasfactcheck.com", "medium.com", "metal-archives.com", "metal-experience.com", "metro.co.uk", "metro.news", "michiganimc.org", "midiaindependente.org", "mondialisation.ca", "mrc.org", "mrctv.org", "mylife.com", "naturalnews.com", "newsbusters.org", "newstarget.com", "nypost.com", "opindia.com", "opindia.in", "order-order.com", "ourcampaigns.com", "pagesix.com", "panampost.com", "patheos.com", "phillyimc.org", "pressreader.com/uk/daily-express", "prnewswire.co.uk", "prnewswire.com", "quadrant.org.au", "quillette.com", "quora.com", "rawstory.com", "reddit.com", "redstate.com", "researchgate.net", "reunion.com", "rogueimc.org", "rollingstone.com/culture-council", "scribd.com", "serverfault.com", "skwawkbox.org", "sourcewatch.org", "spirit-of-metal.com", "sportskeeda.com", "stackexchange.com", "stackoverflow.com", "starsunfolded.com", "statista.com", "superuser.com", "swarajyamag.com", "tass.com", "tass.ru", "theblaze.com", "thecanary.co", "thefederalist.com", "thenewamerican.com", "theonion.com", "thepostmillennial.com", "thetruthaboutguns.com", "tnimc.org", "tunefind.com", "tv.com", "tvtropes.org", "twitter.com", "ucimc.org", "ukwhoswho.com", "urbandictionary.com", "venezuelanalysis.com", "vgchartz.com", "victimsofcommunism.org", "weather2travel.com", "wegotthiscovered.com", "westernjournal.com", "whatculture.com", "whosampled.com", "whoswhoinamerica.com", "wikia.com", "wikia.org", "wikicities.com", "wikidata.org", "wikileaks.org", "wikinews.org", "wikipedia.org", "wordpress.com", "worldometers.info", "youtube.com", "zoominfo.com"], "rspMarginallyReliable": ["about.com", "alexa.com", "allgame.com", "allmovie.com", "allmusic.com", "allsides.com", "aninews.in", "api.parliament.uk/historic-hansard", "arabnews.com", "askmen.com", "aspi.org.au", "ballotpedia.org", "biography.com", "bloomberg.com/profile", "boingboing.net", "britannica.com", "businessinsider.com", "bustle.com", "cato.org", "cepr.net", "chinadaily.com.cn", "chinadailyasia.com", "chinadailyhk.com", "cliffsnotes.com", "cosmopolitan.com", "dailydot.com", "dailynk.com", "democracynow.org", "entrepreneur.com", "eonline.com", "fair.org", "genius.com", "globalreligiousfutures.org", "google.com/maps", "gordonconwell.edu", "guinnessworldrecords.com", "hansard.millbanksystems.com", "hansard.parliament.uk", "heavy.com", "hk.appledaily.com", "hopenothate.org.uk", "humanevents.com", "ijr.com", "islamqa.info", "jezebel.com", "lifewire.com", "maps.google.com", "mashable.com", "mdpi.com", "mediaite.com", "mediamatters.org", "metalsucks.net", "mirror.co.uk", "mondoweiss.net", "morningstaronline.co.uk", "nationalreview.com", "news.cn", "parliament.uk", "pewresearch.org/religion/2015/04/02/religious-projection-table", "pewresearch.org/religion/2015/04/02/religious-projections-2010-2050", "pride.com", "quackwatch.org", "rapgenius.com", "realclearinvestigations.com", "realclearpolitics.com", "refinery29.com", "rian.com.ua", "rian.ru", "salon.com", "scienceblogs.com", "screenrant.com", "searchlightmagazine.com", "sherdog.com", "skepdic.com", "skynews.com.au", "softpedia.com", "sparknotes.com", "spectator.co.uk", "spectator.us", "standard.co.uk", "straitstimes.com", "techcrunch.com", "theamericanconservative.com", "thearda.com", "thebalance.com", "thedailybeast.com", "thegreenpapers.com", "theneedledrop.com", "thenextweb.com", "thepointsguy.com/news", "thepointsguy.com/reviews", "thespruce.com", "thinkprogress.org", "thoughtco.com", "timesofindia.com", "timesofindia.indiatimes.com", "tmz.com", "townhall.com", "tripsavvy.com", "trtworld.com", "usmagazine.com", "verywell.com", "verywellfamily.com", "verywellhealth.com", "verywellmind.com", "vice.com", "vicetv.com", "washingtonexaminer.com", "washingtontimes.com", "worldchristiandatabase.org", "worldreligiondatabase.org", "wsws.org", "xbiz.com", "xinhuanet.com"], "rspMulti": ["aa.com.tr", "buzzfeed.com", "cnet.com", "forbes.com", "foxbusiness.com", "foxnews.com", "geonames.nga.mil", "geonames.usgs.gov", "huffingtonpost.ca", "huffingtonpost.co.uk", "huffingtonpost.com", "huffingtonpost.com.au", "huffingtonpost.com.mx", "huffingtonpost.de", "huffingtonpost.es", "huffingtonpost.fr", "huffingtonpost.gr", "huffingtonpost.in", "huffingtonpost.it", "huffingtonpost.jp", "huffingtonpost.kr", "huffpost.com", "huffpostbrasil.com", "huffpostmaghreb.com", "insider.com", "memri.org", "memritv.org", "newsweek.com", "rollingstone.com", "sixthtone.com", "thisisinsider.com"], "satire": ["babylonbee.com", "burrardstreetjournal.com", "mousetrapnews.com", "newyorker.com/humor", "onlysky.media", "private-eye.co.uk", "spacexmania.com", "thebeaverton.com", "thedailymash.co.uk", "theonion.com"], "social": ["9gag.com", "facebook.com", "instagram.com/p", "linkedin.cn", "linkedin.co.id", "linkedin.co.nz", "linkedin.co.uk", "linkedin.com.ar", "linkedin.com.br", "linkedin.com.gt", "linkedin.com.hk", "linkedin.com.mx", "linkedin.com.ni", "linkedin.com.pk", "linkedin.com.py", "linkedin.com.sv", "linkedin.com/in", "pinterest.at", "pinterest.be", "pinterest.biz", "pinterest.ca", "pinterest.cl", "pinterest.co.uk", "pinterest.com.au", "pinterest.com.ec", "pinterest.com.mx", "pinterest.dk", "pinterest.es", "pinterest.hu", "pinterest.in", "pinterest.it", "pinterest.jp", "pinterest.nl", "pinterest.nz", "pinterest.pe", "pinterest.ph", "pinterest.tw", "reddit.com/r", "tiktok.com", "tumblr.com", "twitter.com", "vk.com", "youtube.com/watch?v="], "sponsored": ["amny.com/sponsored", "ctvnews.ca/sponsored-content", "gq.com/sponsored", "lamag.com/sponsored", "lfpress.com/sponsored", "mashable.com/ad", "nationalpost.com/sponsored", "newsweek.com/sponsored", "seattletimes.com/sponsored", "thestar.com/sponsored_sections", "vancouverisawesome.com/sponsored", "wired.com/insights"], "tabloids": ["ahaonline.cz", "bild.de", "blesk.cz", "dailymail.co.uk", "dailyrecord.co.uk", "dailystar.co.uk", "express.co.uk", "globaltimes.cn", "globemagazine.com", "heraldweekly.com", "huanqiu.com", "intouchweekly.com", "mirror.co.uk", "nationalenquirer.com", "pressreader.com/uk/daily-express", "radaronline.com", "starmagazine.com", "sundaymail.co.uk", "thesun.co.uk", "usmagazine.com"], "tvPrograms": ["abc.com/shows", "bbc.co.uk/programmes", "cnn.com/videos", "pbs.org/video", "video.foxnews.com"] };
-    let categorizedStrings = { "advocacy": [], "blogs": [], "books": [], "community": ["-irpt"], "editable": ["/wiki/"], "government": [], "news": [], "opinions": ["/opinion/", "/opinions/"], "predatory": [], "press": [], "satire": [], "sponsored": [], "rspDeprecated": [], "rspGenerallyUnreliable": [], "social": [], "tabloids": [], "tvPrograms": [] };
+        /**
+         * Parses a date rule string containing comma-separated conditions,
+         * where each condition includes an operator and a date.
+         * Returns a predicate function that accepts a date (or date string)
+         * and returns true if the date matches all conditions.
+         * @param ruleString {String} - Date rule string, e.g. "<2022-01-01,>2020-01-01"
+         * @returns {Function|null} - Predicate function, or null if any condition is invalid.
+         */
+        parseDateRule: function (ruleString) {
+            ruleString = ruleString.trim();
+            if (ruleString.length === 0) {
+                return null;
+            }
 
+            // Split the rule string by comma into individual conditions.
+            let conditionStrings = ruleString.split(',').map(s => s.trim());
 
-    // An empty version of categorizedDomains that will hold domains that are found on the page:
-    let filteredCategorizedDomains = {
-        "advocacy": [],
-        "blogs": [],
-        "books": [],
-        "community": [],
-        "editable": [],
-        "government": [],
-        "news": [],
-        "opinions": [],
-        "predatory": [],
-        "press": [],
-        "rspBlacklisted": [],
-        "rspDeprecated": [],
-        "rspGenerallyReliable": [],
-        "rspGenerallyUnreliable": [],
-        "rspMarginallyReliable": [],
-        "rspMulti": [],
-        "satire": [],
-        "social": [],
-        "sponsored": [],
-        "tabloids": [],
-        "tvPrograms": []
-    };
+            // Array to hold predicate functions for each condition.
+            let predicates = [];
 
-    // Default toggle settings:
-    let citeUnseenCategories = {
-        "advocacy": true,
-        "blogs": true,
-        "books": true,
-        "community": true,
-        "editable": true,
-        "government": true,
-        "news": true,
-        "opinions": true,
-        "predatory": true,
-        "press": true,
-        "rspBlacklisted": true,
-        "rspDeprecated": true,
-        "rspGenerallyReliable": false,
-        "rspGenerallyUnreliable": true,
-        "rspMarginallyReliable": true,
-        "rspMulti": true,
-        "satire": true,
-        "social": true,
-        "sponsored": true,
-        "tabloids": true,
-        "tvPrograms": true
-    };
+            for (let cond of conditionStrings) {
+                if (cond.length === 0) continue; // Skip empty conditions
 
-    let citeUnseenCategoryData = {
-        "advocacy": {
-            "label": "advocacy",
-            "type": "influence",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAPCAMAAAA1b9QjAAAAbFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0Iv+qAAAAI3RSTlMA1A5E+vZW38mMJx7s2aOZjWdaQzoUCvHkyrmvhXx2bWBTMqn0tOoAAAB/SURBVBjTZc9XDoQwDARQZzc9lKVub/j+d8SMAIGYH8svsSXTLt1D7WFwzKctfAxD4hmx4camUiKB1zwjTWIYUeGXiERamt8v0kLyg7hl6v7+d5CGSl6ii4TN1H6l87YqM77WEIoihdT+pVlDepEce5tsvsILWVDyDrWW3xBkBEQGDke/jOMVAAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "blogs": {
-            "label": "blogs",
-            "type": "user-generated",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAMAAAAMs7fIAAAAclBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACa4vOeAAAAJXRSTlMA+/J3Bq43Mxb3x7OnnJl8Xkoc6ubLoVhNPCgj3dzDkI1ycVZUCH5LxQAAAJZJREFUGBkFwYVhAgEAALG84A51t9t/xSaG2/3DeQ0AVQ27ZwCqqnavAD9f+7uqxkcALI9D1QlYXme8LqpOoMb9E6ah+oWqtiv+hhqvqKrNmalaYL2a3qse2VVLME9DbVZehloAnob64FibtXk6XJiqi+fq7KG6mN9qz60OxurIqUYWtXVffbOsrj7rzst2PMysq5Wpxn9NeBK2TnaptgAAAABJRU5ErkJggg==",
-            "count": 0
-        },
-        "books": {
-            "label": "book(s)",
-            "type": "medium",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAMCAMAAACz+6aNAAAAWlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACLSV5RAAAAHXRSTlMAqt7QCRnpffrWSSry7cehoHVuRD0sJuLamGkfHurrquoAAABVSURBVAjXvYjJEYAgEMBWQO5bxHP7b1OBsQXzSSago5KSHAWq8NzRqIHnC1hN1lthGNwnBwKdgnoE/Q7D+ZdjlrWd5nY2wRGRZEz7aycUhKmjJB0RHg2VBO5eX4k3AAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "community": {
-            "label": "community",
-            "type": "user-generated",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQCAMAAADH72RtAAAAaVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnbPKNAAAAInRSTlMAmWPM27eThIB/06+fjV0lD/r1yLuzqaRzTD8dmGpTUBYCKhLQsAAAAH1JREFUGNONi0kOAjEMBGMgCUy22VfW/v8jiU3EaQ5TUkvlkqz2qI3fRDYfapEAjCIDYEUM4NRc6aSBIOU9ufQCUKVhkq94JzIWmYWIHh+1gjnldSNbVOyobOz92jVZr1Jmc2b0sy2lyRN6XUp7K+XiuDD/wsfhstAPq3b5AqlTD1RMmHJ5AAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "editable": {
-            "label": "editable",
-            "type": "user-generated",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAPCAMAAADeWG8gAAAAvVBMVEUAAABMTEw1NTUdHR0+Pj7o6Oj///8/Pz8pKSkuLi5TU1NXV1dcXFxiYmKMjIywsLDExMT///////9tbW0xMTFfX19KSkpFRUVUVFRMTExHR0dZWVlgYGBra2taWlp2dnaEhIRsbGxmZmZ8fHygoKCOjo6Dg4OqqqqXl5ekpKSmpqacnJyhoaG7u7unp6ezs7O7u7vHx8ft7e3///////8AAAAjIyMGBgZUVFRHR0cLCwtlZWVOTk4iIiIVFRWrycPlAAAANXRSTlMA9P7++R8F/v798+rm3rFcOwkC/v38+PHt7e3r6efi397e1My6uberoZOLh4Z9cnFZMSggDCg5MJMAAACOSURBVBgZXcGFEoJQAATAe6SUgt3dXUcZ//9ZMgYM7iJ1HRzxZ0L/jExJ2AuyiIwq0X+wqyFVHpF3Go11GT8r8sagTdonfLgyw4A9JuSlhoRn8lmlKPKtub8AM7JG2dUEP2KUAlbIrXoo8AsmdSmSCjFT2A31kDnAnFHdUBRFiJZl9R1nDHT8DfK8qYq8F7oKGQbJNCvvAAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "government": {
-            "label": "government",
-            "type": "influence",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAMAAAAMs7fIAAAAY1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmaHTeAAAAIHRSTlMAqrX79++886/r3wjRxaFpRB8QAuXk2cuZkY93VUI0KKnnAu0AAABkSURBVBjTrchHDoMwAAXRT+w4obf0UOb+pwRhhACx5EmzGXl18/pWWikSIPzHmnUOL8prjcqPYfFudaTMgpVCUgYRS09JASZ22KmUqz+6Y3XhNnbmScGFmDlbqWcr14+tRA92BiEuELFwk9M6AAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "news": {
-            "label": "news",
-            "type": "type",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAMAAAAMs7fIAAAAYFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD6T+iNAAAAH3RSTlMAupk7insrItNVS0O/F28fZWFF48uxSDIMCO+0oIAO/8GCqwAAAIBJREFUGNOdy9sSwiAMRdEDFGmQS6Gttd74/78UkXTGV9dDZrInQXK3RTCXAAhkjcPqgTtOA/LYELQCxuk5wJ8b3wpRGKK1dld1mE9B/ZpKKYZCCNtP8THGFxclpfS6jswFBy4X0dG/N1yS/FpW2ctjM50DcBXYHZq2VOTmWTD1Bls+BmmlzBpEAAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "opinions": {
-            "label": "opinion piece(s)",
-            "type": "type",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAOCAMAAAD+MweGAAAAb1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABt6r1GAAAAJHRSTlMA+xH1Iph8OCYY3MWiLe/p1sq8lI53cGxiV0EM6rGwj2pNSjP1ocsVAAAAgUlEQVQIHV3BRQLCMABFwZ+m7q447/5nJC3dwIzizODYetYpA0yfbN5BjgHGV8qXzTcBdWyBISkaIBCQP4DWu84FUCmFIARugxljwOhpCUJ2U5IBRrqzhOyiDsdIfaiJXdfglNJbig1OFODkOiwXoLRA6+mU+E6RsuqXX636E0X6AFnuEKR6+rcNAAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "predatory": {
-            "label": "predatory journal(s)",
-            "type": "influence",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAOCAMAAAAVBLyFAAAAmVBMVEUAAAC/AADAAADAAADAAAC/AAC+AAC/AAC/AAC/AAC/AADAAAC/AAC/AAC/AADAAAC/AADAAAC/AAC/AADEAAC/AADXYWHRS0vMOTnGHh7AAADAAAC+AAC/AAC/AADGAAC/AAD////XXFzHHx/++vr77u733NzQRETMNDTJJibDEBD99vb78PD55ubzzs7xyMjuurrSTEzBCQmtvS+6AAAAIHRSTlMApFWZXe5mRPU1085j39zWnol3Jw/49PPy8ObFloBsCQk/Lh0AAACMSURBVBjTVY7nDsIwDAYdoNCkaeliL6fpZvP+D0djBZHer9NZlj6QU+KUXc5HI7EEFs8NqYjCcO/56DNgMyAyDwnvnyDCd4td4aZlU96Ku1q7qX8qpeqdkwQ2Qxo9irZSpbpunBTo+qFf1dZNqHv8dOYxWRh4HqCBpqKduLLCgE+Iw3CXZBwseZr8/AvR2g1q3xyaTQAAAABJRU5ErkJggg==",
-            "count": 0
-        },
-        "press": {
-            "label": "press release(s)",
-            "type": "type",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAOCAMAAAD+MweGAAAAPFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQLyYwAAAAE3RSTlMAzHczU/m4lm8wHL6timZBPQwdu570zwAAAFxJREFUCNetyDkOw0AMBEGS5p663f//q1eioUCxKhhgWi4lAanI7WBx94Xjep9ho46tbOcRnt4sOhEm/Zd1J+zrWVTVm4bmY6SatW6hN7MqGeZCKDNk+eYEt5T7D9g7DD/ysJyVAAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "rspBlacklisted": {
-            "label": "blacklisted",
-            "type": "reliability",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAAWlBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD////u7u7o6OgpKSkMDAy0tLT7+/v5+fl+fn58fHw5OTklJSUhISG1tbWsrKyjo6MkJCR7e3s8PDxKkGAPAAAACnRSTlMAvI4+GrPi4bSxfq7qvQAAAHZJREFUCNddj0sSwjAMQ/MtICexk/QDFO5/TXDpgol2b0a2JKPyLkbnzU/B4pANB03gLtIZk7LFO1WimhbY7x04PdacyzMxvHHotWAvWNsMZ664Uy7AlkkQTfzH22nedhQ1D680aEmNqGnQWWMWeTEuYSw5TPgAC+IHcILUzWIAAAAASUVORK5CYII=",
-            "count": 0
-        },
-        "rspDeprecated": {
-            "label": "deprecated",
-            "type": "reliability",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAMAAAAMs7fIAAAAq1BMVEUAAAAUBQUTBQWzJCT///+uIyOwIyOsIiJKEBBLDw9wFhZsFRVHDg67u7tgLS2OIiLLy8ttWVlkPj5kKyv6+vry8vLu7u7j4+Pc3NzX19e3t7eysrKdmJhpVFRhNzdWNDR6IyOhISHp6eno5+fY1tbDw8O6tbWqqamoqKiakJCQkJCQhYWKfX1lSkpYPj5aNTVEMjJnMDBcLy99KiqDKCimISGWICBAHBwsGRlV2YqAAAAAA3RSTlMAp597gGAlAAAAqklEQVQY02XQ1xKCMBAFUHE3BBUSlCLSsffe/v/LTLIjL9ynzJk7s5vt6fTdgY5rqTfBiNs6fGi1ACBFA8AUGWDAg2v4fRqiRvPxc9wXQORygGCTeOiNQYW7PYcBlLOpkccNmGNkQiKPJ7CV2Er8beZlxTkWbSdBxGi5OLz/nVLBPMXwAqpDsyLEFHEn9Syzj8wRVxhX7YoM7mtEv3oR0Na1EDUj6P69e58fVvYMNLFQgRAAAAAASUVORK5CYII=",
-            "count": 0
-        },
-        "rspGenerallyReliable": {
-            "label": "generally reliable",
-            "type": "reliability",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAAbFBMVEUAAAAsoCwsoSw+qD4toS0roCstoi0uoS4snyw8qDwtoC0toC0soCwuny4toC0toC3///8voi8toS0soCzo9egyozLp9enj8+PD5MORzZGOzI5GrEa/4r/e8N7M6Mxxv3FBqkH0+vTy+fLE5cSRPYNXAAAAEHRSTlMAsxr9vo4/5JD9wbw/PeaP9lvV4AAAAIVJREFUCNclzlsWgyAMBFBQRKu1TXgp+Gy7/z2WgfniHpKTEchzkHLQoqYZrWlbY1VT9OIYiELkHh55pZKVVd6zser8JKvFYEL985cznZAtfU+i3W8LPSR4+V8R+DZhuT1DGNY20nFvjoiSnYVQ+dAB7TyhRs8pyyXUgFUtOUGI7qTsZrz+IPgKG81qz+sAAAAASUVORK5CYII=",
-            "count": 0
-        },
-        "rspGenerallyUnreliable": {
-            "label": "generally unreliable",
-            "type": "reliability",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAASFBMVEUAAADMAADMAADPAADMAADMAADMAADNAADMAADNAAD////MAAD99fXsnp7pj4/nhobib2/RGBjia2vojY3jcXHYPz/YPDzRGhqXVefLAAAACnRSTlMA8c8VVPOChINSyGF/kwAAAHJJREFUCNc9z9sSwyAIRVGQaFLAVs3t//+0gE3325pxnANYtKac00YQLXgftbaOS0hOZUuHmAlP2TkaSLDe+pZPUHuBdDA/bgly5b8rAhrDk6nxz/F46/rYvyIcHO1yIfmMMWdc8poje4uRJo+Kn1D8hC/MLAbL8liTMwAAAABJRU5ErkJggg==",
-            "count": 0
-        },
-        "rspMarginallyReliable": {
-            "label": "marginally reliable",
-            "type": "reliability",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAOCAMAAAAR8Wy4AAAAjVBMVEUAAAD2eQD1eQD2eQD1eQD1eQD1eQD1eAD0eQD0eAD4egDycwD/gAD/cgD1egD1eQD1eQD1eQD1eQD2eQD2eQD0egD0eAD////4nUX1eQD2fgn3kSz3jCTj4N/96tf82LWYmJj7yJb7xI6Li4v5tG9ra2tZWVlISEj2hBT+9+/+9u7GxsbFxcVHR0dGRkYfNpgQAAAAF3RSTlMAu/lq7uDVenUuJBQJBMOvrZaUVFJHRoWjpJIAAAB/SURBVAgdVcEHFoIwEAXAJaEXu3429I71/sczKvJghiZS0oovhE9LW6V2tHDmuuYLzSI7ybLUjuhPcvEcCpY0CcwYrwGxGdDPXuXoe+TqQF+eaIGuA1rh0cdmvAKPO3AbDdKOXAFoGgAVn4hCK4FWltASKySX03iWskuOseK8AfKLCvyhOfkVAAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "rspMulti": {
-            "label": "sometimes reliable",
-            "type": "reliability",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAAtFBMVEUAAAAJrd8gteIPsOAAqt0Aq90Aqt0Aqts4veUkt+IWsuAuuuMErN4FrN4ErN4Cq94Cq90Aqt0Aqt8Aqd4Aqt4AqtwApt8Zs+EEq94FrN0Dqt0Dq94AqdwAq90Aqd0Aqd4AqtkAqt8AgP////8Aqt1NxOj1/P74/f7m9/zb8/rE6/e86faq4/Sn4vOc3vKQ2vB70+5Xx+k+v+bs+fzk9vvU8fnO7/iW3PFozetYyOkktuIas+C+oCNVAAAAI3RSTlMA/fv7oJuWI/v7+/rh0MO4tXZGNScSC/vuzb6pjH9xTRsYAtfMWVAAAACbSURBVAjXJctXEsJQCEBRXmKipjd7F9J77Lr/fYnP+8HMGQC480Fz1noA/8Y2TV+9Qs5RajktMMuwXFgn5kq5JDFRnFwNFyCgEjtR16LDikLQFcS2QewHRHUHboxcevs8EScj8CRjemeSW0NySPhE+BBSxSwKHg+KADw15y2/3MUIAGaW2qR5nrTCnsPPGxKmKUhjySJf0/dj4L7guBKsqi+5hQAAAABJRU5ErkJggg==",
-            "count": 0
-        },
-        "satire": {
-            "label": "satirical",
-            "type": "type",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAARCAYAAAAG/yacAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wceCDI64ByhXQAAAPFJREFUKM+V0zFKQ0EQBuBvn4pWClaWYiF6Ck+Qy+Qi6VLkFNbpxEOYMoQQrCRqY0h8azML6+NJ4g/LMjP/zD/8y8IYLR4x0I9B1FuME3KH8IoXfOAc97iqCQnfcW9j0lmP0hcanCAXpTaSBduI2yAWtGiKUtMzfYfjnnwrlDadQq5OjQ1yUVg7DOt6jYwJbjDqKI0iP4l4l6piOkApI9XvtKucPIohuTIqFWNSceMfSmAVwXxPwzx4qwazSH7uaSr1GQwrM6Z/NEwrzjDhNLqvg/COJ7zhEg+4qFa8K5Nusei8T/csgteLZyzjaywj/oUf7bdVPf0Xy7cAAAAASUVORK5CYII=",
-            "count": 0
-        },
-        "social": {
-            "label": "social site(s)",
-            "type": "user-generated",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAATCAMAAABBexbDAAAAflBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCtoPsAAAAKXRSTlMAuojOBPt2P/bv1cx9TywM5dnGwKqlaFlWLR0B3rGhmY9sRDYkElw4GE5gfmkAAAC4SURBVBgZPcGFVsRAEATAnpXbuHvOBej//0Em5JEq7GbPSDwFh0D6M2mXh8MuCFRhm+iDzWKeAlXYS/4N5RpO4voxm+0YV1CGdZCvOEkGmyZPAG/PPEhWNfKyWVIBODFyo7zTLp9tGucAWvJiBGW5FvZ2fQA/nqQRqMIKT8BAZeqTutt2AnClMuT5FdGWANaEypDRjWyhMm5qswklVMxDv2KT8l/n8Gfgzt8ddk64SQMOny7upwWHX849E8nohJh1AAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "sponsored": {
-            "label": "sponsored",
-            "type": "influence",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAASCAYAAAC9+TVUAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wceCRIMu+B6UQAAAUVJREFUOMuN079KXFEQx/HPVQwqEgIpU2yRzpSBFG7lK+QNtjeNQjqxCYivkCovkfRWQdhlCx9ALGyWgIWBsFl3b5o5MjneKw4Md5j5zu/8m8v/9gXXWGBc1caRvw6u0y7Rhq9SfNuTvyyNa0nkPL4tmtTwKgk0EWf+kR0HtIymVUfcBvdgTYrXA9rCi2iqbQ1/8Sfxj2yUzvyUj/qOcvRMgeJHtcAw3cU8tjyvmnK+3M0wi0wiuaie8gc+4meVL9wki+RC+X7GS7wJ5rSHe3idktxIc/Ia+3iLA9xhN9UL38A0CvfpXlp8iwU28ClEcr3wU2msVx2jfYUPGOBdD3fbhOJ6NfLwHnvYwTbO8LuDW8JNzza/YjMWGOB7z7Fv4CLNQVsBv2I651U+8xdw2POrL6phu+/hDsucnGDWAayS1wKz6PMP8f7HxLFPnyIAAAAASUVORK5CYII=",
-            "count": 0
-        },
-        "tabloids": {
-            "label": "tabloid(s)",
-            "type": "medium",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAMAAAAMs7fIAAAAe1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC9eBywAAAAKHRSTlMA33YN9+rLup5pZkU+8drRtKqTjF9aUyslHxsF4tXDwqujmYaBXBQIt6ZAsgAAAH1JREFUGBl1wVUWwjAABMBNUndXXPf+J4TIa39gBv9cCykVdmPIrxa7mloFvOE01DygnWFF1Dyl4jushVoNmQVwyuB88ZMkfQo4vS+jg+qG/ghrbkiKeE2zEEaa0zi9xg7alNMJYUXcZDAENw8YiUenmGAtcVX6IrgNK376AFE7D6Mmxn6bAAAAAElFTkSuQmCC",
-            "count": 0
-        },
-        "tvPrograms": {
-            "label": "TV program(s)",
-            "type": "medium",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARAgMAAABGA69pAAAADFBMVEUAAACoqKgAAAA1NTWxW1e8AAAAAnRSTlMAWWQkJGgAAAA4SURBVAjXY2BgaGhgAIJGMPnoAIhUYwABayBmWrVqAQMD16pVKxgYNIAMILlqVRd+EqISogtqAgBQEBiFRNOi6QAAAABJRU5ErkJggg==",
-            "count": 0
-        }
-    };
+                // Check if the condition starts with an operator (<, >, or =). Default to "=".
+                let operator = '=';
+                if (cond[0] === '<' || cond[0] === '>' || cond[0] === '=') {
+                    operator = cond[0];
+                    cond = cond.substring(1).trim();
+                }
 
-    // Default source ignore settings:
-    citeUnseenDomainIgnore = {};
+                // Parse the date portion.
+                let targetDate = new Date(cond);
+                if (isNaN(targetDate.getTime())) {
+                    // If any condition has an invalid date, return null.
+                    return null;
+                }
 
-    citeUnseenRefTotal = 0;
+                // Create and store a predicate function for this condition.
+                let predicate;
+                switch (operator) {
+                    case '<':
+                        predicate = function (date) {
+                            return date < targetDate;
+                        };
+                        break;
+                    case '>':
+                        predicate = function (date) {
+                            return date > targetDate;
+                        };
+                        break;
+                    default: // '='
+                        predicate = function (date) {
+                            return date.getTime() === targetDate.getTime();
+                        };
+                }
+                predicates.push(predicate);
+            }
 
-    // Get reflist node:
-    reflistNode = document.querySelector('#mw-content-text .mw-parser-output div.reflist');
+            // Return a predicate function that applies all conditions.
+            return function (inputDate) {
+                let date = (inputDate instanceof Date) ? inputDate : new Date(inputDate);
+                if (isNaN(date.getTime())) {
+                    return false;
+                }
+                return predicates.every(fn => fn(date));
+            };
+        },
 
-    // Get the user's custom rules from User:<username>/CiteUnseen-Rules.js
-    mw.loader.getScript('/w/index.php?title=User:' + encodeURIComponent(mw.config.get('wgUserName')) + '/CiteUnseen-Rules.js&ctype=text/javascript&action=raw')
-        .fail(function (err) {
-            console.log("Error getting Cite Unseen custom rules: " + err.message);
+        /**
+         * Escapes special characters in a string.
+         * @param string {String} - The string to escape
+         * @returns {String} - The escaped string
+         */
+        escapeRegex: function (string) {
+            return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+        },
 
-            // Start process of adding icons:
-            addIcons(categorizedDomains, categorizedStrings);
-        })
-        .done(function () {
+        /**
+         * Build a regular expression.
+         * @param string {String} - The string
+         * @returns {RegExp} - The regular expression
+         */
+        urlRegex: function (string) {
+            // Given a domain and path, the regex looks for a substring that matches the following rules:
+            //  starts with http:// or https://
+            //  does not have any additional / before domain
+            //  domain immediately follows :// or is preceded with a . (to account for subdomains)
+            //  after the domain and path, look for one of the following:
+            //	 string ends
+            //	 next character is a /
+            //	 domain had a period at the end (this allows gov. to match TLDs like gov.uk)
+            return new RegExp('https?:\\/\\/([^\\/]*\\.)?' + CiteUnseen.escapeRegex(string) + '($|((?<=\\.)|\\/))');
+        },
+
+        /**
+         * Check if the source's author matches the rule.
+         * @param coins {Object} - COinS object
+         * @param rule {Object} - Rule
+         * @returns {boolean} - Whether it matches the rule
+         */
+        matchAuthor: function (coins, rule) {
+            let author = coins['rft.au'];  // can be a string or an array
+            if (coins['rft.aulast']) {
+                let appendedAuthors = coins['rft.aulast'];
+                if (typeof appendedAuthors === 'string' && coins['rft.aufirst']) {
+                    appendedAuthors = [coins['rft.aufirst'] + ' ' + appendedAuthors];
+                } else if (coins['rft.aufirst']) {
+                    for (let i = 0; i < coins['rft.aufirst'].length; i++) {
+                        appendedAuthors[i] = coins['rft.aufirst'][i] + ' ' + appendedAuthors[i];
+                    }
+                }
+                if (typeof author === 'string') {
+                    author = [author];
+                }
+                author.concat(appendedAuthors);
+            }
+            if (!author || !rule['author']) {
+                return false;
+            }
+            let authorRegex = new RegExp(rule['author'], 'i');
+            if (typeof author === 'string') {
+                return authorRegex.test(author);
+            } else {
+                for (let au of author) {
+                    if (authorRegex.test(au)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
+
+        /**
+         * Checks if the source's publisher matches the rule.
+         * @param coins {Object} - COinS object
+         * @param rule {Object} - Rule
+         * @returns {boolean} - Whether it matches the rule
+         */
+        matchPublisher: function (coins, rule) {
+            const coinsPub = coins['rft.pub'] || coins['rft.jtitle'] || null;
+            if (!coinsPub || !rule['pub']) {
+                return false;
+            }
+            let publisherRegex = new RegExp(rule['pub'], 'i');
+            if (typeof coinsPub === 'string') {
+                return publisherRegex.test(coinsPub);
+            } else {
+                for (let publisher of coinsPub) {
+                    if (publisherRegex.test(publisher)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
+
+        /**
+         * Check if the date in the COinS object matches the date rule.
+         * @param coins {Object} - COinS object.
+         * @param rule {Object} - Rule object containing the date rule string.
+         * @returns {boolean} - Returns true if the date matches the rule, otherwise false.
+         */
+        matchDate: function (coins, rule) {
+            let predicate = CiteUnseen.parseDateRule(rule['date']);
+            if (!predicate) {
+                console.log("[Cite Unseen] Invalid date rule: " + rule['date']);
+                return false;
+            }
+
+            return predicate(coins['rft.date']);
+        },
+
+        /**
+         * Check if the source's URL matches the rule.
+         * @param coins {Object} - COinS object
+         * @param rule {Object} - Rule
+         * @returns {boolean} - Whether it matches the rule
+         */
+        matchUrl: function (coins, rule) {
+            if (!rule['url'] || !coins['rft_id']) {
+                return false;
+            }
+            let urlRegex = CiteUnseen.urlRegex(rule['url']);
+            return urlRegex.test(coins['rft_id']);
+        },
+
+        /**
+         * Check if the source's URL string matches the rule.
+         * @param coins {Object} - COinS object
+         * @param rule {Object} - Rule
+         * @returns {boolean} - Whether it matches the rule
+         */
+        matchUrlString: function (coins, rule) {
+            if (!rule['url_str'] || !coins['rft_id']) {
+                return false;
+            }
+            let urlString = rule['url_str'];
+            if (typeof urlString === 'string') {
+                return coins['rft_id'].includes(urlString);
+            } else {
+                for (let str of urlString) {
+                    if (coins['rft_id'].includes(str)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
+
+        /**
+         * Check if the source matches the rule.
+         * @param coins {Object} - COinS object
+         * @param rule {Object} - Rule
+         * @returns {boolean} - Whether it matches the rule
+         */
+        match: function (coins, rule) {
+            if (!rule) {
+                console.log("[Cite Unseen] There are empty rules in the ruleset.");
+                return false;
+            }
+            const matchFunctions = {
+                'author': CiteUnseen.matchAuthor,
+                'pub': CiteUnseen.matchPublisher,
+                'date': CiteUnseen.matchDate,
+                'url': CiteUnseen.matchUrl,
+                'url_str': CiteUnseen.matchUrlString,
+            };
+            for (let key of Object.keys(rule)) {
+                if (!matchFunctions[key]) {
+                    console.log("[Cite Unseen] Unknown rule:");
+                    console.log(rule);
+                    continue;
+                }
+                if (!matchFunctions[key](coins, rule)) {
+                    return false;
+                }
+            }
+            return true;
+        },
+
+        /**
+         * Add icons to citation sources. Only executed once on page load.
+         */
+        addIcons: function () {
+            // Filter categorizedDomains down to just the links that appear in the page's citations
+            // Given how many domains we track and our RegExp usage later, this has significant time savings
+            // Quick test on an article with ~500 citations went ~5x faster
+            let filteredCategorizedRules = {};
+            for (let key of Object.keys(CiteUnseen.categorizedRules)) {
+                filteredCategorizedRules[key] = [];
+                for (let link of CiteUnseen.refLinks) {
+                    for (let rule of CiteUnseen.categorizedRules[key]) {
+                        let domain = rule['url'];
+                        if (!(CiteUnseen.citeUnseenDomainIgnore[key] && CiteUnseen.citeUnseenDomainIgnore[key].includes(domain)) && link.includes(domain)) {
+                            if (!filteredCategorizedRules[key].includes(rule)) {
+                                filteredCategorizedRules[key].push(rule);
+                            }
+                        }
+                    }
+                }
+            }
+            let typeCategories = CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]);
+
+            // Whether the source is not identified by any of the rules.
+            let unknownSet;
+
+            CiteUnseen.refs.forEach(function (ref) {
+                // Insert the icon area before the <cite> tag
+                let iconsDiv = document.createElement("div");
+                iconsDiv.classList.add("cite-unseen-icons");
+                iconsDiv.style.display = 'inline-flex';
+                iconsDiv.style.gap = '0 5px';
+                iconsDiv.style.paddingRight = '5px';
+                iconsDiv.style.verticalAlign = 'middle';
+                ref.cite.prepend(iconsDiv);
+
+                if (window.cite_unseen_dashboard) {
+                    // Pre-insert the custom citation category icon
+                    let iconNode = CiteUnseen.processIcon(iconsDiv, "flag");
+                    iconNode.style.display = 'none';  // Initially hide the custom category icon
+                    CiteUnseen.customCategoryIcons.push(iconNode);
+                }
+
+                // Determine the source type based on the class name.
+                const classList = ref.cite.classList;
+                if (classList.contains("book") || classList.contains("journal") || classList.contains("encyclopaedia") || classList.contains("conference") || classList.contains("thesis") || classList.contains("magazine")) {
+                    if (CiteUnseen.citeUnseenCategories.books) {
+                        CiteUnseen.processIcon(iconsDiv, "books");
+                    }
+                } else if (classList.contains("pressrelease")) {
+                    if (CiteUnseen.citeUnseenCategories.press) {
+                        CiteUnseen.processIcon(iconsDiv, "press");
+                    }
+                } else if (classList.contains("episode") || classList.contains("podcast") || classList.contains("media")) {
+                    if (CiteUnseen.citeUnseenCategories.tvPrograms) {
+                        CiteUnseen.processIcon(iconsDiv, "tvPrograms");
+                    }
+                } else if (ref.coins['rft_id']) {
+                    unknownSet = true;
+
+                    // Reliability categories
+                    let checked = false;
+                    for (let checklistTypeData of CiteUnseen.citeUnseenChecklists) {
+                        if (checked) {
+                            break;
+                        }
+                        let checklistType = checklistTypeData[0];
+                        for (let checklist of checklistTypeData[1]) {
+                            if (checked) {
+                                break;
+                            }
+                            let checklistName = checklist[0], checklistID = checklist[1];
+                            for (let rule of filteredCategorizedRules[checklistID]) {
+                                if (CiteUnseen.match(ref.coins, rule)) {
+                                    if (CiteUnseen.citeUnseenCategories[checklistID]) {
+                                        CiteUnseen.processIcon(iconsDiv, checklistType, checklistName);
+                                        checked = true;
+                                        unknownSet = false;
+                                        break;
+                                    }
+                                    unknownSet = false;
+                                }
+                            }
+                        }
+                    }
+
+                    // Type categories
+                    for (let category of typeCategories) {
+                        for (let rule of filteredCategorizedRules[category]) {
+                            if (CiteUnseen.match(ref.coins, rule)) {
+                                if (CiteUnseen.citeUnseenCategories[category]) {
+                                    CiteUnseen.processIcon(iconsDiv, category);
+                                    unknownSet = false;
+                                    break;
+                                }
+                                unknownSet = false;
+                            }
+                        }
+                    }
+
+                    if (CiteUnseen.citeUnseenCategories.unknown && unknownSet) {
+                        // Source not identified by any rule, mark as unknown.
+                        CiteUnseen.processIcon(iconsDiv, "unknown");
+                    }
+                }
+            });
+
+            if (window.cite_unseen_dashboard) {
+                CiteUnseen.showDashboard();
+            }
+
+            // End timing
+            console.timeEnd('CiteUnseen runtime');
+        },
+
+        /**
+         * Add to count. Currently, it records regardless of whether it is in the reflist.
+         * @param node {Element} - The node
+         * @param type {String} - The type
+         */
+        addToCount: function (node, type) {
+            CiteUnseen.citeUnseenCategoryData[type].count = CiteUnseen.citeUnseenCategoryData[type].count + 1;
+        },
+
+        /**
+         * Add an icon and tooltip to a node.
+         * @param node {Element} - The iconsDiv node
+         * @param type {String} - The type
+         * @param checklist {String|null} - The checklist
+         * @returns {Element} - The iconNode element
+         */
+        processIcon: function (node, type, checklist = null) {
+            let iconNode = document.createElement("img");
+            iconNode.classList.add("skin-invert");
+            iconNode.classList.add("cite-unseen-icon-" + type);
+            iconNode.setAttribute("src", CiteUnseen.citeUnseenCategoryData[type].icon);
+            let message = CiteUnseen.convByVar({
+                hant: CiteUnseen.citeUnseenCategoryData[type].hint_hant,
+                hans: CiteUnseen.citeUnseenCategoryData[type].hint_hans,
+                en: CiteUnseen.citeUnseenCategoryData[type].hint_en,
+                ja: CiteUnseen.citeUnseenCategoryData[type].hint_ja,
+            });
+            if (checklist) {
+                message = CiteUnseen.convByVar({
+                    en: 'From ',
+                    hant: '來自 ',
+                    hans: '来自 ',
+                    ja: '出典 ',
+                }) + checklist + CiteUnseen.convByVar({
+                    en: ': ',
+                    hant: '：',
+                    hans: '：',
+                    ja: '：',
+                }) + message + CiteUnseen.convByVar({
+                    en: ' Click the icon to open the checklist page to view details.',
+                    hant: '點擊圖示可打開檢查表頁面以查看詳情。',
+                    hans: '点击图标可打开检查表页面以查看详情。',
+                    ja: 'アイコンをクリックすると、チェックリストページを開いて詳細を確認できます。',
+                });
+            }
+            iconNode.setAttribute("alt", message);
+            iconNode.setAttribute("title", "[Cite Unseen] " + message);
+            CiteUnseen.addToCount(node, type);
+            iconNode.style.width = "17px";
+            iconNode.style.height = "17px";
+            iconNode.style.objectFit = 'contain';
+            iconNode.style.cssText += 'max-width: 17px !important;';
+            if (checklist) {
+                // If there is a checklist, wrap the icon in a link.
+                const iconNodeLink = document.createElement("a");
+                iconNodeLink.setAttribute("href", "//zh.wikipedia.org/wiki/" + checklist);
+                iconNodeLink.setAttribute("target", "_blank");
+                iconNodeLink.style.display = "contents";
+                iconNodeLink.appendChild(iconNode);
+                node.appendChild(iconNodeLink);
+            } else {
+                node.appendChild(iconNode);
+            }
+            if (!CiteUnseen.refCategories[type]) {
+                CiteUnseen.refCategories[type] = [];
+            }
+            CiteUnseen.refCategories[type].push(node.parentNode);
+            return iconNode;
+        },
+
+        CustomCategoryDialog: function (config) {
+            CiteUnseen.CustomCategoryDialog.super.call(this, config);
+        },
+
+        /**
+         * Create a row for selecting "URL" or "URL String".
+         * This function generates a dropdown menu that allows the user to switch between "URL" and "URL String",
+         * and updates the rule object based on the selection.
+         * @param {Object} rule - The rule object to update based on the selection.
+         */
+        createUrlRow: function (rule) {
+            const chineseUrl = CiteUnseen.convByVar({
+                en: 'URL',
+                hant: '網址',
+                hans: '网址',
+                ja: 'URL',
+            });
+            const chineseUrlString = CiteUnseen.convByVar({
+                en: 'URL String',
+                hant: '網址字串',
+                hans: '网址字符串',
+                ja: 'URL 文字列',
+            });
+            // Create menu options for URL and URL String using convByVar.
+            var optionURL = new OO.ui.MenuOptionWidget({
+                data: 'url', label: chineseUrl,
+            });
+            var optionURLString = new OO.ui.MenuOptionWidget({
+                data: 'url_str', label: chineseUrlString,
+            });
+            // Initialize the dropdown label based on the current rule.
+            var initialLabel = rule.hasOwnProperty('url_str') ? chineseUrlString : chineseUrl;
+            var dropdown = new OO.ui.DropdownWidget({
+                label: initialLabel, menu: {
+                    items: [optionURL, optionURLString],
+                },
+            });
+            // Update the rule when an option is chosen.
+            dropdown.getMenu().on('choose', function (item) {
+                var data = item.getData();
+                if (data === 'url') {
+                    if (rule.url_str !== undefined) {
+                        rule.url = rule.url_str;
+                        delete rule.url_str;
+                    }
+                    dropdown.setLabel(chineseUrl);
+                } else if (data === 'url_str') {
+                    if (rule.url !== undefined) {
+                        rule.url_str = rule.url;
+                        delete rule.url;
+                    }
+                    dropdown.setLabel(chineseUrlString);
+                }
+            });
+            // Create the URL text input widget.
+            var urlValue = rule.url || rule.url_str || '';
+            var urlInput = new OO.ui.TextInputWidget({
+                value: urlValue, title: CiteUnseen.convByVar({
+                    en: 'The URL should include the domain name, without http(s); the URL String can contain any characters.',
+                    hant: '網址應包含網域名，不需要包含 http(s)；網址字串則可以包含任何字元。',
+                    hans: '网址应包含网域名，不需要包含 http(s)；网址字符串则可以包含任何字符。',
+                    ja: 'URL にはドメイン名を含め、http(s) は不要です。URL 文字列は任意の文字を含むことができます。',
+                }),
+            });
+            // Update rule when the text input value changes.
+            urlInput.on('change', function (value) {
+                if (rule.hasOwnProperty('url')) {
+                    rule.url = value;
+                } else {
+                    rule.url_str = value;
+                }
+            });
+            var $row = $('<div>').addClass('cite-unseen-dialog-url-row');
+            $row.append(dropdown.$element, urlInput.$element);
+            return $row;
+        },
+
+        /**
+         * Create a row for optional parameters (such as author, publisher, date).
+         * This function generates a container with multiple optional parameters, each containing a checkbox and a text input.
+         * When the checkbox is selected, the corresponding text input is enabled; otherwise, it is disabled.
+         * @param rule {Object} - The rule object containing parameter values.
+         */
+        createOptionalParamsRow: function (rule) {
+            var $paramsContainer = $('<div>').addClass('cite-unseen-dialog-optional-params');
+            const params = ['author', 'pub', 'date'];
+            const chineseParams = {
+                'author': CiteUnseen.convByVar({
+                    en: 'Author',
+                    hant: '作者',
+                    hans: '作者',
+                    ja: '著者'
+                }),
+                'pub': CiteUnseen.convByVar({
+                    en: 'Publisher',
+                    hant: '出版',
+                    hans: '出版',
+                    ja: '出版社'
+                }),
+                'date': CiteUnseen.convByVar({
+                    en: 'Date',
+                    hant: '日期',
+                    hans: '日期',
+                    ja: '日付'
+                }),
+            };
+            params.forEach(function (param) {
+                var paramValue = rule[param] || '';
+                var checkbox = new OO.ui.CheckboxInputWidget({
+                    selected: !!paramValue,
+                });
+                var textInput = new OO.ui.TextInputWidget({
+                    value: paramValue,
+                });
+                textInput.$element.css('display', !!paramValue ? 'inline-block' : 'none');
+                textInput.setDisabled(!checkbox.isSelected());
+                checkbox.on('change', function (isSelected) {
+                    textInput.setDisabled(!isSelected);
+                    textInput.$element.css('display', isSelected ? 'inline-block' : 'none');
+                    if (!isSelected) {
+                        textInput.setValue('');
+                        delete rule[param];
+                    }
+                });
+                textInput.on('change', function (value) {
+                    rule[param] = value;
+                });
+                var $paramRow = $('<div>')
+                    .addClass('cite-unseen-dialog-param-container')
+                    .css({ 'margin-top': '5px' });
+                $paramRow.append(checkbox.$element, $('<span>').text(chineseParams[param]), textInput.$element);
+                $paramsContainer.append($paramRow);
+            });
+            return $paramsContainer;
+        },
+
+        /**
+         * Create a complete widget for a rule.
+         * This function generates a container for the rule and attaches related UI components.
+         * @param {Object} rule - The rule data object.
+         * @param {OO.ui.FieldsetLayout} parentFieldset - The parent Fieldset, used to update the UI when removing a rule.
+         */
+        createRuleWidget: function (rule, parentFieldset) {
+            var $container = $('<div>').addClass('cite-unseen-dialog-rule-container');
+            var $urlRow = CiteUnseen.createUrlRow(rule);
+            var $optionalParams = CiteUnseen.createOptionalParamsRow(rule);
+            var ruleWidget = new OO.ui.Widget({ $element: $container });
+            // Attach rule data directly to the widget.
+            ruleWidget.ruleData = rule;
+            var removeButton = new OO.ui.ButtonWidget({
+                icon: 'trash', flags: ['destructive'],
+            });
+            removeButton.$element.addClass('cite-unseen-dialog-remove-button');
+            removeButton.on('click', function () {
+                if (parentFieldset) {
+                    parentFieldset.removeItems([ruleWidget]); // Properly remove from the fieldset.
+                } else {
+                    ruleWidget.$element.remove();
+                }
+                CiteUnseen.updateCustomCategoryDialogHeight();
+            });
+            $container.append($urlRow, $optionalParams, removeButton.$element);
+            return ruleWidget;
+        },
+
+        /**
+         * Generate the content for the custom citation category dialog.
+         * @returns {OO.ui.FieldsetLayout} - The content of the custom citation category dialog
+         */
+        generateCustomCategoryDialogRules: function (initialRules) {
+            var fieldset = new OO.ui.FieldsetLayout({
+                classes: ['cite-unseen-dialog-rules'],
+            });
+            if (initialRules) {
+                // Create a widget for each rule without updating any global array.
+                initialRules.forEach(function (rule) {
+                    fieldset.addItems([CiteUnseen.createRuleWidget(rule, fieldset)]);
+                });
+            }
+            var addButton = new OO.ui.ButtonWidget({
+                label: CiteUnseen.convByVar({
+                    en: 'Add Rule',
+                    hant: '新增規則',
+                    hans: '新增规则',
+                    ja: 'ルールを追加',
+                }), icon: 'add',
+            });
+            var addButtonField = new OO.ui.FieldLayout(addButton, { align: 'center' });
+            addButtonField.$element.addClass('cite-unseen-dialog-add-button');
+            fieldset.addButtonField = addButtonField;
+            addButton.on('click', function () {
+                var newRule = { url: '' };
+                var newWidget = CiteUnseen.createRuleWidget(newRule, fieldset);
+                // Insert new rule widget just before the add button.
+                fieldset.removeItems([fieldset.addButtonField]);
+                fieldset.addItems([newWidget]);
+                fieldset.addItems([fieldset.addButtonField]);
+                CiteUnseen.updateCustomCategoryDialogHeight();
+            });
+            fieldset.addItems([addButtonField]);
+            return fieldset;
+        },
+
+        /**
+         * Update the height of the custom citation category dialog.
+         */
+        updateCustomCategoryDialogHeight: function () {
+            if (CiteUnseen.customCategoryDialog) {
+                var maxHeight = $(window).height() * 0.5;
+                CiteUnseen.customCategoryDialog.panel.$element.css('max-height', maxHeight + 'px');
+                CiteUnseen.customCategoryDialog.updateSize();
+            }
+        },
+
+        /**
+         * Initialize the custom citation category dialog.
+         */
+        initCustomCategoryDialog: function () {
+            if (CiteUnseen.customCategoryDialogRules === null) {
+                CiteUnseen.customCategoryDialogRules = new OO.ui.FieldsetLayout();
+            }
+            OO.inheritClass(CiteUnseen.CustomCategoryDialog, OO.ui.Dialog);
+            CiteUnseen.CustomCategoryDialog.static.name = 'CustomCategoryDialog';
+
+            CiteUnseen.CustomCategoryDialog.prototype.initialize = function () {
+                CiteUnseen.CustomCategoryDialog.super.prototype.initialize.apply(this, arguments);
+
+                this.panel = new OO.ui.PanelLayout({
+                    padded: true, expanded: false,
+                });
+                this.panel.$element.addClass('cite-unseen-dialog-panel');
+                this.content = new OO.ui.FieldsetLayout();
+                this.content.$element.addClass('cite-unseen-dialog-content');
+
+                // Dialog title
+                this.titleLabelWidget = new OO.ui.LabelWidget({
+                    label: CiteUnseen.convByVar({
+                        hant: '[Cite Unseen] 添加自訂來源分類規則',
+                        hans: '[Cite Unseen] 添加自定义来源分类规则',
+                        en: '[Cite Unseen] Add Custom Citation Category Rules',
+                        ja: '[Cite Unseen] カスタム引用カテゴリルールを追加',
+                    }), classes: ['cite-unseen-dialog-title'],
+                });
+                this.titleLabelWidget.$element.append($('<span>')
+                    .text(CiteUnseen.convByVar({
+                        hant: '（此為臨時生效；若需自訂已有的來源分類，請參見「',
+                        hans: '（此为临时生效；若需自定义已有的来源分类，请参见「',
+                        en: ' (This is temporary; for customizing existing citation categories, see "',
+                        ja: '（これは一時的なものであり、既存の引用カテゴリをカスタマイズするには「',
+                    }))
+                    .css({ 'font-size': '0.75em', 'font-weight': 'normal' })
+                    .append($('<a>')
+                        .text(CiteUnseen.convByVar({
+                            hant: '進階自訂教程',
+                            hans: '进阶自定义教程',
+                            en: 'Customization Guide',
+                            ja: 'カスタマイズガイド',
+                        }))
+                        .attr('href', '//zh.wikipedia.org/wiki/User:SuperGrey/gadgets/CiteUnseen'))
+                    .append(CiteUnseen.convByVar({
+                        hant: '」。）',
+                        hans: '」。）',
+                        en: '.")',
+                        ja: '」。）',
+                    }))
+                );
+
+                // Action buttons
+                this.cancelButton = new OO.ui.ButtonWidget({
+                    label: CiteUnseen.convByVar({
+                        hant: '取消',
+                        hans: '取消',
+                        en: 'Cancel',
+                        ja: 'キャンセル',
+                    }), flags: ['safe', 'close'], action: 'cancel',
+                });
+                this.saveButton = new OO.ui.ButtonWidget({
+                    label: CiteUnseen.convByVar({
+                        hant: '儲存',
+                        hans: '保存',
+                        en: 'Save',
+                        ja: '保存',
+                    }),
+                    flags: ['primary', 'progressive'],
+                    action: 'save',
+                });
+                this.actionButtons = new OO.ui.ButtonGroupWidget({
+                    items: [
+                        this.cancelButton, this.saveButton,
+                    ],
+                });
+                this.actionButtons.$element.addClass('cite-unseen-dialog-action-buttons');
+
+                // Add click event handlers for the buttons
+                this.cancelButton.$element.on('click', function (e) {
+                    this.close();
+                }.bind(this));
+                this.saveButton.$element.on('click', async function (e) {
+                    let response = await CiteUnseen.addCustomCategory();
+                    if (response) {
+                        this.close();
+                    }
+                }.bind(this));
+
+                // Dialog content
+                this.ruleContent = CiteUnseen.generateCustomCategoryDialogRules(CiteUnseen.customCategoryRules);
+                this.content.addItems([
+                    this.titleLabelWidget, this.actionButtons, this.ruleContent,
+                ]);
+
+                this.panel.$element.append(this.content.$element);
+                this.$body.append(this.panel.$element);
+
+                // Automatically update height on window resize.
+                $(window).on('resize.customCategoryDialog', function () {
+                    CiteUnseen.updateCustomCategoryDialogHeight();
+                });
+                CiteUnseen.updateCustomCategoryDialogHeight();
+            };
+            CiteUnseen.CustomCategoryDialog.prototype.getBodyHeight = function () {
+                return this.panel.$element.outerHeight(true);
+            };
+            CiteUnseen.CustomCategoryDialog.prototype.getTearDownProcess = function (data) {
+                return CiteUnseen.CustomCategoryDialog.super.prototype.getTearDownProcess.call(this, data);
+            };
+        },
+
+        /**
+         * Add a custom citation category rule.
+         * @returns {Promise<boolean>} - Returns a Promise indicating whether the operation was successful.
+         */
+        addCustomCategory: async function () {
+            if (!CiteUnseen.customCategoryDialog) {
+                console.error("[Cite Unseen] customCategoryDialog is not initialized when addCustomCategory is called.");
+                return false;
+            }
+            var dialog = CiteUnseen.customCategoryDialog;
+            var newRules = [];
+            dialog.ruleContent.getItems().forEach(function (item) {
+                // Exclude the add button field and only collect widgets with ruleData.
+                if (item !== dialog.ruleContent.addButtonField && item.ruleData) {
+                    newRules.push(item.ruleData);
+                }
+            });
+            console.log(newRules);
+
+            for (let i = 0; i < newRules.length; i++) {
+                // Ensure the rule has a non-empty URL value.
+                var rule = newRules[i];
+                var url = rule.url || rule.url_str;
+                if (!url || url.trim() === '') {
+                    mw.notify(CiteUnseen.convByVar({
+                        en: 'Invalid source URL, please check and re-enter.',
+                        hant: '來源網址無效，請檢查並重新輸入。',
+                        hans: '来源网址无效，请检查并重新输入。',
+                        ja: '無効なソースURLです。確認して再入力してください。',
+                    }), { type: 'error', autoHide: true, title: '[Cite Unseen]' });
+                    return false;
+                }
+            }
+
+            CiteUnseen.customCategoryRules = newRules;
+
+            // Update the display status of citation icons according to custom rules.
+            let customCategoryCitations = [];
+            for (let i = 0; i < CiteUnseen.refs.length; i++) {
+                let ref = CiteUnseen.refs[i];
+                let coins = ref.coins;
+                let iconNode = CiteUnseen.customCategoryIcons[i];
+                let matched = false;
+                for (let rule of CiteUnseen.customCategoryRules) {
+                    if (CiteUnseen.match(coins, rule)) {
+                        iconNode.style.display = 'inline-block';
+                        matched = true;
+                        customCategoryCitations.push(ref.cite);
+                        break;
+                    }
+                }
+                if (!matched) {
+                    iconNode.style.display = 'none';
+                }
+            }
+
+            // Highlight citations
+            CiteUnseen.highlightCitation('flag', customCategoryCitations);
+            CiteUnseen.refCategories['flag'] = customCategoryCitations;
+
+            return true;
+        },
+
+        /**
+         * Show the custom citation category dialog.
+         */
+        showCustomCategoryDialog: function () {
+            if (CiteUnseen.customCategoryDialogRules === null) {
+                CiteUnseen.initCustomCategoryDialog();
+            }
+            CiteUnseen.customCategoryDialogRules.clearItems();
+            CiteUnseen.customCategoryDialog = new CiteUnseen.CustomCategoryDialog({ padded: true, scrollable: true });
+            CiteUnseen.customCategoryDialogRules.addItems(CiteUnseen.generateCustomCategoryDialogRules());
+
+            if (CiteUnseen.windowManager === null) {
+                CiteUnseen.windowManager = new OO.ui.WindowManager({ modal: false, classes: ['cite-unseen-non-modal'] });
+                mw.util.addCSS(`
+            .cite-unseen-non-modal {
+                position: -webkit-sticky;
+                position: sticky;
+                bottom: 1em;
+                max-width: 960px;
+                margin-left: auto;
+                margin-right: auto;
+                background-color: white;
+            }
+            .cite-unseen-non-modal.oo-ui-windowManager-size-full {
+                width: 100%;
+                height: 100%;
+                bottom: 0;
+            }
+            .cite-unseen-non-modal .oo-ui-window {
+                border: 1px solid #a2a9b1;
+                box-shadow: 0 0 4px 0 rgba( 0, 0, 0, 0.25 );
+            }
+            .cite-unseen-non-modal.oo-ui-windowManager-size-full .oo-ui-window {
+                border: 0;
+                box-shadow: unset;
+            }
+            .cite-unseen-dialog-panel {
+                padding-bottom: 0;
+            }
+            .cite-unseen-dialog-action-buttons {
+                position: absolute;
+                top: 0;
+                right: -5px;
+                display: flex;
+                gap: 0 10px;
+                flex-wrap: wrap;
+            } 
+            .cite-unseen-dialog-title {
+                font-size: 1.12em;
+                font-weight: bold;
+                margin-bottom: 10px;
+                margin-right: 127px;
+            }
+            .cite-unseen-dialog-content {
+                padding-bottom: 16px;
+            }
+            .cite-unseen-dialog-rule-container {
+                position: relative;
+                width: 20em;
+                padding: 10px;
+                background-color: rgb(249, 249, 249);
+                border: 1px solid rgb(204, 204, 204);
+                flex-grow: 1;
+            }
+            .cite-unseen-dialog-rules .oo-ui-fieldsetLayout-group {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .cite-unseen-dialog-url-row {
+                display: flex;
+                align-items: center;
+                margin-right: 55px;
+            }
+            .cite-unseen-dialog-url-row .oo-ui-dropdownWidget {
+                width: auto !important;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 0;
+            }
+            .cite-unseen-dialog-url-row .oo-ui-textInputWidget {
+                max-width: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 8px;
+            }
+            .cite-unseen-dialog-optional-params {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: 0 10px;
+            }
+            .cite-unseen-dialog-param-container {
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+            }
+            .cite-unseen-dialog-param-container .oo-ui-textInputWidget {
+                width: 10em;
+                vertical-align: middle;
+                margin-left: 8px;
+                flex-grow: 1;
+            }
+            .cite-unseen-dialog-remove-button {
+                display: block;
+                position: absolute;
+                top: 11px;
+                right: 11px;
+            }
+            .cite-unseen-dialog-add-button {
+                margin-top: 0;
+            }
+            `);
+                $('body').append(CiteUnseen.windowManager.$element);
+            }
+            CiteUnseen.windowManager.addWindows({ 'customCategoryDialog': CiteUnseen.customCategoryDialog });
+            CiteUnseen.windowManager.openWindow('customCategoryDialog');
+        },
+
+        /**
+         * Parse a string containing the plural marker "(s)"
+         * @param {string} string - The string to parse
+         * @param {number} value - The value used to determine plural form
+         * @return {string} - The parsed string
+         */
+        parseI18nPlural: function (string, value) {
+            return string.replace(/\(s\)/g, value === 1 ? '' : 's');
+        },
+
+        /**
+         * Add citation statistics dashboard.
+         */
+        showDashboard: function () {
+            if (CiteUnseen.refs.length === 0) {
+                // No citations found, do not display the dashboard.
+                return;
+            }
+
+            if (CiteUnseen.dashboard === null) {
+                CiteUnseen.dashboard = {
+                    div: document.createElement('div'),
+                    total: document.createElement('div'),
+                    cats: document.createElement('div'),
+                    flag: document.createElement('a'),
+                    custom: false,
+                };
+
+                CiteUnseen.dashboard.div.style.border = '1px solid #ccc';
+                CiteUnseen.dashboard.div.style.marginBottom = '1em';
+                CiteUnseen.dashboard.div.style.borderRadius = '5px';
+                CiteUnseen.dashboard.div.style.fontSize = '.8em';
+                CiteUnseen.dashboard.div.style.display = 'flex';
+                CiteUnseen.dashboard.div.style.gap = '.5em 1em';
+                CiteUnseen.dashboard.div.style.flexWrap = 'wrap';
+                CiteUnseen.dashboard.div.style.padding = '5px';
+                CiteUnseen.dashboard.div.style.justifyContent = 'center';
+                CiteUnseen.dashboard.div.style.textAlign = 'center';
+
+                // Total number of marked citations
+                let refLength = CiteUnseen.refs.length;
+                CiteUnseen.dashboard.total.innerText = "[Cite Unseen] " + CiteUnseen.convByVar({
+                    en: "Total ",
+                    hant: "共 ",
+                    hans: "共 ",
+                    ja: "合計 ",
+                }) + refLength + CiteUnseen.convByVar({
+                    en: ' citation' + (refLength > 1 ? 's' : ''),
+                    hant: ' 個來源',
+                    hans: ' 个来源',
+                    ja: ' 件の引用',
+                });
+                CiteUnseen.dashboard.total.style.fontWeight = 'bold';
+                CiteUnseen.dashboard.div.appendChild(CiteUnseen.dashboard.total);
+
+                // Source types
+                CiteUnseen.dashboard.cats.style.display = 'contents';
+                CiteUnseen.dashboard.cats.style.textAlign = 'center';
+                CiteUnseen.dashboard.div.appendChild(CiteUnseen.dashboard.cats);
+
+                // Custom citation filter button
+                CiteUnseen.dashboard.flag.innerText = CiteUnseen.convByVar({
+                    en: 'Custom',
+                    hant: '自訂',
+                    hans: '自定义',
+                    ja: 'カスタム',
+                });
+                CiteUnseen.dashboard.flag.style.cursor = 'pointer';
+                const flagIcon = document.createElement('img');
+                flagIcon.src = CiteUnseen.citeUnseenCategoryData['flag'].icon;
+                flagIcon.style.width = '17px';
+                flagIcon.style.height = '17px';
+                flagIcon.style.objectFit = 'contain';
+                flagIcon.style.cssText += 'max-width: 17px !important;';
+                flagIcon.style.marginRight = '5px';
+                flagIcon.style.verticalAlign = 'middle';
+                flagIcon.style.display = 'inline-block';
+                this.dashboard.flag.prepend(flagIcon);
+
+                CiteUnseen.dashboard.flag.onclick = function () {
+                    CiteUnseen.showCustomCategoryDialog();
+                };
+                CiteUnseen.dashboard.div.appendChild(CiteUnseen.dashboard.flag);
+
+                mw.util.addCSS(`
+                    .cite-unseen-highlight {
+                        background-color: rgba(255, 246, 153, 0.5);
+                        -webkit-box-decoration-break: clone;
+                        box-decoration-break: clone;
+                    }
+                `);
+
+                // Insert the dashboard before {{reflist}}. If there is no {{reflist}}, insert at the end.
+                document.querySelector('#mw-content-text .mw-parser-output').insertBefore(CiteUnseen.dashboard.div, CiteUnseen.reflistNode);
+            }
+
+            // Clear counts for each citation type
+            CiteUnseen.dashboard.cats.innerHTML = '';
+
+            // List each type of source in order
+            let categoryTypes = CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]);
+            categoryTypes = categoryTypes.concat(CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]));
+            categoryTypes.push('unknown');
+            for (let category of categoryTypes) {
+                let categoryData = CiteUnseen.citeUnseenCategoryData[category];
+                if (categoryData.count > 0) {
+                    let countNode = document.createElement('div');
+                    let countIcon = document.createElement('img');
+                    countIcon.alt = CiteUnseen.convByVar({
+                        hant: categoryData.hint_hant,
+                        hans: categoryData.hint_hans,
+                        en: categoryData.hint_en,
+                        ja: categoryData.hint_ja,
+                    });
+                    countIcon.src = categoryData.icon;
+                    countIcon.width = '17';
+                    countIcon.style.maxHeight = '18px';
+                    let countText = document.createElement('span');
+                    countText.innerText = categoryData.count + ' ' + CiteUnseen.convByVar({
+                        hant: categoryData.label_hant,
+                        hans: categoryData.label_hans,
+                        en: CiteUnseen.parseI18nPlural(categoryData.label_en, categoryData.count),
+                        ja: categoryData.label_ja,
+                    });
+                    countText.style.paddingLeft = '5px';
+                    countText.style.cursor = 'pointer';
+                    countText.onmouseover = function () {
+                        countText.style.textDecoration = 'underline';
+                    };
+                    countText.onmouseout = function () {
+                        countText.style.textDecoration = 'none';
+                    };
+                    countText.onclick = function () {
+                        if (CiteUnseen.dashboardHighlighted === category) {
+                            CiteUnseen.highlightCitation(null);  // Unhighlight all citations
+                        } else {
+                            CiteUnseen.highlightCitation(category);
+                        }
+                    };
+                    countNode.appendChild(countIcon);
+                    countNode.appendChild(countText);
+                    CiteUnseen.dashboard.cats.appendChild(countNode);
+                }
+            }
+        },
+
+        /**
+         * Highlight citations.
+         * @param category - Citation category
+         * @param nodes - List of nodes. Defaults to null, in which case nodes from the citation category are used.
+         */
+        highlightCitation: function (category, nodes = null) {
+            if (CiteUnseen.dashboardHighlighted) {
+                // Unhighlight previously highlighted citations
+                CiteUnseen.refCategories[CiteUnseen.dashboardHighlighted].forEach(function (node) {
+                    node.classList.remove('cite-unseen-highlight');
+                });
+            }
+            CiteUnseen.dashboardHighlighted = category;
+            if (category) {
+                nodes = nodes || CiteUnseen.refCategories[category];  // If nodes are not specified, use the nodes from the citation category
+                nodes.forEach(function (node) {
+                    node.classList.add('cite-unseen-highlight');
+                });
+            }
+        },
+
+        /**
+         * (helper function) Filter obj[filter] === filterValue.
+         * @param obj - The object to filter
+         * @param filter - The key to filter by
+         * @param filterValue - The value to filter by
+         * @returns {Object} - The filtered object
+         */
+        filterObjectIncludes: function (obj, filter, filterValue) {
+            return Object.keys(obj).reduce((acc, val) => (obj[val][filter] !== filterValue ? acc : {
+                ...acc, [val]: obj[val],
+            }), {});
+        },
+
+        /**
+         * (helper function) Filter obj[filter] !== filterValue.
+         * @param obj - The object to filter
+         * @param filter - The key to filter by
+         * @param filterValue - The value to filter by
+         * @returns {Object} - The filtered object
+         */
+        filterObjectExcludes: function (obj, filter, filterValue) {
+            return Object.keys(obj).reduce((acc, val) => (obj[val][filter] === filterValue ? acc : {
+                ...acc, [val]: obj[val],
+            }), {});
+        },
+
+        /**
+         * Get the user's custom rules from local User:<username>/CiteUnseen-Rules.js.
+         */
+        importCustomRules: async function () {
+            try {
+                await mw.loader.getScript('/w/index.php?title=User:' + encodeURIComponent(mw.config.get('wgUserName')) + '/CiteUnseen-Rules.js&ctype=text/javascript&action=raw');
+            } catch (err) {
+                console.log("[Cite Unseen] Error getting Cite Unseen custom rules: " + err.message);
+                return;
+            }
+
             try {
                 // Account for previous config names:
                 if (!window.cite_unseen_categories && window.cite_unseen_rules) {
@@ -218,507 +1189,202 @@ function runCiteUnseen() {
                 // Get user's category configurations:
                 if (window.cite_unseen_categories && typeof window.cite_unseen_categories === 'object') {
                     for (let key in window.cite_unseen_categories) {
-                        citeUnseenCategories[key] = window.cite_unseen_categories[key];
+                        if (key in CiteUnseen.citeUnseenCategories) {
+                            CiteUnseen.citeUnseenCategories[key] = window.cite_unseen_categories[key];
+                        } else if (key in [
+                            "blacklisted",
+                            "deprecated",
+                            "generallyUnreliable",
+                            "marginallyReliable",
+                            "generallyReliable",
+                            "multi",
+                        ]) {
+                            for (let checklistTypeData of CiteUnseen.citeUnseenChecklists) {
+                                if (checklistTypeData[0] === key) {
+                                    for (let checklist of checklistTypeData[1]) {
+                                        CiteUnseen.citeUnseenCategories[checklist] = window.cite_unseen_categories[key];
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
                 // Get user's domain ignore lists:
                 if (window.cite_unseen_domain_ignore && typeof window.cite_unseen_domain_ignore === 'object') {
                     for (let key in window.cite_unseen_domain_ignore) {
-                        citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
+                        if (window.cite_unseen_domain_ignore[key].length && key in CiteUnseen.citeUnseenDomainIgnore) {
+                            CiteUnseen.citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
+                        }
                     }
                 }
 
                 // Get user's custom domains:
                 if (window.cite_unseen_additional_domains && typeof window.cite_unseen_additional_domains === 'object') {
                     for (let key in window.cite_unseen_additional_domains) {
-                        if (!categorizedDomains[key]) {
-                            categorizedDomains[key] = [];
+                        if (window.cite_unseen_additional_domains[key].length && key in CiteUnseen.categorizedRules) {
+                            CiteUnseen.categorizedRules[key] = CiteUnseen.categorizedRules[key].concat({
+                                'url': window.cite_unseen_additional_domains[key],
+                            });
                         }
-                        categorizedDomains[key] = categorizedDomains[key].concat(window.cite_unseen_additional_domains[key]);
                     }
                 }
 
                 // Get user's custom strings:
                 if (window.cite_unseen_additional_strings && typeof window.cite_unseen_additional_strings === 'object') {
                     for (let key in window.cite_unseen_additional_strings) {
-                        if (!categorizedStrings[key]) {
-                            categorizedStrings[key] = [];
+                        if (window.cite_unseen_additional_strings[key].length && key in CiteUnseen.categorizedRules) {
+                            CiteUnseen.categorizedRules[key] = CiteUnseen.categorizedRules[key].concat({
+                                'url_str': window.cite_unseen_additional_strings[key],
+                            });
                         }
-                        categorizedStrings[key] = categorizedStrings[key].concat(window.cite_unseen_additional_strings[key]);
                     }
                 }
 
-                // Start process of adding icons:
-                addIcons(categorizedDomains, categorizedStrings);
+                // Whether to show the dashboard. Shown by default.
+                if (window.cite_unseen_dashboard === undefined) {
+                    window.cite_unseen_dashboard = true;
+                }
             } catch (err) {
-                console.log('Cite Unseen: Could not read custom rules due to error: ', err);
+                console.log('[Cite Unseen] Could not read custom rules due to error: ', err);
             }
-        });
+        },
 
-    function escapeRegex(string) {
-        return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
-    }
-
-    function regexBuilder(string) {
-        // Given a domain and path, the regex looks for a substring that matches the following rules:
-        //  starts with http:// or https://
-        //  does not have any additional / before domain
-        //  domain immediately follows :// or is preceded with a . (to account for subdomains)
-        //  after the domain and path, look for one of the following:
-        //	 string ends
-        //	 next character is a /
-        //	 domain had a period at the end (this allows gov. to match TLDs like gov.uk)
-        let regex = new RegExp('https?:\\/\\/([^\\/]*\\.)?' + escapeRegex(string) + '($|((?<=\\.)|\\/))');
-        return regex;
-    }
-
-    function addIcons(categorizedDomains, categorizedStrings) {
-        // Filter categorizedDomains down to just the links that appear in the page's citations
-        // Given how many domains we track and our RegExp usage later, this has significant time savings
-        // Quick test on an article with ~500 citations went ~5x faster
-        let allCitationLinks = [];
-        refs.forEach(function (ref) {
-            if (ref.nodeName.toLowerCase() === 'a') {
-                allCitationLinks.push(ref.getAttribute('href'));
+        /**
+         * Import dependencies and categorized rules.
+         * This function loads the CiteUnseenData module and sets up the convByVar function for language conversion.
+         * @returns {Promise<Record<string, Object[]>>}
+         */
+        importDependencies: async function () {
+            if (mw.config.get('wgServer') === "//zh.wikipedia.org") {
+                // On Chinese Wikipedia, prioritize using the ext.gadget.HanAssist module.
+                await mw.loader.using('ext.gadget.HanAssist', function (require) {
+                    const { convByVar } = require('ext.gadget.HanAssist');
+                    CiteUnseen.convByVar = convByVar;
+                });
             } else {
-                let refLink = ref.querySelector("a.external");
-                if (refLink) {
-                    allCitationLinks.push(refLink.getAttribute('href'));
+                let lang = mw.config.get('wgContentLanguage');
+                CiteUnseen.convByVar = function (i18nDict) {
+                    const locale = new Intl.Locale(lang);
+                    // If the language is Chinese.
+                    if (locale.language === 'zh') {
+                        if (locale.script === 'Hans') {
+                            return i18nDict['hans'] || i18nDict['hant'] || i18nDict['en'] || 'Language undefined!';
+                        } else {
+                            return i18nDict['hant'] || i18nDict['hans'] || i18nDict['en'] || 'Language undefined!';
+                        }
+                    }
+                    // Other languages.
+                    return i18nDict[lang] || i18nDict['en'] || 'Language undefined!';
+                };
+            }
+
+            await mw.loader.getScript('//zh.wikipedia.org/w/index.php?title=User:SuperGrey/gadgets/CiteUnseen/sources.js&action=raw&ctype=text/javascript');
+            return await CiteUnseenData.getCategorizedRules();
+        },
+
+        /**
+         * Find all <cite> tags and parse them into COinS objects; locate the position of {{reflist}}.
+         */
+        findCitations: function () {
+            // Structure where COinS strings are located:
+            //   <cite class="citation book">...</cite>
+            //   <span title="...(COinS string)...">...</span>
+
+            // Filter all <cite> tags
+            for (let citeTag of document.querySelectorAll("cite")) {
+                let coinsObject;
+                let coinsTag = citeTag.nextElementSibling;
+                if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
+                    // No COinS, so get the href attribute of the <a> tag inside the cite
+                    // This is a partial solution to parse jawiki {{Cite web}} and {{Cite news}}.
+                    let aTag = citeTag.querySelector('a.external');
+                    if (aTag && aTag.hasAttribute('href')) {
+                        coinsObject = {
+                            'rft_id': aTag.getAttribute('href'),
+                        };
+                    } else {
+                        // No COinS and no <a> tag, so skip
+                        continue;
+                    }
+                } else {
+                    // Parse COinS string
+                    let coinsString = decodeURIComponent(coinsTag.getAttribute('title'));
+                    coinsObject = CiteUnseen.parseCoinsString(coinsString);
+                    if (!coinsObject['rft_id']) {
+                        let aTag = citeTag.querySelector('a.external');
+                        if (aTag) {
+                            coinsObject['rft_id'] = aTag.getAttribute('href');
+                        }
+                    }
+                }
+                CiteUnseen.refs.push({
+                    cite: citeTag, coins: coinsObject,
+                });
+                if (coinsObject['rft_id']) {
+                    CiteUnseen.refLinks.push(coinsObject['rft_id']);
                 }
             }
-        });
-        Object.keys(categorizedDomains).forEach(function (key) {
-            allCitationLinks.forEach(function (link) {
-                categorizedDomains[key].forEach(function (domain) {
-                    if (!(citeUnseenDomainIgnore[key] && citeUnseenDomainIgnore[key].includes(domain)) && link.includes(domain)) {
-                        filteredCategorizedDomains[key].indexOf(domain) === -1 ? filteredCategorizedDomains[key].push(domain) : null;
+
+            // Find the location of {{reflist}}. If there are multiple, use the last one. If none, insert at the end.
+            let reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist');
+            if (reflists.length > 0) {
+                CiteUnseen.reflistNode = reflists[reflists.length - 1];
+            } else {
+                CiteUnseen.reflistNode = null;  // Insert at the end
+            }
+        },
+
+        /**
+         * Main entry point for the CiteUnseen script.
+         */
+        init: function () {
+            // Start timer that will be output to console at end of script. (Ends in addIcons().)
+            console.time('CiteUnseen runtime');
+
+            // Import source categorization data
+            CiteUnseen.importDependencies().then(function (categorizedRules) {
+                CiteUnseen.categorizedRules = categorizedRules;
+                CiteUnseen.citeUnseenCategories = CiteUnseenData.citeUnseenCategories;
+                CiteUnseen.citeUnseenCategoryTypes = CiteUnseenData.citeUnseenCategoryTypes;
+                CiteUnseen.citeUnseenChecklists = CiteUnseenData.citeUnseenChecklists;
+                CiteUnseen.citeUnseenCategoryData = CiteUnseenData.citeUnseenCategoryData;
+
+                // Fill in missing parameters
+                for (let key of Object.keys(CiteUnseen.categorizedRules)) {
+                    if (CiteUnseen.citeUnseenCategories[key] === undefined) {
+                        CiteUnseen.citeUnseenCategories[key] = true;
                     }
+                }
+
+                // Import user custom rules
+                CiteUnseen.importCustomRules().then(function () {
+                    // After import is complete, start processing source categorization.
+                    CiteUnseen.findCitations();
+                    CiteUnseen.addIcons();
                 });
             });
-        });
+        },
 
-        // Flag for when a source is not news due to being something else:
-        let notNews;
+        categorizedRules: null,  // Source categorization rules
+        citeUnseenCategories: null,  // Default toggle settings for categories
+        citeUnseenCategoryTypes: null,  // Types of source categories
+        citeUnseenChecklists: null,  // Source checklists by reliability
+        citeUnseenCategoryData: null,  // Category data: labels, icons, hints, etc.
+        citeUnseenDomainIgnore: {},  // User-provided domain ignore lists for each category
+        refs: [],  // All citations found in the document
+        refLinks: [],  // All citation links found in the document
+        refCategories: {},  // All citations by category
+        reflistNode: null,  // Where {{reflist}} is located in the document
+        convByVar: null,  // I18n & Chinese conversion function
+        dashboard: null,  // Citation statistics dashboard
+        dashboardHighlighted: null,  // Currently highlighted citation category
+        customCategoryDialogRules: null,  // Current user-provided rules on the custom category dialog (not applied yet)
+        customCategoryRules: [],  // Current user-provided rules for the custom category
+        customCategoryIcons: [],  // Icons for custom categories
+        windowManager: null,  // Window manager for OOUI dialogs
+    };
 
-        // Flag for when a source has been identified under an RSP category
-        // Mainly used to disclude from rspMulti
-        let rspSet;
+    CiteUnseen.init();
 
-        refs.forEach(function (ref) {
-            notNews = false;
-            rspSet = false;
-
-            if (ref.classList.contains("book")) {
-                if (citeUnseenCategories.books) {
-                    processIcon(ref, "book");
-                }
-            } else {
-                let refLink = null;
-                if (ref.nodeName.toLowerCase() === 'a') {
-                    refLink = ref;
-                } else {
-                    let link = ref.querySelector("a.external");
-                    if (link) {
-                        refLink = link;
-                    }
-                }
-
-                if (refLink) {
-                    let externalLink = refLink.getAttribute('href');
-
-                    // Check if ref's first link is in any of our datasets.
-                    // Some matches will flag as notNews so that it won't be marked as news, even if there's a match.
-                    if (citeUnseenCategories.books && (filteredCategorizedDomains.books.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.books.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "book");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.press && (filteredCategorizedDomains.press.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.press.some(el => externalLink.includes(el)) || refLink.parentNode.classList.contains("pressrelease"))) {
-                        processIcon(refLink, "press");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.social && (filteredCategorizedDomains.social.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.social.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "social");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.satire && (filteredCategorizedDomains.satire.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.satire.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "satire");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.sponsored && (filteredCategorizedDomains.sponsored.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.sponsored.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "sponsored");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.community && (filteredCategorizedDomains.community.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.community.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "community");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.opinions && (filteredCategorizedDomains.opinions.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.opinions.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "opinion");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.blogs && (filteredCategorizedDomains.blogs.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.blogs.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "blog");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.editable && (filteredCategorizedDomains.editable.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.editable.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "editable");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.government && (filteredCategorizedDomains.government.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.government.some(el => externalLink.includes(el)))) {
-                        if (!ref.classList.contains("journal")) {
-                            processIcon(refLink, "government");
-                        }
-                    }
-                    if (citeUnseenCategories.tabloids && (filteredCategorizedDomains.tabloids.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.tabloids.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "tabloid");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.tvPrograms && (filteredCategorizedDomains.tvPrograms.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.tvPrograms.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "tvProgram");
-                        notNews = true;
-                    }
-                    if (citeUnseenCategories.predatory && (filteredCategorizedDomains.predatory.some(el => externalLink.match(regexBuilder(el))))) {
-                        processIcon(refLink, "predatory");
-                        notNews = true;
-                    }
-                    if (!notNews && citeUnseenCategories.news) {
-                        if (categorizedDomains.news.some(el => externalLink.match(regexBuilder(el))) || categorizedStrings.news.some(el => externalLink.includes(el))) {
-                            processIcon(refLink, "news");
-                        }
-                    }
-                    if (citeUnseenCategories.advocacy && (filteredCategorizedDomains.advocacy.some(el => externalLink.match(regexBuilder(el))) ||
-                        categorizedStrings.advocacy.some(el => externalLink.includes(el)))) {
-                        processIcon(refLink, "advocacy");
-                    }
-                    if (citeUnseenCategories.rspDeprecated && (filteredCategorizedDomains.rspDeprecated.some(el => externalLink.match(regexBuilder(el))))) {
-                        processIcon(refLink, "rspDeprecated");
-                        rspSet = true;
-                    }
-                    if (citeUnseenCategories.rspBlacklisted && (filteredCategorizedDomains.rspBlacklisted.some(el => externalLink.match(regexBuilder(el))))) {
-                        processIcon(refLink, "rspBlacklisted");
-                        rspSet = true;
-                    }
-                    if (citeUnseenCategories.rspGenerallyUnreliable && (filteredCategorizedDomains.rspGenerallyUnreliable.some(el => externalLink.match(regexBuilder(el))))) {
-                        processIcon(refLink, "rspGenerallyUnreliable");
-                        rspSet = true;
-                    }
-                    if (citeUnseenCategories.rspMarginallyReliable && (filteredCategorizedDomains.rspMarginallyReliable.some(el => externalLink.match(regexBuilder(el))))) {
-                        processIcon(refLink, "rspMarginallyReliable");
-                        rspSet = true;
-                    }
-                    if (!rspSet && citeUnseenCategories.rspGenerallyReliable && (filteredCategorizedDomains.rspGenerallyReliable.some(el => externalLink.match(regexBuilder(el))))) {
-                        processIcon(refLink, "rspGenerallyReliable");
-                        rspSet = true;
-                    }
-                    if (!rspSet && citeUnseenCategories.rspMulti && (filteredCategorizedDomains.rspMulti.some(el => externalLink.match(regexBuilder(el))))) {
-                        processIcon(refLink, "rspMulti");
-                        rspSet = true;
-                    }
-                }
-            }
-        });
-
-        if (window.cite_unseen_dashboard) {
-            outputDashboard();
-        }
-
-        console.timeEnd('CiteUnseen runtime');
-    }
-
-    function addToCount(node, type) {
-        if (reflistNode.contains(node)) {
-            citeUnseenRefTotal++;
-            citeUnseenCategoryData[type].count = citeUnseenCategoryData[type].count + 1;
-        }
-    }
-
-    function processIcon(node, type) {
-        let iconNode = document.createElement("img");
-        iconNode.classList.add("skin-invert");
-        switch (type) {
-            case "advocacy":
-                iconNode.setAttribute("src", citeUnseenCategoryData.advocacy.icon);
-                iconNode.setAttribute("alt", "This source is an advocacy organization.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is an advocacy organization.");
-                addToCount(node, "advocacy");
-                break;
-            case "blog":
-                iconNode.setAttribute("src", citeUnseenCategoryData.blogs.icon);
-                iconNode.setAttribute("alt", "This source is a blog piece.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is a blog piece.");
-                addToCount(node, "blogs");
-                break;
-            case "book":
-                iconNode.setAttribute("src", citeUnseenCategoryData.books.icon);
-                iconNode.setAttribute("alt", "This source is a published book.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is a published book.");
-                addToCount(node, "books");
-                break;
-            case "community":
-                iconNode.setAttribute("src", citeUnseenCategoryData.community.icon);
-                iconNode.setAttribute("alt", "This source is community-created news");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is community-created news");
-                addToCount(node, "community");
-                break;
-            case "editable":
-                iconNode.setAttribute("src", citeUnseenCategoryData.editable.icon);
-                iconNode.setAttribute("alt", "This source is editable by the community (such as a wiki).");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is editable by the community (such as a wiki).");
-                addToCount(node, "editable");
-                break;
-            case "government":
-                iconNode.setAttribute("src", citeUnseenCategoryData.government.icon);
-                iconNode.setAttribute("alt", "This source has been identified as state-owned or -controlled media, or is a government source.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source has been identified as state-owned or -controlled media, or is a government source.");
-                addToCount(node, "government");
-                break;
-            case "news":
-                iconNode.setAttribute("src", citeUnseenCategoryData.news.icon);
-                iconNode.setAttribute("alt", "This source is a news article from a reputable news agency.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is a news article from a reputable news agency.");
-                addToCount(node, "news");
-                break;
-            case "opinion":
-                iconNode.setAttribute("src", citeUnseenCategoryData.opinions.icon);
-                iconNode.setAttribute("alt", "This source is an opinion piece.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is an opinion piece.");
-                addToCount(node, "opinions");
-                break;
-            case "predatory":
-                iconNode.setAttribute("src", citeUnseenCategoryData.predatory.icon);
-                iconNode.setAttribute("alt", "This source is from a predatory journal.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is from a predatory journal.");
-                addToCount(node, "predatory");
-                break;
-            case "press":
-                iconNode.setAttribute("src", citeUnseenCategoryData.press.icon);
-                iconNode.setAttribute("alt", "This source is a press release.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is a press release.");
-                addToCount(node, "press");
-                break;
-            case "satire":
-                iconNode.setAttribute("src", citeUnseenCategoryData.satire.icon);
-                iconNode.setAttribute("alt", "This source publishes satirical content.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source publishes satirical content.");
-                addToCount(node, "satire");
-                break;
-            case "sponsored":
-                iconNode.setAttribute("src", citeUnseenCategoryData.sponsored.icon);
-                iconNode.setAttribute("alt", "This source is sponsored material.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is sponsored material.");
-                addToCount(node, "sponsored");
-                break;
-            case "rspDeprecated":
-                iconNode.setAttribute("src", citeUnseenCategoryData.rspDeprecated.icon);
-                iconNode.setAttribute("alt", "From WP:RSP: There is community consensus to deprecate this source. It is considered generally unreliable, and use of this source is generally prohibited.");
-                iconNode.setAttribute("title", "[Cite Unseen] From WP:RSP: There is community consensus to deprecate this source. It is considered generally unreliable, and use of this source is generally prohibited.");
-                addToCount(node, "rspDeprecated");
-                break;
-            case "rspBlacklisted":
-                iconNode.setAttribute("src", citeUnseenCategoryData.rspBlacklisted.icon);
-                iconNode.setAttribute("alt", "From WP:RSP: Source is deprecated due to persistent abuse, usually in the form of external link spamming.");
-                iconNode.setAttribute("title", "[Cite Unseen] From WP:RSP: Source is deprecated due to persistent abuse, usually in the form of external link spamming.");
-                addToCount(node, "rspBlacklisted");
-                break;
-            case "rspGenerallyUnreliable":
-                iconNode.setAttribute("src", citeUnseenCategoryData.rspGenerallyUnreliable.icon);
-                iconNode.setAttribute("alt", "From WP:RSP: There is community consensus that this source is questionable in most cases. It may still be used for uncontroversial self-descriptions, or for self-published content from subject-matter experts.");
-                iconNode.setAttribute("title", "[Cite Unseen] From WP:RSP: There is community consensus that this source is questionable in most cases. It may still be used for uncontroversial self-descriptions, or for self-published content from subject-matter experts.");
-                addToCount(node, "rspGenerallyUnreliable");
-                break;
-            case "rspMarginallyReliable":
-                iconNode.setAttribute("src", citeUnseenCategoryData.rspMarginallyReliable.icon);
-                iconNode.setAttribute("alt", "From WP:RSP: This source is marginally reliable, and may be usable depending on context.");
-                iconNode.setAttribute("title", "[Cite Unseen] From WP:RSP: This source is marginally reliable, and may be usable depending on context.");
-                addToCount(node, "rspMarginallyReliable");
-                break;
-            case "rspGenerallyReliable":
-                iconNode.setAttribute("src", citeUnseenCategoryData.rspGenerallyReliable.icon);
-                iconNode.setAttribute("alt", "From WP:RSP: Editors show consensus that this source is reliable in most cases on subject matters in its areas of expertise.");
-                iconNode.setAttribute("title", "[Cite Unseen] From WP:RSP: Editors show consensus that this source is reliable in most cases on subject matters in its areas of expertise.");
-                addToCount(node, "rspGenerallyReliable");
-                break;
-            case "rspMulti":
-                iconNode.setAttribute("src", citeUnseenCategoryData.rspMulti.icon);
-                iconNode.setAttribute("alt", "From WP:RSP: Status of this source varies on one or more factors (such as topic area, author, or time of publication). Refer to WP:RSP for more detail.");
-                iconNode.setAttribute("title", "[Cite Unseen] From WP:RSP: Status of this source varies on one or more factors (such as topic area, author, or time of publication). Refer to WP:RSP for more detail.");
-                addToCount(node, "rspMulti");
-                break;
-            case "social":
-                iconNode.setAttribute("src", citeUnseenCategoryData.social.icon);
-                iconNode.setAttribute("alt", "This source is a social media site, likely a social media post.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is a social media site, likely a social media post.");
-                addToCount(node, "social");
-                break;
-            case "tabloid":
-                iconNode.setAttribute("src", citeUnseenCategoryData.tabloid.icon);
-                iconNode.setAttribute("alt", "This source is a tabloid article.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is a tabloid article.");
-                addToCount(node, "tabloids");
-                break;
-            case "tvProgram":
-                iconNode.setAttribute("src", citeUnseenCategoryData.tvPrograms.icon);
-                iconNode.setAttribute("alt", "This source is a television or radio program. Its reliability depends on the individual program.");
-                iconNode.setAttribute("title", "[Cite Unseen] This source is a television or radio program. Its reliability depends on the individual program.");
-                addToCount(node, "tvPrograms");
-                break;
-            default:
-                break;
-        }
-        iconNode.style.paddingRight = "5px";
-        iconNode.style.width = '100%';
-        iconNode.style.maxWidth = "17px";
-        iconNode.style.maxHeight = "17px";
-        iconNode.style.objectFit = 'contain';
-        node.parentNode.prepend(iconNode);
-    }
-
-    function outputDashboard() {
-        let dashboard = document.createElement('div');
-        dashboard.style.border = '1px solid #ccc';
-        dashboard.style.marginBottom = '1em';
-        dashboard.style.borderRadius = '5px';
-        dashboard.style.fontSize = '.8em';
-        dashboard.style.display = 'flex';
-        dashboard.style.gap = '.5em 1em';
-        dashboard.style.flexWrap = 'wrap';
-        dashboard.style.padding = '5px';
-        dashboard.style.justifyContent = 'center';
-        dashboard.style.textAlign = 'center';
-        let dashboardTotal = document.createElement('div');
-        dashboardTotal.innerText = citeUnseenRefTotal + ' Categorized References';
-        dashboardTotal.style.fontSize = '1.2em';
-        dashboard.appendChild(dashboardTotal);
-
-        // Output reliability counts:
-        let reliabilityCategoryData = filterObjectIncludes(citeUnseenCategoryData, 'type', 'reliability');
-        for (const [key, value] of Object.entries(reliabilityCategoryData)) {
-            if (value.count > 0) {
-                let countNode = document.createElement('div');
-                let countIcon = document.createElement('img');
-                countIcon.alt = '';
-                countIcon.src = value.icon;
-                countIcon.width = '17';
-                countIcon.style.maxHeight = '18px';
-                let countText = document.createElement('span');
-                countText.innerText = value.count + ' ' + value.label;
-                countText.style.paddingLeft = '5px';
-                countNode.appendChild(countIcon);
-                countNode.appendChild(countText);
-                dashboard.appendChild(countNode);
-            }
-        }
-
-        // Output influence counts:
-        let influenceCategoryData = filterObjectIncludes(citeUnseenCategoryData, 'type', 'influence');
-        for (const [key, value] of Object.entries(influenceCategoryData)) {
-            if (value.count > 0) {
-                let countNode = document.createElement('div');
-                let countIcon = document.createElement('img');
-                countIcon.alt = '';
-                countIcon.src = value.icon;
-                countIcon.width = '17';
-                countIcon.style.maxHeight = '18px';
-                let countText = document.createElement('span');
-                countText.innerText = value.count + ' ' + value.label;
-                countText.style.paddingLeft = '5px';
-                countNode.appendChild(countIcon);
-                countNode.appendChild(countText);
-                dashboard.appendChild(countNode);
-            }
-        }
-
-        // Output user generated counts:
-        let userGeneratedCategoryData = filterObjectIncludes(citeUnseenCategoryData, 'type', 'user-generated');
-        for (const [key, value] of Object.entries(userGeneratedCategoryData)) {
-            if (value.count > 0) {
-                let countNode = document.createElement('div');
-                let countIcon = document.createElement('img');
-                countIcon.alt = '';
-                countIcon.src = value.icon;
-                countIcon.width = '17';
-                countIcon.style.maxHeight = '18px';
-                let countText = document.createElement('span');
-                countText.innerText = value.count + ' ' + value.label;
-                countText.style.paddingLeft = '5px';
-                countNode.appendChild(countIcon);
-                countNode.appendChild(countText);
-                dashboard.appendChild(countNode);
-            }
-        }
-
-        // Output type counts:
-        let typeCategoryData = filterObjectIncludes(citeUnseenCategoryData, 'type', 'type');
-        for (const [key, value] of Object.entries(typeCategoryData)) {
-            if (value.count > 0) {
-                let countNode = document.createElement('div');
-                let countIcon = document.createElement('img');
-                countIcon.alt = '';
-                countIcon.src = value.icon;
-                countIcon.width = '17';
-                countIcon.style.maxHeight = '18px';
-                let countText = document.createElement('span');
-                countText.innerText = value.count + ' ' + value.label;
-                countText.style.paddingLeft = '5px';
-                countNode.appendChild(countIcon);
-                countNode.appendChild(countText);
-                dashboard.appendChild(countNode);
-            }
-        }
-
-        // Output user generated counts:
-        let mediumCategoryData = filterObjectIncludes(citeUnseenCategoryData, 'type', 'medium');
-        for (const [key, value] of Object.entries(mediumCategoryData)) {
-            if (value.count > 0) {
-                let countNode = document.createElement('div');
-                let countIcon = document.createElement('img');
-                countIcon.alt = '';
-                countIcon.src = value.icon;
-                countIcon.width = '17';
-                countIcon.style.maxHeight = '18px';
-                let countText = document.createElement('span');
-                countText.innerText = value.count + ' ' + value.label;
-                countText.style.paddingLeft = '5px';
-                countNode.appendChild(countIcon);
-                countNode.appendChild(countText);
-                dashboard.appendChild(countNode);
-            }
-        }
-
-        document.querySelector('#mw-content-text .mw-parser-output').insertBefore(dashboard, reflistNode);
-    }
-
-    const filterObjectIncludes = (obj, filter, filterValue) =>
-        Object.keys(obj).reduce((acc, val) =>
-        (obj[val][filter] !== filterValue ? acc : {
-            ...acc,
-            [val]: obj[val]
-        }
-        ),
-            {});
-
-    const filterObjectExcludes = (obj, filter, filterValue) =>
-        Object.keys(obj).reduce((acc, val) =>
-        (obj[val][filter] === filterValue ? acc : {
-            ...acc,
-            [val]: obj[val]
-        }
-        ),
-            {});
-
-}
-
-runCiteUnseen();
+})();
