@@ -1359,9 +1359,23 @@
 
                 // Import user custom rules
                 CiteUnseen.importCustomRules().then(function () {
-                    // After import is complete, start processing source categorization.
-                    CiteUnseen.findCitations();
-                    CiteUnseen.addIcons();
+                    // Run on every wikipage.content hook. This is to support gadgets like QuickEdit.
+                    mw.hook('wikipage.content').add(function () {
+                        // If the finished loading element is still there, no need to re-run.
+                        if (document.querySelector('#cite-unseen-finished-loading')) {
+                            return;
+                        }
+
+                        // Process the page content
+                        CiteUnseen.findCitations();
+                        CiteUnseen.addIcons();
+
+                        // Place a "Finished loading" element to the HTML.
+                        let finishedLoading = document.createElement('div');
+                        finishedLoading.id = 'cite-unseen-finished-loading';
+                        finishedLoading.style.display = 'none';
+                        document.querySelector('#mw-content-text .mw-parser-output').appendChild(finishedLoading);
+                    });
                 });
             });
         },
