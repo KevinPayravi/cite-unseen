@@ -147,13 +147,13 @@ window.CiteUnseenI18n = {
         ja: "カテゴリの有効/無効",
     },
     showDashboard: {
-        en: "Show Dashboard",
-        hant: "顯示儀表板",
-        hans: "显示仪表板",
-        ja: "ダッシュボードを表示",
+        en: "Show dashboard above reflists",
+        hant: "在參考文獻區段上方顯示儀表板",
+        hans: "在参考文献区段上方显示仪表板",
+        ja: "参考文献セクションの上にダッシュボードを表示",
     },
     showSuggestionsButton: {
-        en: "Show Suggestions Button",
+        en: "Show suggestions button",
         hant: "顯示建議按鈕",
         hans: "显示建议按钮",
         ja: "提案ボタンを表示",
