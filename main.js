@@ -1,30 +1,71 @@
 (function () {
-
     const CiteUnseen = {
+        // ===============================
+        // PROPERTIES AND STATE
+        // ===============================
+        categorizedRules: null,
+        citeUnseenCategories: null,
+        citeUnseenCategoryTypes: null,
+        citeUnseenChecklists: null,
+        citeUnseenCategoryData: null,
+        citeUnseenDomainIgnore: {},
+        refs: [],
+        refLinks: [],
+        refCategories: {},
+        reflists: [],
+        convByVar: null,
+        settingsButton: null,
+        vueApp: null,
+        suggestionsToggleButton: null,
+        suggestionsMode: false,
+        currentSuggestionCitation: null,
+        _metaRules: null, // Stores rules loaded from meta.wikimedia.org
+        _localRules: null, // Stores rules loaded from local language wiki
+
+        // ===============================
+        // RULES OBJECT
+        // ===============================
+        ruleConfig: {
+            globalVars: [
+                'cite_unseen_categories',
+                'cite_unseen_domain_ignore',
+                'cite_unseen_additional_domains',
+                'cite_unseen_additional_strings',
+                'cite_unseen_dashboard',
+                'cite_unseen_show_suggestions'
+            ],
+
+            mergeableProps: ['categories', 'domainIgnore', 'additionalDomains', 'additionalStrings'],
+            booleanProps: ['dashboard', 'showSuggestions'],
+
+            globalMapping: {
+                categories: 'cite_unseen_categories',
+                domainIgnore: 'cite_unseen_domain_ignore',
+                additionalDomains: 'cite_unseen_additional_domains',
+                additionalStrings: 'cite_unseen_additional_strings',
+                dashboard: 'cite_unseen_dashboard',
+                showSuggestions: 'cite_unseen_show_suggestions'
+            }
+        },
+
+        // ===============================
+        // UTILITY FUNCTIONS
+        // ===============================
+        
         /**
-         * Parse a COinS string and convert it to an object.
-         * @param query {String} - COinS string
-         * @returns {Object} - Parsed object
+         * Parse a COinS string into an object
+         * @param {string} query - COinS string
+         * @returns {Object} Parsed object
          */
         parseCoinsString: function (query) {
             const result = {};
-            // Split the string by '&'
-            const pairs = query.split('&');
+            const pairs = query.split('&').filter(Boolean);
+
             pairs.forEach(pair => {
-                if (!pair) return;
-                // Split at the first '='
                 const index = pair.indexOf('=');
-                let key, value;
-                if (index === -1) {
-                    key = pair;
-                    value = "";
-                } else {
-                    key = pair.substring(0, index);
-                    value = pair.substring(index + 1);
-                }
-                // Replace '+' with space and decode both key and value
-                key = key.replace(/\+/g, ' ');
-                value = value.replace(/\+/g, ' ');
+                const key = (index === -1 ? pair : pair.substring(0, index)).replace(/\+/g, ' ');
+                const value = (index === -1 ? '' : pair.substring(index + 1)).replace(/\+/g, ' ');
+
                 if (!result[key]) {
                     result[key] = value;
                 } else {
@@ -38,171 +79,140 @@
         },
 
         /**
-         * Parses a date rule string containing comma-separated conditions,
-         * where each condition includes an operator and a date.
-         * Returns a predicate function that accepts a date (or date string)
-         * and returns true if the date matches all conditions.
-         * @param ruleString {String} - Date rule string, e.g. "<2022-01-01,>2020-01-01"
-         * @returns {Function|null} - Predicate function, or null if any condition is invalid.
+         * Parse date rule string into predicate function
+         * @param {string} ruleString - Date rule, e.g. "<2022-01-01,>2020-01-01"
+         * @returns {Function|null} Predicate function or null if invalid
          */
         parseDateRule: function (ruleString) {
-            ruleString = ruleString.trim();
-            if (ruleString.length === 0) {
+            const trimmedRule = ruleString.trim();
+            if (!trimmedRule) {
                 return null;
             }
 
-            // Split the rule string by comma into individual conditions.
-            let conditionStrings = ruleString.split(',').map(s => s.trim());
-
-            // Array to hold predicate functions for each condition.
-            let predicates = [];
+            const conditionStrings = trimmedRule.split(',').map(s => s.trim()).filter(Boolean);
+            const predicates = [];
 
             for (let cond of conditionStrings) {
-                if (cond.length === 0) continue; // Skip empty conditions
-
-                // Check if the condition starts with an operator (<, >, or =). Default to "=".
                 let operator = '=';
-                if (cond[0] === '<' || cond[0] === '>' || cond[0] === '=') {
+                if (['<', '>', '='].includes(cond[0])) {
                     operator = cond[0];
                     cond = cond.substring(1).trim();
                 }
 
-                // Parse the date portion.
-                let targetDate = new Date(cond);
+                const targetDate = new Date(cond);
                 if (isNaN(targetDate.getTime())) {
-                    // If any condition has an invalid date, return null.
+                    console.warn(`[Cite Unseen] Invalid date in rule: ${cond}`);
                     return null;
                 }
 
-                // Create and store a predicate function for this condition.
-                let predicate;
-                switch (operator) {
-                    case '<':
-                        predicate = function (date) {
-                            return date < targetDate;
-                        };
-                        break;
-                    case '>':
-                        predicate = function (date) {
-                            return date > targetDate;
-                        };
-                        break;
-                    default: // '='
-                        predicate = function (date) {
-                            return date.getTime() === targetDate.getTime();
-                        };
-                }
+                const predicate = {
+                    '<': date => date < targetDate,
+                    '>': date => date > targetDate,
+                    '=': date => date.getTime() === targetDate.getTime()
+                }[operator];
+
                 predicates.push(predicate);
             }
 
-            // Return a predicate function that applies all conditions.
-            return function (inputDate) {
-                let date = (inputDate instanceof Date) ? inputDate : new Date(inputDate);
-                if (isNaN(date.getTime())) {
-                    return false;
-                }
-                return predicates.every(fn => fn(date));
+            return (inputDate) => {
+                const date = inputDate instanceof Date ? inputDate : new Date(inputDate);
+                return !isNaN(date.getTime()) && predicates.every(fn => fn(date));
             };
         },
 
         /**
-         * Escapes special characters in a string.
-         * @param string {String} - The string to escape
-         * @returns {String} - The escaped string
+         * Escape special regex characters in string
+         * @param {string} string - String to escape
+         * @returns {string} Escaped string
          */
         escapeRegex: function (string) {
+            if (typeof string !== 'string') {
+                console.warn('[Cite Unseen] escapeRegex called with non-string:', typeof string, string);
+                return String(string || '').replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+            }
             return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
         },
 
         /**
-         * Build a regular expression.
-         * @param string {String} - The string
-         * @returns {RegExp} - The regular expression
+         * Build regular expression for URL matching
+         * @param {string} string - Domain string
+         * @returns {RegExp} URL matching regex
          */
         urlRegex: function (string) {
-            // Given a domain and path, the regex looks for a substring that matches the following rules:
-            //  starts with http:// or https://
-            //  does not have any additional / before domain
-            //  domain immediately follows :// or is preceded with a . (to account for subdomains)
-            //  after the domain and path, look for one of the following:
-            //	 string ends
-            //	 next character is a /
-            //	 domain had a period at the end (this allows gov. to match TLDs like gov.uk)
             return new RegExp('https?:\\/\\/([^\\/]*\\.)?' + CiteUnseen.escapeRegex(string) + '($|((?<=\\.)|\\/))');
         },
 
         /**
-         * Check if the source's author matches the rule.
-         * @param coins {Object} - COinS object
-         * @param rule {Object} - Rule
-         * @returns {boolean} - Whether it matches the rule
+         * Check if source author matches rule
+         * @param {Object} coins - COinS object
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether author matches
          */
         matchAuthor: function (coins, rule) {
-            let author = coins['rft.au'];  // can be a string or an array
+            if (!rule['author']) return false;
+
+            const authors = [];
+
+            // Extract authors from rft.au field
+            if (coins['rft.au']) {
+                authors.push(...CiteUnseen.ensureArray(coins['rft.au']));
+            }
+
+            // Extract authors from separate first/last name fields
             if (coins['rft.aulast']) {
-                let appendedAuthors = coins['rft.aulast'];
-                if (typeof appendedAuthors === 'string' && coins['rft.aufirst']) {
-                    appendedAuthors = [coins['rft.aufirst'] + ' ' + appendedAuthors];
-                } else if (coins['rft.aufirst']) {
-                    for (let i = 0; i < coins['rft.aufirst'].length; i++) {
-                        appendedAuthors[i] = coins['rft.aufirst'][i] + ' ' + appendedAuthors[i];
-                    }
-                }
-                if (typeof author === 'string') {
-                    author = [author];
-                }
-                author.concat(appendedAuthors);
+                const lastNames = CiteUnseen.ensureArray(coins['rft.aulast']);
+                const firstNames = CiteUnseen.ensureArray(coins['rft.aufirst']);
+
+                const combinedAuthors = lastNames.map((lastName, i) => {
+                    const firstName = firstNames[i] || '';
+                    return firstName ? `${firstName} ${lastName}` : lastName;
+                });
+
+                authors.push(...combinedAuthors);
             }
-            if (!author || !rule['author']) {
-                return false;
+
+            if (authors.length === 0) return false;
+
+            if (!rule._cachedAuthorRegex) {
+                rule._cachedAuthorRegex = new RegExp(rule['author'], 'i');
             }
-            let authorRegex = new RegExp(rule['author'], 'i');
-            if (typeof author === 'string') {
-                return authorRegex.test(author);
-            } else {
-                for (let au of author) {
-                    if (authorRegex.test(au)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
+            return authors.some(author => rule._cachedAuthorRegex.test(author));
         },
 
         /**
-         * Checks if the source's publisher matches the rule.
-         * @param coins {Object} - COinS object
-         * @param rule {Object} - Rule
-         * @returns {boolean} - Whether it matches the rule
+         * Check if source publisher matches rule
+         * @param {Object} coins - COinS object
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether publisher matches
          */
         matchPublisher: function (coins, rule) {
-            const coinsPub = coins['rft.pub'] || coins['rft.jtitle'] || null;
-            if (!coinsPub || !rule['pub']) {
-                return false;
+            const coinsPub = coins['rft.pub'] || coins['rft.jtitle'];
+            if (!coinsPub || !rule['pub']) return false;
+
+            if (!rule._cachedPublisherRegex) {
+                rule._cachedPublisherRegex = new RegExp(rule['pub'], 'i');
             }
-            let publisherRegex = new RegExp(rule['pub'], 'i');
-            if (typeof coinsPub === 'string') {
-                return publisherRegex.test(coinsPub);
-            } else {
-                for (let publisher of coinsPub) {
-                    if (publisherRegex.test(publisher)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
+            return CiteUnseen.ensureArray(coinsPub).some(publisher => 
+                rule._cachedPublisherRegex.test(publisher)
+            );
         },
 
         /**
-         * Check if the date in the COinS object matches the date rule.
-         * @param coins {Object} - COinS object.
-         * @param rule {Object} - Rule object containing the date rule string.
-         * @returns {boolean} - Returns true if the date matches the rule, otherwise false.
+         * Check if date in COinS object matches date rule
+         * @param {Object} coins - COinS object
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether date matches rule
          */
         matchDate: function (coins, rule) {
-            let predicate = CiteUnseen.parseDateRule(rule['date']);
+            if (!rule['date']) return true;
+
+            const predicate = CiteUnseen.parseDateRule(rule['date']);
             if (!predicate) {
-                console.log("[Cite Unseen] Invalid date rule: " + rule['date']);
+                console.warn(`[Cite Unseen] Invalid date rule: ${rule['date']}`);
+                return false;
+            }
+
+            if (!coins['rft.date']) {
                 return false;
             }
 
@@ -210,47 +220,144 @@
         },
 
         /**
-         * Check if the source's URL matches the rule.
-         * @param coins {Object} - COinS object
-         * @param rule {Object} - Rule
-         * @returns {boolean} - Whether it matches the rule
+         * Check if source URL matches rule
+         * @param {Object} coins - COinS object
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether URL matches
          */
         matchUrl: function (coins, rule) {
-            if (!rule['url'] || !coins['rft_id']) {
-                return false;
+            if (!rule['url'] || !coins['rft_id']) return false;
+
+            // Handle case where rule['url'] might be an array or non-string
+            const urlValue = rule['url'];
+            if (Array.isArray(urlValue)) {
+                return urlValue.some(url => {
+                    if (typeof url === 'string') {
+                        const urlRegex = CiteUnseen.urlRegex(url);
+                        return urlRegex.test(coins['rft_id']);
+                    }
+                    return false;
+                });
             }
-            let urlRegex = CiteUnseen.urlRegex(rule['url']);
-            return urlRegex.test(coins['rft_id']);
+
+            if (typeof urlValue === 'string') {
+                const urlRegex = CiteUnseen.urlRegex(urlValue);
+                return urlRegex.test(coins['rft_id']);
+            }
+
+            return false;
         },
 
         /**
-         * Check if the source's URL string matches the rule.
-         * @param coins {Object} - COinS object
-         * @param rule {Object} - Rule
-         * @returns {boolean} - Whether it matches the rule
+         * Check if source's URL string matches rule
+         * @param {Object} coins - COinS object
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether URL string matches
          */
         matchUrlString: function (coins, rule) {
-            if (!rule['url_str'] || !coins['rft_id']) {
-                return false;
-            }
-            let urlString = rule['url_str'];
-            if (typeof urlString === 'string') {
-                return coins['rft_id'].includes(urlString);
-            } else {
-                for (let str of urlString) {
-                    if (coins['rft_id'].includes(str)) {
-                        return true;
+            if (!rule['url_str'] || !coins['rft_id']) return false;
+
+            const urlStrings = CiteUnseen.ensureArray(rule['url_str']);
+            return urlStrings.some(str => coins['rft_id'].includes(str));
+        },
+
+        /**
+         * Find the first matching reliability category for a citation.
+         * @param {Object} coins - COinS object
+         * @param {Object} filteredCategorizedRules - Filtered rules by category
+         * @returns {Object|null} Match object with type and name, or null if no match
+         */
+        findReliabilityMatch: function (coins, filteredCategorizedRules) {
+            for (const checklistTypeData of CiteUnseen.citeUnseenChecklists) {
+                const checklistType = checklistTypeData[0];
+                for (const checklist of checklistTypeData[1]) {
+                    const [checklistName, checklistID] = checklist;
+                    if (filteredCategorizedRules[checklistID]) {
+                        for (const rule of filteredCategorizedRules[checklistID]) {
+                            if (CiteUnseen.match(coins, rule)) {
+                                if (CiteUnseen.citeUnseenCategories[checklistID]) {
+                                    return { type: checklistType, name: checklistName };
+                                }
+                                return null; // Found match but category disabled
+                            }
+                        }
+                    } else {
+                        console.log('[Cite Unseen] ' + checklistID + ' is not in the ruleset.');
                     }
                 }
-                return false;
             }
+            return null;
+        },
+
+        /**
+         * Find all matching type categories for a citation.
+         * @param {Object} coins - COinS object
+         * @param {Object} filteredCategorizedRules - Filtered rules by category
+         * @param {Array} typeCategories - Array of type categories to check
+         * @returns {Array} Array of matching category names
+         */
+        findTypeMatches: function (coins, filteredCategorizedRules, typeCategories) {
+            const matches = [];
+
+            for (const category of typeCategories) {
+                let hasMatch = false;
+
+                // Check custom domains first
+                if (window.cite_unseen_additional_domains &&
+                    window.cite_unseen_additional_domains[category] &&
+                    window.cite_unseen_additional_domains[category].length > 0) {
+
+                    const customDomains = CiteUnseen.ensureArray(window.cite_unseen_additional_domains[category]);
+
+                    for (const domain of customDomains) {
+                        const customRule = { 'url': domain };
+                        if (CiteUnseen.match(coins, customRule)) {
+                            hasMatch = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Check custom URL strings
+                if (!hasMatch && window.cite_unseen_additional_strings &&
+                    window.cite_unseen_additional_strings[category] &&
+                    window.cite_unseen_additional_strings[category].length > 0) {
+
+                    const customStrings = CiteUnseen.ensureArray(window.cite_unseen_additional_strings[category]);
+
+                    for (const urlStr of customStrings) {
+                        const customRule = { 'url_str': urlStr };
+                        if (CiteUnseen.match(coins, customRule)) {
+                            hasMatch = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Check built-in categorizations
+                if (!hasMatch && filteredCategorizedRules[category]) {
+                    for (const rule of filteredCategorizedRules[category]) {
+                        if (CiteUnseen.match(coins, rule)) {
+                            hasMatch = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Add to matches if match is found and category is enabled
+                if (hasMatch && CiteUnseen.citeUnseenCategories[category]) {
+                    matches.push(category);
+                }
+            }
+
+            return matches;
         },
 
         /**
          * Check if the source matches the rule.
-         * @param coins {Object} - COinS object
-         * @param rule {Object} - Rule
-         * @returns {boolean} - Whether it matches the rule
+         * @param {Object} coins - COinS object
+         * @param {Object} rule - Rule
+         * @returns {boolean} Whether it matches the rule
          */
         match: function (coins, rule) {
             if (!rule) {
@@ -264,7 +371,7 @@
                 'url': CiteUnseen.matchUrl,
                 'url_str': CiteUnseen.matchUrlString,
             };
-            for (let key of Object.keys(rule)) {
+            for (const key of Object.keys(rule)) {
                 if (!matchFunctions[key]) {
                     console.log("[Cite Unseen] Unknown rule:");
                     console.log(rule);
@@ -277,179 +384,137 @@
             return true;
         },
 
+        // ===============================
+        // ICON PROCESSING AND DISPLAY
+        // ===============================
+
         /**
          * Add icons to citation sources. Only executed once on page load.
          */
         addIcons: function () {
-            // Filter categorizedDomains down to just the links that appear in the page's citations
-            // Given how many domains we track and our RegExp usage later, this has significant time savings
-            // Quick test on an article with ~500 citations went ~5x faster
-            let filteredCategorizedRules = {};
-            for (let key of Object.keys(CiteUnseen.categorizedRules)) {
-                filteredCategorizedRules[key] = [];
-                for (let link of CiteUnseen.refLinks) {
-                    for (let rule of CiteUnseen.categorizedRules[key]) {
-                        let domain = rule['url'];
-                        if (!(CiteUnseen.citeUnseenDomainIgnore[key] && CiteUnseen.citeUnseenDomainIgnore[key].includes(domain)) && link.includes(domain)) {
-                            if (!filteredCategorizedRules[key].includes(rule)) {
-                                filteredCategorizedRules[key].push(rule);
-                            }
-                        }
-                    }
-                }
-            }
-            let typeCategories = CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]);
+            const filteredCategorizedRules = {};
 
-            // Whether the source is not identified by any of the rules.
-            let unknownSet;
+            Object.keys(CiteUnseen.categorizedRules).forEach(key => {
+                const domainIgnoreList = CiteUnseen.citeUnseenDomainIgnore[key] || [];
 
-            CiteUnseen.refs.forEach(function (ref) {
-                // Insert the icon area before the <cite> tag
-                let iconsDiv = document.createElement("div");
-                iconsDiv.classList.add("cite-unseen-icons");
-                iconsDiv.style.display = 'inline-flex';
-                iconsDiv.style.gap = '0 5px';
-                iconsDiv.style.paddingRight = '5px';
-                iconsDiv.style.verticalAlign = 'middle';
+                filteredCategorizedRules[key] = CiteUnseen.categorizedRules[key].filter(rule => {
+                    const domain = rule['url'];
+                    return !domainIgnoreList.includes(domain) &&
+                        CiteUnseen.refLinks.some(link => link.includes(domain));
+                });
+            });
+            const typeCategories = CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]);
+
+            CiteUnseen.refs.forEach(ref => {
+                // Insert icon area before the <cite> tag
+                const iconsDiv = CiteUnseen.createIconsDiv();
                 ref.cite.prepend(iconsDiv);
 
-                if (window.cite_unseen_dashboard) {
-                    // Pre-insert the custom citation category icon
-                    let iconNode = CiteUnseen.processIcon(iconsDiv, "flag");
-                    iconNode.style.display = 'none';  // Initially hide the custom category icon
-                    CiteUnseen.customCategoryIcons.push(iconNode);
+                const processedCategories = new Set();
+
+                // Determine the source type based on the class name
+                const classList = ref.cite.classList;
+                const bookClasses = ["book", "journal", "encyclopaedia", "conference", "thesis", "magazine"];
+                const tvClasses = ["episode", "podcast", "media"];
+
+                // Check CSS-based classifications first
+                if (bookClasses.some(cls => classList.contains(cls))) {
+                    if (CiteUnseen.citeUnseenCategories.books && !processedCategories.has("books")) {
+                        CiteUnseen.processIcon(iconsDiv, "books");
+                        processedCategories.add("books");
+                    }
                 }
 
-                // Determine the source type based on the class name.
-                const classList = ref.cite.classList;
-                if (classList.contains("book") || classList.contains("journal") || classList.contains("encyclopaedia") || classList.contains("conference") || classList.contains("thesis") || classList.contains("magazine")) {
-                    if (CiteUnseen.citeUnseenCategories.books) {
-                        CiteUnseen.processIcon(iconsDiv, "books");
-                    }
-                } else if (classList.contains("pressrelease")) {
-                    if (CiteUnseen.citeUnseenCategories.press) {
+                if (classList.contains("pressrelease")) {
+                    if (CiteUnseen.citeUnseenCategories.press && !processedCategories.has("press")) {
                         CiteUnseen.processIcon(iconsDiv, "press");
+                        processedCategories.add("press");
                     }
-                } else if (classList.contains("episode") || classList.contains("podcast") || classList.contains("media")) {
-                    if (CiteUnseen.citeUnseenCategories.tvPrograms) {
+                }
+
+                if (tvClasses.some(cls => classList.contains(cls))) {
+                    if (CiteUnseen.citeUnseenCategories.tvPrograms && !processedCategories.has("tvPrograms")) {
                         CiteUnseen.processIcon(iconsDiv, "tvPrograms");
+                        processedCategories.add("tvPrograms");
                     }
-                } else if (ref.coins['rft_id']) {
-                    unknownSet = true;
+                }
 
-                    // Reliability categories
-                    let checked = false;
-                    for (let checklistTypeData of CiteUnseen.citeUnseenChecklists) {
-                        if (checked) {
-                            break;
-                        }
-                        let checklistType = checklistTypeData[0];
-                        for (let checklist of checklistTypeData[1]) {
-                            if (checked) {
-                                break;
-                            }
-                            let checklistName = checklist[0], checklistID = checklist[1];
-                            for (let rule of filteredCategorizedRules[checklistID]) {
-                                if (CiteUnseen.match(ref.coins, rule)) {
-                                    if (CiteUnseen.citeUnseenCategories[checklistID]) {
-                                        CiteUnseen.processIcon(iconsDiv, checklistType, checklistName);
-                                        checked = true;
-                                        unknownSet = false;
-                                        break;
-                                    }
-                                    unknownSet = false;
-                                }
-                            }
-                        }
+                // If rft_id, check URL-based classifications
+                if (ref.coins['rft_id']) {
+                    // Check reliability categories
+                    const reliabilityMatch = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
+                    if (reliabilityMatch && !processedCategories.has(reliabilityMatch.type)) {
+                        CiteUnseen.processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name);
+                        processedCategories.add(reliabilityMatch.type);
                     }
 
-                    // Type categories
-                    for (let category of typeCategories) {
-                        for (let rule of filteredCategorizedRules[category]) {
-                            if (CiteUnseen.match(ref.coins, rule)) {
-                                if (CiteUnseen.citeUnseenCategories[category]) {
-                                    CiteUnseen.processIcon(iconsDiv, category);
-                                    unknownSet = false;
-                                    break;
-                                }
-                                unknownSet = false;
-                            }
+                    // Check all type categories for matches
+                    const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
+                    for (const typeMatch of typeMatches) {
+                        if (!processedCategories.has(typeMatch)) {
+                            CiteUnseen.processIcon(iconsDiv, typeMatch);
+                            processedCategories.add(typeMatch);
                         }
                     }
+                }
 
-                    if (CiteUnseen.citeUnseenCategories.unknown && unknownSet) {
-                        // Source not identified by any rule, mark as unknown.
-                        CiteUnseen.processIcon(iconsDiv, "unknown");
-                    }
+                if (CiteUnseen.citeUnseenCategories.unknown && processedCategories.size === 0) {
+                    CiteUnseen.processIcon(iconsDiv, "unknown");
                 }
             });
 
-            if (window.cite_unseen_dashboard) {
-                CiteUnseen.showDashboard();
-            }
+            CiteUnseen.showSettingsButton();
+            CiteUnseen.showDashboard();
+            CiteUnseen.showSuggestionsToggleButton();
+            CiteUnseen.groupButtons();
 
-            // End timing
-            console.timeEnd('CiteUnseen runtime');
+            console.timeEnd('[Cite Unseen] Runtime ended');
         },
 
         /**
          * Add to count. Currently, it records regardless of whether it is in the reflist.
-         * @param node {Element} - The node
-         * @param type {String} - The type
+         * @param {Element} node - The node
+         * @param {String} type - The type
          */
         addToCount: function (node, type) {
-            CiteUnseen.citeUnseenCategoryData[type].count = CiteUnseen.citeUnseenCategoryData[type].count + 1;
+            CiteUnseen.citeUnseenCategoryData[type].count++;
         },
 
         /**
          * Add an icon and tooltip to a node.
-         * @param node {Element} - The iconsDiv node
-         * @param type {String} - The type
-         * @param checklist {String|null} - The checklist
-         * @returns {Element} - The iconNode element
+         * @param {Element} node - The iconsDiv node
+         * @param {String} type - The type
+         * @param {String|null} checklist - The checklist
+         * @returns {Element} The iconNode element
          */
         processIcon: function (node, type, checklist = null) {
-            let iconNode = document.createElement("img");
+            const iconNode = document.createElement("img");
             iconNode.classList.add("skin-invert");
             iconNode.classList.add("cite-unseen-icon-" + type);
+            iconNode.classList.add("cite-unseen-icon");
             iconNode.setAttribute("src", CiteUnseen.citeUnseenCategoryData[type].icon);
-            let message = CiteUnseen.convByVar({
-                hant: CiteUnseen.citeUnseenCategoryData[type].hint_hant,
-                hans: CiteUnseen.citeUnseenCategoryData[type].hint_hans,
-                en: CiteUnseen.citeUnseenCategoryData[type].hint_en,
-                ja: CiteUnseen.citeUnseenCategoryData[type].hint_ja,
-            });
+            let message = CiteUnseen.convByVar(CiteUnseenI18n.categoryHints[type]);
             if (checklist) {
-                message = CiteUnseen.convByVar({
-                    en: 'From ',
-                    hant: '來自 ',
-                    hans: '来自 ',
-                    ja: '出典 ',
-                }) + checklist + CiteUnseen.convByVar({
-                    en: ': ',
-                    hant: '：',
-                    hans: '：',
-                    ja: '：',
-                }) + message + CiteUnseen.convByVar({
-                    en: ' Click the icon to open the checklist page to view details.',
-                    hant: '點擊圖示可打開檢查表頁面以查看詳情。',
-                    hans: '点击图标可打开检查表页面以查看详情。',
-                    ja: 'アイコンをクリックすると、チェックリストページを開いて詳細を確認できます。',
-                });
+                const pageLink = CiteUnseen.citeUnseenData.resolveSourceToPageLink(checklist);
+                const displayName = pageLink || checklist;
+                message = CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipPrefix) + displayName +
+                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + message +
+                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipAction);
             }
             iconNode.setAttribute("alt", message);
             iconNode.setAttribute("title", "[Cite Unseen] " + message);
             CiteUnseen.addToCount(node, type);
-            iconNode.style.width = "17px";
-            iconNode.style.height = "17px";
-            iconNode.style.objectFit = 'contain';
-            iconNode.style.cssText += 'max-width: 17px !important;';
             if (checklist) {
                 // If there is a checklist, wrap the icon in a link.
                 const iconNodeLink = document.createElement("a");
-                iconNodeLink.setAttribute("href", "//zh.wikipedia.org/wiki/" + checklist);
+                const pageLink = CiteUnseen.citeUnseenData.resolveSourceToPageLink(checklist);
+                if (pageLink) {
+                    const [lang, ...pageParts] = pageLink.split(':');
+                    const fullPagePath = pageParts.join(':');
+                    iconNodeLink.setAttribute("href", `//${lang}.wikipedia.org/wiki/${fullPagePath}`);
+                }
                 iconNodeLink.setAttribute("target", "_blank");
-                iconNodeLink.style.display = "contents";
+                iconNodeLink.classList.add("cite-unseen-icon-link");
                 iconNodeLink.appendChild(iconNode);
                 node.appendChild(iconNodeLink);
             } else {
@@ -462,517 +527,6 @@
             return iconNode;
         },
 
-        CustomCategoryDialog: function (config) {
-            CiteUnseen.CustomCategoryDialog.super.call(this, config);
-        },
-
-        /**
-         * Create a row for selecting "URL" or "URL String".
-         * This function generates a dropdown menu that allows the user to switch between "URL" and "URL String",
-         * and updates the rule object based on the selection.
-         * @param {Object} rule - The rule object to update based on the selection.
-         */
-        createUrlRow: function (rule) {
-            const chineseUrl = CiteUnseen.convByVar({
-                en: 'URL',
-                hant: '網址',
-                hans: '网址',
-                ja: 'URL',
-            });
-            const chineseUrlString = CiteUnseen.convByVar({
-                en: 'URL String',
-                hant: '網址字串',
-                hans: '网址字符串',
-                ja: 'URL 文字列',
-            });
-            // Create menu options for URL and URL String using convByVar.
-            var optionURL = new OO.ui.MenuOptionWidget({
-                data: 'url', label: chineseUrl,
-            });
-            var optionURLString = new OO.ui.MenuOptionWidget({
-                data: 'url_str', label: chineseUrlString,
-            });
-            // Initialize the dropdown label based on the current rule.
-            var initialLabel = rule.hasOwnProperty('url_str') ? chineseUrlString : chineseUrl;
-            var dropdown = new OO.ui.DropdownWidget({
-                label: initialLabel, menu: {
-                    items: [optionURL, optionURLString],
-                },
-            });
-            // Update the rule when an option is chosen.
-            dropdown.getMenu().on('choose', function (item) {
-                var data = item.getData();
-                if (data === 'url') {
-                    if (rule.url_str !== undefined) {
-                        rule.url = rule.url_str;
-                        delete rule.url_str;
-                    }
-                    dropdown.setLabel(chineseUrl);
-                } else if (data === 'url_str') {
-                    if (rule.url !== undefined) {
-                        rule.url_str = rule.url;
-                        delete rule.url;
-                    }
-                    dropdown.setLabel(chineseUrlString);
-                }
-            });
-            // Create the URL text input widget.
-            var urlValue = rule.url || rule.url_str || '';
-            var urlInput = new OO.ui.TextInputWidget({
-                value: urlValue, title: CiteUnseen.convByVar({
-                    en: 'The URL should include the domain name, without http(s); the URL String can contain any characters.',
-                    hant: '網址應包含網域名，不需要包含 http(s)；網址字串則可以包含任何字元。',
-                    hans: '网址应包含网域名，不需要包含 http(s)；网址字符串则可以包含任何字符。',
-                    ja: 'URL にはドメイン名を含め、http(s) は不要です。URL 文字列は任意の文字を含むことができます。',
-                }),
-            });
-            // Update rule when the text input value changes.
-            urlInput.on('change', function (value) {
-                if (rule.hasOwnProperty('url')) {
-                    rule.url = value;
-                } else {
-                    rule.url_str = value;
-                }
-            });
-            var $row = $('<div>').addClass('cite-unseen-dialog-url-row');
-            $row.append(dropdown.$element, urlInput.$element);
-            return $row;
-        },
-
-        /**
-         * Create a row for optional parameters (such as author, publisher, date).
-         * This function generates a container with multiple optional parameters, each containing a checkbox and a text input.
-         * When the checkbox is selected, the corresponding text input is enabled; otherwise, it is disabled.
-         * @param rule {Object} - The rule object containing parameter values.
-         */
-        createOptionalParamsRow: function (rule) {
-            var $paramsContainer = $('<div>').addClass('cite-unseen-dialog-optional-params');
-            const params = ['author', 'pub', 'date'];
-            const chineseParams = {
-                'author': CiteUnseen.convByVar({
-                    en: 'Author',
-                    hant: '作者',
-                    hans: '作者',
-                    ja: '著者'
-                }),
-                'pub': CiteUnseen.convByVar({
-                    en: 'Publisher',
-                    hant: '出版',
-                    hans: '出版',
-                    ja: '出版社'
-                }),
-                'date': CiteUnseen.convByVar({
-                    en: 'Date',
-                    hant: '日期',
-                    hans: '日期',
-                    ja: '日付'
-                }),
-            };
-            params.forEach(function (param) {
-                var paramValue = rule[param] || '';
-                var checkbox = new OO.ui.CheckboxInputWidget({
-                    selected: !!paramValue,
-                });
-                var textInput = new OO.ui.TextInputWidget({
-                    value: paramValue,
-                });
-                textInput.$element.css('display', !!paramValue ? 'inline-block' : 'none');
-                textInput.setDisabled(!checkbox.isSelected());
-                checkbox.on('change', function (isSelected) {
-                    textInput.setDisabled(!isSelected);
-                    textInput.$element.css('display', isSelected ? 'inline-block' : 'none');
-                    if (!isSelected) {
-                        textInput.setValue('');
-                        delete rule[param];
-                    }
-                });
-                textInput.on('change', function (value) {
-                    rule[param] = value;
-                });
-                var $paramRow = $('<div>')
-                    .addClass('cite-unseen-dialog-param-container')
-                    .css({ 'margin-top': '5px' });
-                $paramRow.append(checkbox.$element, $('<span>').text(chineseParams[param]), textInput.$element);
-                $paramsContainer.append($paramRow);
-            });
-            return $paramsContainer;
-        },
-
-        /**
-         * Create a complete widget for a rule.
-         * This function generates a container for the rule and attaches related UI components.
-         * @param {Object} rule - The rule data object.
-         * @param {OO.ui.FieldsetLayout} parentFieldset - The parent Fieldset, used to update the UI when removing a rule.
-         */
-        createRuleWidget: function (rule, parentFieldset) {
-            var $container = $('<div>').addClass('cite-unseen-dialog-rule-container');
-            var $urlRow = CiteUnseen.createUrlRow(rule);
-            var $optionalParams = CiteUnseen.createOptionalParamsRow(rule);
-            var ruleWidget = new OO.ui.Widget({ $element: $container });
-            // Attach rule data directly to the widget.
-            ruleWidget.ruleData = rule;
-            var removeButton = new OO.ui.ButtonWidget({
-                icon: 'trash', flags: ['destructive'],
-            });
-            removeButton.$element.addClass('cite-unseen-dialog-remove-button');
-            removeButton.on('click', function () {
-                if (parentFieldset) {
-                    parentFieldset.removeItems([ruleWidget]); // Properly remove from the fieldset.
-                } else {
-                    ruleWidget.$element.remove();
-                }
-                CiteUnseen.updateCustomCategoryDialogHeight();
-            });
-            $container.append($urlRow, $optionalParams, removeButton.$element);
-            return ruleWidget;
-        },
-
-        /**
-         * Generate the content for the custom citation category dialog.
-         * @returns {OO.ui.FieldsetLayout} - The content of the custom citation category dialog
-         */
-        generateCustomCategoryDialogRules: function (initialRules) {
-            var fieldset = new OO.ui.FieldsetLayout({
-                classes: ['cite-unseen-dialog-rules'],
-            });
-            if (initialRules) {
-                // Create a widget for each rule without updating any global array.
-                initialRules.forEach(function (rule) {
-                    fieldset.addItems([CiteUnseen.createRuleWidget(rule, fieldset)]);
-                });
-            }
-            var addButton = new OO.ui.ButtonWidget({
-                label: CiteUnseen.convByVar({
-                    en: 'Add Rule',
-                    hant: '新增規則',
-                    hans: '新增规则',
-                    ja: 'ルールを追加',
-                }), icon: 'add',
-            });
-            var addButtonField = new OO.ui.FieldLayout(addButton, { align: 'center' });
-            addButtonField.$element.addClass('cite-unseen-dialog-add-button');
-            fieldset.addButtonField = addButtonField;
-            addButton.on('click', function () {
-                var newRule = { url: '' };
-                var newWidget = CiteUnseen.createRuleWidget(newRule, fieldset);
-                // Insert new rule widget just before the add button.
-                fieldset.removeItems([fieldset.addButtonField]);
-                fieldset.addItems([newWidget]);
-                fieldset.addItems([fieldset.addButtonField]);
-                CiteUnseen.updateCustomCategoryDialogHeight();
-            });
-            fieldset.addItems([addButtonField]);
-            return fieldset;
-        },
-
-        /**
-         * Update the height of the custom citation category dialog.
-         */
-        updateCustomCategoryDialogHeight: function () {
-            if (CiteUnseen.customCategoryDialog) {
-                var maxHeight = $(window).height() * 0.5;
-                CiteUnseen.customCategoryDialog.panel.$element.css('max-height', maxHeight + 'px');
-                CiteUnseen.customCategoryDialog.updateSize();
-            }
-        },
-
-        /**
-         * Initialize the custom citation category dialog.
-         */
-        initCustomCategoryDialog: function () {
-            if (CiteUnseen.customCategoryDialogRules === null) {
-                CiteUnseen.customCategoryDialogRules = new OO.ui.FieldsetLayout();
-            }
-            OO.inheritClass(CiteUnseen.CustomCategoryDialog, OO.ui.Dialog);
-            CiteUnseen.CustomCategoryDialog.static.name = 'CustomCategoryDialog';
-
-            CiteUnseen.CustomCategoryDialog.prototype.initialize = function () {
-                CiteUnseen.CustomCategoryDialog.super.prototype.initialize.apply(this, arguments);
-
-                this.panel = new OO.ui.PanelLayout({
-                    padded: true, expanded: false,
-                });
-                this.panel.$element.addClass('cite-unseen-dialog-panel');
-                this.content = new OO.ui.FieldsetLayout();
-                this.content.$element.addClass('cite-unseen-dialog-content');
-
-                // Dialog title
-                this.titleLabelWidget = new OO.ui.LabelWidget({
-                    label: CiteUnseen.convByVar({
-                        en: '[Cite Unseen] Add Custom Citation Category Rules',
-                        hant: '[Cite Unseen] 添加自訂來源分類規則',
-                        hans: '[Cite Unseen] 添加自定义来源分类规则',
-                        ja: '[Cite Unseen] カスタム引用カテゴリルールを追加',
-                    }), classes: ['cite-unseen-dialog-title'],
-                });
-                this.titleLabelWidget.$element.append($('<span>')
-                    .text(CiteUnseen.convByVar({
-                        en: ' (This is temporary; for customizing existing citation categories, see "',
-                        hant: '（此為臨時生效；若需自訂已有的來源分類，請參見「',
-                        hans: '（此为临时生效；若需自定义已有的来源分类，请参见「',
-                        ja: '（これは一時的なものであり、既存の引用カテゴリをカスタマイズするには「',
-                    }))
-                    .css({ 'font-size': '0.75em', 'font-weight': 'normal' })
-                    .append($('<a>')
-                        .text(CiteUnseen.convByVar({
-                            en: 'Customization Guide',
-                            hant: '進階自訂教程',
-                            hans: '进阶自定义教程',
-                            ja: 'カスタマイズガイド',
-                        }))
-                        .attr('href', '//meta.wikimedia.org/wiki/Meta:Cite_Unseen'))
-                    .append(CiteUnseen.convByVar({
-                        en: '.")',
-                        hant: '」。）',
-                        hans: '」。）',
-                        ja: '」。）',
-                    }))
-                );
-
-                // Action buttons
-                this.cancelButton = new OO.ui.ButtonWidget({
-                    label: CiteUnseen.convByVar({
-                        en: 'Cancel',
-                        hant: '取消',
-                        hans: '取消',
-                        ja: 'キャンセル',
-                    }), flags: ['safe', 'close'], action: 'cancel',
-                });
-                this.saveButton = new OO.ui.ButtonWidget({
-                    label: CiteUnseen.convByVar({
-                        en: 'Save',
-                        hant: '儲存',
-                        hans: '保存',
-                        ja: '保存',
-                    }),
-                    flags: ['primary', 'progressive'],
-                    action: 'save',
-                });
-                this.actionButtons = new OO.ui.ButtonGroupWidget({
-                    items: [
-                        this.cancelButton, this.saveButton,
-                    ],
-                });
-                this.actionButtons.$element.addClass('cite-unseen-dialog-action-buttons');
-
-                // Add click event handlers for the buttons
-                this.cancelButton.$element.on('click', function (e) {
-                    this.close();
-                }.bind(this));
-                this.saveButton.$element.on('click', async function (e) {
-                    let response = await CiteUnseen.addCustomCategory();
-                    if (response) {
-                        this.close();
-                    }
-                }.bind(this));
-
-                // Dialog content
-                this.ruleContent = CiteUnseen.generateCustomCategoryDialogRules(CiteUnseen.customCategoryRules);
-                this.content.addItems([
-                    this.titleLabelWidget, this.actionButtons, this.ruleContent,
-                ]);
-
-                this.panel.$element.append(this.content.$element);
-                this.$body.append(this.panel.$element);
-
-                // Automatically update height on window resize.
-                $(window).on('resize.customCategoryDialog', function () {
-                    CiteUnseen.updateCustomCategoryDialogHeight();
-                });
-                CiteUnseen.updateCustomCategoryDialogHeight();
-            };
-            CiteUnseen.CustomCategoryDialog.prototype.getBodyHeight = function () {
-                return this.panel.$element.outerHeight(true);
-            };
-            CiteUnseen.CustomCategoryDialog.prototype.getTearDownProcess = function (data) {
-                return CiteUnseen.CustomCategoryDialog.super.prototype.getTearDownProcess.call(this, data);
-            };
-        },
-
-        /**
-         * Add a custom citation category rule.
-         * @returns {Promise<boolean>} - Returns a Promise indicating whether the operation was successful.
-         */
-        addCustomCategory: async function () {
-            if (!CiteUnseen.customCategoryDialog) {
-                console.error("[Cite Unseen] customCategoryDialog is not initialized when addCustomCategory is called.");
-                return false;
-            }
-            var dialog = CiteUnseen.customCategoryDialog;
-            var newRules = [];
-            dialog.ruleContent.getItems().forEach(function (item) {
-                // Exclude the add button field and only collect widgets with ruleData.
-                if (item !== dialog.ruleContent.addButtonField && item.ruleData) {
-                    newRules.push(item.ruleData);
-                }
-            });
-            console.log(newRules);
-
-            for (let i = 0; i < newRules.length; i++) {
-                // Ensure the rule has a non-empty URL value.
-                var rule = newRules[i];
-                var url = rule.url || rule.url_str;
-                if (!url || url.trim() === '') {
-                    mw.notify(CiteUnseen.convByVar({
-                        en: 'Invalid source URL, please check and re-enter.',
-                        hant: '來源網址無效，請檢查並重新輸入。',
-                        hans: '来源网址无效，请检查并重新输入。',
-                        ja: '無効なソースURLです。確認して再入力してください。',
-                    }), { type: 'error', autoHide: true, title: '[Cite Unseen]' });
-                    return false;
-                }
-            }
-
-            CiteUnseen.customCategoryRules = newRules;
-
-            // Update the display status of citation icons according to custom rules.
-            let customCategoryCitations = [];
-            for (let i = 0; i < CiteUnseen.refs.length; i++) {
-                let ref = CiteUnseen.refs[i];
-                let coins = ref.coins;
-                let iconNode = CiteUnseen.customCategoryIcons[i];
-                let matched = false;
-                for (let rule of CiteUnseen.customCategoryRules) {
-                    if (CiteUnseen.match(coins, rule)) {
-                        iconNode.style.display = 'inline-block';
-                        matched = true;
-                        customCategoryCitations.push(ref.cite);
-                        break;
-                    }
-                }
-                if (!matched) {
-                    iconNode.style.display = 'none';
-                }
-            }
-
-            // Highlight citations
-            CiteUnseen.highlightCitation('flag', customCategoryCitations);
-            CiteUnseen.refCategories['flag'] = customCategoryCitations;
-
-            return true;
-        },
-
-        /**
-         * Show the custom citation category dialog.
-         */
-        showCustomCategoryDialog: function () {
-            if (CiteUnseen.customCategoryDialogRules === null) {
-                CiteUnseen.initCustomCategoryDialog();
-            }
-            CiteUnseen.customCategoryDialogRules.clearItems();
-            CiteUnseen.customCategoryDialog = new CiteUnseen.CustomCategoryDialog({ padded: true, scrollable: true });
-            CiteUnseen.customCategoryDialogRules.addItems(CiteUnseen.generateCustomCategoryDialogRules());
-
-            if (CiteUnseen.windowManager === null) {
-                CiteUnseen.windowManager = new OO.ui.WindowManager({ modal: false, classes: ['cite-unseen-non-modal'] });
-                mw.util.addCSS(`
-            .cite-unseen-non-modal {
-                position: -webkit-sticky;
-                position: sticky;
-                bottom: 1em;
-                max-width: 960px;
-                margin-left: auto;
-                margin-right: auto;
-                background-color: white;
-            }
-            .cite-unseen-non-modal.oo-ui-windowManager-size-full {
-                width: 100%;
-                height: 100%;
-                bottom: 0;
-            }
-            .cite-unseen-non-modal .oo-ui-window {
-                border: 1px solid #a2a9b1;
-                box-shadow: 0 0 4px 0 rgba( 0, 0, 0, 0.25 );
-            }
-            .cite-unseen-non-modal.oo-ui-windowManager-size-full .oo-ui-window {
-                border: 0;
-                box-shadow: unset;
-            }
-            .cite-unseen-dialog-panel {
-                padding-bottom: 0;
-            }
-            .cite-unseen-dialog-action-buttons {
-                position: absolute;
-                top: 0;
-                right: -5px;
-                display: flex;
-                gap: 0 10px;
-                flex-wrap: wrap;
-            } 
-            .cite-unseen-dialog-title {
-                font-size: 1.12em;
-                font-weight: bold;
-                margin-bottom: 10px;
-                margin-right: 127px;
-            }
-            .cite-unseen-dialog-content {
-                padding-bottom: 16px;
-            }
-            .cite-unseen-dialog-rule-container {
-                position: relative;
-                width: 20em;
-                padding: 10px;
-                background-color: rgb(249, 249, 249);
-                border: 1px solid rgb(204, 204, 204);
-                flex-grow: 1;
-            }
-            .cite-unseen-dialog-rules .oo-ui-fieldsetLayout-group {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            .cite-unseen-dialog-url-row {
-                display: flex;
-                align-items: center;
-                margin-right: 55px;
-            }
-            .cite-unseen-dialog-url-row .oo-ui-dropdownWidget {
-                width: auto !important;
-                display: inline-block;
-                vertical-align: middle;
-                margin-right: 0;
-            }
-            .cite-unseen-dialog-url-row .oo-ui-textInputWidget {
-                max-width: 100%;
-                display: inline-block;
-                vertical-align: middle;
-                margin-left: 8px;
-            }
-            .cite-unseen-dialog-optional-params {
-                display: flex;
-                align-items: center;
-                flex-wrap: wrap;
-                flex-direction: row;
-                gap: 0 10px;
-            }
-            .cite-unseen-dialog-param-container {
-                display: flex;
-                align-items: center;
-                flex-grow: 1;
-            }
-            .cite-unseen-dialog-param-container .oo-ui-textInputWidget {
-                width: 10em;
-                vertical-align: middle;
-                margin-left: 8px;
-                flex-grow: 1;
-            }
-            .cite-unseen-dialog-remove-button {
-                display: block;
-                position: absolute;
-                top: 11px;
-                right: 11px;
-            }
-            .cite-unseen-dialog-add-button {
-                margin-top: 0;
-            }
-            `);
-                $('body').append(CiteUnseen.windowManager.$element);
-            }
-            CiteUnseen.windowManager.addWindows({ 'customCategoryDialog': CiteUnseen.customCategoryDialog });
-            CiteUnseen.windowManager.openWindow('customCategoryDialog');
-        },
-
         /**
          * Parse a string containing the plural marker "(s)"
          * @param {string} string - The string to parse
@@ -983,225 +537,545 @@
             return string.replace(/\(s\)/g, value === 1 ? '' : 's');
         },
 
+        // ===============================
+        // UI AND DASHBOARD
+        // ===============================
+
         /**
-         * Add citation statistics dashboard.
+         * Show the settings button for Cite Unseen configuration.
+         */
+        showSettingsButton: function () {
+            if (CiteUnseen.refs.length === 0) {
+                return;
+            }
+
+            if (CiteUnseen.settingsButton === null) {
+                CiteUnseen.settingsButton = document.createElement('div');
+                CiteUnseen.settingsButton.className = 'cite-unseen-button';
+
+                // Settings icon
+                const icon = document.createElement('span');
+                icon.innerHTML = '⚙️';
+                CiteUnseen.settingsButton.appendChild(icon);
+
+                // Settings label
+                const label = document.createElement('span');
+                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.settingsButton);
+                CiteUnseen.settingsButton.appendChild(label);
+
+                CiteUnseen.settingsButton.onclick = function () {
+                    CiteUnseen.openSettingsDialog();
+                };
+
+                CiteUnseen.settingsButton.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.settingsButtonTooltip));
+            }
+        },
+
+        /**
+         * Add citation statistics dashboard for all reflists that contain citations.
          */
         showDashboard: function () {
-            if (CiteUnseen.refs.length === 0) {
-                // No citations found, do not display the dashboard.
+            if (CiteUnseen.refs.length === 0 || window.cite_unseen_dashboard === false) {
                 return;
             }
 
-            if (CiteUnseen.dashboard === null) {
-                CiteUnseen.dashboard = {
-                    div: document.createElement('div'),
-                    total: document.createElement('div'),
-                    cats: document.createElement('div'),
-                    flag: document.createElement('a'),
-                    custom: false,
-                };
+            // Create dashboards for each reflist that has citations
+            for (const reflistData of CiteUnseen.reflists) {
+                CiteUnseen.createDashboardForReflist(reflistData);
+            }
+        },
 
-                CiteUnseen.dashboard.div.style.border = '1px solid #ccc';
-                CiteUnseen.dashboard.div.style.marginBottom = '1em';
-                CiteUnseen.dashboard.div.style.borderRadius = '5px';
-                CiteUnseen.dashboard.div.style.fontSize = '.8em';
-                CiteUnseen.dashboard.div.style.display = 'flex';
-                CiteUnseen.dashboard.div.style.gap = '.5em 1em';
-                CiteUnseen.dashboard.div.style.flexWrap = 'wrap';
-                CiteUnseen.dashboard.div.style.padding = '5px';
-                CiteUnseen.dashboard.div.style.justifyContent = 'center';
-                CiteUnseen.dashboard.div.style.textAlign = 'center';
+        /**
+         * Create a dashboard for a specific reflist
+         * @param {Object} reflistData - The reflist data object
+         */
+        createDashboardForReflist: function (reflistData) {
+            const dashboard = {
+                div: document.createElement('div'),
+                header: document.createElement('div'),
+                total: document.createElement('div'),
+                clearAll: null,
+                cats: document.createElement('div'),
+                reflistData: reflistData
+            };
 
-                // Total number of marked citations
-                let refLength = CiteUnseen.refs.length;
-                CiteUnseen.dashboard.total.innerText = "[Cite Unseen] " + CiteUnseen.convByVar({
-                    en: "Total ",
-                    hant: "共 ",
-                    hans: "共 ",
-                    ja: "合計 ",
-                }) + refLength + CiteUnseen.convByVar({
-                    en: ' citation' + (refLength > 1 ? 's' : ''),
-                    hant: ' 個來源',
-                    hans: ' 个来源',
-                    ja: ' 件の引用',
-                });
-                CiteUnseen.dashboard.total.style.fontWeight = 'bold';
-                CiteUnseen.dashboard.div.appendChild(CiteUnseen.dashboard.total);
+            reflistData.dashboard = dashboard;
 
-                // Source types
-                CiteUnseen.dashboard.cats.style.display = 'contents';
-                CiteUnseen.dashboard.cats.style.textAlign = 'center';
-                CiteUnseen.dashboard.div.appendChild(CiteUnseen.dashboard.cats);
+            dashboard.div.classList.add('cite-unseen-dashboard');
+            dashboard.header.classList.add('cite-unseen-dashboard-header');
 
-                // Custom citation filter button
-                CiteUnseen.dashboard.flag.innerText = CiteUnseen.convByVar({
-                    en: 'Custom',
-                    hant: '自訂',
-                    hans: '自定义',
-                    ja: 'カスタム',
-                });
-                CiteUnseen.dashboard.flag.style.cursor = 'pointer';
-                const flagIcon = document.createElement('img');
-                flagIcon.src = CiteUnseen.citeUnseenCategoryData['flag'].icon;
-                flagIcon.style.width = '17px';
-                flagIcon.style.height = '17px';
-                flagIcon.style.objectFit = 'contain';
-                flagIcon.style.cssText += 'max-width: 17px !important;';
-                flagIcon.style.marginRight = '5px';
-                flagIcon.style.verticalAlign = 'middle';
-                flagIcon.style.display = 'inline-block';
-                this.dashboard.flag.prepend(flagIcon);
+            // 'Clear All' button
+            const clearAllButton = document.createElement('span');
+            clearAllButton.className = 'cite-unseen-clear-all-header cite-unseen-hidden';
+            clearAllButton.innerText = CiteUnseen.convByVar(CiteUnseenI18n.clearAllFilters);
+            clearAllButton.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.clearAllFiltersTooltip));
+            clearAllButton.setAttribute('role', 'button');
+            clearAllButton.setAttribute('tabindex', '0');
+            clearAllButton.onclick = function () {
+                CiteUnseen.clearAllFiltersForReflist(dashboard.reflistData);
+            };
+            clearAllButton.onkeydown = function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    clearAllButton.onclick();
+                }
+            };
+            dashboard.clearAll = clearAllButton;
 
-                CiteUnseen.dashboard.flag.onclick = function () {
-                    CiteUnseen.showCustomCategoryDialog();
-                };
-                CiteUnseen.dashboard.div.appendChild(CiteUnseen.dashboard.flag);
+            // Calculate category counts
+            const reflistCategoryCounts = CiteUnseen.calculateCategoryCountsForReflist(reflistData);
 
-                mw.util.addCSS(`
-                    .cite-unseen-highlight {
-                        background-color: rgba(255, 246, 153, 0.5);
-                        -webkit-box-decoration-break: clone;
-                        box-decoration-break: clone;
-                    }
-                `);
+            // Cache the total citation count
+            reflistData.totalCitations = reflistData.element.querySelectorAll('li').length;
 
-                // Insert the dashboard before {{reflist}}. If there is no {{reflist}}, insert at the end.
-                document.querySelector('#mw-content-text .mw-parser-output').insertBefore(CiteUnseen.dashboard.div, CiteUnseen.reflistNode);
+            // Show citation count
+            CiteUnseen.updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations);
+            dashboard.total.classList.add('cite-unseen-dashboard-total');
+
+            // Add total and clear all button to header
+            dashboard.header.appendChild(dashboard.total);
+            dashboard.header.appendChild(clearAllButton);
+            dashboard.div.appendChild(dashboard.header);
+            dashboard.cats.classList.add('cite-unseen-dashboard-cats');
+            dashboard.div.appendChild(dashboard.cats);
+
+            // Insert the dashboard before this reflist
+            document.querySelector('#mw-content-text .mw-parser-output').insertBefore(dashboard.div, reflistData.element);
+            CiteUnseen.updateDashboardCategories(dashboard, reflistCategoryCounts);
+        },
+
+        /**
+         * Calculate category counts for a specific reflist
+         * @param {Object} reflistData - The reflist data object
+         * @returns {Object} Category counts for this reflist
+         */
+        calculateCategoryCountsForReflist: function (reflistData) {
+            const counts = {};
+
+            // Get all category types
+            const categoryTypes = CiteUnseen.getAllCategoryTypes();
+
+            // Initialize all category counts to 0
+            for (const category of categoryTypes) {
+                counts[category] = 0;
             }
 
-            // Clear counts for each citation type
-            CiteUnseen.dashboard.cats.innerHTML = '';
+            // Count citations in this reflist by category
+            for (const ref of reflistData.refs) {
+                // Find which categories this citation belongs to
+                for (const category in CiteUnseen.refCategories) {
+                    const categoryNodes = CiteUnseen.refCategories[category];
+                    if (categoryNodes && categoryNodes.includes(ref.cite)) {
+                        counts[category]++;
+
+                        // Store the reference to this category for this reflist
+                        if (!reflistData.categories[category]) {
+                            reflistData.categories[category] = [];
+                        }
+                        reflistData.categories[category].push(ref.cite);
+                    }
+                }
+            }
+
+            return counts;
+        },
+
+        /**
+         * Get all category types used in the system
+         * @returns {Array} Array of all category type strings
+         */
+        getAllCategoryTypes: function () {
+            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]), ...CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]), 'unknown'];
+        },
+
+        /**
+         * Update dashboard categories display for a specific dashboard
+         * @param {Object} dashboard - The dashboard object
+         * @param {Object} categoryCounts - Category counts for this reflist
+         */
+        updateDashboardCategories: function (dashboard, categoryCounts) {
+            // Clear existing categories
+            dashboard.cats.innerHTML = '';
 
             // List each type of source in order
-            let categoryTypes = CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]);
-            categoryTypes = categoryTypes.concat(CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]));
-            categoryTypes.push('unknown');
-            for (let category of categoryTypes) {
-                let categoryData = CiteUnseen.citeUnseenCategoryData[category];
-                if (categoryData.count > 0) {
-                    let countNode = document.createElement('div');
-                    let countIcon = document.createElement('img');
-                    countIcon.alt = CiteUnseen.convByVar({
-                        hant: categoryData.hint_hant,
-                        hans: categoryData.hint_hans,
-                        en: categoryData.hint_en,
-                        ja: categoryData.hint_ja,
-                    });
-                    countIcon.src = categoryData.icon;
+            const categoryTypes = CiteUnseen.getAllCategoryTypes();
+            for (const category of categoryTypes) {
+                const count = categoryCounts[category] || 0;
+                if (count > 0) {
+                    const countNode = document.createElement('div');
+                    countNode.setAttribute('data-category', category);
+                    countNode.classList.add('cite-unseen-category-item');
+
+                    const countIcon = document.createElement('img');
+                    countIcon.alt = CiteUnseen.convByVar(CiteUnseenI18n.categoryHints[category]);
+                    countIcon.src = CiteUnseen.citeUnseenCategoryData[category].icon;
                     countIcon.width = '17';
-                    countIcon.style.maxHeight = '18px';
-                    let countText = document.createElement('span');
-                    countText.innerText = categoryData.count + ' ' + CiteUnseen.convByVar({
-                        hant: categoryData.label_hant,
-                        hans: categoryData.label_hans,
-                        en: CiteUnseen.parseI18nPlural(categoryData.label_en, categoryData.count),
-                        ja: categoryData.label_ja,
-                    });
-                    countText.style.paddingLeft = '5px';
-                    countText.style.cursor = 'pointer';
-                    countText.onmouseover = function () {
-                        countText.style.textDecoration = 'underline';
+                    countIcon.classList.add('cite-unseen-category-icon');
+
+                    const countText = document.createElement('span');
+                    const categoryLabel = CiteUnseen.convByVar(CiteUnseenI18n.categoryLabels[category]);
+                    // Handle plural for English
+                    const labelText = mw.config.get('wgContentLanguage') === 'en' ?
+                        CiteUnseen.parseI18nPlural(categoryLabel, count) :
+                        categoryLabel;
+                    countText.innerText = count + ' ' + labelText;
+                    countText.classList.add('cite-unseen-category-text');
+
+                    countNode.onclick = function () {
+                        CiteUnseen.toggleCategoryFilterForReflist(dashboard.reflistData, category);
                     };
-                    countText.onmouseout = function () {
-                        countText.style.textDecoration = 'none';
-                    };
-                    countText.onclick = function () {
-                        if (CiteUnseen.dashboardHighlighted === category) {
-                            CiteUnseen.highlightCitation(null);  // Unhighlight all citations
-                        } else {
-                            CiteUnseen.highlightCitation(category);
+
+                    countNode.setAttribute('role', 'button');
+                    countNode.setAttribute('tabindex', '0');
+                    countNode.setAttribute('aria-pressed', 'false');
+                    countNode.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.filterToggleTooltip));
+
+                    countNode.onkeydown = function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            countNode.onclick();
                         }
                     };
+
                     countNode.appendChild(countIcon);
                     countNode.appendChild(countText);
-                    CiteUnseen.dashboard.cats.appendChild(countNode);
+                    dashboard.cats.appendChild(countNode);
                 }
             }
         },
 
         /**
-         * Highlight citations.
-         * @param category - Citation category
-         * @param nodes - List of nodes. Defaults to null, in which case nodes from the citation category are used.
+         * Get the appropriate container element for a citation (usually the <li> element)
+         * @param {Element} citationElement - The citation element
+         * @returns {Element} The container element to show/hide
          */
-        highlightCitation: function (category, nodes = null) {
-            if (CiteUnseen.dashboardHighlighted) {
-                // Unhighlight previously highlighted citations
-                CiteUnseen.refCategories[CiteUnseen.dashboardHighlighted].forEach(function (node) {
-                    node.classList.remove('cite-unseen-highlight');
-                });
+        getCitationContainer: function (citationElement) {
+            // Try to find the list item within a references section
+            const listItem = citationElement.closest('li');
+            if (listItem && listItem.closest('.references, .reflist')) {
+                return listItem;
             }
-            CiteUnseen.dashboardHighlighted = category;
-            if (category) {
-                nodes = nodes || CiteUnseen.refCategories[category];  // If nodes are not specified, use the nodes from the citation category
-                nodes.forEach(function (node) {
-                    node.classList.add('cite-unseen-highlight');
-                });
+
+            // Fallback: look for any parent list item
+            if (listItem) {
+                return listItem;
             }
+
+            // Final fallback: use the citation element itself
+            return citationElement;
         },
 
         /**
-         * (helper function) Filter obj[filter] === filterValue.
-         * @param obj - The object to filter
-         * @param filter - The key to filter by
-         * @param filterValue - The value to filter by
-         * @returns {Object} - The filtered object
+         * Toggle a category filter on/off for a specific reflist
+         * @param {Object} reflistData - The reflist data object
+         * @param {string} category - Citation category to toggle
          */
-        filterObjectIncludes: function (obj, filter, filterValue) {
-            return Object.keys(obj).reduce((acc, val) => (obj[val][filter] !== filterValue ? acc : {
-                ...acc, [val]: obj[val],
-            }), {});
-        },
-
-        /**
-         * (helper function) Filter obj[filter] !== filterValue.
-         * @param obj - The object to filter
-         * @param filter - The key to filter by
-         * @param filterValue - The value to filter by
-         * @returns {Object} - The filtered object
-         */
-        filterObjectExcludes: function (obj, filter, filterValue) {
-            return Object.keys(obj).reduce((acc, val) => (obj[val][filter] === filterValue ? acc : {
-                ...acc, [val]: obj[val],
-            }), {});
-        },
-
-        /**
-         * Get the user's custom rules from local User:<username>/CiteUnseen-Rules.js.
-         */
-        importCustomRules: async function () {
-            try {
-                await mw.loader.getScript('/w/index.php?title=User:' + encodeURIComponent(mw.config.get('wgUserName')) + '/CiteUnseen-Rules.js&ctype=text/javascript&action=raw');
-            } catch (err) {
-                console.log("[Cite Unseen] Error getting Cite Unseen custom rules: " + err.message);
+        toggleCategoryFilterForReflist: function (reflistData, category) {
+            if (!reflistData || !reflistData.selectedCategories || !category) {
+                console.warn('[Cite Unseen] Invalid parameters provided to toggleCategoryFilterForReflist');
                 return;
             }
 
-            try {
-                // Account for previous config names:
-                if (!window.cite_unseen_categories && window.cite_unseen_rules) {
-                    window.cite_unseen_categories = window.cite_unseen_rules;
-                }
-                if (!window.cite_unseen_categories && window.cite_unseen_ruleset) {
-                    window.cite_unseen_categories = window.cite_unseen_ruleset;
-                }
+            if (reflistData.selectedCategories.has(category)) {
+                reflistData.selectedCategories.delete(category);
+            } else {
+                reflistData.selectedCategories.add(category);
+            }
 
-                // Get user's category configurations:
-                if (window.cite_unseen_categories && typeof window.cite_unseen_categories === 'object') {
-                    for (let key in window.cite_unseen_categories) {
-                        if (key in CiteUnseen.citeUnseenCategories) {
-                            CiteUnseen.citeUnseenCategories[key] = window.cite_unseen_categories[key];
-                        } else if (key in [
-                            "blacklisted",
-                            "deprecated",
-                            "generallyUnreliable",
-                            "marginallyReliable",
-                            "generallyReliable",
-                            "multi",
-                        ]) {
-                            for (let checklistTypeData of CiteUnseen.citeUnseenChecklists) {
+            CiteUnseen.applyMultiCategoryFilterForReflist(reflistData);
+        },
+
+        /**
+         * Clear all category filters for a specific reflist
+         * @param {Object} reflistData - The reflist data object
+         */
+        clearAllFiltersForReflist: function (reflistData) {
+            if (!reflistData || !reflistData.selectedCategories) {
+                console.warn('[Cite Unseen] Invalid reflist data provided to clearAllFiltersForReflist');
+                return;
+            }
+
+            reflistData.selectedCategories.clear();
+            CiteUnseen.applyMultiCategoryFilterForReflist(reflistData);
+        },
+
+        /**
+         * Apply filtering based on currently selected categories for a specific reflist.
+         * @param {Object} reflistData - The reflist data object
+         */
+        applyMultiCategoryFilterForReflist: function (reflistData) {
+            if (!reflistData || !reflistData.element || !reflistData.dashboard) {
+                console.warn('[Cite Unseen] Invalid reflist data provided to applyMultiCategoryFilterForReflist');
+                return;
+            }
+
+            const dashboard = reflistData.dashboard;
+            const targetReflist = reflistData.element;
+
+            // Update dashboard visual indications for all categories
+            const allCategoryElements = dashboard.cats.querySelectorAll('[data-category]');
+            allCategoryElements.forEach(function (element) {
+                const category = element.getAttribute('data-category');
+                if (reflistData.selectedCategories.has(category)) {
+                    element.classList.add('cite-unseen-filter-selected');
+                    element.setAttribute('aria-pressed', 'true');
+                } else {
+                    element.classList.remove('cite-unseen-filter-selected');
+                    element.setAttribute('aria-pressed', 'false');
+                }
+            });
+
+            // Show/hide "Clear All" button based on active filters
+            if (dashboard.clearAll) {
+                if (reflistData.selectedCategories.size > 0) {
+                    dashboard.clearAll.classList.remove('cite-unseen-hidden');
+                    dashboard.clearAll.classList.add('cite-unseen-visible');
+                } else {
+                    dashboard.clearAll.classList.add('cite-unseen-hidden');
+                    dashboard.clearAll.classList.remove('cite-unseen-visible');
+                }
+            }
+
+            if (reflistData.selectedCategories.size === 0) {
+                // No categories selected - show all citations
+                const allListItems = targetReflist.querySelectorAll('li');
+                allListItems.forEach(function (li) {
+                    li.classList.remove('cite-unseen-list-hidden');
+                    li.classList.remove('cite-unseen-filtered-out');
+                    li.setAttribute('aria-hidden', 'false');
+                });
+
+                targetReflist.classList.remove('cite-unseen-filtering-active');
+                targetReflist.removeAttribute('data-cite-unseen-filter');
+
+                // Reset count display
+                CiteUnseen.updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations);
+                return;
+            }
+
+            // Collect all citations that match all of the selected categories
+            let visibleContainers = new Set();
+            const selectedCategoriesArray = Array.from(reflistData.selectedCategories);
+            const containerToCategoriesMap = new Map();
+
+            // Populate the map for all selected categories
+            selectedCategoriesArray.forEach(function(category) {
+                const nodes = reflistData.categories[category];
+                if (nodes) {
+                    nodes.forEach(function(citeElement) {
+                        const container = CiteUnseen.getCitationContainer(citeElement);
+                        if (container && targetReflist.contains(container)) {
+                            if (!containerToCategoriesMap.has(container)) {
+                                containerToCategoriesMap.set(container, new Set());
+                            }
+                            containerToCategoriesMap.get(container).add(category);
+                        }
+                    });
+                }
+            });
+
+            // Find containers that belong to all selected categories
+            containerToCategoriesMap.forEach(function(categoriesSet, container) {
+                if (categoriesSet.size === selectedCategoriesArray.length) {
+                    visibleContainers.add(container);
+                }
+            });
+
+            // Hide all list items in the target reflist, then show only the visible ones
+            const allListItems = targetReflist.querySelectorAll('li');
+            allListItems.forEach(function (li) {
+                if (visibleContainers.has(li)) {
+                    li.classList.remove('cite-unseen-list-hidden');
+                    li.classList.remove('cite-unseen-filtered-out');
+                    li.setAttribute('aria-hidden', 'false');
+                } else {
+                    li.classList.add('cite-unseen-list-hidden');
+                    li.classList.add('cite-unseen-filtered-out');
+                    li.setAttribute('aria-hidden', 'true');
+                }
+            });
+
+            // Add filtering state to the target reflist
+            targetReflist.classList.add('cite-unseen-filtering-active');
+            targetReflist.setAttribute('data-cite-unseen-filter', selectedCategoriesArray.join(','));
+
+            // Update count display
+            CiteUnseen.updateFilteredCountForReflist(dashboard, visibleContainers.size, reflistData.totalCitations);
+        },
+
+        /**
+         * Update the display to show filtered count for a specific reflist
+         * @param {Object} dashboard - The dashboard object
+         * @param {number} visibleCount - Number of visible citations
+         * @param {number} totalCount - Total number of citations
+         */
+        updateFilteredCountForReflist: function (dashboard, visibleCount, totalCount) {
+            if (!dashboard || !dashboard.total) return;
+
+            const totalElement = dashboard.total;
+            const baseText = "[Cite Unseen] ";
+            const citationText = totalCount === 1 ?
+                CiteUnseen.convByVar(CiteUnseenI18n.citationSingular) :
+                CiteUnseen.convByVar(CiteUnseenI18n.citationPlural);
+
+            if (visibleCount === totalCount) {
+                totalElement.innerText = baseText + CiteUnseen.convByVar(CiteUnseenI18n.totalCitations) + totalCount + citationText;
+            } else {
+                const filterInfo = dashboard.reflistData.selectedCategories.size > 1 ?
+                    " (" + dashboard.reflistData.selectedCategories.size + CiteUnseen.convByVar(CiteUnseenI18n.filtersActive) + ")" :
+                    "";
+
+                totalElement.innerText = baseText +
+                    CiteUnseen.convByVar(CiteUnseenI18n.showing) + visibleCount +
+                    CiteUnseen.convByVar(CiteUnseenI18n.of) + totalCount +
+                    citationText + filterInfo;
+            }
+        },
+
+        // ===============================
+        // RULE MANAGEMENT AND LOADING
+        // ===============================
+
+        /**
+         * Capture current state of global rule variables
+         * @returns {Object} Current state of global variables
+         */
+        captureGlobalRulesState: function () {
+            const state = {};
+            Object.entries(CiteUnseen.ruleConfig.globalMapping).forEach(([key, globalVar]) => {
+                const value = window[globalVar];
+                state[key] = value && typeof value === 'object' ? { ...value } : value;
+            });
+            return state;
+        },
+
+        /**
+         * Check if two states are different (deep comparison for objects)
+         * @param {*} a - First value
+         * @param {*} b - Second value
+         * @returns {boolean} Whether values are different
+         */
+        isDifferent: function (a, b) {
+            if (a === b) return false;
+            if (a == null || b == null) return a !== b;
+            if (typeof a === 'object' && typeof b === 'object') {
+                return JSON.stringify(a) !== JSON.stringify(b);
+            }
+            return a !== b;
+        },
+
+        /**
+         * Load custom rules from a specific wiki and return changes
+         * @param {string} wikiHost - Wiki host to load from
+         * @param {Object} previousState - Previous state to compare against
+         * @returns {Promise<Object|null>} Changed rules or null if no changes/error
+         */
+        loadCustomRulesFromWiki: async function (wikiHost, previousState = {}) {
+            const userName = encodeURIComponent(mw.config.get('wgUserName'));
+            const scriptUrl = `//${wikiHost}/w/index.php?title=User:${userName}/CiteUnseen-Rules.js&ctype=text/javascript&action=raw`;
+
+            try {
+                await mw.loader.getScript(scriptUrl);
+                console.log(`[Cite Unseen] Loaded custom rules from ${wikiHost}`);
+
+                const currentState = CiteUnseen.captureGlobalRulesState();
+                const changes = {};
+
+                // Find differences
+                Object.keys(currentState).forEach(key => {
+                    if (CiteUnseen.isDifferent(currentState[key], previousState[key])) {
+                        changes[key] = currentState[key];
+                    }
+                });
+
+                return Object.keys(changes).length > 0 ? changes : null;
+            } catch (err) {
+                console.log(`[Cite Unseen] No custom rules found on ${wikiHost} or error loading: ${err.message}`);
+                return null;
+            }
+        },
+
+        /**
+         * Merge two rule objects with local taking priority
+         * @param {Object} metaRules - Rules from meta.wikimedia.org
+         * @param {Object} localRules - Rules from local wiki
+         * @returns {Object} Merged rules
+         */
+        mergeRules: function (metaRules, localRules) {
+            const merged = {};
+            const { mergeableProps, booleanProps } = CiteUnseen.ruleConfig;
+
+            // Merge object properties
+            mergeableProps.forEach(prop => {
+                const metaValue = metaRules?.[prop];
+                const localValue = localRules?.[prop];
+
+                if (localValue && metaValue) {
+                    // If both Meta and local have values, merge them
+                    merged[prop] = {};
+
+                    Object.keys(metaValue).forEach(key => {
+                        merged[prop][key] = metaValue[key];
+                    });
+
+                    Object.keys(localValue).forEach(key => {
+                        if (Array.isArray(metaValue[key]) && Array.isArray(localValue[key])) {
+                            // For arrays, combine them (Meta + local), removing duplicates
+                            merged[prop][key] = [...new Set([...(metaValue[key] || []), ...(localValue[key] || [])])];
+                        } else {
+                            merged[prop][key] = localValue[key];
+                        }
+                    });
+                } else if (localValue) {
+                    merged[prop] = localValue;
+                } else if (metaValue) {
+                    merged[prop] = metaValue;
+                }
+            });
+
+            // For Boolean properties, local takes precedence
+            booleanProps.forEach(prop => {
+                const localValue = localRules?.[prop];
+                const metaValue = metaRules?.[prop];
+
+                if (localValue !== undefined) {
+                    merged[prop] = localValue;
+                } else if (metaValue !== undefined) {
+                    merged[prop] = metaValue;
+                }
+            });
+
+            return merged;
+        },
+
+        /**
+         * Apply rules to global variables
+         * @param {Object} rules - Rules to apply
+         */
+        applyRulesToGlobals: function (rules) {
+            Object.entries(CiteUnseen.ruleConfig.globalMapping).forEach(([key, globalVar]) => {
+                if (rules[key] !== undefined) {
+                    window[globalVar] = rules[key];
+                }
+            });
+        },
+
+        /**
+         * Apply user configurations to internal CiteUnseen objects
+         */
+        applyUserConfigurations: function () {
+            // Apply category configurations
+            if (window.cite_unseen_categories && typeof window.cite_unseen_categories === 'object') {
+                for (const key in window.cite_unseen_categories) {
+                    if (key in CiteUnseen.citeUnseenCategories) {
+                        CiteUnseen.citeUnseenCategories[key] = window.cite_unseen_categories[key];
+                    } else {
+                        // Handle grouped categories (blacklisted, deprecated, etc.)
+                        const groupKeys = ["blacklisted", "deprecated", "generallyUnreliable", "marginallyReliable", "generallyReliable", "multi"];
+                        if (groupKeys.includes(key)) {
+                            for (const checklistTypeData of CiteUnseen.citeUnseenChecklists) {
                                 if (checklistTypeData[0] === key) {
-                                    for (let checklist of checklistTypeData[1]) {
+                                    for (const checklist of checklistTypeData[1]) {
                                         CiteUnseen.citeUnseenCategories[checklist] = window.cite_unseen_categories[key];
                                     }
                                 }
@@ -1209,46 +1083,81 @@
                         }
                     }
                 }
+            }
 
-                // Get user's domain ignore lists:
-                if (window.cite_unseen_domain_ignore && typeof window.cite_unseen_domain_ignore === 'object') {
-                    for (let key in window.cite_unseen_domain_ignore) {
-                        if (window.cite_unseen_domain_ignore[key].length && key in CiteUnseen.citeUnseenDomainIgnore) {
-                            CiteUnseen.citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
+            // Apply domain ignore lists
+            if (window.cite_unseen_domain_ignore && typeof window.cite_unseen_domain_ignore === 'object') {
+                for (const key in window.cite_unseen_domain_ignore) {
+                    if (window.cite_unseen_domain_ignore[key]?.length && key in CiteUnseen.citeUnseenDomainIgnore) {
+                        CiteUnseen.citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
+                    }
+                }
+            }
+
+            // Apply additional domains and strings
+            ['cite_unseen_additional_domains', 'cite_unseen_additional_strings'].forEach(configType => {
+                const config = window[configType];
+                if (config && typeof config === 'object') {
+                    const ruleKey = configType.includes('domains') ? 'url' : 'url_str';
+
+                    for (const key in config) {
+                        if (config[key]?.length && key in CiteUnseen.categorizedRules) {
+                            const items = Array.isArray(config[key]) ? config[key] : [config[key]];
+                            const rules = items.map(item => ({ [ruleKey]: item }));
+                            CiteUnseen.categorizedRules[key] = CiteUnseen.categorizedRules[key].concat(rules);
                         }
                     }
                 }
+            });
+        },
 
-                // Get user's custom domains:
-                if (window.cite_unseen_additional_domains && typeof window.cite_unseen_additional_domains === 'object') {
-                    for (let key in window.cite_unseen_additional_domains) {
-                        if (window.cite_unseen_additional_domains[key].length && key in CiteUnseen.categorizedRules) {
-                            CiteUnseen.categorizedRules[key] = CiteUnseen.categorizedRules[key].concat({
-                                'url': window.cite_unseen_additional_domains[key],
-                            });
-                        }
-                    }
-                }
+        /**
+         * Load and merge custom rules from meta and local wikis
+         */
+        importCustomRules: async function () {
+            try {
+                // Get initial state and load rules from Meta Wiki
+                const initialState = CiteUnseen.captureGlobalRulesState();
+                const metaRules = await CiteUnseen.loadCustomRulesFromWiki('meta.wikimedia.org', initialState);
+                const metaState = CiteUnseen.captureGlobalRulesState();
+                CiteUnseen._metaRules = {
+                    categories: metaState.categories || {},
+                    domainIgnore: metaState.domainIgnore || {},
+                    additionalDomains: metaState.additionalDomains || {},
+                    additionalStrings: metaState.additionalStrings || {},
+                    dashboard: metaState.dashboard !== undefined ? metaState.dashboard : true,
+                    showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true
+                };
 
-                // Get user's custom strings:
-                if (window.cite_unseen_additional_strings && typeof window.cite_unseen_additional_strings === 'object') {
-                    for (let key in window.cite_unseen_additional_strings) {
-                        if (window.cite_unseen_additional_strings[key].length && key in CiteUnseen.categorizedRules) {
-                            CiteUnseen.categorizedRules[key] = CiteUnseen.categorizedRules[key].concat({
-                                'url_str': window.cite_unseen_additional_strings[key],
-                            });
-                        }
-                    }
-                }
+                // Load local rules
+                const localRules = await CiteUnseen.loadCustomRulesFromWiki(
+                    mw.config.get('wgServer').replace('//', ''),
+                    metaState
+                );
 
-                // Whether to show the dashboard. Shown by default.
-                if (window.cite_unseen_dashboard === undefined) {
-                    window.cite_unseen_dashboard = true;
-                }
+                CiteUnseen._localRules = {
+                    categories: localRules?.categories || {},
+                    domainIgnore: localRules?.domainIgnore || {},
+                    additionalDomains: localRules?.additionalDomains || {},
+                    additionalStrings: localRules?.additionalStrings || {},
+                    dashboard: localRules?.dashboard !== undefined ? localRules.dashboard : true,
+                    showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true
+                };
+
+                // Merge and apply all rules
+                const mergedRules = CiteUnseen.mergeRules(metaRules, localRules);
+                CiteUnseen.applyRulesToGlobals(mergedRules);
+
+                CiteUnseen.applyUserConfigurations();
+
             } catch (err) {
-                console.log('[Cite Unseen] Could not read custom rules due to error: ', err);
+                console.log('[Cite Unseen] Error during custom rules import:', err);
             }
         },
+
+        // ===============================
+        // DATA LOADING AND CITATION PROCESSING
+        // ===============================
 
         /**
          * Import dependencies and categorized rules.
@@ -1256,6 +1165,9 @@
          * @returns {Promise<Record<string, Object[]>>}
          */
         importDependencies: async function () {
+            // Load internationalization strings
+            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen-i18n.js&action=raw&ctype=text/javascript');
+
             if (mw.config.get('wgServer') === "//zh.wikipedia.org") {
                 // On Chinese Wikipedia, prioritize using the ext.gadget.HanAssist module.
                 await mw.loader.using('ext.gadget.HanAssist', function (require) {
@@ -1263,10 +1175,9 @@
                     CiteUnseen.convByVar = convByVar;
                 });
             } else {
-                let lang = mw.config.get('wgContentLanguage');
+                const lang = mw.config.get('wgContentLanguage');
                 CiteUnseen.convByVar = function (i18nDict) {
                     const locale = new Intl.Locale(lang);
-                    // If the language is Chinese.
                     if (locale.language === 'zh') {
                         if (locale.script === 'Hans') {
                             return i18nDict['hans'] || i18nDict['hant'] || i18nDict['en'] || 'Language undefined!';
@@ -1274,12 +1185,13 @@
                             return i18nDict['hant'] || i18nDict['hans'] || i18nDict['en'] || 'Language undefined!';
                         }
                     }
-                    // Other languages.
                     return i18nDict[lang] || i18nDict['en'] || 'Language undefined!';
                 };
             }
 
-            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=Meta:Cite_Unseen/sources.js&action=raw&ctype=text/javascript');
+            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen/css.js&action=raw&ctype=text/javascript');
+            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen/i18n.js&action=raw&ctype=text/javascript');
+            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen/sources.js&action=raw&ctype=text/javascript');
             return await CiteUnseenData.getCategorizedRules();
         },
 
@@ -1292,7 +1204,7 @@
             //   <span title="...(COinS string)...">...</span>
 
             // Filter all <cite> tags
-            for (let citeTag of document.querySelectorAll("cite")) {
+            for (const citeTag of document.querySelectorAll("cite")) {
                 let coinsObject;
                 let coinsTag = citeTag.nextElementSibling;
                 if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
@@ -1326,32 +1238,1486 @@
                 }
             }
 
-            // Find the location of {{reflist}}. If there are multiple, use the last one. If none, insert at the end.
-            let reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist');
+            // Handle plain-link citations in <li> tags that don't have <cite>
+            const citationLiElements = document.querySelectorAll('li[id^="cite_note-"]');
+            for (const li of citationLiElements) {
+                if (li.querySelector('cite')) {
+                    continue;
+                }
+
+                const refTextElement = li.querySelector('.reference-text');
+                if (!refTextElement) {
+                    continue;
+                }
+
+                const aTag = refTextElement.querySelector('a.external');
+                if (aTag && aTag.hasAttribute('href')) {
+                    const coinsObject = { 'rft_id': aTag.getAttribute('href') };
+                    CiteUnseen.refs.push({
+                        cite: refTextElement,
+                        coins: coinsObject,
+                    });
+                    if (coinsObject['rft_id']) {
+                        CiteUnseen.refLinks.push(coinsObject['rft_id']);
+                    }
+                }
+            }
+
+            // Find all reflists and track citations within each
+            const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist');
+            CiteUnseen.reflists = [];
+
             if (reflists.length > 0) {
-                CiteUnseen.reflistNode = reflists[reflists.length - 1];
-            } else {
-                CiteUnseen.reflistNode = null;  // Insert at the end
+                // Create reflist data structure for each reflist
+                for (const reflist of reflists) {
+                    const reflistData = {
+                        element: reflist,
+                        refs: [],
+                        categories: {},
+                        dashboard: null,
+                        selectedCategories: new Set(),
+                        totalCitations: null // Will be calculated when dashboard is created
+                    };
+
+                    // Find which of our tracked citations belong to this reflist
+                    for (const ref of CiteUnseen.refs) {
+                        if (reflist.contains(ref.cite)) {
+                            reflistData.refs.push(ref);
+                        }
+                    }
+
+                    // Only track reflists that have citations
+                    if (reflistData.refs.length > 0) {
+                        CiteUnseen.reflists.push(reflistData);
+                    }
+                }
             }
         },
 
         /**
-         * Main entry point for the CiteUnseen script.
+         * Get meta rules from global variables (rules that were loaded from meta.wikimedia.org)
+         * @returns {Object} Meta rules object
          */
+        getMetaRulesFromGlobals: function () {
+            // Return the stored meta rules if available, otherwise default to empty
+            return CiteUnseen._metaRules || {
+                categories: {},
+                domainIgnore: {},
+                additionalDomains: {},
+                additionalStrings: {},
+                dashboard: true,
+                showSuggestions: true
+            };
+        },
+
+        /**
+         * Get local rules from global variables
+         * @returns {Object} Local rules object
+         */
+        getLocalRulesFromGlobals: function () {
+            return CiteUnseen._localRules || {
+                categories: {},
+                domainIgnore: {},
+                additionalDomains: {},
+                additionalStrings: {},
+                dashboard: true,
+                showSuggestions: true
+            };
+        },
+
+        /**
+         * Save settings to user's MediaWiki config page
+         * @param {Object} settings - Settings object to save
+         * @param {String} target - Target wiki ('meta' or 'local')
+         * @param {Function} onSuccess - Success callback
+         * @param {Function} onError - Error callback
+         */
+        saveSettingsToWiki: function (settings, target, onSuccess, onError) {
+            const api = new mw.Api();
+
+            // Determine the target wiki and page title
+            let pageTitle, apiOptions;
+
+            if (target === 'meta') {
+                pageTitle = 'User:' + mw.config.get('wgUserName') + '/CiteUnseen-Rules.js';
+                // For meta.wikimedia.org, we need to use cross-wiki API
+                apiOptions = {
+                    ajax: {
+                        url: '//meta.wikimedia.org/w/api.php',
+                        xhrFields: { withCredentials: true }
+                    }
+                };
+            } else {
+                pageTitle = 'User:' + mw.config.get('wgUserName') + '/CiteUnseen-Rules.js';
+                apiOptions = {};
+            }
+
+            const targetApi = target === 'meta' ? new mw.ForeignApi('//meta.wikimedia.org/w/api.php') : api;
+
+            targetApi.postWithToken('csrf', {
+                action: 'edit',
+                title: pageTitle,
+                text: CiteUnseen.generateSettingsContent(settings, target),
+                summary: `[Cite Unseen] Updating settings via settings menu`,
+                contentmodel: 'javascript'
+            }).done(function (result) {
+                if (result.edit && result.edit.result === 'Success') {
+                    if (onSuccess) onSuccess(result);
+                } else {
+                    const error = new Error('Failed to save settings');
+                    if (onError) onError(error);
+                }
+            }).fail(function (error) {
+                console.error('Failed to save settings:', error);
+                if (onError) onError(error);
+            });
+        },
+
+        // ===============================
+        // SETTINGS DIALOG AND CONFIG
+        // ===============================
+
+        /**
+         * Create and show the Codex settings dialog
+         */
+        createSettingsDialog: function () {
+            mw.loader.using('@wikimedia/codex').then(function (require) {
+                const Vue = require('vue');
+                const Codex = require('@wikimedia/codex');
+
+                if (!document.getElementById('cite-unseen-dialog-mount')) {
+                    const mountPoint = document.createElement('div');
+                    mountPoint.id = 'cite-unseen-dialog-mount';
+                    document.body.appendChild(mountPoint);
+                }
+
+                const app = Vue.createMwApp({
+                    i18n: {
+                        documentationLink: CiteUnseen.convByVar(CiteUnseenI18n.documentationLink),
+                        tabGeneral: CiteUnseen.convByVar(CiteUnseenI18n.tabGeneral),
+                        tabCategories: CiteUnseen.convByVar(CiteUnseenI18n.tabCategories),
+                        tabIgnoreDomains: CiteUnseen.convByVar(CiteUnseenI18n.tabIgnoreDomains),
+                        tabAdditionalDomains: CiteUnseen.convByVar(CiteUnseenI18n.tabAdditionalDomains),
+                        tabAdditionalStrings: CiteUnseen.convByVar(CiteUnseenI18n.tabAdditionalStrings),
+                        categoriesTabGuidance: CiteUnseen.convByVar(CiteUnseenI18n.categoriesTabGuidance),
+                        ignoreDomainsTabGuidance: CiteUnseen.convByVar(CiteUnseenI18n.ignoreDomainsTabGuidance),
+                        additionalDomainsTabGuidance: CiteUnseen.convByVar(CiteUnseenI18n.additionalDomainsTabGuidance),
+                        additionalStringsTabGuidance: CiteUnseen.convByVar(CiteUnseenI18n.additionalStringsTabGuidance),
+                        enableDisableCategories: CiteUnseen.convByVar(CiteUnseenI18n.enableDisableCategories),
+                        showDashboard: CiteUnseen.convByVar(CiteUnseenI18n.showDashboard),
+                        showSuggestionsButton: CiteUnseen.convByVar(CiteUnseenI18n.showSuggestionsButton),
+                        domainsToIgnore: CiteUnseen.convByVar(CiteUnseenI18n.domainsToIgnore),
+                        additionalDomains: CiteUnseen.convByVar(CiteUnseenI18n.additionalDomains),
+                        additionalUrlStrings: CiteUnseen.convByVar(CiteUnseenI18n.additionalUrlStrings)
+                    },
+                    data() {
+                        return {
+                            open: true,
+                            activeTab: 'general',
+                            target: 'meta', // 'meta' or 'local'
+                            settings: {
+                                categories: {},
+                                domainIgnore: {},
+                                additionalDomains: {},
+                                additionalStrings: {},
+                                dashboard: true,
+                                showSuggestions: true
+                            },
+                            isSaving: false,
+                            cleanupTimer: null
+                        };
+                    },
+                    computed: {
+                        categories() {
+                            return CiteUnseen.getSettingCategories();
+                        },
+                        dialogTitle() {
+                            return CiteUnseen.convByVar(CiteUnseenI18n.settingsDialogTitle);
+                        },
+                        primaryAction() {
+                            return {
+                                label: this.isSaving ? CiteUnseen.convByVar(CiteUnseenI18n.saving) : CiteUnseen.convByVar(CiteUnseenI18n.save),
+                                actionType: 'progressive',
+                                disabled: this.isSaving
+                            };
+                        },
+                        defaultAction() {
+                            return {
+                                label: CiteUnseen.convByVar(CiteUnseenI18n.cancel)
+                            };
+                        },
+                        targetWikiDisplayName() {
+                            return mw.config.get('wbCurrentSiteDetails').shortName + ' ' + mw.config.get('wgSiteName');
+                        }
+                    },
+                    methods: {
+                        getCategoryDisplayName(categoryId) {
+                            return CiteUnseen.getCategoryDisplayName(categoryId);
+                        },
+                        validateDomain(domain) {
+                            // Check if domain matches expected format: name.tld
+                            const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+                            return domainRegex.test(domain);
+                        },
+                        cleanDomainInput(input) {
+                            if (!input || typeof input !== 'string') return input;
+
+                            let cleaned = input.trim();
+
+                            // Extract domain from URL if it contains protocol
+                            if (cleaned.includes('://')) {
+                                try {
+                                    cleaned = new URL(cleaned).hostname;
+                                } catch (e) {
+                                    const match = cleaned.match(/^https?:\/\/([^\/\?#]+)/i);
+                                    if (match) cleaned = match[1];
+                                }
+                            }
+
+                            // Clean up the domain
+                            cleaned = cleaned.split(/[\/\?#:]/)[0]; // Remove path, query, fragment, port
+                            if (cleaned.startsWith('www.')) cleaned = cleaned.substring(4);
+
+                            return cleaned.toLowerCase();
+                        },
+                        validateAndCleanDomains(domainsText) {
+                            const domains = domainsText.trim() ? domainsText.split('\n').map(s => s.trim()).filter(Boolean) : [];
+                            const validDomains = [];
+                            const invalidDomains = [];
+                            const correctedDomains = [];
+
+                            domains.forEach(domain => {
+                                const originalDomain = domain;
+                                const cleanedDomain = this.cleanDomainInput(domain);
+
+                                if (this.validateDomain(cleanedDomain)) {
+                                    validDomains.push(cleanedDomain);
+                                    if (cleanedDomain !== originalDomain) {
+                                        correctedDomains.push({ original: originalDomain, corrected: cleanedDomain });
+                                    }
+                                } else {
+                                    invalidDomains.push(originalDomain);
+                                }
+                            });
+
+                            return { validDomains, invalidDomains, correctedDomains };
+                        },
+                        onPrimaryAction() {
+                            this.saveSettings();
+                        },
+                        onDefaultAction() {
+                            this.closeDialog();
+                        },
+                        onUpdateOpen(newValue) {
+                            if (!newValue) {
+                                this.closeDialog();
+                            }
+                        },
+                        onDomainInputChange(category, type) {
+                            if (this.cleanupTimer) {
+                                clearTimeout(this.cleanupTimer);
+                            }
+
+                            this.cleanupTimer = setTimeout(() => {
+                                const textKey = type === 'ignore' ? 'domainIgnore' : 'additionalDomains';
+                                const currentText = this.settings[textKey][category] || '';
+                                const result = this.validateAndCleanDomains(currentText);
+
+                                if (result.correctedDomains.length > 0) {
+                                    this.settings[textKey][category] = result.validDomains.join('\n');
+                                }
+                            }, 1000); // 1 second delay after user stops typing
+                        },
+                        onTargetChange() {
+                            // Show loading state
+                            this.isSaving = true;
+
+                            // Clear current settings
+                            this.settings = {
+                                categories: {},
+                                domainIgnore: {},
+                                additionalDomains: {},
+                                additionalStrings: {},
+                                dashboard: true,
+                                showSuggestions: true
+                            };
+
+                            // Determine which wiki to load from
+                            const wikiHost = this.target === 'meta' ?
+                                'meta.wikimedia.org' :
+                                mw.config.get('wgServer').replace('//', '');
+
+                            // Clear global variables
+                            const globalVars = ['cite_unseen_categories', 'cite_unseen_domain_ignore', 'cite_unseen_additional_domains', 'cite_unseen_additional_strings', 'cite_unseen_dashboard', 'cite_unseen_show_suggestions'];
+                            globalVars.forEach(varName => {
+                                delete window[varName];
+                            });
+
+                            // Load fresh settings from the selected wiki
+                            CiteUnseen.loadCustomRulesFromWiki(wikiHost, {})
+                                .then(rules => {
+                                    if (this.target === 'meta') {
+                                        // For meta rules, use defaults for any undefined values
+                                        const defaultRules = {
+                                            categories: {},
+                                            domainIgnore: {},
+                                            additionalDomains: {},
+                                            additionalStrings: {},
+                                            dashboard: true,
+                                            showSuggestions: true
+                                        };
+                                        CiteUnseen._metaRules = rules ? { ...defaultRules, ...rules } : defaultRules;
+                                    } else {
+                                        // For local rules, preserve undefined values to inherit defaults from Meta
+                                        const emptyRules = {
+                                            categories: {},
+                                            domainIgnore: {},
+                                            additionalDomains: {},
+                                            additionalStrings: {}
+                                        };
+                                        CiteUnseen._localRules = rules ? { ...emptyRules, ...rules } : emptyRules;
+                                    }
+
+                                    this.loadCurrentSettings();
+                                })
+                                .catch(error => {
+                                    console.warn(`[Cite Unseen] Failed to load settings from ${wikiHost}:`, error);
+                                    if (this.target === 'meta') {
+                                        // Set default rules for meta if loading fails
+                                        CiteUnseen._metaRules = {
+                                            categories: {},
+                                            domainIgnore: {},
+                                            additionalDomains: {},
+                                            additionalStrings: {},
+                                            dashboard: true,
+                                            showSuggestions: true
+                                        };
+                                    } else {
+                                        CiteUnseen._localRules = {
+                                            categories: {},
+                                            domainIgnore: {},
+                                            additionalDomains: {},
+                                            additionalStrings: {}
+                                        };
+                                    }
+
+                                    this.loadCurrentSettings();
+                                })
+                                .finally(() => {
+                                    this.isSaving = false;
+                                });
+                        },
+                        closeDialog() {
+                            this.open = false;
+                            setTimeout(() => {
+                                const mountPoint = document.getElementById('cite-unseen-dialog-mount');
+                                if (mountPoint) {
+                                    mountPoint.remove();
+                                }
+
+                                CiteUnseen.vueApp = null;
+                            }, 300);
+                        },
+                        loadCurrentSettings() {
+                            // Load settings based on current target
+                            const targetRules = this.target === 'meta' ?
+                                CiteUnseen.getMetaRulesFromGlobals() :
+                                CiteUnseen.getLocalRulesFromGlobals();
+
+                            if (this.target === 'meta') {
+                                // Load category settings
+                                this.categories.forEach(category => {
+                                    this.settings.categories[category] = targetRules.categories?.[category] !== false;
+                                });
+
+                                // Load boolean settings
+                                this.settings.dashboard = targetRules.dashboard !== false;
+                                this.settings.showSuggestions = targetRules.showSuggestions !== false;
+                            } else {
+                                // For local rules, inherit from Meta if undefined, otherwise use local value
+                                const metaRules = CiteUnseen.getMetaRulesFromGlobals();
+
+                                // Load category settings
+                                this.categories.forEach(category => {
+                                    this.settings.categories[category] = targetRules.categories?.[category] !== undefined ?
+                                        targetRules.categories[category] :
+                                        (metaRules.categories?.[category] !== false);
+                                });
+
+                                // Load boolean settings
+                                this.settings.dashboard = targetRules.dashboard !== undefined ?
+                                    targetRules.dashboard :
+                                    (metaRules.dashboard !== false);
+
+                                this.settings.showSuggestions = targetRules.showSuggestions !== undefined ?
+                                    targetRules.showSuggestions :
+                                    (metaRules.showSuggestions !== false);
+                            }
+
+                            // Load list settings
+                            this.categories.forEach(category => {
+                                this.settings.domainIgnore[category] = (targetRules.domainIgnore?.[category] || []).join('\n');
+                                this.settings.additionalDomains[category] = (targetRules.additionalDomains?.[category] || []).join('\n');
+                                this.settings.additionalStrings[category] = (targetRules.additionalStrings?.[category] || []).join('\n');
+                            });
+                        },
+                        saveSettings() {
+                            this.isSaving = true;
+
+                            const processedSettings = {
+                                categories: { ...this.settings.categories },
+                                domainIgnore: {},
+                                additionalDomains: {},
+                                additionalStrings: {},
+                                dashboard: this.settings.dashboard,
+                                showSuggestions: this.settings.showSuggestions
+                            };
+
+                            const validationErrors = [];
+                            const allCorrections = [];
+
+                            // Process text areas into arrays
+                            this.categories.forEach(category => {
+                                const processTextArea = (text) => text.trim() ? text.split('\n').map(s => s.trim()).filter(Boolean) : [];
+
+                                // Helper function to process domain validation
+                                const processDomains = (domains, type) => {
+                                    const result = this.validateAndCleanDomains(domains || '');
+
+                                    if (result.invalidDomains.length > 0) {
+                                        validationErrors.push(`${this.getCategoryDisplayName(category)} - Invalid ${type} domains: ${result.invalidDomains.join(', ')}`);
+                                    }
+
+                                    if (result.correctedDomains.length > 0) {
+                                        allCorrections.push({
+                                            category: this.getCategoryDisplayName(category),
+                                            type: `${type} domains`,
+                                            corrections: result.correctedDomains
+                                        });
+                                    }
+
+                                    return result.validDomains;
+                                };
+
+                                // Process ignore and additional domains
+                                processedSettings.domainIgnore[category] = processDomains(this.settings.domainIgnore[category], 'ignore');
+                                processedSettings.additionalDomains[category] = processDomains(this.settings.additionalDomains[category], 'additional');
+                                processedSettings.additionalStrings[category] = processTextArea(this.settings.additionalStrings[category] || '');
+                            });
+
+                            // Show corrections made (if any)
+                            if (allCorrections.length > 0) {
+                                let correctionMessages = [];
+                                allCorrections.forEach(correction => {
+                                    correction.corrections.forEach(c => {
+                                        correctionMessages.push(`${correction.category} (${correction.type}): "${c.original}" → "${c.corrected}"`);
+                                    });
+                                });
+
+                                const correctionMessage = CiteUnseen.convByVar(CiteUnseenI18n.domainsCorrectedMessage) + correctionMessages.join('\n');
+
+                                mw.notify(correctionMessage, {
+                                    type: 'info',
+                                    title: '[Cite Unseen]',
+                                    autoHide: true
+                                });
+
+                                // Update the form with corrected values
+                                this.categories.forEach(category => {
+                                    ['domainIgnore', 'additionalDomains'].forEach(type => {
+                                        const result = this.validateAndCleanDomains(this.settings[type][category] || '');
+                                        if (result.correctedDomains.length > 0) {
+                                            this.settings[type][category] = result.validDomains.join('\n');
+                                        }
+                                    });
+                                });
+                            }
+
+                            // If there are validation errors, show them and stop
+                            if (validationErrors.length > 0) {
+                                this.isSaving = false;
+                                const errorMessage = CiteUnseen.convByVar(CiteUnseenI18n.invalidDomainFormatMessage) + validationErrors.join('\n');
+
+                                mw.notify(errorMessage, {
+                                    type: 'error',
+                                    title: '[Cite Unseen]',
+                                    autoHide: false
+                                });
+                                return;
+                            }
+
+                            CiteUnseen.saveSettingsToWiki(
+                                processedSettings,
+                                this.target,
+                                (result) => {
+                                    this.closeDialog();
+                                    if (confirm(CiteUnseen.convByVar(CiteUnseenI18n.settingsSavedSuccess))) {
+                                        location.reload();
+                                    }
+                                },
+                                (error) => {
+                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.settingsSaveError) + (error.message || error), {
+                                        type: 'error',
+                                        title: '[Cite Unseen]'
+                                    });
+                                }
+                            );
+
+                            this.isSaving = false;
+                        }
+                    },
+                    mounted() {
+                        this.loadCurrentSettings();
+                    },
+                    template: `
+                        <cdx-dialog
+                            v-model:open="open"
+                            :title="dialogTitle"
+                            :use-close-button="true"
+                            :primary-action="primaryAction"
+                            :default-action="defaultAction"
+                            @primary="onPrimaryAction"
+                            @default="onDefaultAction"
+                            @update:open="onUpdateOpen"
+                            class="cite-unseen-dialog"
+                        >
+                            <template #header>
+                                <div class="cite-unseen-dialog-header">
+                                    <span>{{ dialogTitle }}</span>
+                                    <a href="https://meta.wikimedia.org/wiki/Meta:Cite_Unseen" target="_blank" class="cite-unseen-dialog-docs-link">
+                                        Documentation
+                                    </a>
+                                </div>
+                            </template>
+                            <div class="cite-unseen-target-section">
+                                <span class="cite-unseen-target-label">
+                                    View settings from:
+                                    <span v-if="isSaving" class="cite-unseen-loading-text">(loading...)</span>
+                                </span>
+                                <div class="cite-unseen-target-controls">
+                                    <label class="cite-unseen-radio-option">
+                                        <input type="radio" v-model="target" value="meta" @change="onTargetChange" :disabled="isSaving">
+                                        <span>Meta (global)</span>
+                                    </label>
+                                    <label class="cite-unseen-radio-option">
+                                        <input type="radio" v-model="target" value="local" @change="onTargetChange" :disabled="isSaving">
+                                        <span>{{ targetWikiDisplayName }} (local)</span>
+                                    </label>
+                                </div>
+                                <span>
+                                    (local wiki settings override global settings)
+                                </span>
+                            </div>
+                            <hr />
+                            <cdx-tabs v-if="!isSaving" v-model:active="activeTab">
+                                <cdx-tab name="general" :label="$options.i18n.tabGeneral">
+                                    <cdx-checkbox v-model="settings.dashboard">
+                                        {{ $options.i18n.showDashboard }}
+                                    </cdx-checkbox>
+                                    <cdx-checkbox v-model="settings.showSuggestions">
+                                        {{ $options.i18n.showSuggestionsButton }}
+                                    </cdx-checkbox>
+                                </cdx-tab>
+
+                                <cdx-tab name="categories" :label="$options.i18n.tabCategories">
+                                    <div class="cite-unseen-tab-guidance">
+                                        {{ $options.i18n.categoriesTabGuidance }}
+                                    </div>
+                                    <h3>{{ $options.i18n.enableDisableCategories }}</h3>
+                                    <div v-for="category in categories" :key="category" class="cite-unseen-category-container">
+                                        <cdx-checkbox
+                                            v-model="settings.categories[category]"
+                                            :input-value="category"
+                                        >
+                                            {{ getCategoryDisplayName(category) }}
+                                        </cdx-checkbox>
+                                    </div>
+                                </cdx-tab>
+
+                                <cdx-tab name="ignore" :label="$options.i18n.tabIgnoreDomains">
+                                    <div class="cite-unseen-tab-guidance">
+                                        {{ $options.i18n.ignoreDomainsTabGuidance }}
+                                    </div>
+                                    <h3>{{ $options.i18n.domainsToIgnore }}</h3>
+                                    <div v-for="category in categories" :key="category" class="cite-unseen-domain-category-container">
+                                        <label class="cite-unseen-category-label">{{ getCategoryDisplayName(category) }}</label>
+                                        <cdx-text-area
+                                            v-model="settings.domainIgnore[category]"
+                                            :rows="3"
+                                            @input="onDomainInputChange(category, 'ignore')"
+                                        />
+                                    </div>
+                                </cdx-tab>
+
+                                <cdx-tab name="additionalDomains" :label="$options.i18n.tabAdditionalDomains">
+                                    <div class="cite-unseen-tab-guidance">
+                                        {{ $options.i18n.additionalDomainsTabGuidance }}
+                                    </div>
+                                    <h3>{{ $options.i18n.additionalDomains }}</h3>
+                                    <div v-for="category in categories" :key="category" class="cite-unseen-domain-category-container">
+                                        <label class="cite-unseen-category-label">{{ getCategoryDisplayName(category) }}</label>
+                                        <cdx-text-area
+                                            v-model="settings.additionalDomains[category]"
+                                            :rows="2"
+                                            @input="onDomainInputChange(category, 'additional')"
+                                        />
+                                    </div>
+                                </cdx-tab>
+
+                                <cdx-tab name="additionalStrings" :label="$options.i18n.tabAdditionalStrings">
+                                    <div class="cite-unseen-tab-guidance">
+                                        {{ $options.i18n.additionalStringsTabGuidance }}
+                                    </div>
+                                    <h3>{{ $options.i18n.additionalUrlStrings }}</h3>
+                                    <div v-for="category in categories" :key="category" class="cite-unseen-domain-category-container">
+                                        <label class="cite-unseen-category-label">{{ getCategoryDisplayName(category) }}</label>
+                                        <cdx-text-area
+                                            v-model="settings.additionalStrings[category]"
+                                            :rows="2"
+                                        />
+                                    </div>
+                                </cdx-tab>
+                            </cdx-tabs>
+                        </cdx-dialog>
+                    `
+                });
+
+                app.component('cdx-dialog', Codex.CdxDialog)
+                    .component('cdx-tabs', Codex.CdxTabs)
+                    .component('cdx-tab', Codex.CdxTab)
+                    .component('cdx-checkbox', Codex.CdxCheckbox)
+                    .component('cdx-text-area', Codex.CdxTextArea)
+                    .component('cdx-radio', Codex.CdxRadio);
+
+                CiteUnseen.vueApp = app.mount('#cite-unseen-dialog-mount');
+            }).catch(function (error) {
+                console.error('[Cite Unseen] Failed to load Codex dependencies:', error);
+                mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.dialogLoadError), { type: 'error', title: '[Cite Unseen]' });
+            });
+        },
+
+        /**
+         * Returns an array of all setting categories.
+         * @returns {string[]}
+         */
+        getSettingCategories: function () {
+            // Get all type categories from citeUnseenCategoryTypes
+            const typeCategories = CiteUnseen.citeUnseenCategoryTypes ?
+                CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]) :
+                ['advocacy', 'blogs', 'books', 'community', 'editable', 'government', 'news', 'opinions', 'predatory', 'press', 'satire', 'social', 'sponsored', 'tabloids', 'tvPrograms'];
+
+            // Get all reliability categories from citeUnseenChecklists
+            const reliabilityCategories = CiteUnseen.citeUnseenChecklists ?
+                CiteUnseen.citeUnseenChecklists.map(x => x[0]) :
+                ['generallyReliable', 'marginallyReliable', 'generallyUnreliable', 'deprecated', 'blacklisted', 'multi'];
+
+            // Combine all categories
+            return [...typeCategories, ...reliabilityCategories];
+        },
+
+        /**
+         * Returns the localized display name for a category.
+         * @param {string} categoryId - The category identifier
+         * @returns {string} The localized display name
+         */
+        getCategoryDisplayName: function (categoryId) {
+            // Map some category IDs to their proper display names in i18n
+            const categoryMappings = {
+                'rspDeprecated': 'deprecated',
+                'rspBlacklisted': 'blacklisted',
+                'rspGenerallyUnreliable': 'generallyUnreliable',
+                'rspMarginallyReliable': 'marginallyReliable',
+                'rspGenerallyReliable': 'generallyReliable',
+                'rspMulti': 'multi'
+            };
+
+            const displayKey = categoryMappings[categoryId] || categoryId;
+
+            if (CiteUnseenI18n.categoryLabels[displayKey]) {
+                return CiteUnseen.convByVar(CiteUnseenI18n.categoryLabels[displayKey]);
+            }
+
+            // Fallback to the category ID with proper capitalization
+            return categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
+        },
+
+        /**
+         * Generate JavaScript content for the settings file
+         * @param {Object} settings - Settings object to save
+         * @param {String} target - Target wiki ('meta' or 'local')
+         */
+        generateSettingsContent: function (settings, target = 'meta') {
+            const formatObject = (obj) => {
+                const entries = Object.entries(obj).map(([key, value]) => {
+                    if (Array.isArray(value)) {
+                        const items = value.map(item => `"${item}"`).join(', ');
+                        return `  "${key}": [${items}]`;
+                    }
+                    return `  "${key}": ${value}`;
+                });
+                return `{\n${entries.join(',\n')}\n}`;
+            };
+
+            let content = `// Cite Unseen Settings
+cite_unseen_categories = ${formatObject(settings.categories)};
+cite_unseen_domain_ignore = ${formatObject(settings.domainIgnore)};
+cite_unseen_additional_domains = ${formatObject(settings.additionalDomains)};
+cite_unseen_additional_strings = ${formatObject(settings.additionalStrings)};`;
+
+            if (target === 'meta') {
+                // For Meta wiki, only include boolean settings if they differ from default (true)
+                if (settings.dashboard === false) {
+                    content += `\n// Dashboard visibility setting
+cite_unseen_dashboard = ${settings.dashboard};`;
+                }
+
+                if (settings.showSuggestions === false) {
+                    content += `\n// Suggestions button visibility setting
+cite_unseen_show_suggestions = ${settings.showSuggestions};`;
+                }
+            } else {
+                // For local wiki, include boolean settings if they differ from Meta settings
+                const metaRules = CiteUnseen.getMetaRulesFromGlobals();
+
+                const metaDashboard = metaRules.dashboard !== false; // Meta default logic
+                const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
+
+                if (settings.dashboard !== metaDashboard) {
+                    content += `\n\n// Dashboard visibility setting
+cite_unseen_dashboard = ${settings.dashboard};`;
+                }
+
+                if (settings.showSuggestions !== metaShowSuggestions) {
+                    content += `\n\n// Suggestions button visibility setting
+cite_unseen_show_suggestions = ${settings.showSuggestions};`;
+                }
+            }
+
+            return content + '\n';
+        },
+
+        /**
+         * Open the settings dialog
+         */
+        openSettingsDialog: function () {
+            // Close existing dialog if open
+            if (CiteUnseen.vueApp) {
+                const mountPoint = document.getElementById('cite-unseen-dialog-mount');
+                if (mountPoint) {
+                    mountPoint.remove();
+                }
+                CiteUnseen.vueApp = null;
+            }
+
+            // Create and show new Codex dialog
+            CiteUnseen.createSettingsDialog();
+        },
+
+        // ===============================
+        // SUGGESTIONS
+        // ===============================
+
+        /**
+         * Add suggestions toggle button.
+         */
+        showSuggestionsToggleButton: function () {
+            if (CiteUnseen.refs.length === 0 || window.cite_unseen_show_suggestions === false) {
+                return;
+            }
+
+            if (CiteUnseen.suggestionsToggleButton === null) {
+                CiteUnseen.suggestionsToggleButton = document.createElement('div');
+                CiteUnseen.suggestionsToggleButton.className = 'cite-unseen-button';
+
+                // Inset plus icon
+                const icon = document.createElement('span');
+                icon.innerHTML = '💡';
+                CiteUnseen.suggestionsToggleButton.appendChild(icon);
+
+                // Button label
+                const label = document.createElement('span');
+                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton);
+                CiteUnseen.suggestionsToggleButton.appendChild(label);
+                CiteUnseen.suggestionsToggleButton.onclick = function () {
+                    CiteUnseen.toggleSuggestionsMode();
+                };
+
+                CiteUnseen.suggestionsToggleButton.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleTooltip));
+            }
+        },
+
+        /**
+         * Toggle suggestions mode on/off
+         */
+        toggleSuggestionsMode: function () {
+            CiteUnseen.suggestionsMode = !CiteUnseen.suggestionsMode;
+
+            if (CiteUnseen.suggestionsToggleButton.updateEditStyleLink) {
+                CiteUnseen.suggestionsToggleButton.updateEditStyleLink(CiteUnseen.suggestionsMode);
+            } else {
+                CiteUnseen.suggestionsToggleButton.classList.toggle('suggestions-active', CiteUnseen.suggestionsMode);
+            }
+
+            CiteUnseen.toggleSuggestionPlusSigns();
+        },
+
+        /**
+         * Group the buttons together in the References headers for all reflists
+         */
+        groupButtons: function () {
+            if (CiteUnseen.settingsButton || CiteUnseen.suggestionsToggleButton) {
+                // Position buttons for each reflist that has a dashboard
+                for (const reflistData of CiteUnseen.reflists) {
+                    CiteUnseen.positionButtonsInHeaderForReflist(reflistData);
+                }
+            }
+        },
+
+        /**
+         * Show or hide plus signs next to citations for suggestions
+         */
+        toggleSuggestionPlusSigns: function () {
+            CiteUnseen.refs.forEach(ref => {
+                // Get the citation container (usually the <li> element)
+                const citationContainer = CiteUnseen.getCitationContainer(ref.cite);
+                if (!citationContainer) return;
+
+                let plusSign = citationContainer.querySelector('.cite-unseen-suggestion-plus');
+
+                if (CiteUnseen.suggestionsMode) {
+                    if (!plusSign) {
+                        plusSign = document.createElement('span');
+                        plusSign.className = 'cite-unseen-suggestion-plus';
+                        plusSign.innerHTML = ' ➕';
+                        plusSign.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.suggestCategorization));
+
+                        plusSign.onclick = function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            CiteUnseen.openSuggestionDialog(ref);
+                        };
+
+                        citationContainer.prepend(plusSign);
+                    }
+                } else {
+                    if (plusSign) {
+                        plusSign.remove();
+                    }
+                }
+            });
+        },
+
+        /**
+         * Open suggestion dialog for a specific citation
+         */
+        openSuggestionDialog: function (citationRef) {
+            // Store the citation reference for use in the dialog
+            CiteUnseen.currentSuggestionCitation = citationRef;
+
+            if (CiteUnseen.vueApp) {
+                const mountPoint = document.getElementById('cite-unseen-dialog-mount');
+                if (mountPoint) {
+                    mountPoint.remove();
+                }
+                CiteUnseen.vueApp = null;
+            }
+
+            CiteUnseen.createSuggestionDialog(citationRef);
+        },
+
+        /**
+         * Create and show the Codex suggestion dialog
+         */
+        createSuggestionDialog: function (citationRef) {
+            // Load Codex and Vue dependencies
+            mw.loader.using('@wikimedia/codex').then(function (require) {
+                const Vue = require('vue');
+                const Codex = require('@wikimedia/codex');
+
+                if (!document.getElementById('cite-unseen-dialog-mount')) {
+                    const mountPoint = document.createElement('div');
+                    mountPoint.id = 'cite-unseen-dialog-mount';
+                    document.body.appendChild(mountPoint);
+                }
+
+                const app = Vue.createMwApp({
+                    i18n: {
+                        dialogTitle: CiteUnseen.convByVar(CiteUnseenI18n.suggestionDialogTitle),
+                        guidance: CiteUnseen.convByVar(CiteUnseenI18n.suggestionsDialogGuidance),
+                        sourceUrl: CiteUnseen.convByVar(CiteUnseenI18n.sourceUrl),
+                        suggestedCategories: CiteUnseen.convByVar(CiteUnseenI18n.suggestedCategories),
+                        selectAtLeastOne: CiteUnseen.convByVar(CiteUnseenI18n.selectAtLeastOneCategory),
+                        optionalComment: CiteUnseen.convByVar(CiteUnseenI18n.optionalComment),
+                        commentPlaceholder: CiteUnseen.convByVar(CiteUnseenI18n.commentPlaceholder),
+                        submit: CiteUnseen.convByVar(CiteUnseenI18n.submit),
+                        submitting: CiteUnseen.convByVar(CiteUnseenI18n.submitting),
+                        cancel: CiteUnseen.convByVar(CiteUnseenI18n.cancel)
+                    },
+                    data() {
+                        return {
+                            open: true,
+                            sourceUrl: citationRef.coins['rft_id'] || '',
+                            selectedCategories: [],
+                            comment: '',
+                            isSubmitting: false
+                        };
+                    },
+                    computed: {
+                        availableCategories() {
+                            return CiteUnseen.getAvailableCategories();
+                        },
+                        primaryAction() {
+                            return {
+                                label: this.isSubmitting ? this.$options.i18n.submitting : this.$options.i18n.submit,
+                                actionType: 'progressive',
+                                disabled: this.isSubmitting || this.selectedCategories.length === 0
+                            };
+                        },
+                        defaultAction() {
+                            return {
+                                label: this.$options.i18n.cancel
+                            };
+                        }
+                    },
+                    methods: {
+                        onPrimaryAction() {
+                            this.submitSuggestion();
+                        },
+                        onDefaultAction() {
+                            this.closeDialog();
+                        },
+                        onUpdateOpen(newValue) {
+                            if (!newValue) {
+                                this.closeDialog();
+                            }
+                        },
+                        closeDialog() {
+                            this.open = false;
+                            setTimeout(() => {
+                                const mountPoint = document.getElementById('cite-unseen-dialog-mount');
+                                if (mountPoint) {
+                                    mountPoint.remove();
+                                }
+                                CiteUnseen.vueApp = null;
+                                CiteUnseen.currentSuggestionCitation = null;
+                            }, 300);
+                        },
+                        submitSuggestion() {
+                            if (this.selectedCategories.length === 0) {
+                                mw.notify(this.$options.i18n.selectAtLeastOne, {
+                                    type: 'error',
+                                    title: '[Cite Unseen]'
+                                });
+                                return;
+                            }
+
+                            this.isSubmitting = true;
+                            CiteUnseen.submitSuggestionToMeta(this.sourceUrl, this.selectedCategories, this.comment)
+                                .then(() => {
+                                    this.closeDialog();
+                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.suggestionSubmitted), {
+                                        type: 'success',
+                                        title: '[Cite Unseen]'
+                                    });
+                                })
+                                .catch((error) => {
+                                    console.error('[Cite Unseen] Failed to submit suggestion:', error);
+                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.suggestionSubmitError) + (error.message || error), {
+                                        type: 'error',
+                                        title: '[Cite Unseen]'
+                                    });
+                                })
+                                .finally(() => {
+                                    this.isSubmitting = false;
+                                });
+                        }
+                    },
+                    template: `
+                        <cdx-dialog
+                            v-model:open="open"
+                            :title="$options.i18n.dialogTitle"
+                            :use-close-button="true"
+                            :primary-action="primaryAction"
+                            :default-action="defaultAction"
+                            @primary="onPrimaryAction"
+                            @default="onDefaultAction"
+                            @update:open="onUpdateOpen"
+                            class="cite-unseen-dialog"
+                        >
+                            <div class="cite-unseen-tab-guidance">
+                                {{ $options.i18n.guidance }}
+                            </div>
+
+                            <div class="cite-unseen-form-section">
+                                <label class="cite-unseen-input-label">{{ $options.i18n.sourceUrl }}</label>
+                                <cdx-text-input
+                                    v-model="sourceUrl"
+                                    :disabled="true"
+                                    class="cite-unseen-full-width-input"
+                                />
+                            </div>
+
+                            <div class="cite-unseen-form-section">
+                                <label class="cite-unseen-checkbox-label">{{ $options.i18n.suggestedCategories }}</label>
+                                <div class="cite-unseen-category-grid">
+                                    <cdx-checkbox
+                                        v-for="category in availableCategories"
+                                        :key="category.id"
+                                        v-model="selectedCategories"
+                                        :input-value="category.id"
+                                    >
+                                        {{ category.label }}
+                                    </cdx-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="cite-unseen-form-section">
+                                <label class="cite-unseen-input-label">{{ $options.i18n.optionalComment }}</label>
+                                <cdx-text-area
+                                    v-model="comment"
+                                    :rows="4"
+                                    :placeholder="$options.i18n.commentPlaceholder"
+                                />
+                            </div>
+                        </cdx-dialog>
+                    `
+                });
+
+                app.component('cdx-dialog', Codex.CdxDialog)
+                    .component('cdx-text-input', Codex.CdxTextInput)
+                    .component('cdx-text-area', Codex.CdxTextArea)
+                    .component('cdx-checkbox', Codex.CdxCheckbox);
+
+                CiteUnseen.vueApp = app.mount('#cite-unseen-dialog-mount');
+            }).catch(function (error) {
+                console.error('[Cite Unseen] Failed to load Codex dependencies:', error);
+                mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.dialogLoadError), { type: 'error', title: '[Cite Unseen]' });
+            });
+        },
+
+        /**
+         * Get available categories for suggestions
+         */
+        getAvailableCategories: function () {
+            const categories = CiteUnseen.getSettingCategories();
+            return categories.map(categoryId => ({
+                id: categoryId,
+                label: CiteUnseen.getCategoryDisplayName(categoryId)
+            }));
+        },
+
+        /**
+         * Extract domain from URL
+         */
+        extractDomain: function (url) {
+            if (!url) return 'unknown-domain';
+            try {
+                const urlObj = new URL(url);
+                let domain = urlObj.hostname;
+                // Remove www. prefix if present
+                if (domain.startsWith('www.')) {
+                    domain = domain.substring(4);
+                }
+                return domain;
+            } catch (e) {
+                // If URL parsing fails, try to extract domain manually
+                const match = url.match(/^https?:\/\/(?:www\.)?([^\/\?#]+)/i);
+                return match ? match[1] : 'unknown-domain';
+            }
+        },
+
+        /**
+         * Submit suggestion to Meta Wiki by opening pre-populated edit form
+         */
+        submitSuggestionToMeta: function (sourceUrl, selectedCategories, comment) {
+            return new Promise((resolve, reject) => {
+                try {
+                    const domain = CiteUnseen.extractDomain(sourceUrl);
+
+                    const categoryLabels = selectedCategories.map(catId =>
+                        CiteUnseen.getCategoryDisplayName(catId)
+                    ).join(', ');
+
+                    const username = mw.config.get('wgUserName');
+                    const currentPage = mw.config.get('wgPageName');
+                    const currentWiki = mw.config.get('wgServerName');
+
+                    const citationRef = CiteUnseen.currentSuggestionCitation;
+                    let referenceInfo = `* '''URL:''' ${sourceUrl}`;
+                    if (citationRef && citationRef.coins) {
+                        const coins = citationRef.coins;
+                        if (coins['rft.title']) {
+                            referenceInfo += `\n* '''Title:''' ${[].concat(coins['rft.title']).join(', ')}`;
+                        }
+                        if (coins['rft.au']) {
+                            referenceInfo += `\n* '''Author(s):''' ${[].concat(coins['rft.au']).join(', ')}`;
+                        }
+                        if (coins['rft.aulast']) {
+                            const lastNames = [].concat(coins['rft.aulast']);
+                            const firstNames = coins['rft.aufirst'] ? [].concat(coins['rft.aufirst']) : [];
+                            const authors = lastNames.map((lastName, i) => {
+                                const firstName = firstNames[i] || '';
+                                return firstName ? `${firstName} ${lastName}` : lastName;
+                            });
+                            referenceInfo += `\n* '''Author(s):''' ${authors.join(', ')}`;
+                        }
+                        if (coins['rft.date']) {
+                            referenceInfo += `\n* '''Date:''' ${coins['rft.date']}`;
+                        }
+                        if (coins['rft.pub'] || coins['rft.jtitle']) {
+                            const publisher = coins['rft.pub'] || coins['rft.jtitle'];
+                            referenceInfo += `\n* '''Publisher/Journal:''' ${[].concat(publisher).join(', ')}`;
+                        }
+                    }
+                    referenceInfo += `\n* '''Found on:''' [[${currentWiki.replace('.wikipedia.org', '')}:${currentPage.replace(/_/g, ' ')}]]`;
+                    referenceInfo += `\n* '''Suggested categories:''' ${categoryLabels}`;
+
+                    const editSummary = `Categorization suggestion for ${domain}`;
+                    const baseUrl = 'https://meta.wikimedia.org/w/index.php';
+
+                    let editUrl = baseUrl + '?title=' + encodeURIComponent('Meta:Cite_Unseen/Suggestions');
+                    editUrl += '&action=edit';
+                    editUrl += '&section=new';
+                    editUrl += '&preload=' + encodeURIComponent('Meta:Cite_Unseen/Suggestions/Template');
+                    editUrl += '&preloadtitle=' + encodeURIComponent(domain);
+                    editUrl += '&summary=' + encodeURIComponent(editSummary);
+
+                    // Add preload parameters for the template
+                    // $1 = reference info, $2 = optional comment
+                    editUrl += '&preloadparams[]=' + encodeURIComponent(referenceInfo);
+                    if (comment.trim()) {
+                        editUrl += '&preloadparams[]=' + encodeURIComponent(comment.trim());
+                    } else {
+                        editUrl += '&preloadparams[]=';
+                    }
+
+                    let sectionContent = `${referenceInfo}`;
+                    if (comment.trim()) {
+                        sectionContent += `\n${comment.trim()}`;
+                    }
+                    sectionContent += `~~~~`;
+
+                    // Open the edit form in a new tab/window
+                    const newWindow = window.open(editUrl, '_blank');
+
+                    if (newWindow) {
+                        // Copy content to clipboard as a fallback
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(sectionContent).catch(err => {
+                                console.warn('[Cite Unseen] Failed to copy to clipboard:', err);
+                            });
+                        }
+
+                        resolve();
+                    } else {
+                        reject(new Error('Failed to open edit window. Please check popup blocker settings.'));
+                    }
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        },
+
+        // ===============================
+        // DOM HELPERS
+        // ===============================
+
+        /**
+         * Find the header that comes before the reflist
+         * @param {Element} reflistElement - Optional specific reflist element
+         * @returns {Element|null} The header element before reflist, or null if not found
+         */
+        findHeaderBeforeReflist: function (reflistElement = null) {
+            let targetReflist = reflistElement;
+
+            // If no specific reflist provided, try to find any reflist on the page
+            if (!targetReflist) {
+                const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist, .references');
+                if (reflists.length > 0) {
+                    targetReflist = reflists[0]; // Use the first reflist found
+                } else {
+                    return null; // No reflist found
+                }
+            }
+
+            // Start from the reflist and walk backwards to find the closest heading
+            let currentElement = targetReflist.previousElementSibling;
+
+            while (currentElement) {
+                if (currentElement.matches('h2, h3') ||
+                    currentElement.classList.contains('mw-heading') ||
+                    currentElement.classList.contains('mw-heading2')) {
+                    return currentElement;
+                }
+
+                const heading = currentElement.querySelector('h2, h3, .mw-heading, .mw-heading2');
+                if (heading) {
+                    return heading.closest('.mw-heading, .mw-heading2') || heading.parentElement || heading;
+                }
+
+                currentElement = currentElement.previousElementSibling;
+            }
+
+            return null;
+        },
+
+        /**
+         * Position buttons in the header before a specific reflist
+         * @param {Object} reflistData - The reflist data object
+         */
+        positionButtonsInHeaderForReflist: function (reflistData) {
+            // Only inject buttons on mainspace articles (namespace 0)
+            if (mw.config.get('wgNamespaceNumber') !== 0) {
+                return false;
+            }
+
+            const header = CiteUnseen.findHeaderBeforeReflist(reflistData.element);
+            if (!header) {
+                return false;
+            }
+
+            // Find the mw-editsection span within the header
+            const editSection = header.querySelector('.mw-editsection');
+
+            if (editSection) {
+                // Use existing [edit] button section
+                return CiteUnseen.injectButtonsInEditSection(header, editSection, reflistData);
+            } else {
+                // Fallback: create standalone buttons
+                return CiteUnseen.injectStandaloneButtons(header, reflistData);
+            }
+        },
+
+        /**
+         * Inject buttons within the existing [edit] section
+         * @param {Element} header - The header element
+         * @param {Element} editSection - The edit section element
+         * @param {Object} reflistData - Optional reflist data for tracking
+         */
+        injectButtonsInEditSection: function (header, editSection, reflistData = null) {
+            // Check if buttons are already injected in this header
+            if (header.querySelector('.cite-unseen-section')) {
+                return true;
+            }
+
+            const citeUnseenSection = document.createElement('span');
+            citeUnseenSection.className = 'mw-editsection cite-unseen-section cite-unseen-edit-section';
+
+            const openingBracket = document.createElement('span');
+            openingBracket.className = 'mw-editsection-bracket';
+            openingBracket.textContent = '[';
+            citeUnseenSection.appendChild(openingBracket);
+
+            const convertToEditSectionStyle = (button, linkText) => {
+                if (!button) return null;
+
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'cite-unseen-edit-style';
+                link.setAttribute('title', button.getAttribute('title') || '');
+
+                const span = document.createElement('span');
+                span.textContent = linkText;
+                link.appendChild(span);
+
+                link.onclick = function (e) {
+                    e.preventDefault();
+                    if (button.onclick) {
+                        button.onclick(e);
+                    }
+                };
+
+                return link;
+            };
+
+            let hasButtons = false;
+
+            if (CiteUnseen.settingsButton) {
+                const settingsLink = convertToEditSectionStyle(
+                    CiteUnseen.settingsButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
+                );
+                if (settingsLink) {
+                    citeUnseenSection.appendChild(settingsLink);
+                    hasButtons = true;
+                }
+            }
+
+            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
+                const divider = document.createElement('span');
+                divider.className = 'cite-unseen-editsection-divider';
+                divider.textContent = ' | ';
+                citeUnseenSection.appendChild(divider);
+            }
+
+            if (CiteUnseen.suggestionsToggleButton) {
+                const suggestionsLink = convertToEditSectionStyle(
+                    CiteUnseen.suggestionsToggleButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
+                );
+                if (suggestionsLink) {
+                    citeUnseenSection.appendChild(suggestionsLink);
+                    hasButtons = true;
+
+                    CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
+                        if (isActive) {
+                            suggestionsLink.classList.add('cite-unseen-suggestions-active');
+                            suggestionsLink.classList.remove('cite-unseen-suggestions-default');
+                        } else {
+                            suggestionsLink.classList.add('cite-unseen-suggestions-default');
+                            suggestionsLink.classList.remove('cite-unseen-suggestions-active');
+                        }
+                    };
+                }
+            }
+
+            const closingBracket = document.createElement('span');
+            closingBracket.className = 'mw-editsection-bracket';
+            closingBracket.textContent = ']';
+            citeUnseenSection.appendChild(closingBracket);
+
+            if (hasButtons) {
+                editSection.parentNode.insertBefore(citeUnseenSection, editSection.nextSibling);
+                return true;
+            }
+
+            return false;
+        },
+
+        /**
+         * Inject standalone buttons when edit section doesn't exist
+         * @param {Element} header - The header element
+         * @param {Object} reflistData - Optional reflist data for tracking
+         */
+        injectStandaloneButtons: function (header, reflistData = null) {
+            // Check if we already have buttons injected to avoid duplicates
+            if (header.querySelector('.cite-unseen-fallback-section')) {
+                return true;
+            }
+
+            const fallbackSection = document.createElement('span');
+            fallbackSection.className = 'mw-editsection cite-unseen-fallback-section';
+
+            const openingBracket = document.createElement('span');
+            openingBracket.className = 'mw-editsection-bracket';
+            openingBracket.textContent = '[';
+            fallbackSection.appendChild(openingBracket);
+
+            const convertToFallbackStyle = (button, linkText) => {
+                if (!button) return null;
+
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'cite-unseen-edit-style';
+                link.setAttribute('title', button.getAttribute('title') || '');
+
+                const span = document.createElement('span');
+                span.textContent = linkText;
+                link.appendChild(span);
+
+                link.onclick = function (e) {
+                    e.preventDefault();
+                    if (button.onclick) {
+                        button.onclick(e);
+                    }
+                };
+
+                return link;
+            };
+
+            let hasButtons = false;
+
+            if (CiteUnseen.settingsButton) {
+                const settingsLink = convertToFallbackStyle(
+                    CiteUnseen.settingsButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
+                );
+                if (settingsLink) {
+                    fallbackSection.appendChild(settingsLink);
+                    hasButtons = true;
+                }
+            }
+
+            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
+                const divider = document.createElement('span');
+                divider.className = 'cite-unseen-editsection-divider';
+                divider.textContent = ' | ';
+                fallbackSection.appendChild(divider);
+            }
+
+            if (CiteUnseen.suggestionsToggleButton) {
+                const suggestionsLink = convertToFallbackStyle(
+                    CiteUnseen.suggestionsToggleButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
+                );
+                if (suggestionsLink) {
+                    fallbackSection.appendChild(suggestionsLink);
+                    hasButtons = true;
+
+                    CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
+                        if (isActive) {
+                            suggestionsLink.classList.add('cite-unseen-suggestions-active');
+                            suggestionsLink.classList.remove('cite-unseen-suggestions-default');
+                        } else {
+                            suggestionsLink.classList.add('cite-unseen-suggestions-default');
+                            suggestionsLink.classList.remove('cite-unseen-suggestions-active');
+                        }
+                    };
+                }
+            }
+
+            const closingBracket = document.createElement('span');
+            closingBracket.className = 'mw-editsection-bracket';
+            closingBracket.textContent = ']';
+            fallbackSection.appendChild(closingBracket);
+
+            if (hasButtons) {
+                header.appendChild(fallbackSection);
+                return true;
+            }
+
+            return false;
+        },
+
+        /**
+         * Create an icons div for a citation
+         * @returns {Element} The created icons div
+         */
+        createIconsDiv: function () {
+            const iconsDiv = document.createElement('div');
+            iconsDiv.classList.add('cite-unseen-icons');
+            return iconsDiv;
+        },
+
+        /**
+         * Ensure a value is an array
+         * @param {*} value - Value to ensure is an array
+         * @returns {Array} Array version of the value
+         */
+        ensureArray: function (value) {
+            if (Array.isArray(value)) return value;
+            if (value == null) return [];
+            return [value];
+        },
+
+        // ===============================
+        // INITIALIZATION
+        // ===============================
+
         init: function () {
-            // Start timer that will be output to console at end of script. (Ends in addIcons().)
-            console.time('CiteUnseen runtime');
+            console.time('[Cite Unseen] Runtime starting');
 
             // Import source categorization data
             CiteUnseen.importDependencies().then(function (categorizedRules) {
                 CiteUnseen.categorizedRules = categorizedRules;
+                CiteUnseen.citeUnseenData = CiteUnseenData;
                 CiteUnseen.citeUnseenCategories = CiteUnseenData.citeUnseenCategories;
                 CiteUnseen.citeUnseenCategoryTypes = CiteUnseenData.citeUnseenCategoryTypes;
                 CiteUnseen.citeUnseenChecklists = CiteUnseenData.citeUnseenChecklists;
                 CiteUnseen.citeUnseenCategoryData = CiteUnseenData.citeUnseenCategoryData;
 
                 // Fill in missing parameters
-                for (let key of Object.keys(CiteUnseen.categorizedRules)) {
+                for (const key of Object.keys(CiteUnseen.categorizedRules)) {
                     if (CiteUnseen.citeUnseenCategories[key] === undefined) {
                         CiteUnseen.citeUnseenCategories[key] = true;
                     }
@@ -1361,42 +2727,21 @@
                 CiteUnseen.importCustomRules().then(function () {
                     // Run on every wikipage.content hook. This is to support gadgets like QuickEdit.
                     mw.hook('wikipage.content').add(function () {
-                        // If the finished loading element is still there, no need to re-run.
                         if (document.querySelector('#cite-unseen-finished-loading')) {
                             return;
                         }
 
-                        // Process the page content
                         CiteUnseen.findCitations();
                         CiteUnseen.addIcons();
-
-                        // Place a "Finished loading" element to the HTML.
                         let finishedLoading = document.createElement('div');
                         finishedLoading.id = 'cite-unseen-finished-loading';
-                        finishedLoading.style.display = 'none';
+                        finishedLoading.classList.add('cite-unseen-finished-loading');
                         document.querySelector('#mw-content-text .mw-parser-output').appendChild(finishedLoading);
                     });
                 });
             });
-        },
+        }
 
-        categorizedRules: null,  // Source categorization rules
-        citeUnseenCategories: null,  // Default toggle settings for categories
-        citeUnseenCategoryTypes: null,  // Types of source categories
-        citeUnseenChecklists: null,  // Source checklists by reliability
-        citeUnseenCategoryData: null,  // Category data: labels, icons, hints, etc.
-        citeUnseenDomainIgnore: {},  // User-provided domain ignore lists for each category
-        refs: [],  // All citations found in the document
-        refLinks: [],  // All citation links found in the document
-        refCategories: {},  // All citations by category
-        reflistNode: null,  // Where {{reflist}} is located in the document
-        convByVar: null,  // I18n & Chinese conversion function
-        dashboard: null,  // Citation statistics dashboard
-        dashboardHighlighted: null,  // Currently highlighted citation category
-        customCategoryDialogRules: null,  // Current user-provided rules on the custom category dialog (not applied yet)
-        customCategoryRules: [],  // Current user-provided rules for the custom category
-        customCategoryIcons: [],  // Icons for custom categories
-        windowManager: null,  // Window manager for OOUI dialogs
     };
 
     CiteUnseen.init();
