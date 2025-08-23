@@ -1,3 +1,5 @@
+// <nowiki>
+
 (function () {
     const CiteUnseen = {
         // ===============================
