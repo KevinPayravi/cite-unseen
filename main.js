@@ -2470,11 +2470,6 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
          * @param {Object} reflistData - The reflist data object
          */
         positionButtonsInHeaderForReflist: function (reflistData) {
-            // Only inject buttons on mainspace articles (namespace 0)
-            if (mw.config.get('wgNamespaceNumber') !== 0) {
-                return false;
-            }
-
             const header = CiteUnseen.findHeaderBeforeReflist(reflistData.element);
             if (!header) {
                 return false;
