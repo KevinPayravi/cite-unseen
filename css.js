@@ -143,17 +143,12 @@ mw.util.addCSS(`
 
   /* Edit-style link styling */
   .cite-unseen-edit-style {
-    color: #0645ad;
     text-decoration: none;
     transition: all 0.2s ease;
   }
 
   .cite-unseen-edit-style:hover {
     text-decoration: underline;
-  }
-
-  .cite-unseen-edit-style:visited {
-    color: #0645ad;
   }
 
   /* Suggestions link states */
@@ -164,7 +159,6 @@ mw.util.addCSS(`
 
   .cite-unseen-suggestions-default {
     font-weight: normal;
-    color: #0645ad;
   }
 
   /* ==========================================================================
@@ -318,7 +312,6 @@ mw.util.addCSS(`
   .cite-unseen-dialog-docs-link {
     font-size: 14px;
     font-weight: 500;
-    color: #0645ad;
     text-decoration: none;
   }
 
