@@ -468,7 +468,7 @@
             CiteUnseen.showSuggestionsToggleButton();
             CiteUnseen.groupButtons();
 
-            console.timeEnd('[Cite Unseen] Runtime ended');
+            console.timeEnd('[Cite Unseen] Runtime');
         },
 
         /**
@@ -590,6 +590,14 @@
          * @param {Object} reflistData - The reflist data object
          */
         createDashboardForReflist: function (reflistData) {
+            // Calculate category counts
+            const reflistCategoryCounts = CiteUnseen.calculateCategoryCountsForReflist(reflistData);
+            
+            const hasCategorizations = Object.values(reflistCategoryCounts).some(count => count > 0);
+            if (!hasCategorizations) {
+                return; // Don't create dashboard if no categorizations
+            }
+
             const dashboard = {
                 div: document.createElement('div'),
                 header: document.createElement('div'),
@@ -621,9 +629,6 @@
                 }
             };
             dashboard.clearAll = clearAllButton;
-
-            // Calculate category counts
-            const reflistCategoryCounts = CiteUnseen.calculateCategoryCountsForReflist(reflistData);
 
             // Cache the total citation count
             reflistData.totalCitations = reflistData.element.querySelectorAll('li').length;
@@ -2385,14 +2390,14 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                     // Add preload parameters for the template
                     // $1 = reference info, $2 = optional comment
                     editUrl += '&preloadparams[]=' + encodeURIComponent(referenceInfo);
-                    if (comment.trim()) {
+                    if (comment && comment.trim()) {
                         editUrl += '&preloadparams[]=' + encodeURIComponent(comment.trim());
                     } else {
                         editUrl += '&preloadparams[]=';
                     }
 
                     let sectionContent = `${referenceInfo}`;
-                    if (comment.trim()) {
+                    if (comment && comment.trim()) {
                         sectionContent += `\n${comment.trim()}`;
                     }
                     sectionContent += `~~~~`;
@@ -2705,7 +2710,7 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
         // ===============================
 
         init: function () {
-            console.time('[Cite Unseen] Runtime starting');
+            console.time('[Cite Unseen] Runtime');
 
             // Import source categorization data
             CiteUnseen.importDependencies().then(function (categorizedRules) {
