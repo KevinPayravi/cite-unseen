@@ -1170,9 +1170,6 @@
          * @returns {Promise<Record<string, Object[]>>}
          */
         importDependencies: async function () {
-            // Load internationalization strings
-            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen-i18n.js&action=raw&ctype=text/javascript');
-
             if (mw.config.get('wgServer') === "//zh.wikipedia.org") {
                 // On Chinese Wikipedia, prioritize using the ext.gadget.HanAssist module.
                 await mw.loader.using('ext.gadget.HanAssist', function (require) {
