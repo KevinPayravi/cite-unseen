@@ -2751,3 +2751,5 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
     CiteUnseen.init();
 
 })();
+
+// </nowiki>
