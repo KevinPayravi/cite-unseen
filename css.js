@@ -5,10 +5,6 @@ mw.util.addCSS(`
 
   /* Dashboard container */
   .cite-unseen-dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    margin-bottom: 1em;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -18,11 +14,10 @@ mw.util.addCSS(`
 
   /* Dashboard header */
   .cite-unseen-dashboard-header {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    margin-bottom: 0.5em;
+    margin-right: 1em;
   }
 
   /* Dashboard total counter */
@@ -33,10 +28,10 @@ mw.util.addCSS(`
 
   /* Dashboard categories container */
   .cite-unseen-dashboard-cats {
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.5em 1em;
+    gap: 0 0.5em;
     text-align: center;
   }
 
