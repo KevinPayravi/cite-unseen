@@ -717,6 +717,7 @@
                     countIcon.alt = CiteUnseen.convByVar(CiteUnseenI18n.categoryHints[category]);
                     countIcon.src = CiteUnseen.citeUnseenCategoryData[category].icon;
                     countIcon.width = '17';
+                    countIcon.classList.add("skin-invert");
                     countIcon.classList.add('cite-unseen-category-icon');
 
                     const countText = document.createElement('span');
