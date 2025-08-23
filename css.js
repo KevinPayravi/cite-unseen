@@ -204,7 +204,7 @@ mw.util.addCSS(`
   /* Suggestion plus sign */
   .cite-unseen-suggestion-plus {
     float: right;
-    margin-top: 1em;
+    margin-top: .2em;
     font-size: 14px;
     line-height: 1;
     color: #28a745;
