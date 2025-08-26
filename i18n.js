@@ -105,7 +105,7 @@ window.CiteUnseenI18n = {
         ja: "ローカル",
     },
     localSettingGuidance: {
-        en: "local wiki settings override global settings.",
+        en: "Local wiki settings override global settings.",
         hant: "本地維基設定會覆蓋全域設定。",
         hans: "本地维基设置会覆盖全域设置。",
         ja: "ローカルウィキの設定はグローバル設定を上書きします。",
@@ -329,7 +329,7 @@ window.CiteUnseenI18n = {
         ja: "この分類が適切である理由についての追加情報...",
     },
     suggestionsDialogReliabilityGuidance: {
-        en: "For reliability categories (blacklisted, deprecated, generally reliable, generally unreliable, marginally reliable, no consensus), please seek the opportunity to reach consensus on the following project pages. The reliability categories are updated regularly based on community consensus documented on these pages.",
+        en: "For reliability categories (blacklisted, deprecated, generally reliable, generally unreliable, marginally reliable, no consensus), please seek the opportunity to reach consensus on one of the following project pages. The reliability categories are updated regularly based on community consensus documented on these pages.",
         hant: "對於可靠性類別（列入黑名單、應停用、通常可靠、通常不可靠、半可靠、無共識），請尋求在以下專案頁面上達成共識的機會。可靠性類別會根據這些頁面上記錄的社群共識定期更新。",
         hans: "对于可靠性类别（列入黑名单、应停用、通常可靠、通常不可靠、半可靠、无共识），请寻求在以下项目页面上达成共识的机会。可靠性类别会根据这些页面上记录的社区共识定期更新。",
         ja: "信頼性カテゴリ（ブラックリスト入り、非推奨、通常信頼できる、通常信頼できない、限られた信頼性、コンセンサスなし）については、以下のプロジェクトページでコンセンサスに達する機会を探してください。これらのページに記録されたコミュニティのコンセンサスに基づいて、信頼性カテゴリは定期的に更新されます。",
