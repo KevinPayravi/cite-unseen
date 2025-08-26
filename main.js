@@ -1905,11 +1905,15 @@
          * Returns an array of all setting categories.
          * @returns {string[]}
          */
-        getSettingCategories: function () {
+        getSettingCategories: function (includeReliability = true) {
             // Get all type categories from citeUnseenCategoryTypes
             const typeCategories = CiteUnseen.citeUnseenCategoryTypes ?
                 CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]) :
                 ['advocacy', 'blogs', 'books', 'community', 'editable', 'government', 'news', 'opinions', 'predatory', 'press', 'satire', 'social', 'sponsored', 'tabloids', 'tvPrograms'];
+
+            if (!includeReliability) {
+                return typeCategories;
+            }
 
             // Get all reliability categories from citeUnseenChecklists
             const reliabilityCategories = CiteUnseen.citeUnseenChecklists ?
@@ -2154,6 +2158,8 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                         selectAtLeastOne: CiteUnseen.convByVar(CiteUnseenI18n.selectAtLeastOneCategory),
                         optionalComment: CiteUnseen.convByVar(CiteUnseenI18n.optionalComment),
                         commentPlaceholder: CiteUnseen.convByVar(CiteUnseenI18n.commentPlaceholder),
+                        reliabilityGuidance: CiteUnseen.convByVar(CiteUnseenI18n.suggestionsDialogReliabilityGuidance),
+                        reliabilityProjects: CiteUnseen.convByVar(CiteUnseenI18n.reliabilityProjects),
                         submit: CiteUnseen.convByVar(CiteUnseenI18n.submit),
                         submitting: CiteUnseen.convByVar(CiteUnseenI18n.submitting),
                         cancel: CiteUnseen.convByVar(CiteUnseenI18n.cancel)
@@ -2170,6 +2176,16 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                     computed: {
                         availableCategories() {
                             return CiteUnseen.getAvailableCategories();
+                        },
+                        reliabilityProjects() {
+                            const pageLinks = Object.values(CiteUnseen.citeUnseenData.citeUnseenSourceToPageMapping);
+                            const projects = [];
+                            for (const pageLink of pageLinks) {
+                                const [lang, ...pageParts] = pageLink.split(':');
+                                const fullPagePath = pageParts.join(':');
+                                projects.push({ page: pageLink, url: `//${lang}.wikipedia.org/wiki/${fullPagePath}`});
+                            }
+                            return projects;
                         },
                         primaryAction() {
                             return {
@@ -2284,6 +2300,19 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                                     :placeholder="$options.i18n.commentPlaceholder"
                                 />
                             </div>
+                            
+                            <div class="cite-unseen-tab-guidance">
+                                {{ $options.i18n.reliabilityGuidance }}
+                            </div>
+                            
+                            <div class="cite-unseen-form-section">
+                                <label class="cite-unseen-checkbox-label">{{ $options.i18n.reliabilityProjects }}</label>
+                                <ul>
+                                    <li v-for="project in reliabilityProjects" :key="project.page">
+                                        <a :href="project.url" target="_blank">{{ project.page }}</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </cdx-dialog>
                     `
                 });
@@ -2304,7 +2333,7 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
          * Get available categories for suggestions
          */
         getAvailableCategories: function () {
-            const categories = CiteUnseen.getSettingCategories();
+            const categories = CiteUnseen.getSettingCategories(false);
             return categories.map(categoryId => ({
                 id: categoryId,
                 label: CiteUnseen.getCategoryDisplayName(categoryId)
