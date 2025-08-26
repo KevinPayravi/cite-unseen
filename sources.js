@@ -29,23 +29,13 @@ var CiteUnseenData = {
      * @type {Object.<string, number|null>}
      * @constant
      */
-    citeUnseenSourceRevisions: {
-        'medium': 28896215,
-        'type': 28896214,
-        'influence': 28896213,
-        'advocacy/1': 28896249,
-        'advocacy/2': 28896250,
-        'zhRSP': 28896723,
-        'zhVGS': 28896697,
-        'zhACGS': 28896696,
-        'enRSP': 28896227,
-        'enVGS': 28896330,
-        'enAMS': 28896367,
-        'enJAPANS': 28896388,
-        'enKOREAS': 28896394,
-        'enAS': 28896402,
-        'enNPPSG/1': 28896262,
-        'enNPPSG/2': 28896266,
+    citeUnseenSourceRevisions: async function () {
+        const revidJsonUrl = 'https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain';
+        const response = await fetch(revidJsonUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
     },
 
     /**
@@ -338,13 +328,15 @@ var CiteUnseenData = {
      */
     getSpecifiedRevisionIds: function () {
         const revisionIds = [];
-        for (const source of this.citeUnseenSources) {
-            const revisionId = this.citeUnseenSourceRevisions[source];
-            if (revisionId !== null && revisionId !== undefined) {
-                revisionIds.push(revisionId);
+        this.citeUnseenSourceRevisions().then(sourceRevisions => {
+            for (const source of this.citeUnseenSources) {
+                const revisionId = sourceRevisions[source];
+                if (revisionId !== null && revisionId !== undefined) {
+                    revisionIds.push(revisionId);
+                }
             }
-        }
-        return revisionIds;
+            return revisionIds;
+        });
     },
 
     /**

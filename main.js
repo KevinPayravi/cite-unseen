@@ -1194,9 +1194,9 @@
                 };
             }
 
-            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen/css.js&action=raw&ctype=text/javascript');
-            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen/i18n.js&action=raw&ctype=text/javascript');
-            await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/CiteUnseen/sources.js&action=raw&ctype=text/javascript');
+            await mw.loader.load('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/styles.css?mime=text/css', 'text/css');
+            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/i18n.js?mime=text/javascript');
+            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/sources.js?mime=text/javascript');
             return await CiteUnseenData.getCategorizedRules();
         },
 
