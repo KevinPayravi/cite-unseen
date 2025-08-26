@@ -75,10 +75,40 @@ window.CiteUnseenI18n = {
         ja: "Cite Unseen 設定",
     },
     documentationLink: {
-        en: "📖 View Documentation",
-        hant: "📖 查看說明文件",
-        hans: "📖 查看说明文档",
-        ja: "📖 ドキュメントを表示",
+        en: "Documentation",
+        hant: "幫助文檔",
+        hans: "帮助文档",
+        ja: "ドキュメント",
+    },
+    viewSettingsFrom: {
+        en: "View settings from:",
+        hant: "檢視設定：",
+        hans: "检视设置：",
+        ja: "設定を表示：",
+    },
+    loading: {
+        en: "Loading...",
+        hant: "載入中……",
+        hans: "加载中……",
+        ja: "読み込み中...",
+    },
+    metaWikiGlobal: {
+        en: "Meta-Wiki (global)",
+        hant: "元維基 (全域)",
+        hans: "元维基 (全域)",
+        ja: "メタウィキ (グローバル)",
+    },
+    local: {
+        en: "local",
+        hant: "本地",
+        hans: "本地",
+        ja: "ローカル",
+    },
+    localSettingGuidance: {
+        en: "local wiki settings override global settings.",
+        hant: "本地維基設定會覆蓋全域設定。",
+        hans: "本地维基设置会覆盖全域设置。",
+        ja: "ローカルウィキの設定はグローバル設定を上書きします。",
     },
 
     // Dialog tabs
@@ -192,8 +222,8 @@ window.CiteUnseenI18n = {
     },
     saving: {
         en: "Saving...",
-        hant: "儲存中...",
-        hans: "保存中...",
+        hant: "儲存中……",
+        hans: "保存中……",
         ja: "保存中...",
     },
 
@@ -294,8 +324,8 @@ window.CiteUnseenI18n = {
     },
     commentPlaceholder: {
         en: "Additional information about why this categorization is appropriate...",
-        hant: "關於為何此分類合適的額外資訊...",
-        hans: "关于为何此分类合适的额外信息...",
+        hant: "關於為何此分類合適的額外資訊……",
+        hans: "关于为何此分类合适的额外信息……",
         ja: "この分類が適切である理由についての追加情報...",
     },
     suggestionsDialogReliabilityGuidance: {
@@ -318,8 +348,8 @@ window.CiteUnseenI18n = {
     },
     submitting: {
         en: "Opening...",
-        hant: "開啟中...",
-        hans: "打开中...",
+        hant: "開啟中……",
+        hans: "打开中……",
         ja: "開いています...",
     },
     suggestionSubmitted: {

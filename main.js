@@ -1399,6 +1399,11 @@
                 const app = Vue.createMwApp({
                     i18n: {
                         documentationLink: CiteUnseen.convByVar(CiteUnseenI18n.documentationLink),
+                        viewSettingsFrom: CiteUnseen.convByVar(CiteUnseenI18n.viewSettingsFrom),
+                        loading: CiteUnseen.convByVar(CiteUnseenI18n.loading),
+                        metaWikiGlobal: CiteUnseen.convByVar(CiteUnseenI18n.metaWikiGlobal),
+                        local: CiteUnseen.convByVar(CiteUnseenI18n.local),
+                        localSettingGuidance: CiteUnseen.convByVar(CiteUnseenI18n.localSettingGuidance),
                         tabGeneral: CiteUnseen.convByVar(CiteUnseenI18n.tabGeneral),
                         tabCategories: CiteUnseen.convByVar(CiteUnseenI18n.tabCategories),
                         tabIgnoreDomains: CiteUnseen.convByVar(CiteUnseenI18n.tabIgnoreDomains),
@@ -1790,27 +1795,27 @@
                                 <div class="cite-unseen-dialog-header">
                                     <span>{{ dialogTitle }}</span>
                                     <a href="https://meta.wikimedia.org/wiki/Meta:Cite_Unseen" target="_blank" class="cite-unseen-dialog-docs-link">
-                                        Documentation
+                                        {{ $options.i18n.documentationLink }}
                                     </a>
                                 </div>
                             </template>
                             <div class="cite-unseen-target-section">
                                 <span class="cite-unseen-target-label">
-                                    View settings from:
-                                    <span v-if="isSaving" class="cite-unseen-loading-text">(loading...)</span>
+                                    {{ $options.i18n.viewSettingsFrom }}
+                                    <span v-if="isSaving" class="cite-unseen-loading-text">({{ $options.i18n.loading }})</span>
                                 </span>
                                 <div class="cite-unseen-target-controls">
                                     <label class="cite-unseen-radio-option">
                                         <input type="radio" v-model="target" value="meta" @change="onTargetChange" :disabled="isSaving">
-                                        <span>Meta (global)</span>
+                                        <span>{{ $options.i18n.metaWikiGlobal }}</span>
                                     </label>
                                     <label class="cite-unseen-radio-option">
                                         <input type="radio" v-model="target" value="local" @change="onTargetChange" :disabled="isSaving">
-                                        <span>{{ targetWikiDisplayName }} (local)</span>
+                                        <span>{{ targetWikiDisplayName }} ({{ $options.i18n.local }})</span>
                                     </label>
                                 </div>
                                 <span>
-                                    (local wiki settings override global settings)
+                                    ({{ $options.i18n.localSettingGuidance }})
                                 </span>
                             </div>
                             <hr />
