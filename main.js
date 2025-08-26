@@ -1338,8 +1338,6 @@
          * @param {Function} onError - Error callback
          */
         saveSettingsToWiki: function (settings, target, onSuccess, onError) {
-            const api = new mw.Api();
-
             // Determine the target wiki and page title
             let pageTitle, apiOptions;
 
@@ -1357,14 +1355,13 @@
                 apiOptions = {};
             }
 
-            const targetApi = target === 'meta' ? new mw.ForeignApi('//meta.wikimedia.org/w/api.php') : api;
+            const targetApi = target === 'meta' ? new mw.ForeignApi('//meta.wikimedia.org/w/api.php') : new mw.Api();
 
             targetApi.postWithToken('csrf', {
                 action: 'edit',
                 title: pageTitle,
                 text: CiteUnseen.generateSettingsContent(settings, target),
                 summary: `[Cite Unseen] Updating settings via settings menu`,
-                contentmodel: 'javascript'
             }).done(function (result) {
                 if (result.edit && result.edit.result === 'Success') {
                     if (onSuccess) onSuccess(result);
