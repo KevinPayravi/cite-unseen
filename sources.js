@@ -1,4 +1,6 @@
 var CiteUnseenData = {
+    _sourceRevisions: null, // Stores revision IDs fetched from cite-unseen-revids
+
     /**
      * Definition page names for source lists. Prefixed with "Meta:Cite Unseen/sources/".
      * @type {Array.<string>}
@@ -26,7 +28,7 @@ var CiteUnseenData = {
     /**
      * Revision IDs for source pages. When specified, these revision IDs will be used
      * instead of fetching the latest revision. Set to null to use latest revision.
-     * @type {Object.<string, number|null>}
+     * @type {Promise<Object.<string, number>>}
      * @constant
      */
     citeUnseenSourceRevisions: async function () {
@@ -324,27 +326,28 @@ var CiteUnseenData = {
 
     /**
      * Get revision IDs for sources that have them specified.
-     * @returns {Array.<number>} Array of revision IDs to fetch, or empty array if none specified.
+     * @returns {Promise<Array.<number>>} Array of revision IDs to fetch, or empty array if none specified.
      */
-    getSpecifiedRevisionIds: function () {
+    getSpecifiedRevisionIds: async function () {
         const revisionIds = [];
-        this.citeUnseenSourceRevisions().then(sourceRevisions => {
-            for (const source of this.citeUnseenSources) {
-                const revisionId = sourceRevisions[source];
-                if (revisionId !== null && revisionId !== undefined) {
-                    revisionIds.push(revisionId);
-                }
+        if (this._sourceRevisions === null) {
+            this._sourceRevisions = await this.citeUnseenSourceRevisions();
+        }
+        for (const source of this.citeUnseenSources) {
+            const revisionId = this._sourceRevisions[source];
+            if (revisionId !== null && revisionId !== undefined) {
+                revisionIds.push(revisionId);
             }
-            return revisionIds;
-        });
+        }
+        return revisionIds;
     },
 
     /**
      * Check if any sources have revision IDs specified.
-     * @returns {boolean} True if any sources have revision IDs, false otherwise.
+     * @returns {Promise<boolean>} True if any sources have revision IDs, false otherwise.
      */
-    hasSpecifiedRevisions: function () {
-        return this.getSpecifiedRevisionIds().length > 0;
+    hasSpecifiedRevisions: async function () {
+        return (await this.getSpecifiedRevisionIds()).length > 0;
     },
 
     /**
@@ -354,7 +357,7 @@ var CiteUnseenData = {
      */
     getCategorizedRules: async function () {
         // Check if we have any revision IDs specified
-        const revisionIds = this.getSpecifiedRevisionIds();
+        const revisionIds = await this.getSpecifiedRevisionIds();
 
         if (revisionIds.length > 0) {
             // Use revision-specific method if any revision IDs are specified
