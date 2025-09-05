@@ -62,6 +62,7 @@ var CiteUnseenData = {
         ], [
             "marginallyReliable", [
                 ["enAMS", "enAmsMarginallyReliable"],
+                ["enJAPANS", "enJapansMarginallyReliable"],
                 ["enKOREAS", "enKoreasMarginallyReliable"],
                 ["enRSP", "enRspMarginallyReliable"],
                 ["enVGS", "enVgsMarginallyReliable"],
@@ -73,6 +74,7 @@ var CiteUnseenData = {
             "generallyUnreliable", [
                 ["enAMS", "enAmsGenerallyUnreliable"],
                 ["enAS", "enAsGenerallyUnreliable"],
+                ["enJAPANS", "enJapansGenerallyUnreliable"],
                 ["enKOREAS", "enKoreasGenerallyUnreliable"],
                 ["enNPPSG/1", "enNppsgGenerallyUnreliable"],
                 ["enRSP", "enRspGenerallyUnreliable"],
