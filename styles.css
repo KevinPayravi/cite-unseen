@@ -193,9 +193,7 @@
 .cite-unseen-suggestion-plus {
     float: right;
     margin-top: .2em;
-    font-size: 14px;
-    line-height: 1;
-    color: #28a745;
+    width: 17px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
