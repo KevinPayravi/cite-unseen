@@ -377,7 +377,7 @@ var CiteUnseenData = {
      * @constant
      */
     citeUnseenCategories: {
-        "unknown": false,
+        "unknown": true,
     },
 
     /**

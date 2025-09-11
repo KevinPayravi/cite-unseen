@@ -461,7 +461,7 @@
                 }
 
                 if (CiteUnseen.citeUnseenCategories.unknown && processedCategories.size === 0) {
-                    CiteUnseen.processIcon(iconsDiv, "unknown");
+                    CiteUnseen.trackUnknownCitation(iconsDiv);
                 }
             });
 
@@ -527,6 +527,20 @@
             }
             CiteUnseen.refCategories[type].push(node.parentNode);
             return iconNode;
+        },
+
+        /**
+         * Track a citation as unknown without showing an icon.
+         * @param {Element} node - The iconsDiv node (parent of the citation)
+         */
+        trackUnknownCitation: function (node) {
+            const type = "unknown";
+            CiteUnseen.addToCount(node, type);
+            
+            if (!CiteUnseen.refCategories[type]) {
+                CiteUnseen.refCategories[type] = [];
+            }
+            CiteUnseen.refCategories[type].push(node.parentNode);
         },
 
         /**
@@ -1438,6 +1452,9 @@
                         categories() {
                             return CiteUnseen.getSettingCategories();
                         },
+                        categoriesForDomains() {
+                            return CiteUnseen.getSettingCategories().filter(category => category !== 'unknown');
+                        },
                         dialogTitle() {
                             return CiteUnseen.convByVar(CiteUnseenI18n.settingsDialogTitle);
                         },
@@ -1706,10 +1723,12 @@
                                     return result.validDomains;
                                 };
 
-                                // Process ignore and additional domains
-                                processedSettings.domainIgnore[category] = processDomains(this.settings.domainIgnore[category], 'ignore');
-                                processedSettings.additionalDomains[category] = processDomains(this.settings.additionalDomains[category], 'additional');
-                                processedSettings.additionalStrings[category] = processTextArea(this.settings.additionalStrings[category] || '');
+                                if (category !== 'unknown') {
+                                    // Process ignore and additional domains
+                                    processedSettings.domainIgnore[category] = processDomains(this.settings.domainIgnore[category], 'ignore');
+                                    processedSettings.additionalDomains[category] = processDomains(this.settings.additionalDomains[category], 'additional');
+                                    processedSettings.additionalStrings[category] = processTextArea(this.settings.additionalStrings[category] || '');
+                                }
                             });
 
                             // Show corrections made (if any)
@@ -1846,7 +1865,7 @@
                                         {{ $options.i18n.ignoreDomainsTabGuidance }}
                                     </div>
                                     <h3>{{ $options.i18n.domainsToIgnore }}</h3>
-                                    <div v-for="category in categories" :key="category" class="cite-unseen-domain-category-container">
+                                    <div v-for="category in categoriesForDomains" :key="category" class="cite-unseen-domain-category-container">
                                         <label class="cite-unseen-category-label">{{ getCategoryDisplayName(category) }}</label>
                                         <cdx-text-area
                                             v-model="settings.domainIgnore[category]"
@@ -1861,7 +1880,7 @@
                                         {{ $options.i18n.additionalDomainsTabGuidance }}
                                     </div>
                                     <h3>{{ $options.i18n.additionalDomains }}</h3>
-                                    <div v-for="category in categories" :key="category" class="cite-unseen-domain-category-container">
+                                    <div v-for="category in categoriesForDomains" :key="category" class="cite-unseen-domain-category-container">
                                         <label class="cite-unseen-category-label">{{ getCategoryDisplayName(category) }}</label>
                                         <cdx-text-area
                                             v-model="settings.additionalDomains[category]"
@@ -1876,7 +1895,7 @@
                                         {{ $options.i18n.additionalStringsTabGuidance }}
                                     </div>
                                     <h3>{{ $options.i18n.additionalUrlStrings }}</h3>
-                                    <div v-for="category in categories" :key="category" class="cite-unseen-domain-category-container">
+                                    <div v-for="category in categoriesForDomains" :key="category" class="cite-unseen-domain-category-container">
                                         <label class="cite-unseen-category-label">{{ getCategoryDisplayName(category) }}</label>
                                         <cdx-text-area
                                             v-model="settings.additionalStrings[category]"
@@ -1914,7 +1933,7 @@
                 ['advocacy', 'blogs', 'books', 'community', 'editable', 'government', 'news', 'opinions', 'predatory', 'press', 'satire', 'social', 'sponsored', 'tabloids', 'tvPrograms'];
 
             if (!includeReliability) {
-                return typeCategories;
+                return [...typeCategories, 'unknown'];
             }
 
             // Get all reliability categories from citeUnseenChecklists
@@ -1922,8 +1941,8 @@
                 CiteUnseen.citeUnseenChecklists.map(x => x[0]) :
                 ['generallyReliable', 'marginallyReliable', 'generallyUnreliable', 'deprecated', 'blacklisted', 'multi'];
 
-            // Combine all categories
-            return [...typeCategories, ...reliabilityCategories];
+            // Combine all categories + unknown
+            return [...typeCategories, ...reliabilityCategories, 'unknown'];
         },
 
         /**
