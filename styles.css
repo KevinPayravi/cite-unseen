@@ -129,9 +129,7 @@
 
 /* Clear all button in header styling */
 .cite-unseen-clear-all-header {
-    padding: 2px 6px;
-    border: 1px solid transparent;
-    border-radius: 3px;
+    margin: 0 1em;
     font-size: 0.9em;
     color: #dc3545;
     text-decoration: none;
@@ -140,10 +138,7 @@
 }
 
 .cite-unseen-clear-all-header:hover {
-    border-color: rgba(220, 53, 69, 0.2);
-    color: #c82333;
     text-decoration: underline;
-    background-color: rgba(220, 53, 69, 0.1);
 }
 
 /* Edit-style link styling */
