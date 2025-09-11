@@ -530,7 +530,7 @@
         },
 
         /**
-         * Track a citation as unknown without showing an icon.
+         * Track a citation as unknown.
          * @param {Element} node - The iconsDiv node (parent of the citation)
          */
         trackUnknownCitation: function (node) {
@@ -849,7 +849,7 @@
 
             // Show/hide "Clear All" button based on active filters
             if (dashboard.clearAll) {
-                if (reflistData.selectedCategories.size > 0) {
+                if (reflistData.selectedCategories.size > 1) {
                     dashboard.clearAll.classList.remove('cite-unseen-hidden');
                     dashboard.clearAll.classList.add('cite-unseen-visible');
                 } else {
