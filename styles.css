@@ -58,8 +58,7 @@
 /* Dashboard filter selection styling */
 .cite-unseen-filter-selected {
     position: relative;
-    padding: 2px 4px;
-    border: 2px solid #007bff;
+    border: 1px solid #007bff;
     border-radius: 4px;
     background-color: rgba(0, 123, 255, 0.15);
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
@@ -225,8 +224,6 @@
 
 /* Dashboard category hover effects */
 [data-category] {
-    position: relative;
-    border: 1px solid transparent;
     transition: all 0.2s ease-in-out;
 }
 
