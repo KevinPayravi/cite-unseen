@@ -19,10 +19,17 @@
     margin-right: 1em;
 }
 
+/* Bold styling */
+.cite-unseen-dashboard-total,
+.cite-unseen-category-label,
+.cite-unseen-input-label,
+.cite-unseen-checkbox-label {
+    font-weight: bold;
+}
+
 /* Dashboard total counter */
 .cite-unseen-dashboard-total {
     text-align: left;
-    font-weight: bold;
 }
 
 /* Dashboard categories container */
@@ -202,10 +209,6 @@
     transform: scale(1.2);
 }
 
-.cite-unseen-suggestion-plus:not(:hover) {
-    transform: scale(1);
-}
-
 /* ==========================================================================
    FILTERING AND TRANSITIONS
    ========================================================================== */
@@ -237,31 +240,22 @@
    ========================================================================== */
 
 /* Hidden/visible element states */
-.cite-unseen-hidden {
+.cite-unseen-hidden,
+.cite-unseen-list-hidden,
+.cite-unseen-finished-loading {
     display: none;
+}
+
+.cite-unseen-list-hidden {
+    display: none !important;
 }
 
 .cite-unseen-visible {
     display: inline-block;
 }
 
-/* Clear All header button visibility */
-.cite-unseen-clear-all-header.cite-unseen-hidden {
-    display: none;
-}
-
 .cite-unseen-clear-all-header.cite-unseen-visible {
     display: inline;
-}
-
-/* List item visibility */
-.cite-unseen-list-hidden {
-    display: none !important;
-}
-
-/* Finished loading marker */
-.cite-unseen-finished-loading {
-    display: none;
 }
 
 /* ==========================================================================
@@ -336,7 +330,6 @@
 .cite-unseen-category-label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
 }
 
 /* Target selection section */
@@ -387,13 +380,11 @@
 .cite-unseen-input-label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
 }
 
 .cite-unseen-checkbox-label {
     display: block;
     margin-bottom: 10px;
-    font-weight: bold;
 }
 
 /* Full width input */
