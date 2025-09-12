@@ -1,0 +1,62 @@
+# Builds a bundled version of Cite Unseen and pushes to the deploy branch.
+stages:
+  - build
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+
+variables:
+  DEPLOY_BRANCH: "deploy"
+  GIT_STRATEGY: fetch
+  GIT_DEPTH: "50"
+
+build:
+  stage: build
+  image: node:22-alpine
+  script:
+    - echo "Building bundled version of Cite Unseen..."
+    - node build.js
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 hour
+  rules:
+    - if: $CI_COMMIT_TAG
+
+deploy:
+  stage: deploy
+  image: alpine/git:latest
+  needs:
+    - job: build
+      artifacts: true
+  before_script:
+    - set -euo pipefail
+    - git config --global user.name "kevinpayravi"
+    - git config --global user.email "kevinpayravi@gmail.com"
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    - git remote set-url origin "https://gitlab-ci-token:${DEPLOY_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - git fetch origin --prune
+  script:
+    - echo "Deploying to $DEPLOY_BRANCH branch..."
+    - |
+      if git ls-remote --exit-code --heads origin "$DEPLOY_BRANCH" >/dev/null 2>&1; then
+        git checkout -B "$DEPLOY_BRANCH" "origin/$DEPLOY_BRANCH"
+      else
+        git checkout --orphan "$DEPLOY_BRANCH"
+        git rm -rf . || true
+      fi
+    - cp build/cite-unseen-bundled.js .
+    - cp build/README.md .
+    - git add cite-unseen-bundled.js README.md
+    - |
+      if git diff --cached --quiet; then
+        echo "No changes to deploy."
+      else
+        git commit -m "Deploy bundled version from ${CI_COMMIT_SHA}"
+        git push origin "$DEPLOY_BRANCH"
+      fi
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: on_success
