@@ -33,11 +33,26 @@ var CiteUnseenData = {
      */
     citeUnseenSourceRevisions: async function () {
         const revidJsonUrl = 'https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain';
-        const response = await fetch(revidJsonUrl);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        try {
+            const response = await fetch(revidJsonUrl, {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                throw new Error('Failed to fetch revision IDs: Request timed out after 5 seconds');
+            }
+            throw error;
         }
-        return await response.json();
     },
 
     /**
@@ -332,14 +347,20 @@ var CiteUnseenData = {
      */
     getSpecifiedRevisionIds: async function () {
         const revisionIds = [];
-        if (this._sourceRevisions === null) {
-            this._sourceRevisions = await this.citeUnseenSourceRevisions();
-        }
-        for (const source of this.citeUnseenSources) {
-            const revisionId = this._sourceRevisions[source];
-            if (revisionId !== null && revisionId !== undefined) {
-                revisionIds.push(revisionId);
+        try {
+            if (this._sourceRevisions === null) {
+                this._sourceRevisions = await this.citeUnseenSourceRevisions();
             }
+            for (const source of this.citeUnseenSources) {
+                const revisionId = this._sourceRevisions[source];
+                if (revisionId !== null && revisionId !== undefined) {
+                    revisionIds.push(revisionId);
+                }
+            }
+        } catch (error) {
+            // If call for revision IDs fails, return empty array
+            console.warn('Failed to fetch revision IDs:', error.message);
+            return [];
         }
         return revisionIds;
     },
