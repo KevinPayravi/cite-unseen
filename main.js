@@ -2430,7 +2430,7 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                     const editSummary = `Categorization suggestion for ${domain}`;
                     const baseUrl = 'https://meta.wikimedia.org/w/index.php';
 
-                    let editUrl = baseUrl + '?title=' + encodeURIComponent('Meta:Cite_Unseen/Suggestions');
+                    let editUrl = baseUrl + '?title=' + encodeURIComponent('Meta_talk:Cite_Unseen/Suggestions');
                     editUrl += '&action=edit';
                     editUrl += '&section=new';
                     editUrl += '&preload=' + encodeURIComponent('Meta:Cite_Unseen/Suggestions/Template');
