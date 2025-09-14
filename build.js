@@ -13,6 +13,7 @@ const main = fs.readFileSync('main.js', 'utf8');
 
 // Create the bundled content
 let bundled = `// Cite Unseen - Bundled Version
+// Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
 // Release: ${process.env.CI_COMMIT_TAG}
 // Timestamp: ${new Date().toISOString()}
 
