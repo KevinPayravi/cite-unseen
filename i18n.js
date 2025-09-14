@@ -498,10 +498,10 @@ window.CiteUnseenI18n = {
             "ja": "コンセンサスなし"
         },
         "unknown": {
-            "en": "unknown",
-            "hant": "未知",
-            "hans": "未知",
-            "ja": "不明"
+            "en": "unknown links",
+            "hant": "未知連結",
+            "hans": "未知链接",
+            "ja": "不明なリンク"
         }
     },
     "categoryHints": {
