@@ -1,6 +1,7 @@
 // Cite Unseen - Bundled Version
-// Release: 2.0.2
-// Timestamp: 2025-09-12T20:37:07.946Z
+// Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
+// Release: 2.0.3
+// Timestamp: 2025-09-14T03:51:21.442Z
 
 (function() {
     'use strict';
@@ -909,10 +910,10 @@ window.CiteUnseenI18n = {
             "ja": "コンセンサスなし"
         },
         "unknown": {
-            "en": "unknown",
-            "hant": "未知",
-            "hans": "未知",
-            "ja": "不明"
+            "en": "unknown links",
+            "hant": "未知連結",
+            "hans": "未知链接",
+            "ja": "不明なリンク"
         }
     },
     "categoryHints": {
@@ -4030,7 +4031,7 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                     const editSummary = `Categorization suggestion for ${domain}`;
                     const baseUrl = 'https://meta.wikimedia.org/w/index.php';
 
-                    let editUrl = baseUrl + '?title=' + encodeURIComponent('Meta:Cite_Unseen/Suggestions');
+                    let editUrl = baseUrl + '?title=' + encodeURIComponent('Meta_talk:Cite_Unseen/Suggestions');
                     editUrl += '&action=edit';
                     editUrl += '&section=new';
                     editUrl += '&preload=' + encodeURIComponent('Meta:Cite_Unseen/Suggestions/Template');
