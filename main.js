@@ -711,14 +711,6 @@
             iconNode.setAttribute("alt", message);
             iconNode.setAttribute("title", "[Cite Unseen] " + message);
 
-            // Add language indicator for reliability icons from different languages
-            if (language && language !== mw.config.get('wgContentLanguage') && ['blacklisted', 'deprecated', 'generallyUnreliable', 'marginallyReliable', 'generallyReliable', 'multi'].includes(type)) {
-                const langIndicator = document.createElement("span");
-                langIndicator.classList.add("cite-unseen-lang-indicator");
-                langIndicator.textContent = language.toUpperCase();
-                iconContainer.appendChild(langIndicator);
-            }
-
             CiteUnseen.addToCount(node, type);
             if (checklist) {
                 // If there is a checklist, wrap the icon in a link.
@@ -732,6 +724,15 @@
                 iconNodeLink.setAttribute("target", "_blank");
                 iconNodeLink.classList.add("cite-unseen-icon-link");
                 iconNodeLink.appendChild(iconNode);
+                
+                // Add language indicator for reliability icons from different languages.
+                if (language && language !== mw.config.get('wgContentLanguage') && ['blacklisted', 'deprecated', 'generallyUnreliable', 'marginallyReliable', 'generallyReliable', 'multi'].includes(type)) {
+                    const langIndicator = document.createElement("span");
+                    langIndicator.classList.add("cite-unseen-lang-indicator");
+                    langIndicator.textContent = language.toUpperCase();
+                    iconNodeLink.appendChild(langIndicator);
+                }
+                
                 iconContainer.appendChild(iconNodeLink);
                 node.appendChild(iconContainer);
             } else {
