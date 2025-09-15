@@ -1471,7 +1471,25 @@
                             };
                         },
                         targetWikiDisplayName() {
-                            return mw.config.get('wbCurrentSiteDetails').shortName + ' ' + mw.config.get('wgSiteName');
+                            const siteName = mw.config.get('wgSiteName') || '';
+                            
+                            // wbCurrentSiteDetails.shortName (not available on all skins/wikis)
+                            const wbSiteDetails = mw.config.get('wbCurrentSiteDetails');
+                            if (wbSiteDetails && wbSiteDetails.shortName) {
+                                return `${wbSiteDetails.shortName} ${siteName}`;
+                            }
+                            
+                            // Fallback to wgContentLanguage
+                            let langCode = mw.config.get('wgContentLanguage') || '';
+
+                            // Fallback to extract language from wgDBname
+                            if (!langCode) {
+                                const dbName = mw.config.get('wgDBname') || '';
+                                const langMatch = dbName.match(/^([a-z\-]+)wiki/);
+                                langCode = langMatch ? langMatch[1] : '';
+                            }
+                            
+                            return langCode ? `${langCode.toUpperCase()} ${siteName}` : siteName;
                         }
                     },
                     methods: {
