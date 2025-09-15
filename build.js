@@ -7,9 +7,42 @@ console.log('Building Cite Unseen bundled version...');
 
 // Read all source files
 const styles = fs.readFileSync('styles.css', 'utf8');
-const i18n = fs.readFileSync('i18n.js', 'utf8');
 const sources = fs.readFileSync('sources.js', 'utf8');
 const main = fs.readFileSync('main.js', 'utf8');
+
+// Read i18n JSON files and create i18n object
+const i18nDir = 'i18n';
+const i18nFiles = fs.readdirSync(i18nDir).filter(file => file.endsWith('.json'));
+const i18nData = {};
+for (const file of i18nFiles) {
+    const lang = path.basename(file, '.json');
+    const content = fs.readFileSync(path.join(i18nDir, file), 'utf8');
+    i18nData[lang] = JSON.parse(content);
+}
+
+// Convert flat i18n structure back to nested structure
+const nestedI18n = {};
+for (const [lang, translations] of Object.entries(i18nData)) {
+    for (const [key, value] of Object.entries(translations)) {
+        const keyParts = key.split('.');
+        let current = nestedI18n;
+        
+        for (let i = 0; i < keyParts.length - 1; i++) {
+            const part = keyParts[i];
+            if (!current[part]) {
+                current[part] = {};
+            }
+            current = current[part];
+        }
+        
+        const finalKey = keyParts[keyParts.length - 1];
+        if (!current[finalKey]) {
+            current[finalKey] = {};
+        }
+        current[finalKey][lang] = value;
+    }
+}
+const i18nJs = `window.CiteUnseenI18n = ${JSON.stringify(nestedI18n, null, 4)};`;
 
 // Create the bundled content
 let bundled = `// Cite Unseen - Bundled Version
@@ -28,7 +61,7 @@ let bundled = `// Cite Unseen - Bundled Version
     document.head.appendChild(style);
     
     // Load i18n data
-${i18n}
+${i18nJs}
 
     // Load sources data  
 ${sources}
@@ -59,18 +92,10 @@ if (!fs.existsSync('build')) {
 // Write bundled file
 fs.writeFileSync('build/cite-unseen-bundled.js', bundled);
 
-// Calculate file sizes
-const originalSize = fs.statSync('main.js').size + 
-                    fs.statSync('i18n.js').size + 
-                    fs.statSync('sources.js').size + 
-                    fs.statSync('styles.css').size;
-
 const bundledSize = fs.statSync('build/cite-unseen-bundled.js').size;
 
 console.log('Build completed!');
-console.log(`Original files total: ${originalSize} bytes`);
 console.log(`Bundled file: ${bundledSize} bytes`);
-console.log(`Compression ratio: ${((originalSize - bundledSize) / originalSize * 100).toFixed(1)}%`);
 
 // Create deployment README
 const deployReadme = `# Cite Unseen - Deploy Branch
