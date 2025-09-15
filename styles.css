@@ -185,6 +185,27 @@
     vertical-align: middle;
 }
 
+/* Icon container for language indicators */
+.cite-unseen-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.cite-unseen-lang-indicator {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    font-size: 8px;
+    font-weight: bold;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0 1px;
+    line-height: 1;
+    z-index: 10;
+}
+
 /* Category icon styling */
 .cite-unseen-category-icon {
     max-height: 18px;

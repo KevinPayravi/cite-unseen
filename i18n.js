@@ -492,7 +492,7 @@ window.CiteUnseenI18n = {
             "ja": "限られた信頼性"
         },
         "multi": {
-            "en": "no consensus",
+            "en": "varied / no consensus",
             "hant": "無共識",
             "hans": "无共识",
             "ja": "コンセンサスなし"
@@ -626,7 +626,7 @@ window.CiteUnseenI18n = {
             "ja": "この情報源は限られた信頼性があります。各コンテキストでの信頼性を判断するために、個別にレビューする必要があるかもしれません。"
         },
         "multi": {
-            "en": "There is no consensus in the community about the reliability of this source. Its reliability may be affected by one or more factors, such as the subject area, author, or publication time.",
+            "en": "There is variable or no consensus in the community about the reliability of this source. Its reliability may be affected by one or more factors, such as the subject area, author, or publication time.",
             "hant": "社群對此來源的可靠性沒有共識。其可靠性可能受到一個或多個因素影響（例如主題領域、作者或出版時間）。",
             "hans": "社区对此来源的可靠性没有共识。其可靠性可能受到一个或多个因素影响（例如主题领域、作者或出版时间）。",
             "ja": "この情報源の信頼性についてコミュニティ内でコンセンサスがありません。その信頼性は、主題領域、著者、または出版時間など、1つ以上の要因によって影響を受ける可能性があります。"

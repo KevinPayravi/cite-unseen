@@ -35,13 +35,13 @@ var CiteUnseenData = {
         const revidJsonUrl = 'https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain';
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
-        
+
         try {
             const response = await fetch(revidJsonUrl, {
                 signal: controller.signal
             });
             clearTimeout(timeoutId);
-            
+
             if (!response.ok) {
                 throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
             }
@@ -62,41 +62,10 @@ var CiteUnseenData = {
      */
     citeUnseenChecklists: [
         [
-            "generallyReliable", [
-                ["enAMS", "enAmsGenerallyReliable"],
-                ["enAS", "enAsGenerallyReliable"],
-                ["enJAPANS", "enJapansGenerallyReliable"],
-                ["enKOREAS", "enKoreasGenerallyReliable"],
-                ["enNPPSG/2", "enNppsgGenerallyReliable"],
-                ["enRSP", "enRspGenerallyReliable"],
-                ["enVGS", "enVgsGenerallyReliable"],
-                ["zhACGS", "zhAcgsGenerallyReliable"],
-                ["zhRSP", "zhRspGenerallyReliable"],
-                ["zhVGS", "zhVgsGenerallyReliable"]
-            ],
-        ], [
-            "marginallyReliable", [
-                ["enAMS", "enAmsMarginallyReliable"],
-                ["enJAPANS", "enJapansMarginallyReliable"],
-                ["enKOREAS", "enKoreasMarginallyReliable"],
-                ["enRSP", "enRspMarginallyReliable"],
-                ["enVGS", "enVgsMarginallyReliable"],
-                ["zhACGS", "zhAcgsMarginallyReliable"],
-                ["zhRSP", "zhRspMarginallyReliable"],
-                ["zhVGS", "zhVgsMarginallyReliable"]
-            ],
-        ], [
-            "generallyUnreliable", [
-                ["enAMS", "enAmsGenerallyUnreliable"],
-                ["enAS", "enAsGenerallyUnreliable"],
-                ["enJAPANS", "enJapansGenerallyUnreliable"],
-                ["enKOREAS", "enKoreasGenerallyUnreliable"],
-                ["enNPPSG/1", "enNppsgGenerallyUnreliable"],
-                ["enRSP", "enRspGenerallyUnreliable"],
-                ["enVGS", "enVgsGenerallyUnreliable"],
-                ["zhACGS", "zhAcgsGenerallyUnreliable"],
-                ["zhRSP", "zhRspGenerallyUnreliable"],
-                ["zhVGS", "zhVgsGenerallyUnreliable"]
+            "blacklisted", [
+                ["enRSP", "enRspBlacklisted"],
+                ["zhRSP", "zhRspBlacklisted"],
+                ["enKOREAS", "enKoreasBlacklisted"]
             ],
         ], [
             "deprecated", [
@@ -104,19 +73,50 @@ var CiteUnseenData = {
                 ["zhRSP", "zhRspDeprecated"]
             ],
         ], [
-            "blacklisted", [
-                ["enKOREAS", "enKoreasBlacklisted"],
-                ["enRSP", "enRspBlacklisted"],
-                ["zhRSP", "zhRspBlacklisted"]
+            "generallyUnreliable", [
+                ["enRSP", "enRspGenerallyUnreliable"],
+                ["zhRSP", "zhRspGenerallyUnreliable"],
+                ["enAMS", "enAmsGenerallyUnreliable"],
+                ["enAS", "enAsGenerallyUnreliable"],
+                ["enJAPANS", "enJapansGenerallyUnreliable"],
+                ["enKOREAS", "enKoreasGenerallyUnreliable"],
+                ["enNPPSG/1", "enNppsgGenerallyUnreliable"],
+                ["enVGS", "enVgsGenerallyUnreliable"],
+                ["zhACGS", "zhAcgsGenerallyUnreliable"],
+                ["zhVGS", "zhVgsGenerallyUnreliable"]
+            ],
+        ], [
+            "marginallyReliable", [
+                ["enRSP", "enRspMarginallyReliable"],
+                ["zhRSP", "zhRspMarginallyReliable"],
+                ["enAMS", "enAmsMarginallyReliable"],
+                ["enJAPANS", "enJapansMarginallyReliable"],
+                ["enKOREAS", "enKoreasMarginallyReliable"],
+                ["enVGS", "enVgsMarginallyReliable"],
+                ["zhACGS", "zhAcgsMarginallyReliable"],
+                ["zhVGS", "zhVgsMarginallyReliable"]
             ],
         ], [
             "multi", [
-                ["enNPPSG/2", "enNppsgMulti"],
                 ["enRSP", "enRspMulti"],
+                ["zhRSP", "zhRspMulti"],
+                ["enNPPSG/2", "enNppsgMulti"],
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
-                ["zhRSP", "zhRspMulti"],
                 ["zhVGS", "zhVgsMulti"]
+            ],
+        ], [
+            "generallyReliable", [
+                ["enRSP", "enRspGenerallyReliable"],
+                ["zhRSP", "zhRspGenerallyReliable"],
+                ["enAMS", "enAmsGenerallyReliable"],
+                ["enAS", "enAsGenerallyReliable"],
+                ["enJAPANS", "enJapansGenerallyReliable"],
+                ["enKOREAS", "enKoreasGenerallyReliable"],
+                ["enNPPSG/2", "enNppsgGenerallyReliable"],
+                ["enVGS", "enVgsGenerallyReliable"],
+                ["zhACGS", "zhAcgsGenerallyReliable"],
+                ["zhVGS", "zhVgsGenerallyReliable"]
             ],
         ],
     ],
@@ -194,7 +194,7 @@ var CiteUnseenData = {
      * Create API instance based on current wiki context.
      * @returns {mw.Api|mw.ForeignApi} The appropriate API instance.
      */
-    createApiInstance: function() {
+    createApiInstance: function () {
         if (mw.config.get('wgServer') === "//meta.wikimedia.org") {
             return new mw.Api({ userAgent: 'CiteUnseen' });
         } else {
@@ -207,7 +207,7 @@ var CiteUnseenData = {
      * @param {Object} response - API response object.
      * @returns {string} Combined fulltext from all pages.
      */
-    processApiResponse: function(response) {
+    processApiResponse: function (response) {
         let pageids = response.query.pageids;
         let fulltext = '';
         for (let i = 0; i < pageids.length; i++) {
@@ -228,7 +228,7 @@ var CiteUnseenData = {
      * @param {string} fulltext - The complete wikitext.
      * @returns {Object.<string, Object[]>} Categorized rules object.
      */
-    processCategorizedRules: function(fulltext) {
+    processCategorizedRules: function (fulltext) {
         let sections = this.getSections(fulltext);
         let categorizedRules = {};
         for (const [cat, section] of Object.entries(sections)) {
