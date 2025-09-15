@@ -53,7 +53,7 @@
         // ===============================
         // UTILITY FUNCTIONS
         // ===============================
-        
+
         /**
          * Parse a COinS string into an object
          * @param {string} query - COinS string
@@ -81,8 +81,83 @@
         },
 
         /**
+         * Parse a date token into start/end range
+         * @param {string} token - Date token like "2020", "2020-06", or "2020-06-15"
+         * @returns {Object} Object with start and end Date objects
+         */
+        parseDateToken: function (token) {
+            const parts = token.split("-");
+            if (parts.length === 1) {
+                // yyyy
+                const year = parseInt(parts[0], 10);
+                if (isNaN(year) || year < 1000 || year > 9999) {
+                    throw new Error("Invalid year: " + parts[0]);
+                }
+                return {
+                    start: new Date(year, 0, 1, 0, 0, 0, 0), // Start of Jan 1
+                    end: new Date(year, 11, 31, 23, 59, 59, 999), // End of Dec 31
+                };
+            } else if (parts.length === 2) {
+                // yyyy-MM
+                const year = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1;
+                if (isNaN(year) || isNaN(month) || year < 1000 || year > 9999 || month < 0 || month > 11) {
+                    throw new Error("Invalid year-month: " + token);
+                }
+                const start = new Date(year, month, 1, 0, 0, 0, 0); // First day of month, start of day
+                const end = new Date(year, month + 1, 0, 23, 59, 59, 999); // Last day of month, end of day
+                return { start, end };
+            } else if (parts.length === 3) {
+                // yyyy-MM-dd
+                const year = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1;
+                const day = parseInt(parts[2], 10);
+                if (isNaN(year) || isNaN(month) || isNaN(day) || year < 1000 || year > 9999 || month < 0 || month > 11 || day < 1 || day > 31) {
+                    throw new Error("Invalid date: " + token);
+                }
+                const start = new Date(year, month, day, 0, 0, 0, 0); // Start of the day
+                const end = new Date(year, month, day, 23, 59, 59, 999); // End of the day
+                return { start, end };
+            } else {
+                throw new Error("Invalid date token format: " + token);
+            }
+        },
+
+        /**
+         * Translate a single rule (e.g. ">= 2010-01") into a predicate function.
+         * @param {string} rule - Single date rule with operator
+         * @returns {Function} Predicate function that takes a date and returns true/false
+         */
+        ruleToPredicate: function (rule) {
+            rule = rule.trim();
+            const match = rule.match(/^(>=|<=|>|<|=)\s*(\d{4}(?:-\d{1,2})?(?:-\d{1,2})?)$/);
+            
+            if (!match) {
+                throw new Error("Invalid rule format: " + rule);
+            }
+
+            const [, op, token] = match;
+            const { start, end } = CiteUnseen.parseDateToken(token);
+
+            switch (op) {
+                case ">=":
+                    return d => d >= start;
+                case ">":
+                    return d => d > end;
+                case "<=":
+                    return d => d <= end;
+                case "<":
+                    return d => d < start;
+                case "=":
+                    return d => d >= start && d <= end;
+                default:
+                    throw new Error("Unsupported operator: " + op);
+            }
+        },
+
+        /**
          * Parse date rule string into predicate function
-         * @param {string} ruleString - Date rule, e.g. "<2022-01-01,>2020-01-01"
+         * @param {string} ruleString - Date rule, e.g. "<=2022-01-01,>=2020-01-01" (AND) or "<=2015;>=2017" (OR)
          * @returns {Function|null} Predicate function or null if invalid
          */
         parseDateRule: function (ruleString) {
@@ -91,34 +166,52 @@
                 return null;
             }
 
-            const conditionStrings = trimmedRule.split(',').map(s => s.trim()).filter(Boolean);
-            const predicates = [];
+            // Split by semicolons (OR groups)
+            const orGroups = trimmedRule.split(';').map(s => s.trim()).filter(Boolean);
+            const orGroupPredicates = [];
 
-            for (let cond of conditionStrings) {
-                let operator = '=';
-                if (['<', '>', '='].includes(cond[0])) {
-                    operator = cond[0];
-                    cond = cond.substring(1).trim();
+            for (const orGroup of orGroups) {
+                // Within each OR group, split by commas (AND conditions)
+                const andConditions = orGroup.split(',').map(s => s.trim()).filter(Boolean);
+                const andPredicates = [];
+
+                for (let cond of andConditions) {
+                    // Handle case where no operator is provided (default to '=')
+                    if (!cond.match(/^(>=|<=|>|<|=)/)) {
+                        cond = '=' + cond;
+                    }
+
+                    try {
+                        const predicate = CiteUnseen.ruleToPredicate(cond);
+                        andPredicates.push(predicate);
+                    } catch (error) {
+                        console.warn(`[Cite Unseen] ${error.message} in rule: "${orGroup}"`);
+                        return null;
+                    }
                 }
 
-                const targetDate = new Date(cond);
-                if (isNaN(targetDate.getTime())) {
-                    console.warn(`[Cite Unseen] Invalid date in rule: ${cond}`);
-                    return null;
+                // Skip empty AND groups
+                if (andPredicates.length === 0) {
+                    console.warn(`[Cite Unseen] Empty condition group in rule: "${orGroup}"`);
+                    continue;
                 }
 
-                const predicate = {
-                    '<': date => date < targetDate,
-                    '>': date => date > targetDate,
-                    '=': date => date.getTime() === targetDate.getTime()
-                }[operator];
+                // Create predicate for this OR group
+                orGroupPredicates.push((date) => andPredicates.every(fn => fn(date)));
+            }
 
-                predicates.push(predicate);
+            // If no valid OR groups found, return null
+            if (orGroupPredicates.length === 0) {
+                console.warn(`[Cite Unseen] No valid conditions found in rule: "${trimmedRule}"`);
+                return null;
             }
 
             return (inputDate) => {
                 const date = inputDate instanceof Date ? inputDate : new Date(inputDate);
-                return !isNaN(date.getTime()) && predicates.every(fn => fn(date));
+                if (isNaN(date.getTime())) {
+                    return false;
+                }
+                return orGroupPredicates.some(fn => fn(date));
             };
         },
 
@@ -194,7 +287,7 @@
             if (!rule._cachedPublisherRegex) {
                 rule._cachedPublisherRegex = new RegExp(rule['pub'], 'i');
             }
-            return CiteUnseen.ensureArray(coinsPub).some(publisher => 
+            return CiteUnseen.ensureArray(coinsPub).some(publisher =>
                 rule._cachedPublisherRegex.test(publisher)
             );
         },
@@ -206,11 +299,12 @@
          * @returns {boolean} Whether date matches rule
          */
         matchDate: function (coins, rule) {
-            if (!rule['date']) return true;
+            if (!rule['date']) {
+                return true;
+            }
 
             const predicate = CiteUnseen.parseDateRule(rule['date']);
             if (!predicate) {
-                console.warn(`[Cite Unseen] Invalid date rule: ${rule['date']}`);
                 return false;
             }
 
@@ -264,31 +358,132 @@
         },
 
         /**
-         * Find the first matching reliability category for a citation.
+         * Check if source matches rule excluding date constraints
+         * @param {Object} coins - COinS object
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether non-date fields match
+         */
+        matchNonDateFields: function (coins, rule) {
+            const matchFunctions = {
+                'author': CiteUnseen.matchAuthor,
+                'pub': CiteUnseen.matchPublisher,
+                'url': CiteUnseen.matchUrl,
+                'url_str': CiteUnseen.matchUrlString,
+            };
+            
+            for (const key of Object.keys(rule)) {
+                if (key === 'date') continue; // Skip date field
+                if (!matchFunctions[key]) {
+                    console.log("[Cite Unseen] Unknown rule field:", key);
+                    continue;
+                }
+                if (!matchFunctions[key](coins, rule)) {
+                    return false;
+                }
+            }
+            return true;
+        },
+
+        /**
+         * Find matching reliability categories for a citation, prioritizing current language.
+         * Returns one match for current language, or all matches from other languages if none for current language.
+         * When there are conflicting evaluations within a language, defer to the one that has a date rule.
          * @param {Object} coins - COinS object
          * @param {Object} filteredCategorizedRules - Filtered rules by category
-         * @returns {Object|null} Match object with type and name, or null if no match
+         * @returns {Array} Array of match objects with type, name, and language
          */
         findReliabilityMatch: function (coins, filteredCategorizedRules) {
-            for (const checklistTypeData of CiteUnseen.citeUnseenChecklists) {
-                const checklistType = checklistTypeData[0];
-                for (const checklist of checklistTypeData[1]) {
-                    const [checklistName, checklistID] = checklist;
-                    if (filteredCategorizedRules[checklistID]) {
-                        for (const rule of filteredCategorizedRules[checklistID]) {
-                            if (CiteUnseen.match(coins, rule)) {
-                                if (CiteUnseen.citeUnseenCategories[checklistID]) {
-                                    return { type: checklistType, name: checklistName };
-                                }
-                                return null; // Found match but category disabled
-                            }
+            const currentLanguage = mw.config.get('wgContentLanguage');
+            const languageMatches = {}, languageMultiCandidates = {}, languageCache = new Map();
+            const citationHasDate = Boolean(coins['rft.date']);
+
+            // Function to extract language from checklist name
+            const getLanguage = (checklistName) => {
+                let language = languageCache.get(checklistName);
+                if (language === undefined) {
+                    language = (checklistName.match(/^([a-z]{2})/) || [, 'unknown'])[1];
+                    languageCache.set(checklistName, language);
+                }
+                return language;
+            };
+
+            // Function to add match to appropriate collection
+            const addMatch = (collection, language, matchData) => {
+                (collection[language] ||= []).push(matchData);
+            };
+
+            // Process all checklists to find matches
+            for (const [checklistType, checklists] of CiteUnseen.citeUnseenChecklists) {
+                for (const [checklistName, checklistID] of checklists) {
+                    const rules = filteredCategorizedRules[checklistID];
+                    
+                    if (!rules || !CiteUnseen.citeUnseenCategories[checklistID]) {
+                        if (!rules) console.log('[Cite Unseen] ' + checklistID + ' is not in the ruleset.');
+                        continue;
+                    }
+
+                    const language = getLanguage(checklistName);
+                    let hasDirectMatch = false, hasDateConstrainedMatch = false;
+
+                    for (const rule of rules) {
+                        if (CiteUnseen.match(coins, rule)) {
+                            hasDirectMatch = true;
+                            addMatch(languageMatches, language, {
+                                type: checklistType,
+                                name: checklistName,
+                                language: language,
+                                hasDateRule: Boolean(rule['date'])
+                            });
+                            break;
+                        } else if (!citationHasDate && rule['date'] && CiteUnseen.matchNonDateFields(coins, rule)) {
+                            hasDateConstrainedMatch = true;
                         }
-                    } else {
-                        console.log('[Cite Unseen] ' + checklistID + ' is not in the ruleset.');
+                    }
+
+                    // Track multi candidates if no direct match but has date-constrained potential
+                    if (!hasDirectMatch && hasDateConstrainedMatch) {
+                        addMatch(languageMultiCandidates, language, {
+                            type: 'multi',
+                            name: checklistName,
+                            language: language,
+                            hasDateRule: false
+                        });
                     }
                 }
             }
-            return null;
+
+            // Function to select best match from multiple candidates
+            const selectBestMatch = (matches) => {
+                return matches.length === 1 ? matches[0] : 
+                    matches.find(match => match.hasDateRule) || matches[0];
+            };
+
+            // Function to create clean match object
+            const createCleanMatch = (match) => ({
+                type: match.type,
+                name: match.name,
+                language: match.language
+            });
+
+            const results = { current: [], other: [] };
+
+            // Process direct matches
+            Object.entries(languageMatches).forEach(([language, matches]) => {
+                const cleanMatch = createCleanMatch(selectBestMatch(matches));
+                const targetArray = language === currentLanguage ? results.current : results.other;
+                targetArray.push(cleanMatch);
+            });
+
+            // Process multi candidates for languages without direct matches based on date
+            Object.entries(languageMultiCandidates).forEach(([language, multiCandidates]) => {
+                if (!languageMatches[language] && multiCandidates.length > 0) {
+                    const cleanMatch = createCleanMatch(multiCandidates[0]);
+                    const targetArray = language === currentLanguage ? results.current : results.other;
+                    targetArray.push(cleanMatch);
+                }
+            });
+
+            return results.current.length > 0 ? results.current : results.other;
         },
 
         /**
@@ -444,10 +639,16 @@
                 // If rft_id, check URL-based classifications
                 if (ref.coins['rft_id']) {
                     // Check reliability categories
-                    const reliabilityMatch = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
-                    if (reliabilityMatch && !processedCategories.has(reliabilityMatch.type)) {
-                        CiteUnseen.processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name);
-                        processedCategories.add(reliabilityMatch.type);
+                    const reliabilityMatches = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
+                    for (const reliabilityMatch of reliabilityMatches) {
+                        // We can show multiple icons from various language source evaluations,
+                        // if current language wiki has none.
+                        const reliabilityKey = `${reliabilityMatch.type}_${reliabilityMatch.language}`;
+                        if (!processedCategories.has(reliabilityKey)) {
+                            CiteUnseen.processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name, reliabilityMatch.language);
+                            processedCategories.add(reliabilityKey);
+                            processedCategories.add(reliabilityMatch.type);
+                        }
                     }
 
                     // Check all type categories for matches
@@ -487,9 +688,13 @@
          * @param {Element} node - The iconsDiv node
          * @param {String} type - The type
          * @param {String|null} checklist - The checklist
+         * @param {String|null} language - Language code for reliability icons
          * @returns {Element} The iconNode element
          */
-        processIcon: function (node, type, checklist = null) {
+        processIcon: function (node, type, checklist = null, language = null) {
+            const iconContainer = document.createElement("span");
+            iconContainer.classList.add("cite-unseen-icon-container");
+
             const iconNode = document.createElement("img");
             iconNode.classList.add("skin-invert");
             iconNode.classList.add("cite-unseen-icon-" + type);
@@ -505,6 +710,15 @@
             }
             iconNode.setAttribute("alt", message);
             iconNode.setAttribute("title", "[Cite Unseen] " + message);
+
+            // Add language indicator for reliability icons from different languages
+            if (language && language !== mw.config.get('wgContentLanguage') && ['blacklisted', 'deprecated', 'generallyUnreliable', 'marginallyReliable', 'generallyReliable', 'multi'].includes(type)) {
+                const langIndicator = document.createElement("span");
+                langIndicator.classList.add("cite-unseen-lang-indicator");
+                langIndicator.textContent = language.toUpperCase();
+                iconContainer.appendChild(langIndicator);
+            }
+
             CiteUnseen.addToCount(node, type);
             if (checklist) {
                 // If there is a checklist, wrap the icon in a link.
@@ -518,9 +732,11 @@
                 iconNodeLink.setAttribute("target", "_blank");
                 iconNodeLink.classList.add("cite-unseen-icon-link");
                 iconNodeLink.appendChild(iconNode);
-                node.appendChild(iconNodeLink);
+                iconContainer.appendChild(iconNodeLink);
+                node.appendChild(iconContainer);
             } else {
-                node.appendChild(iconNode);
+                iconContainer.appendChild(iconNode);
+                node.appendChild(iconContainer);
             }
             if (!CiteUnseen.refCategories[type]) {
                 CiteUnseen.refCategories[type] = [];
@@ -536,7 +752,7 @@
         trackUnknownCitation: function (node) {
             const type = "unknown";
             CiteUnseen.addToCount(node, type);
-            
+
             if (!CiteUnseen.refCategories[type]) {
                 CiteUnseen.refCategories[type] = [];
             }
@@ -608,7 +824,7 @@
         createDashboardForReflist: function (reflistData) {
             // Calculate category counts
             const reflistCategoryCounts = CiteUnseen.calculateCategoryCountsForReflist(reflistData);
-            
+
             const hasCategorizations = Object.values(reflistCategoryCounts).some(count => count > 0);
             if (!hasCategorizations) {
                 return; // Don't create dashboard if no categorizations
@@ -881,10 +1097,10 @@
             const containerToCategoriesMap = new Map();
 
             // Populate the map for all selected categories
-            selectedCategoriesArray.forEach(function(category) {
+            selectedCategoriesArray.forEach(function (category) {
                 const nodes = reflistData.categories[category];
                 if (nodes) {
-                    nodes.forEach(function(citeElement) {
+                    nodes.forEach(function (citeElement) {
                         const container = CiteUnseen.getCitationContainer(citeElement);
                         if (container && targetReflist.contains(container)) {
                             if (!containerToCategoriesMap.has(container)) {
@@ -897,7 +1113,7 @@
             });
 
             // Find containers that belong to all selected categories
-            containerToCategoriesMap.forEach(function(categoriesSet, container) {
+            containerToCategoriesMap.forEach(function (categoriesSet, container) {
                 if (categoriesSet.size === selectedCategoriesArray.length) {
                     visibleContainers.add(container);
                 }
@@ -2204,7 +2420,7 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                             for (const pageLink of pageLinks) {
                                 const [lang, ...pageParts] = pageLink.split(':');
                                 const fullPagePath = pageParts.join(':');
-                                projects.push({ page: pageLink, url: `//${lang}.wikipedia.org/wiki/${fullPagePath}`});
+                                projects.push({ page: pageLink, url: `//${lang}.wikipedia.org/wiki/${fullPagePath}` });
                             }
                             return projects;
                         },
