@@ -306,7 +306,7 @@ var CiteUnseenData = {
     getSections: function (fulltext) {
         let sections = {};
         // Only parse the 3rd level headers (=== ... ===).
-        const headerRegex = /^(={3,})([^=]+)\1/gm;
+        const headerRegex = /^(={3})([^=]+)\1$/gm;
         let match;
         let lastHeader = null;
         let lastIndex = 0;
