@@ -878,7 +878,10 @@
             dashboard.div.appendChild(dashboard.cats);
 
             // Insert the dashboard before this reflist
-            document.querySelector('#mw-content-text .mw-parser-output').insertBefore(dashboard.div, reflistData.element);
+            const parentElement = reflistData.element.parentNode;
+            if (parentElement) {
+                parentElement.insertBefore(dashboard.div, reflistData.element);
+            }
             CiteUnseen.updateDashboardCategories(dashboard, reflistCategoryCounts);
         },
 
@@ -1210,8 +1213,14 @@
          * @returns {Promise<Object|null>} Changed rules or null if no changes/error
          */
         loadCustomRulesFromWiki: async function (wikiHost, previousState = {}) {
-            const userName = encodeURIComponent(mw.config.get('wgUserName'));
-            const scriptUrl = `//${wikiHost}/w/index.php?title=User:${userName}/CiteUnseen-Rules.js&ctype=text/javascript&action=raw`;
+            const userName = mw.config.get('wgUserName');
+            
+            if (!userName) {
+                return null;
+            }
+            
+            const encodedUserName = encodeURIComponent(userName);
+            const scriptUrl = `//${wikiHost}/w/index.php?title=User:${encodedUserName}/CiteUnseen-Rules.js&ctype=text/javascript&action=raw`;
 
             try {
                 await mw.loader.getScript(scriptUrl);
@@ -1355,6 +1364,12 @@
          */
         importCustomRules: async function () {
             try {
+                // Check if logged in
+                const userName = mw.config.get('wgUserName');
+                if (!userName) {
+                    return;
+                }
+
                 // Get initial state and load rules from Meta Wiki
                 const initialState = CiteUnseen.captureGlobalRulesState();
                 const metaRules = await CiteUnseen.loadCustomRulesFromWiki('meta.wikimedia.org', initialState);
