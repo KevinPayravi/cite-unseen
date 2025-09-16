@@ -1,7 +1,7 @@
 // Cite Unseen - Bundled Version
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.1
-// Timestamp: 2025-09-16T00:18:32.752Z
+// Release: 2.1.2
+// Timestamp: 2025-09-16T06:25:34.806Z
 
 (function() {
     'use strict';
@@ -18,6 +18,7 @@
     border-radius: 5px;
     font-size: 0.8em;
     text-align: center;
+    clear: both;
 }
 
 /* Dashboard header */
@@ -2489,7 +2490,10 @@ var CiteUnseenData = {
             dashboard.div.appendChild(dashboard.cats);
 
             // Insert the dashboard before this reflist
-            document.querySelector('#mw-content-text .mw-parser-output').insertBefore(dashboard.div, reflistData.element);
+            const parentElement = reflistData.element.parentNode;
+            if (parentElement) {
+                parentElement.insertBefore(dashboard.div, reflistData.element);
+            }
             CiteUnseen.updateDashboardCategories(dashboard, reflistCategoryCounts);
         },
 
@@ -2821,8 +2825,14 @@ var CiteUnseenData = {
          * @returns {Promise<Object|null>} Changed rules or null if no changes/error
          */
         loadCustomRulesFromWiki: async function (wikiHost, previousState = {}) {
-            const userName = encodeURIComponent(mw.config.get('wgUserName'));
-            const scriptUrl = `//${wikiHost}/w/index.php?title=User:${userName}/CiteUnseen-Rules.js&ctype=text/javascript&action=raw`;
+            const userName = mw.config.get('wgUserName');
+            
+            if (!userName) {
+                return null;
+            }
+            
+            const encodedUserName = encodeURIComponent(userName);
+            const scriptUrl = `//${wikiHost}/w/index.php?title=User:${encodedUserName}/CiteUnseen-Rules.js&ctype=text/javascript&action=raw`;
 
             try {
                 await mw.loader.getScript(scriptUrl);
@@ -2966,6 +2976,12 @@ var CiteUnseenData = {
          */
         importCustomRules: async function () {
             try {
+                // Check if logged in
+                const userName = mw.config.get('wgUserName');
+                if (!userName) {
+                    return;
+                }
+
                 // Get initial state and load rules from Meta Wiki
                 const initialState = CiteUnseen.captureGlobalRulesState();
                 const metaRules = await CiteUnseen.loadCustomRulesFromWiki('meta.wikimedia.org', initialState);
