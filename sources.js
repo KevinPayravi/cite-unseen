@@ -359,7 +359,7 @@ var CiteUnseenData = {
             }
         } catch (error) {
             // If call for revision IDs fails, return empty array
-            console.warn('Failed to fetch revision IDs:', error.message);
+            console.warn('[Cite Unseen][sources] Failed to fetch revision IDs:', error.message);
             return [];
         }
         return revisionIds;
@@ -379,17 +379,54 @@ var CiteUnseenData = {
      * @returns {Promise<Object.<string, Object[]>>} An object containing categories and their corresponding rules.
      */
     getCategorizedRules: async function () {
-        // Check if we have any revision IDs specified
-        const revisionIds = await this.getSpecifiedRevisionIds();
+        const CACHE_KEY = 'CiteUnseenSourcesCache';
+        const CACHE_TTL_MS = 3 * 60 * 60 * 1000; // 3 hours
 
-        if (revisionIds.length > 0) {
-            // Use revision-specific method if any revision IDs are specified
-            return await this.getCategorizedRulesFromRevisions(revisionIds);
-        } else {
-            // Fall back to latest revisions
-            const fulltext = await this.getFullText();
-            return this.processCategorizedRules(fulltext);
+        // Try cache first
+        let cached;
+        try {
+            const raw = sessionStorage.getItem(CACHE_KEY);
+            if (raw) {
+                cached = JSON.parse(raw);
+                if (cached && cached.timestamp && (Date.now() - cached.timestamp) < CACHE_TTL_MS && cached.data) {
+                    return cached.data;
+                }
+            }
+        } catch (e) {
+            console.warn('[Cite Unseen][sources] Cache read failed', e);
         }
+
+        // Build fresh data
+        let data;
+        try {
+            // Check if we have any revision IDs specified
+            const revisionIds = await this.getSpecifiedRevisionIds();
+            if (revisionIds.length > 0) {
+                // Use revision-specific method if any revision IDs are specified
+                data = await this.getCategorizedRulesFromRevisions(revisionIds);
+            } else {
+                // Fall back to latest revisions
+                const fulltext = await this.getFullText();
+                data = this.processCategorizedRules(fulltext);
+            }
+        } catch (e) {
+            console.error('[Cite Unseen][sources] Failed to fetch source data', e);
+
+            // On failure but we may still have stale cache
+            if (cached && cached.data) {
+                return cached.data;
+            }
+            throw e; // rethrow original error
+        }
+
+        // Write cache
+        try {
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+        } catch (e) {
+            console.warn('[Cite Unseen][sources] Cache write failed', e);
+        }
+
+        return data;
     },
 
     /**

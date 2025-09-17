@@ -58,7 +58,7 @@
                 const flat = await fetchJsonFile(`${FOLDER}/${f.name}`);
                 mergeLanguageData(result, langCode, flat);
             } catch (e) {
-                console.error('[Cite Unseen] Error fetching language file', f.name, e);
+                console.error('[Cite Unseen][i18n] Error fetching language file', f.name, e);
             }
         }));
 
@@ -78,7 +78,7 @@
                 }
             }
         } catch (e) {
-            console.warn('[Cite Unseen] Cache read failed', e);
+            console.warn('[Cite Unseen][i18n] Cache read failed', e);
         }
 
         // Fetch fresh
@@ -90,11 +90,11 @@
                 sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
             } catch (e) {
                 // Ignore storage failures
-                console.warn('[Cite Unseen] Cache write failed', e);
+                console.warn('[Cite Unseen][i18n] Cache write failed', e);
             }
             return data;
         } catch (e) {
-            console.error('[Cite Unseen] Failed to load translations', e);
+            console.error('[Cite Unseen][i18n] Failed to load translations', e);
 
             // Fallback to existing cache if available, even if stale
             if (cached && cached.data) {
