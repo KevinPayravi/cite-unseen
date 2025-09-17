@@ -11,22 +11,51 @@
     // Expose placeholders immediately
     window.CiteUnseenI18n = window.CiteUnseenI18n || {}; // will be replaced once loaded
 
-    function isCacheFresh(entry) {
-        return entry && typeof entry === 'object' && Date.now() - entry.timestamp < CACHE_TTL_MS && entry.data;
+    /**
+     * Validate the structure of the i18n data
+     * @param data {object} Data to validate
+     * @returns {boolean} True if valid, false otherwise
+     */
+    function isValidData(data) {
+        if (!data || typeof data !== 'object') return false;
+        for (const [k, v] of Object.entries(data)) {
+            if (typeof k !== 'string') return false;
+            if (!Array.isArray(v)) return false;
+        }
+        return true;
     }
 
+    /**
+     * Check if a cache entry is still fresh and valid
+     * @param entry {object|null} Cache entry to check
+     * @returns {false} if stale or invalid, otherwise true
+     */
+    function isCacheFresh(entry) {
+        return entry && typeof entry === 'object' && Date.now() - entry.timestamp < CACHE_TTL_MS && entry.data && isValidData(entry.data);
+    }
+
+    /**
+     * Fetch and parse a JSON file from the repository
+     * @param filePath {string} Path to the file within the repository
+     * @returns {Promise<object>} Parsed JSON content of the file
+     * @throws {Error} If the fetch fails or the response is not valid JSON
+     */
     async function fetchJsonFile(filePath) {
         const url = `${API_BASE}/files/${encodeURIComponent(filePath)}/raw?ref=${encodeURIComponent(BRANCH)}`;
-        const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        const resp = await fetch(url, {headers: {'Accept': 'application/json'}});
         if (!resp.ok) {
             throw new Error(`Failed to fetch ${filePath}: ${resp.status} ${resp.statusText}`);
         }
         return resp.json();
     }
 
+    /**
+     * List all JSON files in the i18n folder of the repository
+     * @returns {Promise<Array<{name: string, type: string}>>} List of file objects with name and type
+     */
     async function listI18nFiles() {
         const url = `${API_BASE}/tree?ref=${encodeURIComponent(BRANCH)}&recursive=false&path=${encodeURIComponent(FOLDER)}`;
-        const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        const resp = await fetch(url, {headers: {'Accept': 'application/json'}});
         if (!resp.ok) {
             throw new Error(`Failed listing i18n folder: ${resp.status} ${resp.statusText}`);
         }
@@ -34,6 +63,12 @@
         return data.filter(item => item.type === 'blob' && /\.json$/i.test(item.name));
     }
 
+    /**
+     * Merge flat language data into the target structure
+     * @param target {object} Target object to merge into
+     * @param lang {string} Language code (e.g., 'en', 'ja', 'hans', 'hant')
+     * @param flatObj {object} Flat object with dot-separated keys
+     */
     function mergeLanguageData(target, lang, flatObj) {
         for (const [fullKey, value] of Object.entries(flatObj)) {
             if (fullKey.includes('.')) {
@@ -48,6 +83,11 @@
         }
     }
 
+    /**
+     * Build the complete i18n object by fetching and merging all language files
+     * @returns {Promise<object>} Complete i18n object
+     * @throws {Error} If fetching or processing fails
+     */
     async function buildI18nObject() {
         const files = await listI18nFiles();
         const result = {};
@@ -65,6 +105,11 @@
         return result;
     }
 
+    /**
+     * Load the i18n data, using cache if available and fresh
+     * @returns {Promise<object>} Loaded i18n data
+     * @throws {Error} If loading fails
+     */
     async function load() {
         // Try cache first
         let cached;
@@ -87,7 +132,7 @@
             data = await buildI18nObject();
             window.CiteUnseenI18n = data;
             try {
-                sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+                sessionStorage.setItem(CACHE_KEY, JSON.stringify({timestamp: Date.now(), data}));
             } catch (e) {
                 // Ignore storage failures
                 console.warn('[Cite Unseen][i18n] Cache write failed', e);
@@ -97,7 +142,7 @@
             console.error('[Cite Unseen][i18n] Failed to load translations', e);
 
             // Fallback to existing cache if available, even if stale
-            if (cached && cached.data) {
+            if (cached && cached.data && isValidData(cached.data)) {
                 window.CiteUnseenI18n = cached.data;
             }
 

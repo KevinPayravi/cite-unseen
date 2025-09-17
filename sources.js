@@ -374,6 +374,21 @@ var CiteUnseenData = {
     },
 
     /**
+     * Validate the structure of the data object.
+     * @param data {Object} The data object to validate.
+     * @returns {boolean} True if valid, false otherwise.
+     */
+    isValidData: function (data) {
+        if (!data || typeof data !== 'object') return false;
+        if (!data.getCategorizedRules || typeof data.getCategorizedRules !== 'function') return false;
+        if (!data.citeUnseenCategories || typeof data.citeUnseenCategories !== 'object') return false;
+        if (!data.citeUnseenCategoryTypes || !Array.isArray(data.citeUnseenCategoryTypes)) return false;
+        if (!data.citeUnseenChecklists || !Array.isArray(data.citeUnseenChecklists)) return false;
+        if (!data.citeUnseenCategoryData || typeof data.citeUnseenCategoryData !== 'object') return false;
+        return true;
+    },
+
+    /**
      * Get categorized rules.
      * Uses specified revision IDs when available, otherwise fetches latest revisions.
      * @returns {Promise<Object.<string, Object[]>>} An object containing categories and their corresponding rules.
@@ -388,7 +403,7 @@ var CiteUnseenData = {
             const raw = sessionStorage.getItem(CACHE_KEY);
             if (raw) {
                 cached = JSON.parse(raw);
-                if (cached && cached.timestamp && (Date.now() - cached.timestamp) < CACHE_TTL_MS && cached.data) {
+                if (cached && cached.timestamp && (Date.now() - cached.timestamp) < CACHE_TTL_MS && cached.data && this.isValidData(cached.data)) {
                     return cached.data;
                 }
             }
@@ -413,7 +428,7 @@ var CiteUnseenData = {
             console.error('[Cite Unseen][sources] Failed to fetch source data', e);
 
             // On failure but we may still have stale cache
-            if (cached && cached.data) {
+            if (cached && cached.data && this.isValidData(cached.data)) {
                 return cached.data;
             }
             throw e; // rethrow original error
