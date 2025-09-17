@@ -358,36 +358,9 @@
         },
 
         /**
-         * Check if source matches rule excluding date constraints
-         * @param {Object} coins - COinS object
-         * @param {Object} rule - Rule object
-         * @returns {boolean} Whether non-date fields match
-         */
-        matchNonDateFields: function (coins, rule) {
-            const matchFunctions = {
-                'author': CiteUnseen.matchAuthor,
-                'pub': CiteUnseen.matchPublisher,
-                'url': CiteUnseen.matchUrl,
-                'url_str': CiteUnseen.matchUrlString,
-            };
-            
-            for (const key of Object.keys(rule)) {
-                if (key === 'date') continue; // Skip date field
-                if (!matchFunctions[key]) {
-                    console.log("[Cite Unseen] Unknown rule field:", key);
-                    continue;
-                }
-                if (!matchFunctions[key](coins, rule)) {
-                    return false;
-                }
-            }
-            return true;
-        },
-
-        /**
          * Find matching reliability categories for a citation, prioritizing current language.
          * Returns one match for current language, or all matches from other languages if none for current language.
-         * When there are conflicting evaluations within a language, defer to the one that has a date rule.
+         * When there are conflicting evaluations within a language, defer to the one that has more conditions.
          * @param {Object} coins - COinS object
          * @param {Object} filteredCategorizedRules - Filtered rules by category
          * @returns {Array} Array of match objects with type, name, and language
@@ -395,7 +368,6 @@
         findReliabilityMatch: function (coins, filteredCategorizedRules) {
             const currentLanguage = mw.config.get('wgContentLanguage');
             const languageMatches = {}, languageMultiCandidates = {}, languageCache = new Map();
-            const citationHasDate = Boolean(coins['rft.date']);
 
             // Function to extract language from checklist name
             const getLanguage = (checklistName) => {
@@ -423,30 +395,31 @@
                     }
 
                     const language = getLanguage(checklistName);
-                    let hasDirectMatch = false, hasDateConstrainedMatch = false;
+                    let hasDirectMatch = false, hasConstrainedMatch = false;
 
                     for (const rule of rules) {
+                        const specificity = (Boolean(rule['author']) ? 1.5 : 0) + (Boolean(rule['date']) ? 1 : 0) + (Boolean(rule['pub']) ? 0.7 : 0);
                         if (CiteUnseen.match(coins, rule)) {
                             hasDirectMatch = true;
                             addMatch(languageMatches, language, {
                                 type: checklistType,
                                 name: checklistName,
                                 language: language,
-                                hasDateRule: Boolean(rule['date'])
+                                spec: specificity
                             });
-                            break;
-                        } else if (!citationHasDate && rule['date'] && CiteUnseen.matchNonDateFields(coins, rule)) {
-                            hasDateConstrainedMatch = true;
+                            if (specificity === 0) break;  // No need to check further if matched with no conditions
+                        } else if (specificity > 0 && (CiteUnseen.matchUrl(coins, rule) || CiteUnseen.matchUrlString(coins, rule))) {
+                            hasConstrainedMatch = true;
                         }
                     }
 
-                    // Track multi candidates if no direct match but has date-constrained potential
-                    if (!hasDirectMatch && hasDateConstrainedMatch) {
+                    // Track multi candidates if no direct match but has constrained potential
+                    if (!hasDirectMatch && hasConstrainedMatch) {
                         addMatch(languageMultiCandidates, language, {
                             type: 'multi',
                             name: checklistName,
                             language: language,
-                            hasDateRule: false
+                            spec: -1  // Constrained match takes the least priority
                         });
                     }
                 }
@@ -455,7 +428,7 @@
             // Function to select best match from multiple candidates
             const selectBestMatch = (matches) => {
                 return matches.length === 1 ? matches[0] : 
-                    matches.find(match => match.hasDateRule) || matches[0];
+                    matches.reduce((best, current) => (current.spec > best.spec ? current : best));
             };
 
             // Function to create clean match object
@@ -474,7 +447,7 @@
                 targetArray.push(cleanMatch);
             });
 
-            // Process multi candidates for languages without direct matches based on date
+            // Process multi candidates for languages without direct matches but has constrained potential
             Object.entries(languageMultiCandidates).forEach(([language, multiCandidates]) => {
                 if (!languageMatches[language] && multiCandidates.length > 0) {
                     const cleanMatch = createCleanMatch(multiCandidates[0]);
