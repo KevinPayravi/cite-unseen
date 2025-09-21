@@ -1414,7 +1414,7 @@
             }
 
             // Load encoding library
-            await mw.loader.getScript('//cdn.jsdelivr.net/npm/jschardet@3.1.4/dist/jschardet.min.js');
+            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
 
             // Load Cite Unseen data
             await mw.loader.load('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/styles.css?mime=text/css', 'text/css');
