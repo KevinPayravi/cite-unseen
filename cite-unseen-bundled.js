@@ -1,7 +1,7 @@
 // Cite Unseen - Bundled Version
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.4
-// Timestamp: 2025-09-17T20:03:55.823Z
+// Release: 2.1.5
+// Timestamp: 2025-09-21T17:46:33.038Z
 
 (function() {
     'use strict';
@@ -1795,7 +1795,7 @@ var CiteUnseenData = {
         ruleToPredicate: function (rule) {
             rule = rule.trim();
             const match = rule.match(/^(>=|<=|>|<|=)\s*(\d{4}(?:-\d{1,2})?(?:-\d{1,2})?)$/);
-            
+
             if (!match) {
                 throw new Error("Invalid rule format: " + rule);
             }
@@ -2052,7 +2052,7 @@ var CiteUnseenData = {
             for (const [checklistType, checklists] of CiteUnseen.citeUnseenChecklists) {
                 for (const [checklistName, checklistID] of checklists) {
                     const rules = filteredCategorizedRules[checklistID];
-                    
+
                     if (!rules || !CiteUnseen.citeUnseenCategories[checklistID]) {
                         if (!rules) console.log('[Cite Unseen] ' + checklistID + ' is not in the ruleset.');
                         continue;
@@ -2091,7 +2091,7 @@ var CiteUnseenData = {
 
             // Function to select best match from multiple candidates
             const selectBestMatch = (matches) => {
-                return matches.length === 1 ? matches[0] : 
+                return matches.length === 1 ? matches[0] :
                     matches.reduce((best, current) => (current.spec > best.spec ? current : best));
             };
 
@@ -2361,7 +2361,7 @@ var CiteUnseenData = {
                 iconNodeLink.setAttribute("target", "_blank");
                 iconNodeLink.classList.add("cite-unseen-icon-link");
                 iconNodeLink.appendChild(iconNode);
-                
+
                 // Add language indicator for reliability icons from different languages.
                 if (language && language !== mw.config.get('wgContentLanguage') && ['blacklisted', 'deprecated', 'generallyUnreliable', 'marginallyReliable', 'generallyReliable', 'multi'].includes(type)) {
                     const langIndicator = document.createElement("span");
@@ -2369,7 +2369,7 @@ var CiteUnseenData = {
                     langIndicator.textContent = language.toUpperCase();
                     iconNodeLink.appendChild(langIndicator);
                 }
-                
+
                 iconContainer.appendChild(iconNodeLink);
                 node.appendChild(iconContainer);
             } else {
@@ -2851,11 +2851,11 @@ var CiteUnseenData = {
          */
         loadCustomRulesFromWiki: async function (wikiHost, previousState = {}) {
             const userName = mw.config.get('wgUserName');
-            
+
             if (!userName) {
                 return null;
             }
-            
+
             const encodedUserName = encodeURIComponent(userName);
             const scriptUrl = `//${wikiHost}/w/index.php?title=User:${encodedUserName}/CiteUnseen-Rules.js&ctype=text/javascript&action=raw`;
 
@@ -3084,9 +3084,54 @@ var CiteUnseenData = {
         },
 
         /**
+         * Decode a URI component, handling potential encoding issues.
+         * @param str - The URI component string to decode
+         * @returns {string} Decoded string
+         */
+        decodeURIComponent: async function (str) {
+            try {  // First try the built-in function
+                return decodeURIComponent(str);
+            } catch (e) {}  // Fallback to detection and decoding
+
+            if (!window.jschardet) {
+                await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
+            }
+
+            function percentDecodeToBinStr(str) {
+                let out = '';
+                for (let i = 0; i < str.length; i++) {
+                    const ch = str[i];
+                    if (ch === '%' && i + 2 < str.length && /^[0-9A-Fa-f]{2}$/.test(str.slice(i + 1, i + 3))) {
+                        out += String.fromCharCode(parseInt(str.slice(i + 1, i + 3), 16));
+                        i += 2;
+                    } else if (ch === '+') {
+                        out += ' ';
+                    } else {
+                        out += String.fromCharCode(str.charCodeAt(i) & 0xFF);
+                    }
+                }
+                return out;
+            }
+
+            function canonicalLabel(label) {
+                if (!label) return null;
+                label = String(label).toLowerCase();
+                if (label === 'ansi_x3.4-1968' || label === 'us-ascii' || label === 'ascii') return 'utf-8';
+                if (label === 'latin1' || label === 'iso-8859-1' || label === 'cp1252') return 'windows-1252';
+                return label;
+            }
+
+            const binStr = percentDecodeToBinStr(str);
+            const detected = window.jschardet.detect(binStr);
+            const encoding = canonicalLabel(detected?.encoding);
+            const decoder = new TextDecoder(encoding);
+            return decoder.decode(new TextEncoder().encode(binStr));
+        },
+
+        /**
          * Find all <cite> tags and parse them into COinS objects; locate the position of {{reflist}}.
          */
-        findCitations: function () {
+        findCitations: async function () {
             // Structure where COinS strings are located:
             //   <cite class="citation book">...</cite>
             //   <span title="...(COinS string)...">...</span>
@@ -3109,7 +3154,7 @@ var CiteUnseenData = {
                     }
                 } else {
                     // Parse COinS string
-                    let coinsString = decodeURIComponent(coinsTag.getAttribute('title'));
+                    let coinsString = await CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
                     coinsObject = CiteUnseen.parseCoinsString(coinsString);
                     if (!coinsObject['rft_id']) {
                         let aTag = citeTag.querySelector('a.external');
@@ -3341,13 +3386,13 @@ var CiteUnseenData = {
                         },
                         targetWikiDisplayName() {
                             const siteName = mw.config.get('wgSiteName') || '';
-                            
+
                             // wbCurrentSiteDetails.shortName (not available on all skins/wikis)
                             const wbSiteDetails = mw.config.get('wbCurrentSiteDetails');
                             if (wbSiteDetails && wbSiteDetails.shortName) {
                                 return `${wbSiteDetails.shortName} ${siteName}`;
                             }
-                            
+
                             // Fallback to wgContentLanguage
                             let langCode = mw.config.get('wgContentLanguage') || '';
 
@@ -3357,7 +3402,7 @@ var CiteUnseenData = {
                                 const langMatch = dbName.match(/^([a-z\-]+)wiki/);
                                 langCode = langMatch ? langMatch[1] : '';
                             }
-                            
+
                             return langCode ? `${langCode.toUpperCase()} ${siteName}` : siteName;
                         }
                     },
@@ -4668,12 +4713,13 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                             return;
                         }
 
-                        CiteUnseen.findCitations();
-                        CiteUnseen.addIcons();
-                        let finishedLoading = document.createElement('div');
-                        finishedLoading.id = 'cite-unseen-finished-loading';
-                        finishedLoading.classList.add('cite-unseen-finished-loading');
-                        document.querySelector('#mw-content-text .mw-parser-output').appendChild(finishedLoading);
+                        CiteUnseen.findCitations().then(function () {
+                            CiteUnseen.addIcons();
+                            let finishedLoading = document.createElement('div');
+                            finishedLoading.id = 'cite-unseen-finished-loading';
+                            finishedLoading.classList.add('cite-unseen-finished-loading');
+                            document.querySelector('#mw-content-text .mw-parser-output').appendChild(finishedLoading);
+                        });
                     });
                 });
             });
