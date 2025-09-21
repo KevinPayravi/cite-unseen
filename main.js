@@ -1413,10 +1413,6 @@
                 };
             }
 
-            // Load encoding library
-            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
-
-            // Load Cite Unseen data
             await mw.loader.load('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/styles.css?mime=text/css', 'text/css');
             await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/i18n.js?mime=text/javascript');
             await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/sources.js?mime=text/javascript');
@@ -1428,10 +1424,14 @@
          * @param str - The URI component string to decode
          * @returns {string} Decoded string
          */
-        decodeURIComponent: function (str) {
+        decodeURIComponent: async function (str) {
             try {  // First try the built-in function
                 return decodeURIComponent(str);
             } catch (e) {}  // Fallback to detection and decoding
+
+            if (!window.jschardet) {
+                await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
+            }
 
             function percentDecodeToBinStr(str) {
                 let out = '';
@@ -1467,7 +1467,7 @@
         /**
          * Find all <cite> tags and parse them into COinS objects; locate the position of {{reflist}}.
          */
-        findCitations: function () {
+        findCitations: async function () {
             // Structure where COinS strings are located:
             //   <cite class="citation book">...</cite>
             //   <span title="...(COinS string)...">...</span>
@@ -1490,7 +1490,7 @@
                     }
                 } else {
                     // Parse COinS string
-                    let coinsString = CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
+                    let coinsString = await CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
                     coinsObject = CiteUnseen.parseCoinsString(coinsString);
                     if (!coinsObject['rft_id']) {
                         let aTag = citeTag.querySelector('a.external');
@@ -3049,12 +3049,13 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                             return;
                         }
 
-                        CiteUnseen.findCitations();
-                        CiteUnseen.addIcons();
-                        let finishedLoading = document.createElement('div');
-                        finishedLoading.id = 'cite-unseen-finished-loading';
-                        finishedLoading.classList.add('cite-unseen-finished-loading');
-                        document.querySelector('#mw-content-text .mw-parser-output').appendChild(finishedLoading);
+                        CiteUnseen.findCitations().then(function () {
+                            CiteUnseen.addIcons();
+                            let finishedLoading = document.createElement('div');
+                            finishedLoading.id = 'cite-unseen-finished-loading';
+                            finishedLoading.classList.add('cite-unseen-finished-loading');
+                            document.querySelector('#mw-content-text .mw-parser-output').appendChild(finishedLoading);
+                        });
                     });
                 });
             });
