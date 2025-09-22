@@ -2,7 +2,7 @@
 // Caches the result in sessionStorage for 12 hours to reduce network requests.
 
 (function () {
-    const BRANCH = 'main';
+    const BRANCH = 'match-fix-test';
     const FOLDER = 'i18n';
     const API_BASE = `https://gitlab.wikimedia.org/api/v4/projects/kevinpayravi%2Fcite-unseen/repository`;
     const CACHE_KEY = 'CiteUnseenI18nCache';

@@ -1427,9 +1427,9 @@
                 };
             }
 
-            await mw.loader.load('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/styles.css?mime=text/css', 'text/css');
-            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/i18n.js?mime=text/javascript');
-            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/main/sources.js?mime=text/javascript');
+            await mw.loader.load('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/match-fix-test/styles.css?mime=text/css', 'text/css');
+            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/match-fix-test/i18n.js?mime=text/javascript');
+            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/match-fix-test/sources.js?mime=text/javascript');
             return await CiteUnseenData.getCategorizedRules();
         },
 
