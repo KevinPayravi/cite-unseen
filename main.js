@@ -284,6 +284,10 @@
             const coinsPub = coins['rft.pub'] || coins['rft.jtitle'];
             if (!coinsPub || !rule['pub']) return false;
 
+            // Also consider author fields as potential publisher names
+            const coinsAuthor = coins['rft.au'] || coins['rft.aulast'];
+            if (coinsAuthor) coinsPub.push(...CiteUnseen.ensureArray(coinsAuthor));
+
             if (!rule._cachedPublisherRegex) {
                 rule._cachedPublisherRegex = new RegExp(rule['pub'], 'i');
             }
