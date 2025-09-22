@@ -3023,6 +3023,12 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
         // ===============================
 
         init: function () {
+            // Singleton
+            if (window._citeUnseenInitialized) {
+                return;
+            }
+            window._citeUnseenInitialized = true;
+
             console.time('[Cite Unseen] Runtime');
 
             // Import source categorization data
