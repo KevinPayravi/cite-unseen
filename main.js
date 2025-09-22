@@ -283,15 +283,15 @@
          * @returns {boolean} Whether publisher matches
          */
         matchPublisher: function (coins, rule) {
-            const coinsPub = coins['rft.pub'] || coins['rft.jtitle'] || [];
+            const coinsPub = coins['rft.pub'] || coins['rft.jtitle'];
             const coinsAuthor = coins['rft.au'] || coins['rft.aulast'];  // Also consider author fields as potential publisher names
-            if (coinsAuthor) coinsPub.push(...CiteUnseen.ensureArray(coinsAuthor));
-            if (!coinsPub || !rule['pub']) return false;
+            if (!(coinsPub || coinsAuthor) || !rule['pub']) return false;
+            const coinsPubCombined = CiteUnseen.ensureArray(coinsPub).concat(CiteUnseen.ensureArray(coinsAuthor));
 
             if (!rule._cachedPublisherRegex) {
                 rule._cachedPublisherRegex = new RegExp(rule['pub'], 'i');
             }
-            return CiteUnseen.ensureArray(coinsPub).some(publisher =>
+            return CiteUnseen.ensureArray(coinsPubCombined).some(publisher =>
                 rule._cachedPublisherRegex.test(publisher)
             );
         },
