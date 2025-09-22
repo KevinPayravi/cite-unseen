@@ -34,11 +34,12 @@
                 'cite_unseen_additional_domains',
                 'cite_unseen_additional_strings',
                 'cite_unseen_dashboard',
-                'cite_unseen_show_suggestions'
+                'cite_unseen_show_suggestions',
+                'cite_unseen_hide_social_media_reliability_ratings'
             ],
 
             mergeableProps: ['categories', 'domainIgnore', 'additionalDomains', 'additionalStrings'],
-            booleanProps: ['dashboard', 'showSuggestions'],
+            booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings'],
 
             globalMapping: {
                 categories: 'cite_unseen_categories',
@@ -46,7 +47,8 @@
                 additionalDomains: 'cite_unseen_additional_domains',
                 additionalStrings: 'cite_unseen_additional_strings',
                 dashboard: 'cite_unseen_dashboard',
-                showSuggestions: 'cite_unseen_show_suggestions'
+                showSuggestions: 'cite_unseen_show_suggestions',
+                hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings'
             }
         },
 
@@ -615,21 +617,27 @@
 
                 // If rft_id, check URL-based classifications
                 if (ref.coins['rft_id']) {
-                    // Check reliability categories
+                    // Find reliability and type matches
                     const reliabilityMatches = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
-                    for (const reliabilityMatch of reliabilityMatches) {
-                        // We can show multiple icons from various language source evaluations,
-                        // if current language wiki has none.
-                        const reliabilityKey = `${reliabilityMatch.type}_${reliabilityMatch.language}`;
-                        if (!processedCategories.has(reliabilityKey)) {
-                            CiteUnseen.processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name, reliabilityMatch.language);
-                            processedCategories.add(reliabilityKey);
-                            processedCategories.add(reliabilityMatch.type);
+                    const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
+
+                    // If the source is social media, skip reliability icons if configured to do so
+                    if (!typeMatches.includes('social') || window.cite_unseen_hide_social_media_reliability_ratings !== true) {
+
+                        // Process reliability categories
+                        for (const reliabilityMatch of reliabilityMatches) {
+                            // We can show multiple icons from various language source evaluations,
+                            // if current language wiki has none.
+                            const reliabilityKey = `${reliabilityMatch.type}_${reliabilityMatch.language}`;
+                            if (!processedCategories.has(reliabilityKey)) {
+                                CiteUnseen.processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name, reliabilityMatch.language);
+                                processedCategories.add(reliabilityKey);
+                                processedCategories.add(reliabilityMatch.type);
+                            }
                         }
                     }
 
-                    // Check all type categories for matches
-                    const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
+                    // Process type categories
                     for (const typeMatch of typeMatches) {
                         if (!processedCategories.has(typeMatch)) {
                             CiteUnseen.processIcon(iconsDiv, typeMatch);
@@ -1357,7 +1365,8 @@
                     additionalDomains: metaState.additionalDomains || {},
                     additionalStrings: metaState.additionalStrings || {},
                     dashboard: metaState.dashboard !== undefined ? metaState.dashboard : true,
-                    showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true
+                    showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true,
+                    hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false
                 };
 
                 // Load local rules
@@ -1372,7 +1381,8 @@
                     additionalDomains: localRules?.additionalDomains || {},
                     additionalStrings: localRules?.additionalStrings || {},
                     dashboard: localRules?.dashboard !== undefined ? localRules.dashboard : true,
-                    showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true
+                    showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true,
+                    hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false
                 };
 
                 // Merge and apply all rules
@@ -1579,7 +1589,8 @@
                 additionalDomains: {},
                 additionalStrings: {},
                 dashboard: true,
-                showSuggestions: true
+                showSuggestions: true,
+                hideSocialMediaReliabilityRatings: false
             };
         },
 
@@ -1594,7 +1605,8 @@
                 additionalDomains: {},
                 additionalStrings: {},
                 dashboard: true,
-                showSuggestions: true
+                showSuggestions: true,
+                hideSocialMediaReliabilityRatings: false
             };
         },
 
@@ -1681,6 +1693,7 @@
                         enableDisableCategories: CiteUnseen.convByVar(CiteUnseenI18n.enableDisableCategories),
                         showDashboard: CiteUnseen.convByVar(CiteUnseenI18n.showDashboard),
                         showSuggestionsButton: CiteUnseen.convByVar(CiteUnseenI18n.showSuggestionsButton),
+                        hideSocialMediaReliabilityRatings: CiteUnseen.convByVar(CiteUnseenI18n.hideSocialMediaReliabilityRatings),
                         domainsToIgnore: CiteUnseen.convByVar(CiteUnseenI18n.domainsToIgnore),
                         additionalDomains: CiteUnseen.convByVar(CiteUnseenI18n.additionalDomains),
                         additionalUrlStrings: CiteUnseen.convByVar(CiteUnseenI18n.additionalUrlStrings)
@@ -1696,7 +1709,8 @@
                                 additionalDomains: {},
                                 additionalStrings: {},
                                 dashboard: true,
-                                showSuggestions: true
+                                showSuggestions: true,
+                                hideSocialMediaReliabilityRatings: false
                             },
                             isSaving: false,
                             cleanupTimer: null
@@ -1835,7 +1849,8 @@
                                 additionalDomains: {},
                                 additionalStrings: {},
                                 dashboard: true,
-                                showSuggestions: true
+                                showSuggestions: true,
+                                hideSocialMediaReliabilityRatings: false
                             };
 
                             // Determine which wiki to load from
@@ -1860,7 +1875,8 @@
                                             additionalDomains: {},
                                             additionalStrings: {},
                                             dashboard: true,
-                                            showSuggestions: true
+                                            showSuggestions: true,
+                                            hideSocialMediaReliabilityRatings: false
                                         };
                                         CiteUnseen._metaRules = rules ? { ...defaultRules, ...rules } : defaultRules;
                                     } else {
@@ -1886,7 +1902,8 @@
                                             additionalDomains: {},
                                             additionalStrings: {},
                                             dashboard: true,
-                                            showSuggestions: true
+                                            showSuggestions: true,
+                                            hideSocialMediaReliabilityRatings: false
                                         };
                                     } else {
                                         CiteUnseen._localRules = {
@@ -1929,6 +1946,7 @@
                                 // Load boolean settings
                                 this.settings.dashboard = targetRules.dashboard !== false;
                                 this.settings.showSuggestions = targetRules.showSuggestions !== false;
+                                this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings === true;
                             } else {
                                 // For local rules, inherit from Meta if undefined, otherwise use local value
                                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
@@ -1948,6 +1966,10 @@
                                 this.settings.showSuggestions = targetRules.showSuggestions !== undefined ?
                                     targetRules.showSuggestions :
                                     (metaRules.showSuggestions !== false);
+
+                                this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings !== undefined ?
+                                    targetRules.hideSocialMediaReliabilityRatings :
+                                    (metaRules.hideSocialMediaReliabilityRatings === true);
                             }
 
                             // Load list settings
@@ -1966,7 +1988,8 @@
                                 additionalDomains: {},
                                 additionalStrings: {},
                                 dashboard: this.settings.dashboard,
-                                showSuggestions: this.settings.showSuggestions
+                                showSuggestions: this.settings.showSuggestions,
+                                hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings
                             };
 
                             const validationErrors = [];
@@ -2114,6 +2137,9 @@
                                     </cdx-checkbox>
                                     <cdx-checkbox v-model="settings.showSuggestions">
                                         {{ $options.i18n.showSuggestionsButton }}
+                                    </cdx-checkbox>
+                                    <cdx-checkbox v-model="settings.hideSocialMediaReliabilityRatings">
+                                        {{ $options.i18n.hideSocialMediaReliabilityRatings }}
                                     </cdx-checkbox>
                                 </cdx-tab>
 
@@ -2277,12 +2303,18 @@ cite_unseen_dashboard = ${settings.dashboard};`;
                     content += `\n// Suggestions button visibility setting
 cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                 }
+
+                if (settings.hideSocialMediaReliabilityRatings === true) {
+                    content += `\n// Hide social media reliability ratings setting
+cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
+                }
             } else {
                 // For local wiki, include boolean settings if they differ from Meta settings
                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
 
                 const metaDashboard = metaRules.dashboard !== false; // Meta default logic
                 const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
+                const metaRulesHideSocialMedia = metaRules.hideSocialMediaReliabilityRatings === true; // Meta default logic
 
                 if (settings.dashboard !== metaDashboard) {
                     content += `\n\n// Dashboard visibility setting
@@ -2292,6 +2324,11 @@ cite_unseen_dashboard = ${settings.dashboard};`;
                 if (settings.showSuggestions !== metaShowSuggestions) {
                     content += `\n\n// Suggestions button visibility setting
 cite_unseen_show_suggestions = ${settings.showSuggestions};`;
+                }
+
+                if (settings.hideSocialMediaReliabilityRatings !== metaRulesHideSocialMedia) {
+                    content += `\n\n// Hide social media reliability ratings setting
+cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
                 }
             }
 

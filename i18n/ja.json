@@ -64,6 +64,7 @@
   "enableDisableCategories": "カテゴリの有効/無効",
   "filterToggleTooltip": "このカテゴリフィルタを切り替えるにはクリックしてください。複数のカテゴリを選択できます。Escape キーで全てのフィルタをクリアします。",
   "filtersActive": " つのフィルタが有効",
+  "hideSocialMediaReliabilityRatings": "ソーシャルメディアソースの信頼性評価を非表示",
   "ignoreDomainsTabGuidance": "各カテゴリから除外するドメインを入力します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されません。1行に1つのドメインを 'example.com' の形式で入力してください。",
   "invalidDomainFormatMessage": "無効なドメイン形式が検出されました。ドメインは \"name.tld\" 形式（例：example.com）である必要があります：\n\n",
   "loading": "読み込み中...",
