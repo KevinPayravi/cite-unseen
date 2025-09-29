@@ -1,8 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-            "SuperGrey"
-        ]
+			"SuperGrey"
+		]
 	},
 	"additionalDomains": "額外網域（每行一個）",
 	"additionalDomainsTabGuidance": "新增要包含在各類別中的自訂網域。來自這些網域的來源將標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。",
