@@ -17,7 +17,8 @@ const i18nData = {};
 for (const file of i18nFiles) {
     const lang = path.basename(file, '.json');
     const content = fs.readFileSync(path.join(i18nDir, file), 'utf8');
-    i18nData[lang] = JSON.parse(content);
+    const langKey = lang.startsWith('zh-') ? lang.substring(3) : lang;  // 'zh-hans' -> 'hans', 'zh-hant' -> 'hant'
+    i18nData[langKey] = JSON.parse(content);
 }
 
 // Convert flat i18n structure back to nested structure
