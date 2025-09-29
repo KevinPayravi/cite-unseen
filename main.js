@@ -618,20 +618,22 @@
                     // Find reliability and type matches
                     const reliabilityMatches = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
                     const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
+                    const hideSocialMediaReliabilityRating = window.cite_unseen_hide_social_media_reliability_ratings === true && typeMatches.includes('social');
 
-                    // If the source is social media, skip reliability icons if configured to do so
-                    if (!typeMatches.includes('social') || window.cite_unseen_hide_social_media_reliability_ratings !== true) {
+                    // Process reliability categories
+                    for (const reliabilityMatch of reliabilityMatches) {
+                        // If hiding social media reliability ratings, skip generic (spec=0) matches
+                        if (hideSocialMediaReliabilityRating && reliabilityMatch.spec === 0) {
+                            continue;
+                        }
 
-                        // Process reliability categories
-                        for (const reliabilityMatch of reliabilityMatches) {
-                            // We can show multiple icons from various language source evaluations,
-                            // if current language wiki has none.
-                            const reliabilityKey = `${reliabilityMatch.type}_${reliabilityMatch.language}`;
-                            if (!processedCategories.has(reliabilityKey)) {
-                                CiteUnseen.processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name, reliabilityMatch.language);
-                                processedCategories.add(reliabilityKey);
-                                processedCategories.add(reliabilityMatch.type);
-                            }
+                        // We can show multiple icons from various language source evaluations,
+                        // if current language wiki has none.
+                        const reliabilityKey = `${reliabilityMatch.type}_${reliabilityMatch.language}`;
+                        if (!processedCategories.has(reliabilityKey)) {
+                            CiteUnseen.processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name, reliabilityMatch.language);
+                            processedCategories.add(reliabilityKey);
+                            processedCategories.add(reliabilityMatch.type);
                         }
                     }
 

@@ -64,7 +64,7 @@
   "enableDisableCategories": "启用/禁用类别",
   "filterToggleTooltip": "点击以切换此类别筛选。您可以选择多个类别。按 Escape 清除所有筛选。",
   "filtersActive": " 个筛选生效",
-  "hideSocialMediaReliabilityRatings": "隐藏社交媒体来源的可靠性评级",
+  "hideSocialMediaReliabilityRatings": "对于未识别发布者的社交媒体来源，隐藏可靠性评级",
   "ignoreDomainsTabGuidance": "输入要从各类别中排除的域名。来自这些域名的来源将不会标记对应的类别图标。每行输入一个域名，格式为 'example.com'。",
   "invalidDomainFormatMessage": "检测到无效的域名格式。域名应为 \"name.tld\" 格式（如 example.com）：\n\n",
   "loading": "加载中……",
