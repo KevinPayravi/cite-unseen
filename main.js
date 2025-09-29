@@ -677,8 +677,8 @@
             if (checklist) {
                 const pageLink = CiteUnseen.citeUnseenData.resolveSourceToPageLink(checklist);
                 const displayName = pageLink || checklist;
-                message = CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipPrefix) + displayName +
-                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + message +
+                message = CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipPrefix) + ' ' + displayName +
+                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + message + ' ' +
                     CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipAction);
             }
             iconNode.setAttribute("alt", message);
@@ -1134,15 +1134,15 @@
                 CiteUnseen.convByVar(CiteUnseenI18n.citationPlural);
 
             if (visibleCount === totalCount) {
-                totalElement.innerText = baseText + CiteUnseen.convByVar(CiteUnseenI18n.totalCitations) + totalCount + citationText;
+                totalElement.innerText = baseText + CiteUnseen.convByVar(CiteUnseenI18n.totalCitations) + ' ' + totalCount + ' ' + citationText;
             } else {
                 const filterInfo = dashboard.reflistData.selectedCategories.size > 1 ?
-                    " (" + dashboard.reflistData.selectedCategories.size + CiteUnseen.convByVar(CiteUnseenI18n.filtersActive) + ")" :
+                    " (" + dashboard.reflistData.selectedCategories.size + ' ' + CiteUnseen.convByVar(CiteUnseenI18n.filtersActive) + ")" :
                     "";
 
                 totalElement.innerText = baseText +
-                    CiteUnseen.convByVar(CiteUnseenI18n.showing) + visibleCount +
-                    CiteUnseen.convByVar(CiteUnseenI18n.of) + totalCount +
+                    CiteUnseen.convByVar(CiteUnseenI18n.showing) + ' ' + visibleCount + ' ' +
+                    CiteUnseen.convByVar(CiteUnseenI18n.of) + ' ' + totalCount + ' ' +
                     citationText + filterInfo;
             }
         },
@@ -2008,7 +2008,7 @@
                                     });
                                 });
 
-                                const correctionMessage = CiteUnseen.convByVar(CiteUnseenI18n.domainsCorrectedMessage) + correctionMessages.join('\n');
+                                const correctionMessage = CiteUnseen.convByVar(CiteUnseenI18n.domainsCorrectedMessage) + '\n\n' + correctionMessages.join('\n');
 
                                 mw.notify(correctionMessage, {
                                     type: 'info',
@@ -2030,7 +2030,7 @@
                             // If there are validation errors, show them and stop
                             if (validationErrors.length > 0) {
                                 this.isSaving = false;
-                                const errorMessage = CiteUnseen.convByVar(CiteUnseenI18n.invalidDomainFormatMessage) + validationErrors.join('\n');
+                                const errorMessage = CiteUnseen.convByVar(CiteUnseenI18n.invalidDomainFormatMessage) + '\n\n' + validationErrors.join('\n');
 
                                 mw.notify(errorMessage, {
                                     type: 'error',

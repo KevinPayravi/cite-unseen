@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"SuperGrey"
+		]
 	},
 	"additionalDomains": "追加ドメイン（1行に1つ）",
 	"additionalDomainsTabGuidance": "各カテゴリに含めるカスタムドメインを追加します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されます。1行に1つのドメインを 'example.com' の形式で入力してください。",

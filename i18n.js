@@ -66,10 +66,11 @@
     /**
      * Merge flat language data into the target structure
      * @param target {object} Target object to merge into
-     * @param lang {string} Language code (e.g., 'en', 'ja', 'hans', 'hant')
+     * @param lang {string} Language code (e.g., 'en', 'ja', 'zh-hans', 'zh-hant')
      * @param flatObj {object} Flat object with dot-separated keys
      */
     function mergeLanguageData(target, lang, flatObj) {
+        if (lang.startsWith('zh-')) lang = lang.substring(3); // 'zh-hans' -> 'hans', 'zh-hant' -> 'hant' (to be consistent with HanAssist)
         for (const [fullKey, value] of Object.entries(flatObj)) {
             if (fullKey.includes('.')) {
                 const [root, child] = fullKey.split('.', 2); // only first dot (current data shape)
