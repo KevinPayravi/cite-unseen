@@ -967,7 +967,7 @@
         getCitationContainer: function (citationElement) {
             // Try to find the list item within a references section
             const listItem = citationElement.closest('li');
-            if (listItem && listItem.closest('.references, .reflist')) {
+            if (listItem && listItem.closest('.references, .reflist, .refsection')) {
                 return listItem;
             }
 
@@ -1533,7 +1533,7 @@
             }
 
             // Find all reflists and track citations within each
-            const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist');
+            const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist, #mw-content-text .mw-parser-output div.refsection');
             CiteUnseen.reflists = [];
 
             if (reflists.length > 0) {
@@ -2750,18 +2750,8 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
          * @param {Element} reflistElement - Optional specific reflist element
          * @returns {Element|null} The header element before reflist, or null if not found
          */
-        findHeaderBeforeReflist: function (reflistElement = null) {
+        findHeaderBeforeReflist: function (reflistElement) {
             let targetReflist = reflistElement;
-
-            // If no specific reflist provided, try to find any reflist on the page
-            if (!targetReflist) {
-                const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist, .references');
-                if (reflists.length > 0) {
-                    targetReflist = reflists[0]; // Use the first reflist found
-                } else {
-                    return null; // No reflist found
-                }
-            }
 
             // Start from the reflist and walk backwards to find the closest heading
             let currentElement = targetReflist.previousElementSibling;
@@ -2778,7 +2768,7 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                     return heading.closest('.mw-heading, .mw-heading2') || heading.parentElement || heading;
                 }
 
-                currentElement = currentElement.previousElementSibling;
+                currentElement = currentElement.previousElementSibling || currentElement.parentElement;
             }
 
             return null;
