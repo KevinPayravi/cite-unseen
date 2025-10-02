@@ -69,6 +69,7 @@
 	"enableDisableCategories": "啟用/停用類別",
 	"filterToggleTooltip": "點擊以切換此類別篩選。您可以選擇多個類別。按 Escape 清除所有篩選。",
 	"filtersActive": " 個篩選生效",
+	"hideSocialMediaReliabilityRatings": "對於未識別發佈者的社群媒體來源，隱藏可靠性評級",
 	"ignoreDomainsTabGuidance": "輸入要從各類別中排除的網域。來自這些網域的來源將不會標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。",
 	"invalidDomainFormatMessage": "偵測到無效的網域格式。網域應為 \"name.tld\" 格式（如 example.com）：",
 	"loading": "載入中……",
