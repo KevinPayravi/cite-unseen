@@ -69,6 +69,7 @@
 	"filterToggleTooltip": "Bu kategori filtresini açıp kapatmak için tıklayın. Birden fazla kategori seçebilirsiniz. Tüm filtreleri temizlemek için Escape tuşuna basın.",
 	"filtersActive": "filtreler aktif",
 	"ignoreDomainsTabGuidance": "Her kategori için hariç tutulacak alan adlarını girin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenmeyecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
+	"invalidDomainFormatMessage": "Geçersiz alan adı biçimi algılandı. Alan adları \"name.tld\" biçiminde olmalıdır (örneğin, example.com):",
 	"loading": "Yükleniyor...",
 	"local": "yerel",
 	"localSettingGuidance": "Yerel wiki ayarları, küresel ayarları geçersiz kılar.",
@@ -97,5 +98,12 @@
 	"suggestionsDialogGuidance": "Bu kaynak için bir veya daha fazla kategori seçin ve isteğe bağlı olarak bir yorum ekleyin. Meta Wiki'de, önerinizi incelemeye gönderebileceğiniz önceden doldurulmuş bir düzenleme formu içeren yeni bir sekme açılacaktır.",
 	"suggestionsDialogReliabilityGuidance": "Güvenilirlik kategorileri (kara listeye alınmış, kullanımdan kaldırılmış, genel olarak güvenilir, genel olarak güvenilmez, kısmen güvenilir, fikir birliği yok) için lütfen aşağıdaki proje sayfalarından birinde fikir birliğine varma fırsatını arayın. Güvenilirlik kategorileri, bu sayfalarda belgelenen topluluk fikir birliğine dayanarak düzenli olarak güncellenmektedir.",
 	"suggestionsToggleButton": "Kategorileri Öner",
-	"suggestionsToggleTooltip": "Kaynaklara yönelik kategorizasyon önermek için öneri modunu etkinleştirin"
+	"suggestionsToggleTooltip": "Kaynaklara yönelik kategorizasyon önermek için öneri modunu etkinleştirin",
+	"tabAdditionalDomains": "Ek Alan Adları",
+	"tabAdditionalStrings": "Ek URL Dizeleri",
+	"tabCategories": "Kategoriler",
+	"tabGeneral": "Genel",
+	"tabIgnoreDomains": "Alan Adlarını Yoksay",
+	"totalCitations": "Toplam",
+	"viewSettingsFrom": "Ayarları şuradan görüntüleyin:"
 }

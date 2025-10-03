@@ -1,6 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
+			"Kly",
+			"LowensteinYang",
 			"SuperGrey"
 		]
 	},
@@ -57,7 +59,7 @@
 	"citationPlural": " 個來源",
 	"citationSingular": " 個來源",
 	"citationTooltipAction": " 點擊圖示可打開檢查表頁面以查看詳情。",
-	"citationTooltipPrefix": "來自 ",
+	"citationTooltipPrefix": "來自",
 	"citationTooltipSuffix": "：",
 	"clearAllFilters": "清除全部",
 	"clearAllFiltersTooltip": "清除所有活動篩選",
@@ -76,7 +78,7 @@
 	"local": "本地",
 	"localSettingGuidance": "本地維基設定會覆蓋全域設定。",
 	"metaWikiGlobal": "元維基 (全域)",
-	"of": " / ",
+	"of": " /",
 	"optionalComment": "可選意見",
 	"reliabilityProjects": "可靠性專案頁面",
 	"save": "儲存",
@@ -89,7 +91,7 @@
 	"settingsSavedSuccess": "設定已成功儲存！重新載入頁面以套用變更？",
 	"showDashboard": "在參考文獻區段上方顯示儀表板",
 	"showSuggestionsButton": "顯示建議按鈕",
-	"showing": "顯示 ",
+	"showing": "顯示",
 	"sourceUrl": "來源網址",
 	"submit": "開啟編輯表單",
 	"submitting": "開啟中……",
@@ -107,6 +109,6 @@
 	"tabCategories": "類別",
 	"tabGeneral": "一般",
 	"tabIgnoreDomains": "忽略網域",
-	"totalCitations": "共 ",
+	"totalCitations": "共",
 	"viewSettingsFrom": "檢視設定："
 }
