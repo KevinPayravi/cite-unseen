@@ -1548,7 +1548,7 @@
 
             // Find all reflists and track citations within each
             const reflists = Array.from(
-                document.querySelectorAll('#mw-content-text .mw-parser-output ol.references'),
+                document.querySelectorAll('#mw-content-text .mw-parser-output ol.references, #mw-content-text .mw-parser-output div.refbegin>ul'),
                 (reflist) => reflist.parentNode
             );
             CiteUnseen.reflists = [];
