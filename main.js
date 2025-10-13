@@ -1533,7 +1533,10 @@
             }
 
             // Find all reflists and track citations within each
-            const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist, #mw-content-text .mw-parser-output div.refsection');
+            const reflists = Array.from(
+                document.querySelectorAll('#mw-content-text .mw-parser-output ol.references'),
+                (reflist) => reflist.parentNode
+            );
             CiteUnseen.reflists = [];
 
             if (reflists.length > 0) {
