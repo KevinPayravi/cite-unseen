@@ -977,19 +977,11 @@
          * @returns {Element} The container element to show/hide
          */
         getCitationContainer: function (citationElement) {
-            // Try to find the list item within a references section
+            // Find closest li element
             const listItem = citationElement.closest('li');
-            if (listItem && listItem.closest('.references, .reflist, .refsection')) {
-                return listItem;
-            }
-
-            // Fallback: look for any parent list item
-            if (listItem) {
-                return listItem;
-            }
-
-            // Final fallback: use the citation element itself
-            return citationElement;
+            
+            // Return the list item if found, otherwise use the citation element itself
+            return listItem || citationElement;
         },
 
         /**
