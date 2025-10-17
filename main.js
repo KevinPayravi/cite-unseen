@@ -879,7 +879,7 @@
             const counts = {};
 
             // Get all category types
-            const categoryTypes = CiteUnseen.getAllCategoryTypes();
+            const categoryTypes = CiteUnseen.getAllCategoryTypes(); // Order doesn't matter here
 
             // Initialize all category counts to 0
             for (const category of categoryTypes) {
@@ -907,11 +907,12 @@
         },
 
         /**
-         * Get all category types used in the system
+         * Get all category types used in the system.
+         * The order only matters when displaying in the dashboard.
          * @returns {Array} Array of all category type strings
          */
         getAllCategoryTypes: function () {
-            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]), ...CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]), 'unknown'];
+            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]), 'unknown'];
         },
 
         /**
@@ -924,7 +925,7 @@
             dashboard.cats.innerHTML = '';
 
             // List each type of source in order
-            const categoryTypes = CiteUnseen.getAllCategoryTypes();
+            const categoryTypes = CiteUnseen.getAllCategoryTypes(); // Order matters here
             for (const category of categoryTypes) {
                 const count = categoryCounts[category] || 0;
                 if (count > 0) {
