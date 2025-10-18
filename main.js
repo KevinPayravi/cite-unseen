@@ -977,19 +977,11 @@
          * @returns {Element} The container element to show/hide
          */
         getCitationContainer: function (citationElement) {
-            // Try to find the list item within a references section
+            // Find closest li element
             const listItem = citationElement.closest('li');
-            if (listItem && listItem.closest('.references, .reflist')) {
-                return listItem;
-            }
 
-            // Fallback: look for any parent list item
-            if (listItem) {
-                return listItem;
-            }
-
-            // Final fallback: use the citation element itself
-            return citationElement;
+            // Return the list item if found, otherwise use the citation element itself
+            return listItem || citationElement;
         },
 
         /**
@@ -1441,7 +1433,7 @@
         decodeURIComponent: async function (str) {
             try {  // First try the built-in function
                 return decodeURIComponent(str);
-            } catch (e) {}  // Fallback to detection and decoding
+            } catch (e) { }  // Fallback to detection and decoding
 
             if (!window.jschardet) {
                 await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
@@ -1547,7 +1539,19 @@
             }
 
             // Find all reflists and track citations within each
-            const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist');
+            const reflists = [
+                ...Array.from(
+                    // div>ol.references captures most standard reference lists inside a containing div
+                    // div.refbegin captures reference lists using Template:Refbegin
+                    document.querySelectorAll(`#mw-content-text .mw-parser-output div>ol.references,
+                        #mw-content-text .mw-parser-output div.refbegin>ul`),
+                    (reflist) => reflist.parentNode // Use parent node as reflist element
+                ),
+                ...Array.from(
+                    // Captures ol.references lists at the "root" level i.e. no containing div
+                    document.querySelectorAll(`#mw-content-text .mw-parser-output > ol.references`)
+                )
+            ];
             CiteUnseen.reflists = [];
 
             if (reflists.length > 0) {
@@ -2788,254 +2792,178 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
         /**
          * Find the header that comes before the reflist
-         * @param {Element} reflistElement - Optional specific reflist element
+         * Used to insert settings + suggest buttons in header
+         * @param {Element} reflistElement - The reflist element to search from
          * @returns {Element|null} The header element before reflist, or null if not found
          */
-        findHeaderBeforeReflist: function (reflistElement = null) {
-            let targetReflist = reflistElement;
+        findHeaderBeforeReflist: function (reflistElement) {
+            let searchElement = reflistElement;
 
-            // If no specific reflist provided, try to find any reflist on the page
-            if (!targetReflist) {
-                const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist, .references');
-                if (reflists.length > 0) {
-                    targetReflist = reflists[0]; // Use the first reflist found
-                } else {
-                    return null; // No reflist found
+            // Try up to 2 levels (current element, then parent)
+            for (let level = 0; level < 2; level++) {
+                let currentElement = searchElement.previousElementSibling;
+
+                while (currentElement) {
+                    // Skip our own dashboard elements
+                    if (currentElement.classList.contains('cite-unseen-dashboard')) {
+                        currentElement = currentElement.previousElementSibling;
+                        continue;
+                    }
+
+                    // Check if element is an h2/h3
+                    if (currentElement.matches('h2, h3') ||
+                        currentElement.classList.contains('mw-heading') ||
+                        currentElement.classList.contains('mw-heading2')) {
+                        return currentElement;
+                    }
+                    // Check if element contains h2/h3
+                    const header = currentElement.querySelector('h2, h3, .mw-heading, .mw-heading2');
+                    if (header) {
+                        return header.closest('.mw-heading, .mw-heading2') || header.parentElement || header;
+                    }
+
+                    currentElement = currentElement.previousElementSibling;
                 }
-            }
 
-            // Start from the reflist and walk backwards to find the closest heading
-            let currentElement = targetReflist.previousElementSibling;
-
-            while (currentElement) {
-                if (currentElement.matches('h2, h3') ||
-                    currentElement.classList.contains('mw-heading') ||
-                    currentElement.classList.contains('mw-heading2')) {
-                    return currentElement;
-                }
-
-                const heading = currentElement.querySelector('h2, h3, .mw-heading, .mw-heading2');
-                if (heading) {
-                    return heading.closest('.mw-heading, .mw-heading2') || heading.parentElement || heading;
-                }
-
-                currentElement = currentElement.previousElementSibling;
+                // Move up one level for next iteration
+                searchElement = searchElement.parentElement;
+                if (!searchElement) break;
             }
 
             return null;
         },
 
         /**
+         * Create a button link element
+         * @param {Element} button - The original button element
+         * @param {string} linkText - The text for the link
+         * @returns {Element|null} The created link element
+         */
+        createButtonLink: function (button, linkText) {
+            if (!button) return null;
+
+            const link = document.createElement('a');
+            link.href = '#';
+            link.className = 'cite-unseen-edit-style';
+            link.setAttribute('title', button.getAttribute('title') || '');
+
+            const span = document.createElement('span');
+            span.textContent = linkText;
+            link.appendChild(span);
+
+            link.onclick = function (e) {
+                e.preventDefault();
+                if (button.onclick) {
+                    button.onclick(e);
+                }
+            };
+
+            return link;
+        },
+
+        /**
+         * Create a button section with Cite Unseen buttons
+         * @param {string} sectionClass - CSS class for the section
+         * @returns {Object|null} Object with section element and suggestionsLink, or null if no buttons
+         */
+        createButtonSection: function (sectionClass) {
+            const section = document.createElement('span');
+            section.className = `mw-editsection cite-unseen-section ${sectionClass}`;
+
+            // Create opening bracket
+            const openingBracket = document.createElement('span');
+            openingBracket.className = 'mw-editsection-bracket';
+            openingBracket.textContent = '[';
+            section.appendChild(openingBracket);
+
+            let hasButtons = false;
+            let suggestionsLink = null;
+
+            // Add settings button
+            if (CiteUnseen.settingsButton) {
+                const settingsLink = CiteUnseen.createButtonLink(
+                    CiteUnseen.settingsButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
+                );
+                if (settingsLink) {
+                    section.appendChild(settingsLink);
+                    hasButtons = true;
+                }
+            }
+
+            // Add divider if both buttons exist
+            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
+                const divider = document.createElement('span');
+                divider.className = 'cite-unseen-editsection-divider';
+                divider.textContent = ' | ';
+                section.appendChild(divider);
+            }
+
+            // Add suggestions button
+            if (CiteUnseen.suggestionsToggleButton) {
+                suggestionsLink = CiteUnseen.createButtonLink(
+                    CiteUnseen.suggestionsToggleButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
+                );
+                if (suggestionsLink) {
+                    section.appendChild(suggestionsLink);
+                    hasButtons = true;
+                }
+            }
+
+            // Create closing bracket
+            const closingBracket = document.createElement('span');
+            closingBracket.className = 'mw-editsection-bracket';
+            closingBracket.textContent = ']';
+            section.appendChild(closingBracket);
+
+            return hasButtons ? { section, suggestionsLink } : null;
+        },
+
+        /**
+         * Set up suggestions toggle functionality
+         * @param {Element} suggestionsLink - The suggestions link element
+         */
+        setupSuggestionsToggle: function (suggestionsLink) {
+            if (!suggestionsLink || !CiteUnseen.suggestionsToggleButton) return;
+
+            CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
+                suggestionsLink.classList.toggle('cite-unseen-suggestions-active', isActive);
+                suggestionsLink.classList.toggle('cite-unseen-suggestions-default', !isActive);
+            };
+        },
+
+        /**
          * Position buttons in the header before a specific reflist
          * @param {Object} reflistData - The reflist data object
+         * @returns {boolean} Success status
          */
         positionButtonsInHeaderForReflist: function (reflistData) {
             const header = CiteUnseen.findHeaderBeforeReflist(reflistData.element);
-            if (!header) {
-                return false;
-            }
+            if (!header) return false;
 
-            // Find the mw-editsection span within the header
+            // Check if buttons already exist
+            if (header.querySelector('.cite-unseen-section')) return true;
+
             const editSection = header.querySelector('.mw-editsection');
+            const sectionClass = editSection ? 'cite-unseen-edit-section' : 'cite-unseen-fallback-section';
+            const buttonData = CiteUnseen.createButtonSection(sectionClass);
+
+            if (!buttonData) return false;
+
+            CiteUnseen.setupSuggestionsToggle(buttonData.suggestionsLink);
 
             if (editSection) {
-                // Use existing [edit] button section
-                return CiteUnseen.injectButtonsInEditSection(header, editSection, reflistData);
+                // Insert after existing edit section
+                editSection.parentNode.insertBefore(buttonData.section, editSection.nextSibling);
             } else {
-                // Fallback: create standalone buttons
-                return CiteUnseen.injectStandaloneButtons(header, reflistData);
-            }
-        },
-
-        /**
-         * Inject buttons within the existing [edit] section
-         * @param {Element} header - The header element
-         * @param {Element} editSection - The edit section element
-         * @param {Object} reflistData - Optional reflist data for tracking
-         */
-        injectButtonsInEditSection: function (header, editSection, reflistData = null) {
-            // Check if buttons are already injected in this header
-            if (header.querySelector('.cite-unseen-section')) {
-                return true;
+                // Insert as standalone section
+                const h2Element = header.querySelector('h2');
+                const targetElement = (h2Element && header.classList.contains('mw-heading')) ? h2Element : header;
+                targetElement.appendChild(buttonData.section);
             }
 
-            const citeUnseenSection = document.createElement('span');
-            citeUnseenSection.className = 'mw-editsection cite-unseen-section cite-unseen-edit-section';
-
-            const openingBracket = document.createElement('span');
-            openingBracket.className = 'mw-editsection-bracket';
-            openingBracket.textContent = '[';
-            citeUnseenSection.appendChild(openingBracket);
-
-            const convertToEditSectionStyle = (button, linkText) => {
-                if (!button) return null;
-
-                const link = document.createElement('a');
-                link.href = '#';
-                link.className = 'cite-unseen-edit-style';
-                link.setAttribute('title', button.getAttribute('title') || '');
-
-                const span = document.createElement('span');
-                span.textContent = linkText;
-                link.appendChild(span);
-
-                link.onclick = function (e) {
-                    e.preventDefault();
-                    if (button.onclick) {
-                        button.onclick(e);
-                    }
-                };
-
-                return link;
-            };
-
-            let hasButtons = false;
-
-            if (CiteUnseen.settingsButton) {
-                const settingsLink = convertToEditSectionStyle(
-                    CiteUnseen.settingsButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
-                );
-                if (settingsLink) {
-                    citeUnseenSection.appendChild(settingsLink);
-                    hasButtons = true;
-                }
-            }
-
-            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
-                const divider = document.createElement('span');
-                divider.className = 'cite-unseen-editsection-divider';
-                divider.textContent = ' | ';
-                citeUnseenSection.appendChild(divider);
-            }
-
-            if (CiteUnseen.suggestionsToggleButton) {
-                const suggestionsLink = convertToEditSectionStyle(
-                    CiteUnseen.suggestionsToggleButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
-                );
-                if (suggestionsLink) {
-                    citeUnseenSection.appendChild(suggestionsLink);
-                    hasButtons = true;
-
-                    CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
-                        if (isActive) {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-active');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-default');
-                        } else {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-default');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-active');
-                        }
-                    };
-                }
-            }
-
-            const closingBracket = document.createElement('span');
-            closingBracket.className = 'mw-editsection-bracket';
-            closingBracket.textContent = ']';
-            citeUnseenSection.appendChild(closingBracket);
-
-            if (hasButtons) {
-                editSection.parentNode.insertBefore(citeUnseenSection, editSection.nextSibling);
-                return true;
-            }
-
-            return false;
-        },
-
-        /**
-         * Inject standalone buttons when edit section doesn't exist
-         * @param {Element} header - The header element
-         * @param {Object} reflistData - Optional reflist data for tracking
-         */
-        injectStandaloneButtons: function (header, reflistData = null) {
-            // Check if we already have buttons injected to avoid duplicates
-            if (header.querySelector('.cite-unseen-fallback-section')) {
-                return true;
-            }
-
-            const fallbackSection = document.createElement('span');
-            fallbackSection.className = 'mw-editsection cite-unseen-fallback-section';
-
-            const openingBracket = document.createElement('span');
-            openingBracket.className = 'mw-editsection-bracket';
-            openingBracket.textContent = '[';
-            fallbackSection.appendChild(openingBracket);
-
-            const convertToFallbackStyle = (button, linkText) => {
-                if (!button) return null;
-
-                const link = document.createElement('a');
-                link.href = '#';
-                link.className = 'cite-unseen-edit-style';
-                link.setAttribute('title', button.getAttribute('title') || '');
-
-                const span = document.createElement('span');
-                span.textContent = linkText;
-                link.appendChild(span);
-
-                link.onclick = function (e) {
-                    e.preventDefault();
-                    if (button.onclick) {
-                        button.onclick(e);
-                    }
-                };
-
-                return link;
-            };
-
-            let hasButtons = false;
-
-            if (CiteUnseen.settingsButton) {
-                const settingsLink = convertToFallbackStyle(
-                    CiteUnseen.settingsButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
-                );
-                if (settingsLink) {
-                    fallbackSection.appendChild(settingsLink);
-                    hasButtons = true;
-                }
-            }
-
-            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
-                const divider = document.createElement('span');
-                divider.className = 'cite-unseen-editsection-divider';
-                divider.textContent = ' | ';
-                fallbackSection.appendChild(divider);
-            }
-
-            if (CiteUnseen.suggestionsToggleButton) {
-                const suggestionsLink = convertToFallbackStyle(
-                    CiteUnseen.suggestionsToggleButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
-                );
-                if (suggestionsLink) {
-                    fallbackSection.appendChild(suggestionsLink);
-                    hasButtons = true;
-
-                    CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
-                        if (isActive) {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-active');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-default');
-                        } else {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-default');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-active');
-                        }
-                    };
-                }
-            }
-
-            const closingBracket = document.createElement('span');
-            closingBracket.className = 'mw-editsection-bracket';
-            closingBracket.textContent = ']';
-            fallbackSection.appendChild(closingBracket);
-
-            if (hasButtons) {
-                header.appendChild(fallbackSection);
-                return true;
-            }
-
-            return false;
+            return true;
         },
 
         /**

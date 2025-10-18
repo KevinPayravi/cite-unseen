@@ -9,7 +9,7 @@
     border-radius: 5px;
     font-size: 0.8em;
     text-align: center;
-    clear: both;
+    overflow: hidden;
 }
 
 /* Dashboard header */
@@ -189,13 +189,13 @@
 /* Icon container for language indicators */
 .cite-unseen-icon-container {
     position: relative;
-    display: inline-block;
+    display: flex;
 }
 
 .cite-unseen-lang-indicator {
     position: absolute;
-    bottom: -2px;
-    right: -2px;
+    bottom: -4px;
+    right: -3px;
     font-size: 8px;
     font-weight: bold;
     color: #000;
