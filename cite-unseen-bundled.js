@@ -1,7 +1,7 @@
 // Cite Unseen - Bundled Version
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.5
-// Timestamp: 2025-09-21T17:46:33.038Z
+// Release: 2.1.6
+// Timestamp: 2025-10-21T21:31:29.593Z
 
 (function() {
     'use strict';
@@ -18,7 +18,7 @@
     border-radius: 5px;
     font-size: 0.8em;
     text-align: center;
-    clear: both;
+    overflow: hidden;
 }
 
 /* Dashboard header */
@@ -198,13 +198,13 @@
 /* Icon container for language indicators */
 .cite-unseen-icon-container {
     position: relative;
-    display: inline-block;
+    display: flex;
 }
 
 .cite-unseen-lang-indicator {
     position: absolute;
-    bottom: -2px;
-    right: -2px;
+    bottom: -4px;
+    right: -3px;
     font-size: 8px;
     font-weight: bold;
     color: #000;
@@ -433,633 +433,1327 @@
     
     // Load i18n data
 window.CiteUnseenI18n = {
+    "@metadata": {
+        "ar": {
+            "authors": [
+                "Meno25"
+            ]
+        },
+        "ja": {
+            "authors": [
+                "SuperGrey"
+            ]
+        },
+        "kg": {
+            "authors": [
+                "Marphy 123"
+            ]
+        },
+        "ln": {
+            "authors": [
+                "Marphy 123"
+            ]
+        },
+        "mk": {
+            "authors": [
+                "Bjankuloski06"
+            ]
+        },
+        "pl": {
+            "authors": [
+                "Ironupiwada"
+            ]
+        },
+        "pms": {
+            "authors": [
+                "Borichèt"
+            ]
+        },
+        "tr": {
+            "authors": [
+                "Hedda"
+            ]
+        },
+        "hans": {
+            "authors": [
+                "SuperGrey"
+            ]
+        },
+        "hant": {
+            "authors": [
+                "Kly",
+                "LowensteinYang",
+                "SuperGrey"
+            ]
+        }
+    },
     "additionalDomains": {
+        "ar": "المجالات الإضافية (واحد لكل سطر)",
         "en": "Additional Domains (one per line)",
+        "ja": "追加ドメイン（1行に1つ）",
+        "ln": "Ba Domaines ya kobakisa (moko na ligne moko) .",
+        "mk": "Дополнителни домени (по еден во секој ред)",
+        "pl": "Dodatkowe domeny (jedna na linię)",
+        "pms": "Domini adissionaj (un për linia)",
+        "tr": "Ek Alan Adları (her satıra bir tane)",
         "hans": "额外域名（每行一个）",
-        "hant": "額外網域（每行一個）",
-        "ja": "追加ドメイン（1行に1つ）"
+        "hant": "額外網域（每行一個）"
     },
     "additionalDomainsTabGuidance": {
+        "ar": "أضف نطاقات مخصصة لتضمينها في كل فئة. سيتم تمييز المصادر من هذه النطاقات برمز الفئة المقابلة. أدخل نطاقًا واحدًا في كل سطر بالتنسيق \"example.com\".",
         "en": "Add custom domains to include in each category. Sources from these domains will be marked with the corresponding category icon. Enter one domain per line in the format 'example.com'.",
+        "ja": "各カテゴリに含めるカスタムドメインを追加します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されます。1行に1つのドメインを 'example.com' の形式で入力してください。",
+        "ln": "Bakisa ba domaines personnalisés mpo na kokotisa na catégorie moko na moko. Ba sources oyo ewutaka na ba domaines wana ekozala marqué na icône ya catégorie oyo ekokani. Tyá domaine moko na ligne moko na format 'example.com'.",
+        "mk": "Додајте прилагодени домени за вклучување во секоја категорија. Изворите од овие домени ќе бидат обележани со соодветната категориска икона. Внесете по еден домен во секој нов ред, во форматот „example.com“.",
+        "pl": "Dodaj niestandardowe domeny do uwzględnienia w każdej kategorii. Źródła z tych domen będą oznaczone odpowiednią ikoną kategorii. Wprowadź jedną domenę na linię w formacie 'przykład.com'.",
+        "pms": "Gionté ij domini përsonalisà da anclude an minca na categorìa. Le sorgiss da costi domini a saran marcà con la plancia ëd categorìa corëspondenta. Anserì un domini pËr linia ant ël formà 'esempi.com'.",
+        "tr": "Her kategoriye eklemek üzere özel alan adları ekleyin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
         "hans": "添加要包含在各类别中的自定义域名。来自这些域名的来源将标记对应的类别图标。每行输入一个域名，格式为 'example.com'。",
-        "hant": "新增要包含在各類別中的自訂網域。來自這些網域的來源將標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。",
-        "ja": "各カテゴリに含めるカスタムドメインを追加します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されます。1行に1つのドメインを 'example.com' の形式で入力してください。"
+        "hant": "新增要包含在各類別中的自訂網域。來自這些網域的來源將標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。"
     },
     "additionalStringsTabGuidance": {
+        "ar": "أضف أنماط عناوين URL مخصصة لتضمينها في كل فئة. سيتم تمييز المصادر التي تحتوي على أنماط عناوين URL هذه بأيقونة الفئة المقابلة. أدخل نمطًا واحدًا في كل سطر (مثل: '/search?q='، '/article/'، '?page=news').",
         "en": "Add custom URL patterns to include in each category. Sources containing these URL patterns will be marked with the corresponding category icon. Enter one pattern per line (e.g., '/search?q=', '/article/', '?page=news').",
+        "ja": "各カテゴリに含めるカスタムURLパターンを追加します。これらのURLパターンを含む情報源には対応するカテゴリアイコンが表示されます。1行に1つのパターンを入力してください（例：'/search?q='、'/article/'、'?page=news'）。",
+        "ln": "Bakisa ba modèles ya URL personnalisé mpo na kokotisa na catégorie moko na moko. Ba sources oyo ezali na ba modèles ya URL oyo ekozala na elembo ya catégorie oyo ekokani. Tyá motindo moko na molɔngɔ moko (ndakisa, '/search?q=', '/article/', '?page=nsango').",
+        "mk": "Додајте прилагодени URL-шами за вклучување во секоја категорија. Изворите што ги содржат овие шеми ќе бидат обележани со соодветната категориска икона. Внесете по една шема во секој нов ред (како на пр. „/search?q=“, „/article/“, „?page=news“).",
+        "pl": "Dodaj niestandardowe wzorce URL do uwzględnienia w każdej kategorii. Źródła zawierające te wzorce URL będą oznaczone odpowiednią ikoną kategorii. Wprowadź jeden wzorzec na linię (np. '/search?q=', '/article/', '?page=news').",
+        "pms": "Gionté djë schema përsonalisà d'URL da include an ògni categorìa. Le sorgiss ch'a conten-o costi schema d'URL a saran marcà con la plancia ëd categorìa rëspondenta. Buté un ëschema për linia (per es., '/search?q=', '/article/', '?page=news').",
+        "tr": "Her kategoriye dahil etmek için özel URL desenleri ekleyin. Bu URL desenlerini içeren kaynaklar ilgili kategori simgesiyle işaretlenecektir. Her satıra bir desen olacak şekilde girin. (örneğin '/search?q=', '/article/', '?page=news').",
         "hans": "添加要包含在各类别中的自定义网址模式。包含这些网址模式的来源将标记对应的类别图标。每行输入一个模式（例如 '/search?q='、'/article/'、'?page=news'）。",
-        "hant": "新增要包含在各類別中的自訂網址模式。包含這些網址模式的來源將標記對應的類別圖示。每行輸入一個模式（例如 '/search?q='、'/article/'、'?page=news'）。",
-        "ja": "各カテゴリに含めるカスタムURLパターンを追加します。これらのURLパターンを含む情報源には対応するカテゴリアイコンが表示されます。1行に1つのパターンを入力してください（例：'/search?q='、'/article/'、'?page=news'）。"
+        "hant": "新增要包含在各類別中的自訂網址模式。包含這些網址模式的來源將標記對應的類別圖示。每行輸入一個模式（例如 '/search?q='、'/article/'、'?page=news'）。"
     },
     "additionalUrlStrings": {
+        "ar": "سلاسل عناوين URL إضافية (واحدة لكل سطر)",
         "en": "Additional URL Strings (one per line)",
+        "ja": "追加URL文字列（1行に1つ）",
+        "kg": "Bansinga ya nkaka ya URL (mosi na ndonga mosi)",
+        "ln": "Ba nsinga mosusu ya URL (moko na molongo)",
+        "mk": "Дополнителни URL-низи (по една во секој ред)",
+        "pl": "Dodatkowe ciągi URL (jeden na linię)",
+        "pms": "Stringhe d'URL suplementar (un-a për linia)",
+        "tr": "Ek URL Dizeleri (her satıra bir tane)",
         "hans": "额外网址字符串（每行一个）",
-        "hant": "額外網址字串（每行一個）",
-        "ja": "追加URL文字列（1行に1つ）"
+        "hant": "額外網址字串（每行一個）"
     },
     "cancel": {
+        "ar": "إلغاء",
         "en": "Cancel",
+        "ja": "キャンセル",
+        "ln": "Kolongola",
+        "mk": "Откажи",
+        "pl": "Anuluj",
+        "pms": "Anulé",
+        "tr": "İptal",
         "hans": "取消",
-        "hant": "取消",
-        "ja": "キャンセル"
+        "hant": "取消"
     },
     "categoriesTabGuidance": {
+        "ar": "تفعيل أو تعطيل فئات محددة من الاستشهادات. لن تظهر الفئات المعطلة في لوحة المعلومات أو أيقوناتها.",
         "en": "Enable or disable specific categories of citations. Disabled categories will not show icons or appear in the dashboard.",
+        "ja": "特定の引用カテゴリを有効または無効にします。無効にしたカテゴリはアイコンが表示されず、ダッシュボードにも表示されません。",
+        "ln": "Activer to désactiver ba catégories spécifiques ya ba citations. Ba catégories désactivées ekolakisa ba icônes te to ekobima na tableau de bord te.",
+        "mk": "Овозможете или оневозможете одредени категории на наводи. Оневозможените категории нема да покажуваат икони и нема да се појавуваат во управувачницата.",
+        "pl": "Włącz lub wyłącz określone kategorie cytowań. Wyłączone kategorie nie będą pokazywać ikon ani pojawiać się na pulpicie.",
+        "pms": "Abilité o disabilité dle categorìe spessìfiche ëd sitassion. Le categorìe disabilità a smonëran nen dle plance nì a compariran ant ël cruscòt.",
+        "tr": "Belirli alıntı kategorilerini etkinleştirin veya devre dışı bırakın. Devre dışı bırakılan kategoriler simge göstermeyecek ve panoda görünmeyecektir.",
         "hans": "启用或禁用特定引用类别。禁用的类别将不会显示图标或出现在仪表板中。",
-        "hant": "啟用或停用特定引用類別。停用的類別將不會顯示圖示或出現在儀表板中。",
-        "ja": "特定の引用カテゴリを有効または無効にします。無効にしたカテゴリはアイコンが表示されず、ダッシュボードにも表示されません。"
+        "hant": "啟用或停用特定引用類別。停用的類別將不會顯示圖示或出現在儀表板中。"
     },
     "categoryHints": {
         "advocacy": {
+            "ar": "هذا المصدر هو منظمة للدفاع عن حقوق الإنسان.",
             "en": "This source is an advocacy organization.",
+            "ja": "この情報源はアドボカシー組織です。",
+            "kg": "Nto yai kele kimvuka ya ke nwaninaka banswa ya bantu.",
+            "ln": "Source oyo ezali organisation ya défense.",
+            "mk": "Овој извор е застапничка организација.",
+            "pl": "To źródło jest organizacją rzeczniczą.",
+            "pms": "Costa sorgiss a l'é n'organisassion ëd part.",
+            "tr": "Bu kaynak, bir savunma/çıkar grubu kuruluşudur.",
             "hans": "此来源为宣传机构。",
-            "hant": "此來源為宣傳機構。",
-            "ja": "この情報源はアドボカシー組織です。"
+            "hant": "此來源為宣傳機構。"
         },
         "blacklisted": {
+            "ar": "لقد تمت إضافة هذا المصدر إلى القائمة السوداء بسبب الإساءة المستمرة، عادةً في شكل روابط خارجية غير مرغوب فيها.",
             "en": "This source has been blacklisted due to persistent abuse, typically in the form of spam external links.",
+            "ja": "この情報源は、持続的な濫用（通常はスパム外部リンクの形で）によりブラックリスト入りしています。",
+            "kg": "Bo me tula nto yai na ndonga ya mbi sambu na mambu ya mbi yina ke landa kusalama, mingi-mingi na mutindu ya bansangu ya mbi ya nganda.",
+            "ln": "Source oyo etiemaki na liste noire mpo na abuse persistant, typiquement na forme ya ba liens externes ya spam.",
+            "mk": "Овој извор е на црниот список поради постојана злоупотреба, обично во облик на спамирање со надворешни врски.",
+            "pl": "To źródło zostało umieszczone na czarnej liście z powodu uporczywego nadużywania, zazwyczaj w formie spamowych linków zewnętrznych.",
+            "pms": "Costa sorgiss a l'é stàita butà ant la lista nèira për via d'abus përsistent, ëd sòlit ant la forma ëd liure esterne ëd rumenta.",
+            "tr": "Bu kaynak, sürekli kötüye kullanım nedeniyle kara listeye alınmıştır; bu genellikle spam dış bağlantılar şeklinde gerçekleşir.",
             "hans": "由于持续滥用（通常以垃圾外部链接的形式），此来源已被列入黑名单。",
-            "hant": "由於持續濫用（通常以垃圾外部連結的形式），此來源已被列入黑名單。",
-            "ja": "この情報源は、持続的な濫用（通常はスパム外部リンクの形で）によりブラックリスト入りしています。"
+            "hant": "由於持續濫用（通常以垃圾外部連結的形式），此來源已被列入黑名單。"
         },
         "blogs": {
+            "ar": "هذا المصدر عبارة عن تدوينة.",
             "en": "This source is a blog post.",
+            "ja": "この情報源はブログ記事です。",
+            "ln": "Source oyo ezali poste ya blog.",
+            "mk": "Овој извор е блоговска објава.",
+            "pl": "To źródło jest wpisem na blogu.",
+            "pms": "Costa sorgiss a l'é n'artìcol dë scartari.",
+            "tr": "Bu kaynak bir blog yazısıdır.",
             "hans": "此来源为博客文章。",
-            "hant": "此來源為部落格文章。",
-            "ja": "この情報源はブログ記事です。"
+            "hant": "此來源為部落格文章。"
         },
         "books": {
+            "ar": "هذا المصدر هو منشور مثل كتاب أو مجلة أو أي مادة مطبوعة أخرى.",
             "en": "This source is a publication such as a book, journal, or other printed material.",
+            "ja": "この情報源は書籍、ジャーナル、またはその他の印刷物などの出版物です。",
+            "ln": "Eutelo oyo ezali mokanda lokola buku, zulunalo, to mikanda misusu.",
+            "mk": "Овој извор е публикација како книга, стручно списание или друг печатен материјал.",
+            "pl": "To źródło jest publikacją taką jak książka, czasopismo lub inny materiał drukowany.",
+            "pms": "Costa sorgiss a l'é na publicassion tanme un lìber, un giornal o d'àutr material ëstampà.",
+            "tr": "Bu kaynak bir kitap, dergi ya da başka tür basılı yayın gibi bir yayındır.",
             "hans": "此来源为出版书籍、期刊或其他出版物。",
-            "hant": "此來源為出版書籍、期刊或其他出版物。",
-            "ja": "この情報源は書籍、ジャーナル、またはその他の印刷物などの出版物です。"
+            "hant": "此來源為出版書籍、期刊或其他出版物。"
         },
         "community": {
+            "ar": "هذا المصدر هو أخبار تم إنشاؤها بواسطة المجتمع.",
             "en": "This source is community-created news.",
+            "ja": "この情報源はコミュニティが作成したニュースです。",
+            "kg": "Nto yai kele bansangu ya kimvuka.",
+            "ln": "Liziba oyo ezali nsango ya mboka.",
+            "mk": "Овој извор е вест создаден од заедница.",
+            "pl": "To źródło to wiadomości tworzone przez społeczność.",
+            "pms": "Costa sorgiss a l'é n'anformassion creà da na comunità.",
+            "tr": "Bu kaynak topluluk tarafından oluşturulmuş bir haber içeriğidir.",
             "hans": "此来源为社群创作的新闻。",
-            "hant": "此來源為社群創作的新聞。",
-            "ja": "この情報源はコミュニティが作成したニュースです。"
+            "hant": "此來源為社群創作的新聞。"
         },
         "deprecated": {
+            "ar": "هذا المصدر مُهمَل ولا يُنصح باستخدامه. مع ذلك، يُمكن استخدامه للوصف الذاتي غير المثير للجدل أو المحتوى الذي ينشره الخبراء بأنفسهم.",
             "en": "This source is deprecated and should not be used. It may still be used for non-controversial self-descriptions or expert self-published content.",
+            "ja": "この情報源は非推奨であり、使用しないでください。無争議の自己記述や専門家による自己出版コンテンツには引き続き使用できます。",
+            "kg": "Bo ke sadilaka ve nto yai mpi bo fwete sadila yo ve. Bo lenda sadila yo sambu na kutendula yo mosi kukonda ntembe to mambu yina bantu ya mayele ke basisa bo mosi.",
+            "ln": "Liziba oyo ezali lisusu na ntina te mpe esengeli kosalelama te. Ekoki kaka kosalelama mpo na kolobela makambo oyo bato bazali na yango to makambo oyo bato ya mayele babimisaka bango moko.",
+            "mk": "Овој извор е застарен и не треба да се користи. Може сепак да се употребува за неспорни самоописи или содржина самообјавена од стручњаци.",
+            "pl": "To źródło jest przestarzałe i nie powinno być używane. Może nadal być używane do niekontrowersyjnych opisów własnych lub ekspertów treści samodzielnie publikowanych.",
+            "pms": "Costa sorgiss a l'é veja e a dovrìa nen esse dovrà. A peul istess esse dovrà për dj'àuto-descrission nen controverse o dël contnù àuto-publicà da dj'espert.",
+            "tr": "Bu kaynak artık kullanılmamaktadır ve kullanılmamalıdır. Ancak tartışma konusu olmayan öz tanımlamalar veya uzmanlarca yayımlanmış içerikler için hâlâ kullanılabilir.",
             "hans": "此来源已弃用，不应使用。它仍可用于无争议的自我描述，或来自专家的自行发表内容。",
-            "hant": "此來源已棄用，不應使用。它仍可用於無爭議的自我描述，或來自專家的自行發表內容。",
-            "ja": "この情報源は非推奨であり、使用しないでください。無争議の自己記述や専門家による自己出版コンテンツには引き続き使用できます。"
+            "hant": "此來源已棄用，不應使用。它仍可用於無爭議的自我描述，或來自專家的自行發表內容。"
         },
         "editable": {
+            "ar": "هذا المصدر قابل للتعديل بواسطة المجتمع (على سبيل المثال، ويكي أو قاعدة بيانات).",
             "en": "This source is editable by the community (e.g., a wiki or database).",
+            "ja": "この情報源はコミュニティによって編集可能です（例：ウィキやデータベース）。",
+            "kg": "Bantu lenda yidika nto yai (mu mbandu, wiki to base de données).",
+            "ln": "Liziba oyo ekoki kobongisama na lisanga (ndakisa, wiki to base de données).",
+            "mk": "Овој извор е уредлив од заедницата (на пр. вики или база на податоци).",
+            "pl": "To źródło może być edytowane przez społeczność (np. wiki lub baza danych).",
+            "pms": "Costa sorgiss a l'é modificàbil da la comunità (për es., na wiki o na base ëd dàit).",
+            "tr": "Bu kaynak topluluk tarafından düzenlenebilir (örneğin bir wiki veya veritabanı).",
             "hans": "此来源可由社群编辑（例如 Wiki 或数据库）。",
-            "hant": "此來源可由社群編輯（例如 Wiki 或資料庫）。",
-            "ja": "この情報源はコミュニティによって編集可能です（例：ウィキやデータベース）。"
+            "hant": "此來源可由社群編輯（例如 Wiki 或資料庫）。"
         },
         "generallyReliable": {
+            "ar": "يتفق المحررون عمومًا على أن هذا المصدر موثوق به فيما يتعلق بالموضوعات التي تقع في مجال تخصصه.",
             "en": "Editors generally agree that this source is reliable on topics in its area of expertise.",
+            "ja": "編集者は一般的に、この情報源がその専門分野のトピックにおいて信頼できると考えています。",
+            "ln": "Ba rédacteurs bandimaka mingi que source oyo ezali fiable na ba sujets na domaine ya expertise na yango.",
+            "mk": "Уредниците начелно се согласуваат дека овој извор е меродавен на теми во неговата област на стручност.",
+            "pl": "Redaktorzy generalnie zgadzają się, że to źródło jest wiarygodne w tematach z jego obszaru wiedzy specjalistycznej.",
+            "pms": "J'editor a son an general d'acòrd che costa sorgiss a l'é fidà an sj'argoment ëd soa àrea ëd competensa.",
+            "tr": "Editörler genellikle bu kaynağın kendi uzmanlık alanındaki konularda güvenilir olduğu konusunda hemfikirdir.",
             "hans": "编辑们一致认为此来源在其专业领域的主题上通常可靠。",
-            "hant": "編輯們一致認為此來源在其專業領域的主題上通常可靠。",
-            "ja": "編集者は一般的に、この情報源がその専門分野のトピックにおいて信頼できると考えています。"
+            "hant": "編輯們一致認為此來源在其專業領域的主題上通常可靠。"
         },
         "generallyUnreliable": {
+            "ar": "يُعتبر هذا المصدر عمومًا غير موثوق به من قِبل المجتمع. مع ذلك، يُمكن استخدامه للوصف الذاتي غير المثير للجدل أو المحتوى الذي ينشره الخبراء بأنفسهم.",
             "en": "This source is generally considered unreliable by the community. It may still be used for non-controversial self-descriptions or expert self-published content.",
+            "ja": "この情報源はコミュニティによって通常信頼できないと考えられています。無争議の自己記述や専門家による自己出版コンテンツには引き続き使用できます。",
+            "kg": "Bantu mingi ke monaka nde mukanda yai kele ve ya kutudila ntima. Bo lenda sadila yo sambu na kutendula yo mosi kukonda ntembe to mambu yina bantu ya mayele ke basisa bo mosi.",
+            "ln": "Mingimingi, liziba oyo etalelami lokola oyo ekoki kotyelama motema te na bato ya mboka. Ekoki naino kosalelama mpo na komilobela oyo ezali na ntembe te to makambo oyo bato ya mayele bamibimisi.",
+            "mk": "Заедницата начелно го смета овој извор за немеродавен. Може сепак да се употребува за неспорни самоописи или содржина самообјавена од стручњаци.",
+            "pl": "To źródło jest generalnie uważane za niewiarygodne przez społeczność. Może nadal być używane do niekontrowersyjnych opisów własnych lub ekspertów treści samodzielnie publikowanych.",
+            "pms": "Costa sorgiss a l'é an general considerà nen fidà da la comunità. A peul istess esse dovrà për dj'àuto-descrission nen controverse o dël contnù àuto-publicà da dj'espert.",
+            "tr": "Bu kaynak, topluluk tarafından genel olarak güvenilmez kabul edilmektedir. Ancak tartışma konusu olmayan öz tanımlamalar veya uzmanlarca yayımlanmış içerikler için hâlâ kullanılabilir.",
             "hans": "社区共识认为此来源通常不可靠。它仍可用于无争议的自我描述，或来自专家的自行发表内容。",
-            "hant": "社群共識認為此來源通常不可靠。它仍可用於無爭議的自我描述，或來自專家的自行發表內容。",
-            "ja": "この情報源はコミュニティによって通常信頼できないと考えられています。無争議の自己記述や専門家による自己出版コンテンツには引き続き使用できます。"
+            "hant": "社群共識認為此來源通常不可靠。它仍可用於無爭議的自我描述，或來自專家的自行發表內容。"
         },
         "government": {
+            "ar": "يتم تحديد هذا المصدر على أنه وسيلة إعلام مملوكة للدولة أو تديرها الدولة، أو مصدر حكومي.",
             "en": "This source is identified as a state-owned or state-run media, or a government source.",
+            "ja": "この情報源は国有または国営メディア、または政府の情報源として識別されています。",
+            "ln": "Liziba oyo emonisami lokola bopanzi sango ya leta to ya leta, to liziba ya leta.",
+            "mk": "Овој извор медиум во државна сопственост или контрола, или пак владин извор.",
+            "pl": "To źródło jest zidentyfikowane jako medium państwowe lub prowadzone przez państwo, lub źródło rządowe.",
+            "pms": "Costa sorgiss a l'é indentificà tanme un mojen possedù o controlà da lë stat, o na sorgiss governamental.",
+            "tr": "Bu kaynak, devlet tarafından sahip olunan veya devletçe işletilen bir medya kuruluşu ya da bir devlet kaynağıdır.",
             "hans": "此来源已被识别为国有或国营媒体，或为政府来源。",
-            "hant": "此來源已被識別為國有或國營媒體，或為政府來源。",
-            "ja": "この情報源は国有または国営メディア、または政府の情報源として識別されています。"
+            "hant": "此來源已被識別為國有或國營媒體，或為政府來源。"
         },
         "marginallyReliable": {
+            "ar": "هذا المصدر ذو موثوقية محدودة. قد يلزم مراجعته على أساس كل حالة على حدة لتحديد مدى موثوقيته في كل سياق.",
             "en": "This source is marginally reliable. It may be necessary to review it on a case-by-case basis to determine its reliability in each context.",
+            "ja": "この情報源は限られた信頼性があります。各コンテキストでの信頼性を判断するために、個別にレビューする必要があるかもしれません。",
+            "kg": "Mukanda yai kele ya kutudila ntima. Yo lenda vanda mfunu na kutomisa yo na kutadila diambu mosi-mosi sambu na kuzaba kana yo kele ya kutudila ntima na konso mambu.",
+            "ln": "Liziba oyo ezali mwa kotyela motema. Ekoki kozala na ntina kotalela yango na kotalela likambo mokomoko mpo na koyeba soki ekoki kotyelama motema na likambo mokomoko.",
+            "mk": "Овој извор е маргинално веродостоен. Можеби е неопходно да се проверува од случај до случај за да се одреди неговата веродостојност во секој даден контекст.",
+            "pl": "To źródło jest marginalnie wiarygodne. Może być konieczne przejrzenie go przypadek po przypadku, aby określić jego wiarygodność w każdym kontekście.",
+            "pms": "Costa sorgiss a l'é pòch fidàbil. A peul essie damanca ëd controlela cas për cas për determiné sò afidament an minca 'n contest.",
+            "tr": "Bu kaynak, sınırlı düzeyde güvenilirdir. Her bağlamda güvenilirliğini belirlemek için duruma göre ayrı ayrı incelenmesi gerekebilir.",
             "hans": "此来源半可靠。可能有必要在每次使用该来源时逐个进行审查，视情境决定是否可靠。",
-            "hant": "此來源半可靠。可能有必要在每次使用該來源時逐個進行審查，視情境決定是否可靠。",
-            "ja": "この情報源は限られた信頼性があります。各コンテキストでの信頼性を判断するために、個別にレビューする必要があるかもしれません。"
+            "hant": "此來源半可靠。可能有必要在每次使用該來源時逐個進行審查，視情境決定是否可靠。"
         },
         "multi": {
+            "ar": "لا يوجد إجماع في المجتمع حول موثوقية هذا المصدر. قد تتأثر موثوقيته بعامل أو أكثر، مثل مجال الموضوع، أو المؤلف، أو تاريخ النشر.",
             "en": "There is no consensus in the community about the reliability of this source. Its reliability may be affected by one or more factors, such as the subject area, author, or publication time.",
+            "ja": "この情報源の信頼性についてコミュニティ内でコンセンサスがありません。その信頼性は、主題領域、著者、または出版時間など、1つ以上の要因によって影響を受ける可能性があります。",
+            "kg": "Bantu ke ndimaka ve kana nto yai kele ya kutudila ntima. Kutula ntima na yo lenda vanda na bupusi na diambu mosi to mingi, bonso kisika ya ntu-diambu, nsoniki, to ntangu ya kubasika.",
+            "ln": "Boyokani ezali te na kati ya lisanga mpo na bondimi ya source oyo. Bondimi na yango ekoki kozala na bopusi na likambo moko to mingi, lokola esika ya lisolo, mokomi, to ntango ya kobimisa mikanda.",
+            "mk": "Нема консензус во заедницата за меродавноста на овој извор. Неговата мероавност може да биде засегната од еден или повеќе чинители, како на пр. тематиката, авторот или времето на објавување.",
+            "pl": "Nie ma konsensusu w społeczności co do wiarygodności tego źródła. Na jego wiarygodność może wpływać jeden lub więcej czynników, takich jak obszar tematyczny, autor lub czas publikacji.",
+            "pms": "A-i é nen d'acòrd ant la comunità a propòsit dl'afidament ëd costa sorgiss. Sò afidament a peul esse anfluensà da un o vàire fator, tanme l'argoment, l'autor o ël temp ëd publicassion.",
+            "tr": "Topluluk içinde bu kaynağın güvenilirliği konusunda bir görüş birliği yoktur. Güvenilirliği; konu alanı, yazar veya yayımlanma zamanı gibi bir ya da birden fazla faktörden etkilenebilir.",
             "hans": "社区对此来源的可靠性没有共识。其可靠性可能受到一个或多个因素影响（例如主题领域、作者或出版时间）。",
-            "hant": "社群對此來源的可靠性沒有共識。其可靠性可能受到一個或多個因素影響（例如主題領域、作者或出版時間）。",
-            "ja": "この情報源の信頼性についてコミュニティ内でコンセンサスがありません。その信頼性は、主題領域、著者、または出版時間など、1つ以上の要因によって影響を受ける可能性があります。"
+            "hant": "社群對此來源的可靠性沒有共識。其可靠性可能受到一個或多個因素影響（例如主題領域、作者或出版時間）。"
         },
         "news": {
+            "ar": "هذا المصدر عبارة عن مقالة إخبارية من مؤسسة إخبارية مرموقة.",
             "en": "This source is a news article from a reputable news organization.",
+            "ja": "この情報源は信頼できるニュース組織からのニュース記事です。",
+            "ln": "Eutelo oyo ezali lisolo ya bansango ya ebongiseli moko ya bansango oyo eyebani mingi.",
+            "mk": "Овој извор е статија со вести од реноимрана новинска организација.",
+            "pl": "To źródło to artykuł informacyjny z renomowanej organizacji prasowej.",
+            "pms": "Costa sorgiss a l'é n'artìcol ëd neuve da n'organisassion d'anformassion rëspetàbil.",
+            "tr": "Bu kaynak, saygın bir haber kuruluşuna ait bir haber makalesidir.",
             "hans": "此来源为来自知名新闻机构的新闻文章。",
-            "hant": "此來源為來自知名新聞機構的新聞文章。",
-            "ja": "この情報源は信頼できるニュース組織からのニュース記事です。"
+            "hant": "此來源為來自知名新聞機構的新聞文章。"
         },
         "opinions": {
+            "ar": "هذا المصدر عبارة عن مقالة رأي.",
             "en": "This source is an opinion piece.",
+            "ja": "この情報源は意見記事です。",
+            "kg": "Nto yai kele kitini ya ngindu.",
+            "ln": "Source oyo ezali pièce ya opinion.",
+            "mk": "Овој извор е колумна.",
+            "pl": "To źródło to artykuł opiniotwórczy.",
+            "pms": "Costa a l'é na sorgiss d'opinion.",
+            "tr": "Bu kaynak bir görüş yazısıdır.",
             "hans": "此来源为观点文章。",
-            "hant": "此來源為觀點文章。",
-            "ja": "この情報源は意見記事です。"
+            "hant": "此來源為觀點文章。"
         },
         "predatory": {
+            "ar": "هذا المصدر من مجلة مفترسة.",
             "en": "This source is from a predatory journal.",
+            "ja": "この情報源はハゲタカジャーナルからのものです。",
+            "kg": "Mukanda yai me katuka na zulunalu mosi ya ke tubilaka mambu ya mbi.",
+            "ln": "Liziba oyo euti na zulunalo moko oyo elyaka banyama mosusu.",
+            "mk": "Овој извор е од предаторски часопис.",
+            "pl": "To źródło pochodzi z drapieżnego czasopisma.",
+            "pms": "Costa sorgiss a l'é da 'n giornal predatòri.",
+            "tr": "Bu kaynak, yırtıcı (predatory) bir dergiden alınmıştır.",
             "hans": "此来源来自掠夺性期刊。",
-            "hant": "此來源來自掠奪性期刊。",
-            "ja": "この情報源はハゲタカジャーナルからのものです。"
+            "hant": "此來源來自掠奪性期刊。"
         },
         "press": {
+            "ar": "هذا المصدر عبارة عن بيان صحفي.",
             "en": "This source is a press release.",
+            "ja": "この情報源はプレスリリースです。",
+            "ln": "Source oyo ezali communiqué ya presse.",
+            "mk": "Овој извор е изјава за печат.",
+            "pl": "To źródło to komunikat prasowy.",
+            "pms": "Costa sorgiss a l'é un comunicà stampa.",
+            "tr": "Bu kaynak bir basın bültenidir.",
             "hans": "此来源为新闻稿。",
-            "hant": "此來源為新聞稿。",
-            "ja": "この情報源はプレスリリースです。"
+            "hant": "此來源為新聞稿。"
         },
         "satire": {
+            "ar": "ينشر هذا المصدر محتوى ساخرًا أو محاكاة ساخرة.",
             "en": "This source publishes satirical or parody content.",
+            "ja": "この情報源は風刺やパロディのコンテンツを公開しています。",
+            "kg": "Kisika yai ke basisaka mambu ya satirique to parody.",
+            "ln": "Eutelo oyo ebimisaka makambo ya satirique to ya parody.",
+            "mk": "Овој извор објавува сатирични и пародиски содржини.",
+            "pl": "To źródło publikuje treści satyryczne lub parodystyczne.",
+            "pms": "Costa sorgiss a pùblich dël contnù satìrich o ëd parodìa.",
+            "tr": "Bu kaynak, hiciv veya parodi içerik yayımlar.",
             "hans": "此来源发表讽刺、恶搞内容。",
-            "hant": "此來源發表諷刺、惡搞內容。",
-            "ja": "この情報源は風刺やパロディのコンテンツを公開しています。"
+            "hant": "此來源發表諷刺、惡搞內容。"
         },
         "social": {
+            "ar": "هذا المصدر هو موقع تواصل اجتماعي، وربما منشور على إحدى وسائل التواصل الاجتماعي.",
             "en": "This source is a social media website, possibly a social media post.",
+            "ja": "この情報源はソーシャルメディアのウェブサイトで、ソーシャルメディアの投稿である可能性があります。",
+            "ln": "Eutelo oyo ezali site ya social media, mbala mosusu poste ya social media.",
+            "mk": "Овој извор е од друштвен медиум, можеби објава.",
+            "pl": "To źródło to strona mediów społecznościowych, możliwie post w mediach społecznościowych.",
+            "pms": "Costa sorgiss a l'é un sit ëd mojen sossiaj, peul desse n'artìcol ëd mojen sossial.",
+            "tr": "Bu kaynak, bir sosyal medya sitesinden alınmıştır; muhtemelen bir sosyal medya gönderisidir.",
             "hans": "此来源为社交媒体网站，可能是社交媒体贴文。",
-            "hant": "此來源為社群媒體網站，可能是社群媒體貼文。",
-            "ja": "この情報源はソーシャルメディアのウェブサイトで、ソーシャルメディアの投稿である可能性があります。"
+            "hant": "此來源為社群媒體網站，可能是社群媒體貼文。"
         },
         "sponsored": {
+            "ar": "هذا المصدر عبارة عن محتوى برعاية أو مادة ترويجية.",
             "en": "This source is a sponsored content or promotional material.",
+            "ja": "この情報源はスポンサー付きのコンテンツまたはプロモーション資料です。",
+            "ln": "Source oyo ezali contenus sponsorisé to matériel promotionnel.",
+            "mk": "Овој извор е спонзорирана содржина или промотивен материјал.",
+            "pl": "To źródło to treść sponsorowana lub materiał promocyjny.",
+            "pms": "Costa sorgiss a l'é un contnù d'areclam o dël material promossional.",
+            "tr": "Bu kaynak, sponsorlu bir içerik ya da tanıtım materyalidir.",
             "hans": "此来源为商单、宣传稿。",
-            "hant": "此來源為商單、宣傳稿。",
-            "ja": "この情報源はスポンサー付きのコンテンツまたはプロモーション資料です。"
+            "hant": "此來源為商單、宣傳稿。"
         },
         "tabloids": {
+            "ar": "هذا المصدر هو صحيفة صفراء أو أخبار شائعة.",
             "en": "This source is a tabloid or gossip news.",
+            "ja": "この情報源はタブロイドまたはゴシップニュースです。",
+            "ln": "Source oyo eza tabloïde to sango ya bilobaloba.",
+            "mk": "Овој извор е таблоид или озборувачка вест.",
+            "pl": "To źródło to tabloid lub wiadomości plotkarskie.",
+            "pms": "Costa sorgiss a l'é un giornal ëd costume e petegolum.",
+            "tr": "Bu kaynak, bir tabloid ya da magazin haberidir.",
             "hans": "此来源为小报或八卦新闻。",
-            "hant": "此來源為小報或八卦新聞。",
-            "ja": "この情報源はタブロイドまたはゴシップニュースです。"
+            "hant": "此來源為小報或八卦新聞。"
         },
         "tvPrograms": {
+            "ar": "هذا المصدر هو برنامج تلفزيوني أو إذاعي. تعتمد موثوقيته على كل برنامج.",
             "en": "This source is a TV or radio program. Its reliability depends on the individual program.",
+            "ja": "この情報源はテレビまたはラジオ番組です。その信頼性は個々の番組によって異なります。",
+            "ln": "Liziba oyo ezali programme ya TV to ya radio. Bondimi na yango etali programme ya moto na moto.",
+            "mk": "Овој извор е TV- или радиоемисија. Неговата меродавност зависи од поединечната емисија.",
+            "pl": "To źródło to program telewizyjny lub radiowy. Jego wiarygodność zależy od konkretnego programu.",
+            "pms": "Costa sorgiss a l'é un programa dla television o dla radio. Sò afidament a dipend dal programa particolar.",
+            "tr": "Bu kaynak, bir TV ya da radyo programıdır. Güvenilirliği, ilgili programa bağlıdır.",
             "hans": "此来源为电视或广播节目。其可靠性取决于个别节目。",
-            "hant": "此來源為電視或廣播節目。其可靠性取決於個別節目。",
-            "ja": "この情報源はテレビまたはラジオ番組です。その信頼性は個々の番組によって異なります。"
+            "hant": "此來源為電視或廣播節目。其可靠性取決於個別節目。"
         },
         "unknown": {
+            "ar": "لم يتم تقييم هذا المصدر بعد.",
             "en": "This source is not yet evaluated.",
+            "ja": "この情報源はまだ評価されていません。",
+            "ln": "Liziba oyo etalelami naino te.",
+            "mk": "Овој извор сè уште не е оценет.",
+            "pl": "To źródło nie zostało jeszcze ocenione.",
+            "pms": "Costa sorgiss a l'é ancor nen valutà.",
+            "tr": "Bu kaynak henüz değerlendirilmemiştir.",
             "hans": "此来源尚未评估。",
-            "hant": "此來源尚未評估。",
-            "ja": "この情報源はまだ評価されていません。"
+            "hant": "此來源尚未評估。"
         }
     },
     "categoryLabels": {
         "advocacy": {
+            "ar": "المناصرة",
             "en": "advocacy",
+            "ja": "アドボカシー",
+            "ln": "kosunga",
+            "mk": "застапништво",
+            "pl": "rzecznictwo",
+            "pms": "sostegn",
+            "tr": "savunma",
             "hans": "宣传机构",
-            "hant": "宣傳機構",
-            "ja": "アドボカシー"
+            "hant": "宣傳機構"
         },
         "blacklisted": {
+            "ar": "مُدرج في القائمة السوداء",
             "en": "blacklisted",
+            "ja": "ブラックリスト入り",
+            "ln": "na liste ya moindo",
+            "mk": "на црн список",
+            "pl": "na czarnej liście",
+            "pms": "ant la lista nèira",
+            "tr": "kara listeye alınmış",
             "hans": "列入黑名单",
-            "hant": "列入黑名單",
-            "ja": "ブラックリスト入り"
+            "hant": "列入黑名單"
         },
         "blogs": {
+            "ar": "تدوينات المدونة",
             "en": "blog post(s)",
+            "ja": "ブログ",
+            "ln": "post(s) ya blog .",
+            "mk": "блоговска објава",
+            "pl": "wpis(y) na blogu",
+            "pms": "artìcoj dë scartari",
+            "tr": "blog yazıları",
             "hans": "博客",
-            "hant": "部落格",
-            "ja": "ブログ"
+            "hant": "部落格"
         },
         "books": {
+            "ar": "كتب",
             "en": "books",
+            "ja": "出版物",
+            "kg": "mikanda",
+            "ln": "mikanda",
+            "mk": "книги",
+            "pl": "książki",
+            "pms": "lìber",
+            "tr": "kitaplar",
             "hans": "书刊",
-            "hant": "書刊",
-            "ja": "出版物"
+            "hant": "書刊"
         },
         "community": {
+            "ar": "مجتمع",
             "en": "community",
+            "ja": "コミュニティ",
+            "ln": "esika bofandi",
+            "mk": "заедница",
+            "pl": "społeczność",
+            "pms": "comunità",
+            "tr": "topluluk",
             "hans": "社群新闻",
-            "hant": "社群新聞",
-            "ja": "コミュニティ"
+            "hant": "社群新聞"
         },
         "deprecated": {
+            "ar": "مُهمَل",
             "en": "deprecated",
+            "ja": "非推奨",
+            "kg": "yina bo me bikisaka",
+            "ln": "esili kozanga kosalelama",
+            "mk": "застарено",
+            "pl": "przestarzałe",
+            "pms": "dësconsejà",
+            "tr": "artık geçerli olmayan",
             "hans": "应停用",
-            "hant": "應停用",
-            "ja": "非推奨"
+            "hant": "應停用"
         },
         "editable": {
+            "ar": "قابلة للتحرير",
             "en": "editable",
+            "ja": "編集可能",
+            "ln": "ekoki kobongisama",
+            "mk": "уредливо",
+            "pl": "edytowalne",
+            "pms": "modificàbil",
+            "tr": "düzenlenebilir",
             "hans": "可编辑",
-            "hant": "可編輯",
-            "ja": "編集可能"
+            "hant": "可編輯"
         },
         "generallyReliable": {
+            "ar": "موثوقة بشكل عام",
             "en": "generally reliable",
+            "ja": "通常信頼できる",
+            "kg": "mingi-mingi ya kutudila ntima",
+            "ln": "mingimingi ekoki kotyelama motema",
+            "mk": "начелно меродавно",
+            "pl": "ogólnie wiarygodne",
+            "pms": "an general fidà",
+            "tr": "genel olarak güvenilir",
             "hans": "通常可靠",
-            "hant": "通常可靠",
-            "ja": "通常信頼できる"
+            "hant": "通常可靠"
         },
         "generallyUnreliable": {
+            "ar": "غير موثوق بها بشكل عام",
             "en": "generally unreliable",
+            "ja": "通常信頼できない",
+            "kg": "Mbala mingi bo lenda tudila yo ve ntima",
+            "ln": "mingimingi ekoki kotyelama motema te",
+            "mk": "начелно немеродавно",
+            "pl": "ogólnie niewiarygodne",
+            "pms": "an general nen fidà",
+            "tr": "genellikle güvenilmez",
             "hans": "通常不可靠",
-            "hant": "通常不可靠",
-            "ja": "通常信頼できない"
+            "hant": "通常不可靠"
         },
         "government": {
+            "ar": "حكومة",
             "en": "government",
+            "ja": "政府",
+            "ln": "boyangeli",
+            "mk": "владино",
+            "pl": "rządowe",
+            "pms": "goern",
+            "tr": "devlet",
             "hans": "政府",
-            "hant": "政府",
-            "ja": "政府"
+            "hant": "政府"
         },
         "marginallyReliable": {
+            "ar": "موثوق بها بشكل هامشي",
             "en": "marginally reliable",
+            "ja": "限られた信頼性",
+            "ln": "oyo ekoki kotyelama motema na ndenge ya moke",
+            "mk": "маргинално веродостоен",
+            "pl": "marginalnie wiarygodne",
+            "pms": "marginalmant fidàbil",
+            "tr": "kısmen güvenilir",
             "hans": "半可靠",
-            "hant": "半可靠",
-            "ja": "限られた信頼性"
+            "hant": "半可靠"
         },
         "multi": {
+            "ar": "لا يوجد إجماع",
             "en": "no consensus",
+            "ja": "コンセンサスなし",
+            "kg": "bo me ndima ve",
+            "ln": "boyokani moko te",
+            "mk": "нема консензус",
+            "pl": "brak konsensusu",
+            "pms": "gnun acòrd",
+            "tr": "fikir birliği yok",
             "hans": "无共识",
-            "hant": "無共識",
-            "ja": "コンセンサスなし"
+            "hant": "無共識"
         },
         "news": {
+            "ar": "أخبار",
             "en": "news",
+            "ja": "ニュース",
+            "kg": "bansangu",
+            "ln": "bansango",
+            "mk": "вести",
+            "pl": "wiadomości",
+            "pms": "neuve",
+            "tr": "haberler",
             "hans": "新闻",
-            "hant": "新聞",
-            "ja": "ニュース"
+            "hant": "新聞"
         },
         "opinions": {
+            "ar": "مقالة رأي",
             "en": "opinion piece(s)",
+            "ja": "意見",
+            "kg": "Bangindu ya bantu",
+            "ln": "eteni(s) ya makanisi .",
+            "mk": "колумна/ни",
+            "pl": "artykuł(y) opiniotwórczy(e)",
+            "pms": "tòch d'opinion",
+            "tr": "görüş yazıları",
             "hans": "观点",
-            "hant": "觀點",
-            "ja": "意見"
+            "hant": "觀點"
         },
         "predatory": {
+            "ar": "المجلات المفترسة",
             "en": "predatory journal(s)",
+            "ja": "ハゲタカジャーナル",
+            "ln": "(ba) zulunalo oyo elyaka banyama mosusu .",
+            "mk": "предаторски часопис(и)",
+            "pl": "drapieżne czasopismo(a)",
+            "pms": "giornal predatòri",
+            "tr": "yırtıcı dergiler",
             "hans": "掠夺性期刊",
-            "hant": "掠奪性期刊",
-            "ja": "ハゲタカジャーナル"
+            "hant": "掠奪性期刊"
         },
         "press": {
+            "ar": "بيان صحفي",
             "en": "press release(s)",
+            "ja": "プレスリリース",
+            "ln": "communiqué(s) ya bapanzi sango .",
+            "mk": "соопштение за печат",
+            "pl": "komunikat(y) prasowy(e)",
+            "pms": "comunicà dë stampa",
+            "tr": "basın bültenleri",
             "hans": "新闻稿",
-            "hant": "新聞稿",
-            "ja": "プレスリリース"
+            "hant": "新聞稿"
         },
         "satire": {
+            "ar": "ساخر",
             "en": "satirical",
+            "ja": "風刺",
+            "ln": "ya satirique",
+            "mk": "сатирично",
+            "pl": "satyryczne",
+            "pms": "satìrich",
+            "tr": "hicivsel",
             "hans": "幽默",
-            "hant": "幽默",
-            "ja": "風刺"
+            "hant": "幽默"
         },
         "social": {
+            "ar": "وسائل التواصل الاجتماعي",
             "en": "social media",
+            "ja": "ソーシャルメディア",
+            "kg": "basite ya bansangu",
+            "ln": "ba réseaux sociaux",
+            "mk": "друштвен медиум",
+            "pl": "media społecznościowe",
+            "pms": "mojen sossial",
+            "tr": "sosyal medya",
             "hans": "社交媒体",
-            "hant": "社群媒體",
-            "ja": "ソーシャルメディア"
+            "hant": "社群媒體"
         },
         "sponsored": {
+            "ar": "برعاية",
             "en": "sponsored",
+            "ja": "スポンサー付き",
+            "kg": "bo ke pesaka mbongo",
+            "ln": "oyo esungami",
+            "mk": "спонзорирано",
+            "pl": "sponsorowane",
+            "pms": "areclam",
+            "tr": "sponsorlu",
             "hans": "宣传稿",
-            "hant": "宣傳稿",
-            "ja": "スポンサー付き"
+            "hant": "宣傳稿"
         },
         "tabloids": {
+            "ar": "صحيفة(ات) شعبية",
             "en": "tabloid(s)",
+            "ja": "タブロイド",
+            "ln": "(ba) tabloïde .",
+            "mk": "таблоид(и)",
+            "pl": "tabloid(y)",
+            "pms": "spetegolum",
+            "tr": "tabloid gazeteler",
             "hans": "小报",
-            "hant": "小報",
-            "ja": "タブロイド"
+            "hant": "小報"
         },
         "tvPrograms": {
+            "ar": "البرامج التلفزيونية",
             "en": "TV program(s)",
+            "ja": "テレビ番組",
+            "kg": "Programe ya TV",
+            "ln": "Programme(s) ya TV .",
+            "mk": "ТВ-емисија",
+            "pl": "program(y) telewizyjny(e)",
+            "pms": "programa ëd television",
+            "tr": "TV programları",
             "hans": "电视节目",
-            "hant": "電視節目",
-            "ja": "テレビ番組"
+            "hant": "電視節目"
         },
         "unknown": {
+            "ar": "روابط غير معروفة",
             "en": "unknown links",
+            "ja": "不明なリンク",
+            "kg": "ba lien ya me zabana ve",
+            "ln": "ba liens oyo eyebani te",
+            "mk": "непознати врски",
+            "pl": "nieznane linki",
+            "pms": "liure sconossùe",
+            "tr": "bilinmeyen bağlantılar",
             "hans": "未知链接",
-            "hant": "未知連結",
-            "ja": "不明なリンク"
+            "hant": "未知連結"
         }
     },
     "citationPlural": {
+        "ar": "الاستشهادات",
         "en": " citations",
+        "ja": " 件の引用",
+        "ln": "ba citations oyo elobami",
+        "mk": " наводи",
+        "pl": " cytowania",
+        "pms": "sitassion",
+        "tr": "alıntılar",
         "hans": " 个来源",
-        "hant": " 個來源",
-        "ja": " 件の引用"
+        "hant": " 個來源"
     },
     "citationSingular": {
+        "ar": "الاستشهاد",
         "en": " citation",
+        "ja": " 件の引用",
+        "ln": "citation ya kotanga",
+        "mk": " навод",
+        "pl": " cytowanie",
+        "pms": " sitassion",
+        "tr": "alıntı",
         "hans": " 个来源",
-        "hant": " 個來源",
-        "ja": " 件の引用"
+        "hant": " 個來源"
     },
     "citationTooltipAction": {
+        "ar": "انقر على الرمز لفتح صفحة قائمة التحقق لعرض التفاصيل.",
         "en": " Click the icon to open the checklist page to view details.",
+        "ja": " アイコンをクリックすると、チェックリストページを開いて詳細を確認できます。",
+        "kg": "Findilaka kidimbu sambu na kukangula lutiti ya lisiti sambu na kutala mambu ya nkaka.",
+        "ln": "Finá elembo mpo na kofungola lokasa ya liste ya makambo mpo na komona makambo mosusu.",
+        "mk": "Стиснете на иконата за да отворите страница со контролен список за да ги видите подробностите.",
+        "pl": " Kliknij ikonę, aby otworzyć stronę listy kontrolnej i zobaczyć szczegóły.",
+        "pms": " Sgnaché an sla plancia për duverté la pàgina dla lista ëd verìfica pr'ësmon-e ij detaj.",
+        "tr": "Ayrıntıları görüntülemek için simgeye tıklayarak kontrol listesi sayfasını açın.",
         "hans": " 点击图标可打开检查表页面以查看详情。",
-        "hant": " 點擊圖示可打開檢查表頁面以查看詳情。",
-        "ja": " アイコンをクリックすると、チェックリストページを開いて詳細を確認できます。"
+        "hant": " 點擊圖示可打開檢查表頁面以查看詳情。"
     },
     "citationTooltipPrefix": {
+        "ar": "من",
         "en": "From ",
-        "hans": "来自 ",
-        "hant": "來自 ",
-        "ja": "出典 "
+        "ja": "出典",
+        "kg": "Na nima ya kukatuka na",
+        "ln": "Euti na",
+        "mk": "Од",
+        "pl": "Z",
+        "pms": "Da",
+        "hans": "来自",
+        "hant": "來自"
     },
     "citationTooltipSuffix": {
+        "ar": ":",
         "en": ": ",
+        "ja": "：",
+        "kg": ":",
+        "ln": ":",
+        "mk": ":",
+        "pl": ":",
+        "pms": ":",
+        "tr": ":",
         "hans": "：",
-        "hant": "：",
-        "ja": "："
+        "hant": "："
     },
     "clearAllFilters": {
+        "ar": "مسح الكل",
         "en": "Clear All",
+        "ja": "全てクリア",
+        "ln": "Effacer Nionso",
+        "mk": "Исчисти сè",
+        "pl": "Wyczyść wszystkie",
+        "pms": "Dëscancelé tut",
+        "tr": "Tümünü Temizle",
         "hans": "清除全部",
-        "hant": "清除全部",
-        "ja": "全てクリア"
+        "hant": "清除全部"
     },
     "clearAllFiltersTooltip": {
+        "ar": "مسح جميع المرشحات النشطة",
         "en": "Clear all active filters",
+        "ja": "全てのアクティブフィルタをクリア",
+        "ln": "Effacer ba filtres nionso oyo ezali active",
+        "mk": "Исчисти ги сите активни филтри",
+        "pl": "Wyczyść wszystkie aktywne filtry",
+        "pms": "Dëscancelé tuti ij filtr ativ",
+        "tr": "Tüm etkin filtreleri temizle",
         "hans": "清除所有活动筛选",
-        "hant": "清除所有活動篩選",
-        "ja": "全てのアクティブフィルタをクリア"
+        "hant": "清除所有活動篩選"
     },
     "commentPlaceholder": {
+        "ar": "معلومات إضافية حول سبب ملاءمة هذا التصنيف...",
         "en": "Additional information about why this categorization is appropriate...",
+        "ja": "この分類が適切である理由についての追加情報...",
+        "ln": "Ba informations ya kobakisa pona nini categorisation oyo ebongi...",
+        "mk": "Дополнителни информации за тоа зошто оваа категоризациај е соодветна...",
+        "pl": "Dodatkowe informacje o tym, dlaczego ta kategoryzacja jest odpowiednia...",
+        "pms": "Anformassion adissionaj an sël përchè costa categorisassion a va bin...",
+        "tr": "Bu kategorizasyonun neden uygun olduğuna dair ek bilgi...",
         "hans": "关于为何此分类合适的额外信息……",
-        "hant": "關於為何此分類合適的額外資訊……",
-        "ja": "この分類が適切である理由についての追加情報..."
+        "hant": "關於為何此分類合適的額外資訊……"
     },
     "dialogLoadError": {
+        "ar": "فشل تحميل الحوار. يُرجى المحاولة مرة أخرى.",
         "en": "Failed to load dialog. Please try again.",
+        "ja": "ダイアログの読み込みに失敗しました。もう一度お試しください。",
+        "kg": "Kukonda kukotisa masolo. Beto ke lomba nge na kumeka diaka.",
+        "ln": "Elongi te ko charger dialogue. Svp meka lisusu.",
+        "mk": "Не успеав да го вчитам дијалогот. Обидете се повторно.",
+        "pl": "Nie udało się załadować okna dialogowego. Spróbuj ponownie.",
+        "pms": "Falì a carié ël diàlogh. Për piasì, ch'a preuva torna.",
+        "tr": "İletişim kutusu yüklenemedi. Lütfen tekrar deneyin.",
         "hans": "加载对话框失败。请重试。",
-        "hant": "載入對話方塊失敗。請重試。",
-        "ja": "ダイアログの読み込みに失敗しました。もう一度お試しください。"
+        "hant": "載入對話方塊失敗。請重試。"
     },
     "documentationLink": {
+        "ar": "التوثيق",
         "en": "Documentation",
+        "ja": "ドキュメント",
+        "kg": "Mikanda",
+        "ln": "Mikanda ya kosala mikanda",
+        "mk": "Документација",
+        "pl": "Dokumentacja",
+        "pms": "Documentassion",
+        "tr": "Belgeleme",
         "hans": "帮助文档",
-        "hant": "幫助文檔",
-        "ja": "ドキュメント"
+        "hant": "幫助文檔"
     },
     "domainsCorrectedMessage": {
-        "en": "The following domains were automatically corrected:\n\n",
-        "hans": "以下域名已自动修正：\n\n",
-        "hant": "以下網域已自動修正：\n\n",
-        "ja": "以下のドメインが自動修正されました：\n\n"
+        "ar": "تم تصحيح المجالات التالية تلقائيًا:",
+        "en": "The following domains were automatically corrected:",
+        "ja": "以下のドメインが自動修正されました：",
+        "ln": "Ba domaines oyo elandi e corrigé automatiquement:",
+        "mk": "Следниве домени беа автоматски исправени:",
+        "pl": "Następujące domeny zostały automatycznie poprawione:",
+        "pms": "Ij domini sì-dapress a son ëstait coregiù an automàtich:",
+        "tr": "Aşağıdaki alan adları otomatik olarak düzeltildi:",
+        "hans": "以下域名已自动修正：",
+        "hant": "以下網域已自動修正："
     },
     "domainsToIgnore": {
+        "ar": "المجالات التي يجب تجاهلها (مجال واحد لكل سطر)",
         "en": "Domains to Ignore (one per line)",
+        "ja": "無視するドメイン（1行に1つ）",
+        "kg": "Bisika ya Kuvila (mosi na ndonga mosi)",
+        "ln": "Ba domaines oyo esengeli ko ignorer (moko na ligne moko) .",
+        "mk": "Домени за занемарување (по еден во секој ред)",
+        "pl": "Domeny do ignorowania (jedna na linię)",
+        "pms": "Domini da ignoré (un për linia)",
+        "tr": "Yok sayılacak alan adları (her satıra bir tane)",
         "hans": "要忽略的域名（每行一个）",
-        "hant": "要忽略的網域（每行一個）",
-        "ja": "無視するドメイン（1行に1つ）"
+        "hant": "要忽略的網域（每行一個）"
     },
     "enableDisableCategories": {
+        "ar": "تمكين/تعطيل الفئات",
         "en": "Enable/Disable Categories",
+        "ja": "カテゴリの有効/無効",
+        "ln": "Activer/Desactiver ba Catégories",
+        "mk": "Овозможи/Оневозможи категории",
+        "pl": "Włącz/Wyłącz kategorie",
+        "pms": "Ativé o disativé le categorìe",
+        "tr": "Kategorileri Etkinleştir/Devre Dışı Bırak",
         "hans": "启用/禁用类别",
-        "hant": "啟用/停用類別",
-        "ja": "カテゴリの有効/無効"
+        "hant": "啟用/停用類別"
     },
     "filterToggleTooltip": {
+        "ar": "انقر لتبديل مرشح هذه الفئة. يمكنك تحديد فئات متعددة. اضغط على مفتاح \"Escape\" لمسح جميع المرشحات.",
         "en": "Click to toggle this category filter. You can select multiple categories. Press Escape to clear all filters.",
+        "ja": "このカテゴリフィルタを切り替えるにはクリックしてください。複数のカテゴリを選択できます。Escape キーで全てのフィルタをクリアします。",
+        "kg": "Pusa sambu na kusoba filtre ya kitini yai. Nge lenda pona bitini mingi. Kupesa bansangu sambu na kukatula ba filtre yonso.",
+        "ln": "Finá mpo na kobongola filtre ya catégorie oyo. Okoki kopona biteni mingi. Press Escape mpo na kolongola ba filtre nyonso.",
+        "mk": "Стиснете за префрлање на овој категориски филтер. Можете да изберете повеќе категории. Стиснете на Escape за да ги исчистите сите филтри.",
+        "pl": "Kliknij, aby przełączyć ten filtr kategorii. Możesz wybrać wiele kategorii. Naciśnij Escape, aby wyczyścić wszystkie filtry.",
+        "pms": "Sgnaché për ativé o disativé cost filtr ëd categorìa. A peul selessioné vàire categorìe. Sgnaché su Scapé për dëscancelé tuti ij filtr.",
+        "tr": "Bu kategori filtresini açıp kapatmak için tıklayın. Birden fazla kategori seçebilirsiniz. Tüm filtreleri temizlemek için Escape tuşuna basın.",
         "hans": "点击以切换此类别筛选。您可以选择多个类别。按 Escape 清除所有筛选。",
-        "hant": "點擊以切換此類別篩選。您可以選擇多個類別。按 Escape 清除所有篩選。",
-        "ja": "このカテゴリフィルタを切り替えるにはクリックしてください。複数のカテゴリを選択できます。Escape キーで全てのフィルタをクリアします。"
+        "hant": "點擊以切換此類別篩選。您可以選擇多個類別。按 Escape 清除所有篩選。"
     },
     "filtersActive": {
+        "ar": "المرشحات النشطة",
         "en": " filters active",
+        "ja": " つのフィルタが有効",
+        "ln": "ba filtres oyo ezali kosala",
+        "mk": " активни филтри",
+        "pl": " aktywnych filtrów",
+        "pms": "filtr ativ",
+        "tr": "filtreler aktif",
         "hans": " 个筛选生效",
-        "hant": " 個篩選生效",
-        "ja": " つのフィルタが有効"
+        "hant": " 個篩選生效"
+    },
+    "hideSocialMediaReliabilityRatings": {
+        "ar": "إخفاء تقييمات الموثوقية لروابط وسائل التواصل الاجتماعي من الناشرين غير المصنفين",
+        "en": "Hide reliability ratings for social media links from unrated publishers",
+        "ja": "未識別の発行元によるソーシャルメディアの情報源について、信頼性評価を非表示にする",
+        "mk": "Скриј оценки на меродавност за врски до друштвени медиуми од неоценети објавувачи",
+        "hans": "对于未识别发布者的社交媒体来源，隐藏可靠性评级",
+        "hant": "對於未識別發佈者的社群媒體來源，隱藏可靠性評級"
     },
     "ignoreDomainsTabGuidance": {
+        "ar": "أدخل النطاقات التي ترغب في استبعادها من كل فئة. لن تُميّز المصادر من هذه النطاقات بأيقونة الفئة المقابلة. أدخل نطاقًا واحدًا في كل سطر بالتنسيق \"example.com\".",
         "en": "Enter domains to exclude from each category. Sources from these domains will not be marked with the corresponding category icon. Enter one domain per line in the format 'example.com'.",
+        "ja": "各カテゴリから除外するドメインを入力します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されません。1行に1つのドメインを 'example.com' の形式で入力してください。",
+        "ln": "Tyá ba domaines oyo okolongola na catégorie moko na moko. Ba sources oyo ewutaka na ba domaines oyo ekozala marqué te na icône ya catégorie oyo ekokani. Tyá domaine moko na ligne moko na format 'example.com'.",
+        "mk": "Внесете домени за изземање од секоја категорија. Изворите од овие домени нема да се означуваат со соодветната категориска икона. Внесувајте по еден домен во секој ред, во форматот „example.com“.",
+        "pl": "Wprowadź domeny do wykluczenia z każdej kategorii. Źródła z tych domen nie będą oznaczone odpowiednią ikoną kategorii. Wprowadź jedną domenę na linię w formacie 'przykład.com'.",
+        "tr": "Her kategori için hariç tutulacak alan adlarını girin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenmeyecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
         "hans": "输入要从各类别中排除的域名。来自这些域名的来源将不会标记对应的类别图标。每行输入一个域名，格式为 'example.com'。",
-        "hant": "輸入要從各類別中排除的網域。來自這些網域的來源將不會標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。",
-        "ja": "各カテゴリから除外するドメインを入力します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されません。1行に1つのドメインを 'example.com' の形式で入力してください。"
+        "hant": "輸入要從各類別中排除的網域。來自這些網域的來源將不會標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。"
     },
     "invalidDomainFormatMessage": {
-        "en": "Invalid domain format detected. Domains should be in format \"name.tld\" (e.g., example.com):\n\n",
-        "hans": "检测到无效的域名格式。域名应为 \"name.tld\" 格式（如 example.com）：\n\n",
-        "hant": "偵測到無效的網域格式。網域應為 \"name.tld\" 格式（如 example.com）：\n\n",
-        "ja": "無効なドメイン形式が検出されました。ドメインは \"name.tld\" 形式（例：example.com）である必要があります：\n\n"
+        "ar": "تم اكتشاف تنسيق نطاق غير صالح. يجب أن تكون النطاقات بصيغة \"name.tld\" (مثل example.com):",
+        "en": "Invalid domain format detected. Domains should be in format \"name.tld\" (e.g., example.com):",
+        "ja": "無効なドメイン形式が検出されました。ドメインは \"name.tld\" 形式（例：example.com）である必要があります：",
+        "kg": "Bo me mona mutindu ya mbote ya kusala mambu. Bisika fwete vanda na mutindu ya \"name.tld\" (mu mbandu, example.com):",
+        "ln": "Format ya domaine ya mabe ezwami. Ba domaines esengeli kozala na format \"name.tld\" (ndakisa, example.com):",
+        "mk": "Пронајден е неважечки формат за домен. Домените треба да бидат во форматот „name.tld“ (на пр. example.com):",
+        "pl": "Wykryto nieprawidłowy format domeny. Domeny powinny być w formacie \"nazwa.tld\" (np. przykład.com):",
+        "tr": "Geçersiz alan adı biçimi algılandı. Alan adları \"name.tld\" biçiminde olmalıdır (örneğin, example.com):",
+        "hans": "检测到无效的域名格式。域名应为 \"name.tld\" 格式（如 example.com）：",
+        "hant": "偵測到無效的網域格式。網域應為 \"name.tld\" 格式（如 example.com）："
     },
     "loading": {
+        "ar": "تحميل...",
         "en": "Loading...",
+        "ja": "読み込み中...",
+        "kg": "Bo me tula yo na valere...",
+        "ln": "Kokotisa biloko...",
+        "mk": "Вчитувам...",
+        "pl": "Ładowanie...",
+        "tr": "Yükleniyor...",
         "hans": "加载中……",
-        "hant": "載入中……",
-        "ja": "読み込み中..."
+        "hant": "載入中……"
     },
     "local": {
+        "ar": "محلي",
         "en": "local",
+        "ja": "ローカル",
+        "ln": "ya bana-mboka",
+        "mk": "месни",
+        "pl": "lokalne",
+        "tr": "yerel",
         "hans": "本地",
-        "hant": "本地",
-        "ja": "ローカル"
+        "hant": "本地"
     },
     "localSettingGuidance": {
+        "ar": "إعدادات wiki المحلية تتغلب على الإعدادات العالمية.",
         "en": "Local wiki settings override global settings.",
+        "ja": "ローカルウィキの設定はグローバル設定を上書きします。",
+        "ln": "Bobongisi ya wiki ya mboka elongolaka bobongisi ya mokili mobimba.",
+        "mk": "Месните викинагодувања ги заменуваат глобалните.",
+        "pl": "Lokalne ustawienia wiki zastępują ustawienia globalne.",
+        "tr": "Yerel wiki ayarları, küresel ayarları geçersiz kılar.",
         "hans": "本地维基设置会覆盖全域设置。",
-        "hant": "本地維基設定會覆蓋全域設定。",
-        "ja": "ローカルウィキの設定はグローバル設定を上書きします。"
+        "hant": "本地維基設定會覆蓋全域設定。"
     },
     "metaWikiGlobal": {
+        "ar": "ميتا ويكي (عالمي)",
         "en": "Meta-Wiki (global)",
+        "ja": "メタウィキ (グローバル)",
+        "ln": "Meta-Wiki (ya mokili mobimba) .",
+        "mk": "Мета (глобално)",
+        "pl": "Meta-Wiki (globalne)",
+        "tr": "Meta-Wiki (küresel)",
         "hans": "元维基 (全域)",
-        "hant": "元維基 (全域)",
-        "ja": "メタウィキ (グローバル)"
+        "hant": "元維基 (全域)"
     },
     "of": {
+        "ar": "ل",
         "en": " of ",
-        "hans": " / ",
-        "hant": " / ",
-        "ja": " / "
+        "ja": " /",
+        "kg": "ya",
+        "ln": "ya",
+        "mk": " од",
+        "pl": " z",
+        "hans": " /",
+        "hant": " /"
     },
     "optionalComment": {
+        "ar": "تعليق اختياري",
         "en": "Optional Comment",
+        "ja": "オプションコメント",
+        "kg": "Mambu ya nge lenda tuba",
+        "ln": "Commentaire oyo okoki kopona",
+        "mk": "Незадолж. коментар",
+        "pl": "Opcjonalny komentarz",
+        "tr": "İsteğe Bağlı Yorum",
         "hans": "可选意见",
-        "hant": "可選意見",
-        "ja": "オプションコメント"
+        "hant": "可選意見"
     },
     "reliabilityProjects": {
+        "ar": "صفحات مشروع الموثوقية",
         "en": "Reliability Project Pages",
+        "ja": "信頼性プロジェクトページ",
+        "kg": "Lutiti ya Kisalu ya Kutula Ntima",
+        "ln": "Lokasa ya mosala",
+        "mk": "Проектни страници за меродавност",
+        "pl": "Strony projektów wiarygodności",
+        "tr": "Güvenilirlik Projesi Sayfaları",
         "hans": "可靠性项目页面",
-        "hant": "可靠性專案頁面",
-        "ja": "信頼性プロジェクトページ"
+        "hant": "可靠性專案頁面"
     },
     "save": {
+        "ar": "يحفظ",
         "en": "Save",
+        "ja": "保存",
+        "ln": "Kobikisa",
+        "mk": "Зачувај",
+        "pl": "Zapisz",
+        "tr": "Kaydet",
         "hans": "保存",
-        "hant": "儲存",
-        "ja": "保存"
+        "hant": "儲存"
     },
     "saving": {
+        "ar": "توفير...",
         "en": "Saving...",
+        "ja": "保存中...",
+        "ln": "Kobomba...",
+        "mk": "Зачувувам...",
+        "pl": "Zapisywanie...",
+        "tr": "Kaydediliyor...",
         "hans": "保存中……",
-        "hant": "儲存中……",
-        "ja": "保存中..."
+        "hant": "儲存中……"
     },
     "selectAtLeastOneCategory": {
+        "ar": "الرجاء تحديد فئة واحدة على الأقل",
         "en": "Please select at least one category",
+        "ja": "少なくとも1つのカテゴリを選択してください",
+        "ln": "Svp pona ata catégorie moko",
+        "mk": "Изберете барем една категорија",
+        "pl": "Wybierz przynajmniej jedną kategorię",
+        "tr": "Lütfen en az bir kategori seçin",
         "hans": "请至少选择一个类别",
-        "hant": "請至少選擇一個類別",
-        "ja": "少なくとも1つのカテゴリを選択してください"
+        "hant": "請至少選擇一個類別"
     },
     "settingsButton": {
+        "ar": "استشهد بالإعدادات غير المرئية",
         "en": "Cite Unseen Settings",
+        "ja": "Cite Unseen 設定",
+        "ln": "Citer Paramètres oyo emonanaka te",
+        "mk": "Нагодувања на Cite Unseen",
+        "pl": "Ustawienia Cite Unseen",
+        "tr": "Kaynağı Görmeden Alıntılama Ayarları",
         "hans": "Cite Unseen 设置",
-        "hant": "Cite Unseen 設定",
-        "ja": "Cite Unseen 設定"
+        "hant": "Cite Unseen 設定"
     },
     "settingsButtonTooltip": {
+        "ar": "تكوين إعدادات Cite Unseen.",
         "en": "Configure Cite Unseen settings.",
+        "ja": "Cite Unseen 設定。",
+        "ln": "Configurer ba paramètres ya Cite Unseen.",
+        "mk": "Поставете ги нагодувањата на Cite Unseen.",
+        "pl": "Skonfiguruj ustawienia Cite Unseen.",
+        "tr": "Kaynağı Görmeden Alıntılama ayarlarını yapılandırın.",
         "hans": "配置 Cite Unseen 设置。",
-        "hant": "設定 Cite Unseen 設定。",
-        "ja": "Cite Unseen 設定。"
+        "hant": "設定 Cite Unseen 設定。"
     },
     "settingsDialogTitle": {
+        "ar": "استشهد بالإعدادات غير المرئية",
         "en": "Cite Unseen Settings",
+        "ja": "Cite Unseen 設定",
+        "kg": "Bisika ya Ke Monanaka Ve",
+        "ln": "Kotanga bisika oyo emonanaka te",
+        "mk": "Нагодувања на Cite Unseen",
+        "pl": "Ustawienia Cite Unseen",
+        "tr": "Kaynağı Görmeden Alıntılama Ayarları",
         "hans": "Cite Unseen 设置",
-        "hant": "Cite Unseen 設定",
-        "ja": "Cite Unseen 設定"
+        "hant": "Cite Unseen 設定"
     },
     "settingsSaveError": {
+        "ar": "خطأ في حفظ الإعدادات:",
         "en": "Error saving settings: ",
+        "ja": "設定の保存中にエラーが発生しました：",
+        "kg": "Bametode ya kubumba bifu:",
+        "ln": "Ba paramètres ya kobomba mabunga:",
+        "mk": "Грешка при зачувувањето на нагодувањата:",
+        "pl": "Błąd zapisywania ustawień:",
+        "tr": "Ayarlar kaydedilirken hata oluştu:",
         "hans": "保存设置时出错：",
-        "hant": "儲存設定時發生錯誤：",
-        "ja": "設定の保存中にエラーが発生しました："
+        "hant": "儲存設定時發生錯誤："
     },
     "settingsSavedSuccess": {
+        "ar": "تم حفظ الإعدادات بنجاح! هل تريد إعادة تحميل الصفحة لتطبيق التغييرات؟",
         "en": "Settings saved successfully! Reload the page to apply changes?",
+        "ja": "設定が保存されました！変更を適用するためにページを再読み込みしますか？",
+        "kg": "Bo me taninaka yo mbote-mbote! Tula diaka lutiti sambu na kusala bansoba?",
+        "ln": "Paramètres ebombami malamu! Recharger page pona ko appliquer ba changements?",
+        "mk": "Нагодувањата се успешно зачувани! Да ја превчитам страницата за да ги применам промените?",
+        "pl": "Ustawienia zapisane pomyślnie! Przeładować stronę, aby zastosować zmiany?",
+        "tr": "Ayarlar başarıyla kaydedildi! Değişiklikleri uygulamak için sayfayı yeniden yüklemek ister misiniz?",
         "hans": "设置已成功保存！重新加载页面以应用更改？",
-        "hant": "設定已成功儲存！重新載入頁面以套用變更？",
-        "ja": "設定が保存されました！変更を適用するためにページを再読み込みしますか？"
+        "hant": "設定已成功儲存！重新載入頁面以套用變更？"
     },
     "showDashboard": {
+        "ar": "إظهار لوحة المعلومات أعلى القوائم المرجعية",
         "en": "Show dashboard above reflists",
+        "ja": "参考文献セクションの上にダッシュボードを表示",
+        "ln": "Komonisa etanda ya liboso na likolo",
+        "mk": "Прикажи управувачница над списоците со наводи",
+        "pl": "Pokaż pulpit powyżej list referencji",
+        "tr": "Kaynakça listelerinin üzerinde kontrol panelini göster",
         "hans": "在参考文献区段上方显示仪表板",
-        "hant": "在參考文獻區段上方顯示儀表板",
-        "ja": "参考文献セクションの上にダッシュボードを表示"
+        "hant": "在參考文獻區段上方顯示儀表板"
     },
     "showSuggestionsButton": {
+        "ar": "زر إظهار الاقتراحات",
         "en": "Show suggestions button",
+        "ja": "提案ボタンを表示",
+        "kg": "Songa bangindu",
+        "ln": "Bouton ya kolakisa makanisi",
+        "mk": "Прикажи копче за предлози",
+        "pl": "Pokaż przycisk sugestii",
+        "tr": "Öneriler butonunu göster",
         "hans": "显示建议按钮",
-        "hant": "顯示建議按鈕",
-        "ja": "提案ボタンを表示"
+        "hant": "顯示建議按鈕"
     },
     "showing": {
+        "ar": "عرض",
         "en": "Showing ",
-        "hans": "显示 ",
-        "hant": "顯示 ",
-        "ja": "表示中 "
+        "ja": "表示中",
+        "kg": "Kumonisa",
+        "ln": "Komonisama",
+        "mk": "Се прикажува",
+        "pl": "Pokazuje",
+        "tr": "Gösteriliyor",
+        "hans": "显示",
+        "hant": "顯示"
     },
     "sourceUrl": {
+        "ar": "رابط المصدر",
         "en": "Source URL",
+        "ja": "ソースURL",
+        "kg": "Source URL",
+        "ln": "URL ya source",
+        "mk": "Изворна URL",
+        "pl": "URL źródła",
+        "tr": "Kaynak URL'si",
         "hans": "来源网址",
-        "hant": "來源網址",
-        "ja": "ソースURL"
+        "hant": "來源網址"
     },
     "submit": {
+        "ar": "فتح نموذج التحرير",
         "en": "Open Edit Form",
+        "ja": "編集フォームを開く",
+        "ln": "Fungola Formulaire ya Bobongisi",
+        "mk": "Отвори образец за уредување",
+        "pl": "Otwórz formularz edycji",
+        "tr": "Düzenleme Formunu Aç",
         "hans": "打开编辑表单",
-        "hant": "開啟編輯表單",
-        "ja": "編集フォームを開く"
+        "hant": "開啟編輯表單"
     },
     "submitting": {
+        "ar": "افتتاح...",
         "en": "Opening...",
+        "ja": "開いています...",
+        "ln": "Kofungola...",
+        "mk": "Отворам...",
+        "pl": "Otwieranie...",
+        "tr": "Açılıyor...",
         "hans": "打开中……",
-        "hant": "開啟中……",
-        "ja": "開いています..."
+        "hant": "開啟中……"
     },
     "suggestCategorization": {
+        "ar": "اقترح تصنيفًا لهذا الاقتباس",
         "en": "Suggest categorization for this citation",
+        "ja": "この引用の分類を提案",
+        "kg": "Beto baka ngindu ya kukabisa na bitini sambu na mambu yai",
+        "ln": "Pesa likanisi ya kosala categorisation mpo na citation oyo",
+        "mk": "Предложи категоризација за овој навод",
+        "pl": "Zasugeruj kategoryzację dla tego cytowania",
+        "tr": "Bu kaynak için kategori öner",
         "hans": "为此引用建议分类",
-        "hant": "為此引用建議分類",
-        "ja": "この引用の分類を提案"
+        "hant": "為此引用建議分類"
     },
     "suggestedCategories": {
+        "ar": "الفئات المقترحة",
         "en": "Suggested Categories",
+        "ja": "提案カテゴリ",
+        "ln": "Ba catégories oyo ba proposer",
+        "mk": "Предложени категории",
+        "pl": "Sugerowane kategorie",
+        "tr": "Önerilen Kategoriler",
         "hans": "建议类别",
-        "hant": "建議類別",
-        "ja": "提案カテゴリ"
+        "hant": "建議類別"
     },
     "suggestionDialogTitle": {
+        "ar": "اقتراح التصنيف",
         "en": "Suggest Categorization",
+        "ja": "分類の提案",
+        "kg": "Bangindu ya kukabisa na bimvuka",
+        "ln": "Likanisi ya kokabola yango na biteni",
+        "mk": "Предложи категоризација",
+        "pl": "Zasugeruj kategoryzację",
+        "tr": "Kategorizasyon Önerisi",
         "hans": "建议分类",
-        "hant": "建議分類",
-        "ja": "分類の提案"
+        "hant": "建議分類"
     },
     "suggestionSubmitError": {
+        "ar": "حدث خطأ أثناء فتح نموذج الاقتراح:",
         "en": "Error opening suggestion form: ",
+        "ja": "提案フォームを開く際にエラーが発生しました：",
+        "ln": "Libunga na kofungola formulaire ya likanisi:",
+        "mk": "Грешка при отворањето на образецот за предлози:",
+        "pl": "Błąd otwierania formularza sugestii:",
+        "tr": "Öneri formu açılırken hata oluştu:",
         "hans": "打开建议表单时出错：",
-        "hant": "開啟建議表單時發生錯誤：",
-        "ja": "提案フォームを開く際にエラーが発生しました："
+        "hant": "開啟建議表單時發生錯誤："
     },
     "suggestionSubmitted": {
+        "ar": "تم فتح نموذج التعديل في علامة تبويب جديدة! يجب ملء المحتوى مسبقًا تلقائيًا. إذا لم يكن كذلك، فقد تم نسخ محتوى الاقتراح إلى الحافظة.",
         "en": "Edit form opened in new tab! The content should be pre-filled automatically. If not, the suggestion content has been copied to your clipboard.",
+        "ja": "編集フォームが新しいタブで開かれました！内容は自動的に事前入力されるはずです。されていない場合は、提案内容がクリップボードにコピーされています。",
+        "ln": "Formulaire ya éditer efungwami na onglet ya sika! Esengeli kotondisa liboso makambo oyo ezali na kati yango moko. Soki te, makambo oyo ezali na makanisi esalemi kopi na tableau de bord na yo.",
+        "mk": "Образецот за уредување е отворен во ново јазиче! Содржината треба да е автоматски пополнета. Ако не е, содржината на предлогот е прекопирана во вашиот меѓусклад.",
+        "pl": "Formularz edycji otwarty w nowej karcie! Zawartość powinna być automatycznie wypełniona. Jeśli nie, zawartość sugestii została skopiowana do schowka.",
+        "tr": "Düzenleme formu yeni sekmede açıldı! İçerik otomatik olarak önceden doldurulmuş olmalı. Aksi takdirde öneri içeriği panonuza kopyalanmıştır.",
         "hans": "编辑表单已在新标签页中打开！内容应自动预填。如未预填，建议内容已复制到您的剪贴板。",
-        "hant": "編輯表單已在新分頁中開啟！內容應自動預填。如未預填，建議內容已複製到您的剪貼簿。",
-        "ja": "編集フォームが新しいタブで開かれました！内容は自動的に事前入力されるはずです。されていない場合は、提案内容がクリップボードにコピーされています。"
+        "hant": "編輯表單已在新分頁中開啟！內容應自動預填。如未預填，建議內容已複製到您的剪貼簿。"
     },
     "suggestionsDialogGuidance": {
+        "ar": "اختر فئةً واحدةً أو أكثر لهذا الاستشهاد، ويمكنك إضافة تعليقٍ إن شئت. ستُفتح لك علامة تبويب جديدة على ميتا ويكي تحتوي على نموذج تعديل مُعبأ مسبقًا، حيث يمكنك إرسال اقتراحك للمراجعة.",
         "en": "Select one or more categories for this citation and optionally provide a comment. A new tab will open with a pre-filled edit form on Meta Wiki where you can submit your suggestion for review.",
+        "ja": "この引用に対して1つ以上のカテゴリを選択し、オプションでコメントを提供してください。Meta Wikiの事前入力された編集フォームで新しいタブが開き、コミュニティレビューのために提案を提出できます。",
+        "kg": "Pona kitini mosi to mingi sambu na mambu yai mpi pesa komantere. Tab ya mpa ta kanguka ti formilere ya kutomisa yina bo me fulusa na ntwala na Meta Wiki kisika nge lenda tinda ngindu na nge sambu na kutomisa yo.",
+        "ln": "Pona catégorie moko to ebele pona citation oyo pe na option pesa commentaire. Onglet ya sika ekofungwama na formulaire ya bobongisi oyo etondisami liboso na Meta Wiki esika okoki kotinda likanisi na yo mpo na botali.",
+        "mk": "Изберете една или повеќе категории за овој навод и, по желба, внесете коментар. Ќе се отвори ново јазиче со веќе пополнет образец за уредување на Мета, каде ќе можете да го поднесете предлогот на разгледување.",
+        "pl": "Wybierz jedną lub więcej kategorii dla tego cytowania i opcjonalnie podaj komentarz. Otworzy się nowa karta z wstępnie wypełnionym formularzem edycji na Meta Wiki, gdzie możesz przesłać swoją sugestię do przeglądu.",
+        "tr": "Bu kaynak için bir veya daha fazla kategori seçin ve isteğe bağlı olarak bir yorum ekleyin. Meta Wiki'de, önerinizi incelemeye gönderebileceğiniz önceden doldurulmuş bir düzenleme formu içeren yeni bir sekme açılacaktır.",
         "hans": "为此引用选择一个或多个类别，并可选择性地提供意见。将打开一个新标签页，其中包含 Meta Wiki 上预填的编辑表单，您可以在此提交建议供社区审查。",
-        "hant": "為此引用選擇一或多個類別，並可選擇性地提供意見。將開啟一個新分頁，其中包含 Meta Wiki 上預填的編輯表單，您可以在此提交建議供社群審查。",
-        "ja": "この引用に対して1つ以上のカテゴリを選択し、オプションでコメントを提供してください。Meta Wikiの事前入力された編集フォームで新しいタブが開き、コミュニティレビューのために提案を提出できます。"
+        "hant": "為此引用選擇一或多個類別，並可選擇性地提供意見。將開啟一個新分頁，其中包含 Meta Wiki 上預填的編輯表單，您可以在此提交建議供社群審查。"
     },
     "suggestionsDialogReliabilityGuidance": {
+        "ar": "بالنسبة لفئات الموثوقية (المحظورة، المهملة، الموثوقة عمومًا، غير الموثوقة عمومًا، الموثوقة بشكل طفيف، لا يوجد إجماع)، يُرجى البحث عن فرصة للتوصل إلى إجماع في إحدى صفحات المشروع التالية. يتم تحديث فئات الموثوقية بانتظام بناءً على إجماع المجتمع الموثق في هذه الصفحات.",
         "en": "For reliability categories (blacklisted, deprecated, generally reliable, generally unreliable, marginally reliable, no consensus), please seek the opportunity to reach consensus on one of the following project pages. The reliability categories are updated regularly based on community consensus documented on these pages.",
+        "ja": "信頼性カテゴリ（ブラックリスト入り、非推奨、通常信頼できる、通常信頼できない、限られた信頼性、コンセンサスなし）については、以下のプロジェクトページでコンセンサスに達する機会を探してください。これらのページに記録されたコミュニティのコンセンサスに基づいて、信頼性カテゴリは定期的に更新されます。",
+        "kg": "Sambu na bitini ya kutudila ntima (yina kele na lisiti ya mbi, yina bo me sadila diaka ve, yina bo lenda tudila ntima ve, yina bantu lenda tudila ve ntima, yina bo ke ndimaka ve), beto ke lomba nge na kusosa dibaku ya kuwakana na mosi ya balutiti ya kisalu ya ke landa. Bo ke tomisaka bitini ya kutudila ntima mbala na mbala na kutadila kuwakana ya bantu yina bo me sonikaka na balutiti yai.",
+        "ln": "Mpo na biteni ya bondimi (oyo ezali na liste ya moindo, oyo esili kosalelama te, oyo ezali mingimingi ya kotyela motema, oyo ezali mingimingi ya kotyela motema te, oyo ezali na bondimi moke, boyokani te), tosengi yo oluka libaku ya kozwa boyokani na moko ya nkasa ya mosala oyo elandi. Ba catégories ya bondimi ezongisami na mikolo na tango na kotalaka boyokani ya baimboka oyo ekomami na nkasa oyo.",
+        "mk": "За категории на меродавност (на црн список, застарени, начелно меродавни, начелно немеродавни, маргинално меродавни, нема консензус), трудете се да постигнете консензус на една од следниве проектни страници. Категориите на меродавност се подновуваат редовно, во согласност со консензусот на заедницата документиран на овие страници.",
+        "pl": "Dla kategorii wiarygodności (na czarnej liście, przestarzałe, generalnie wiarygodne, generalnie niewiarygodne, marginalnie wiarygodne, brak konsensusu), prosimy o poszukanie możliwości osiągnięcia konsensusu na jednej z następujących stron projektu. Kategorie wiarygodności są regularnie aktualizowane na podstawie konsensusu społeczności udokumentowanego na tych stronach.",
+        "tr": "Güvenilirlik kategorileri (kara listeye alınmış, kullanımdan kaldırılmış, genel olarak güvenilir, genel olarak güvenilmez, kısmen güvenilir, fikir birliği yok) için lütfen aşağıdaki proje sayfalarından birinde fikir birliğine varma fırsatını arayın. Güvenilirlik kategorileri, bu sayfalarda belgelenen topluluk fikir birliğine dayanarak düzenli olarak güncellenmektedir.",
         "hans": "对于可靠性类别（列入黑名单、应停用、通常可靠、通常不可靠、半可靠、无共识），请寻求在以下项目页面上达成共识的机会。可靠性类别会根据这些页面上记录的社区共识定期更新。",
-        "hant": "對於可靠性類別（列入黑名單、應停用、通常可靠、通常不可靠、半可靠、無共識），請尋求在以下專案頁面上達成共識的機會。可靠性類別會根據這些頁面上記錄的社群共識定期更新。",
-        "ja": "信頼性カテゴリ（ブラックリスト入り、非推奨、通常信頼できる、通常信頼できない、限られた信頼性、コンセンサスなし）については、以下のプロジェクトページでコンセンサスに達する機会を探してください。これらのページに記録されたコミュニティのコンセンサスに基づいて、信頼性カテゴリは定期的に更新されます。"
+        "hant": "對於可靠性類別（列入黑名單、應停用、通常可靠、通常不可靠、半可靠、無共識），請尋求在以下專案頁面上達成共識的機會。可靠性類別會根據這些頁面上記錄的社群共識定期更新。"
     },
     "suggestionsToggleButton": {
+        "ar": "اقتراح الفئات",
         "en": "Suggest Categories",
+        "ja": "分類を提案",
+        "ln": "Pesá makanisi ya Catégories",
+        "mk": "Предложи категории",
+        "pl": "Zasugeruj kategorie",
+        "tr": "Kategorileri Öner",
         "hans": "建议分类",
-        "hant": "建議分類",
-        "ja": "分類を提案"
+        "hant": "建議分類"
     },
     "suggestionsToggleTooltip": {
+        "ar": "تمكين وضع الاقتراح لاقتراح تصنيف الاستشهادات",
         "en": "Enable suggestion mode to propose categorization for citations",
+        "ja": "引用の分類を提案するための提案モードを有効にする",
+        "kg": "Kupesa ngindu sambu na kupesa ngindu ya kukabisa na bitini sambu na mambu ya bo me vutukila",
+        "ln": "Kopesa likanisi mpo na kopesa likanisi ya kokabola maloba",
+        "mk": "Овозможи то режмот за предлози за да ви се предлагаат категории за наводи",
+        "pl": "Włącz tryb sugestii, aby zaproponować kategoryzację dla cytowań",
+        "tr": "Kaynaklara yönelik kategorizasyon önermek için öneri modunu etkinleştirin",
         "hans": "启用建议模式以为引用提议分类",
-        "hant": "啟用建議模式以為引用提議分類",
-        "ja": "引用の分類を提案するための提案モードを有効にする"
+        "hant": "啟用建議模式以為引用提議分類"
     },
     "tabAdditionalDomains": {
+        "ar": "المجالات الإضافية",
         "en": "Additional Domains",
+        "ja": "追加ドメイン",
+        "kg": "Bisika ya Nkaka",
+        "ln": "Ba Domaines ya kobakisa",
+        "mk": "Дополнителни домени",
+        "pl": "Dodatkowe domeny",
+        "tr": "Ek Alan Adları",
         "hans": "额外域名",
-        "hant": "額外網域",
-        "ja": "追加ドメイン"
+        "hant": "額外網域"
     },
     "tabAdditionalStrings": {
+        "ar": "سلاسل عناوين URL الإضافية",
         "en": "Additional URL Strings",
+        "ja": "追加URL文字列",
+        "ln": "Ba nsinga mosusu ya URL",
+        "mk": "Дополнителни URL-низи",
+        "pl": "Dodatkowe ciągi URL",
+        "tr": "Ek URL Dizeleri",
         "hans": "额外网址字符串",
-        "hant": "額外網址字串",
-        "ja": "追加URL文字列"
+        "hant": "額外網址字串"
     },
     "tabCategories": {
+        "ar": "فئات",
         "en": "Categories",
+        "ja": "カテゴリ",
+        "ln": "Ba catégories",
+        "mk": "Категории",
+        "pl": "Kategorie",
+        "tr": "Kategoriler",
         "hans": "类别",
-        "hant": "類別",
-        "ja": "カテゴリ"
+        "hant": "類別"
     },
     "tabGeneral": {
+        "ar": "عام",
         "en": "General",
+        "ja": "全般",
+        "ln": "Mbala mingi",
+        "mk": "Општо",
+        "pl": "Ogólne",
+        "tr": "Genel",
         "hans": "常规",
-        "hant": "一般",
-        "ja": "全般"
+        "hant": "一般"
     },
     "tabIgnoreDomains": {
+        "ar": "تجاهل المجالات",
         "en": "Ignore Domains",
+        "ja": "ドメインを無視",
+        "kg": "Kuvila Bisika",
+        "ln": "Ignorer ba Domaines",
+        "mk": "Занемари домени",
+        "pl": "Ignoruj domeny",
+        "tr": "Alan Adlarını Yoksay",
         "hans": "忽略域名",
-        "hant": "忽略網域",
-        "ja": "ドメインを無視"
+        "hant": "忽略網域"
     },
     "totalCitations": {
+        "ar": "المجموع",
         "en": "Total ",
-        "hans": "共 ",
-        "hant": "共 ",
-        "ja": "合計 "
+        "ja": "合計",
+        "kg": "Ntalu na yo",
+        "ln": "Mobimba",
+        "mk": "Вкупно",
+        "pl": "Łącznie",
+        "tr": "Toplam",
+        "hans": "共",
+        "hant": "共"
     },
     "viewSettingsFrom": {
+        "ar": "عرض الإعدادات من:",
         "en": "View settings from:",
+        "ja": "設定を表示：",
+        "ln": "Tala ba paramètres uta na:",
+        "mk": "Погл. нагодувања од:",
+        "pl": "Zobacz ustawienia z:",
+        "tr": "Ayarları şuradan görüntüleyin:",
         "hans": "检视设置：",
-        "hant": "檢視設定：",
-        "ja": "設定を表示："
+        "hant": "檢視設定："
     }
 };
 
@@ -1698,11 +2392,12 @@ var CiteUnseenData = {
                 'cite_unseen_additional_domains',
                 'cite_unseen_additional_strings',
                 'cite_unseen_dashboard',
-                'cite_unseen_show_suggestions'
+                'cite_unseen_show_suggestions',
+                'cite_unseen_hide_social_media_reliability_ratings'
             ],
 
             mergeableProps: ['categories', 'domainIgnore', 'additionalDomains', 'additionalStrings'],
-            booleanProps: ['dashboard', 'showSuggestions'],
+            booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings'],
 
             globalMapping: {
                 categories: 'cite_unseen_categories',
@@ -1710,7 +2405,8 @@ var CiteUnseenData = {
                 additionalDomains: 'cite_unseen_additional_domains',
                 additionalStrings: 'cite_unseen_additional_strings',
                 dashboard: 'cite_unseen_dashboard',
-                showSuggestions: 'cite_unseen_show_suggestions'
+                showSuggestions: 'cite_unseen_show_suggestions',
+                hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings'
             }
         },
 
@@ -1946,12 +2642,14 @@ var CiteUnseenData = {
          */
         matchPublisher: function (coins, rule) {
             const coinsPub = coins['rft.pub'] || coins['rft.jtitle'];
-            if (!coinsPub || !rule['pub']) return false;
+            const coinsAuthor = coins['rft.au'] || coins['rft.aulast'];  // Also consider author fields as potential publisher names
+            if (!(coinsPub || coinsAuthor) || !rule['pub']) return false;
+            const coinsPubCombined = CiteUnseen.ensureArray(coinsPub).concat(CiteUnseen.ensureArray(coinsAuthor));
 
             if (!rule._cachedPublisherRegex) {
                 rule._cachedPublisherRegex = new RegExp(rule['pub'], 'i');
             }
-            return CiteUnseen.ensureArray(coinsPub).some(publisher =>
+            return CiteUnseen.ensureArray(coinsPubCombined).some(publisher =>
                 rule._cachedPublisherRegex.test(publisher)
             );
         },
@@ -2275,9 +2973,18 @@ var CiteUnseenData = {
 
                 // If rft_id, check URL-based classifications
                 if (ref.coins['rft_id']) {
-                    // Check reliability categories
+                    // Find reliability and type matches
                     const reliabilityMatches = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
+                    const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
+                    const hideSocialMediaReliabilityRating = window.cite_unseen_hide_social_media_reliability_ratings === true && typeMatches.includes('social');
+
+                    // Process reliability categories
                     for (const reliabilityMatch of reliabilityMatches) {
+                        // If hiding social media reliability ratings, skip generic (spec=0) matches
+                        if (hideSocialMediaReliabilityRating && reliabilityMatch.spec === 0) {
+                            continue;
+                        }
+
                         // We can show multiple icons from various language source evaluations,
                         // if current language wiki has none.
                         const reliabilityKey = `${reliabilityMatch.type}_${reliabilityMatch.language}`;
@@ -2288,8 +2995,7 @@ var CiteUnseenData = {
                         }
                     }
 
-                    // Check all type categories for matches
-                    const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
+                    // Process type categories
                     for (const typeMatch of typeMatches) {
                         if (!processedCategories.has(typeMatch)) {
                             CiteUnseen.processIcon(iconsDiv, typeMatch);
@@ -2341,8 +3047,8 @@ var CiteUnseenData = {
             if (checklist) {
                 const pageLink = CiteUnseen.citeUnseenData.resolveSourceToPageLink(checklist);
                 const displayName = pageLink || checklist;
-                message = CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipPrefix) + displayName +
-                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + message +
+                message = CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipPrefix) + ' ' + displayName +
+                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + message + ' ' +
                     CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipAction);
             }
             iconNode.setAttribute("alt", message);
@@ -2531,7 +3237,7 @@ var CiteUnseenData = {
             const counts = {};
 
             // Get all category types
-            const categoryTypes = CiteUnseen.getAllCategoryTypes();
+            const categoryTypes = CiteUnseen.getAllCategoryTypes(); // Order doesn't matter here
 
             // Initialize all category counts to 0
             for (const category of categoryTypes) {
@@ -2559,11 +3265,12 @@ var CiteUnseenData = {
         },
 
         /**
-         * Get all category types used in the system
+         * Get all category types used in the system.
+         * The order only matters when displaying in the dashboard.
          * @returns {Array} Array of all category type strings
          */
         getAllCategoryTypes: function () {
-            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]), ...CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]), 'unknown'];
+            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]), 'unknown'];
         },
 
         /**
@@ -2576,7 +3283,7 @@ var CiteUnseenData = {
             dashboard.cats.innerHTML = '';
 
             // List each type of source in order
-            const categoryTypes = CiteUnseen.getAllCategoryTypes();
+            const categoryTypes = CiteUnseen.getAllCategoryTypes(); // Order matters here
             for (const category of categoryTypes) {
                 const count = categoryCounts[category] || 0;
                 if (count > 0) {
@@ -2629,19 +3336,11 @@ var CiteUnseenData = {
          * @returns {Element} The container element to show/hide
          */
         getCitationContainer: function (citationElement) {
-            // Try to find the list item within a references section
+            // Find closest li element
             const listItem = citationElement.closest('li');
-            if (listItem && listItem.closest('.references, .reflist')) {
-                return listItem;
-            }
 
-            // Fallback: look for any parent list item
-            if (listItem) {
-                return listItem;
-            }
-
-            // Final fallback: use the citation element itself
-            return citationElement;
+            // Return the list item if found, otherwise use the citation element itself
+            return listItem || citationElement;
         },
 
         /**
@@ -2798,15 +3497,15 @@ var CiteUnseenData = {
                 CiteUnseen.convByVar(CiteUnseenI18n.citationPlural);
 
             if (visibleCount === totalCount) {
-                totalElement.innerText = baseText + CiteUnseen.convByVar(CiteUnseenI18n.totalCitations) + totalCount + citationText;
+                totalElement.innerText = baseText + CiteUnseen.convByVar(CiteUnseenI18n.totalCitations) + ' ' + totalCount + ' ' + citationText;
             } else {
                 const filterInfo = dashboard.reflistData.selectedCategories.size > 1 ?
-                    " (" + dashboard.reflistData.selectedCategories.size + CiteUnseen.convByVar(CiteUnseenI18n.filtersActive) + ")" :
+                    " (" + dashboard.reflistData.selectedCategories.size + ' ' + CiteUnseen.convByVar(CiteUnseenI18n.filtersActive) + ")" :
                     "";
 
                 totalElement.innerText = baseText +
-                    CiteUnseen.convByVar(CiteUnseenI18n.showing) + visibleCount +
-                    CiteUnseen.convByVar(CiteUnseenI18n.of) + totalCount +
+                    CiteUnseen.convByVar(CiteUnseenI18n.showing) + ' ' + visibleCount + ' ' +
+                    CiteUnseen.convByVar(CiteUnseenI18n.of) + ' ' + totalCount + ' ' +
                     citationText + filterInfo;
             }
         },
@@ -3017,7 +3716,8 @@ var CiteUnseenData = {
                     additionalDomains: metaState.additionalDomains || {},
                     additionalStrings: metaState.additionalStrings || {},
                     dashboard: metaState.dashboard !== undefined ? metaState.dashboard : true,
-                    showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true
+                    showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true,
+                    hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false
                 };
 
                 // Load local rules
@@ -3032,7 +3732,8 @@ var CiteUnseenData = {
                     additionalDomains: localRules?.additionalDomains || {},
                     additionalStrings: localRules?.additionalStrings || {},
                     dashboard: localRules?.dashboard !== undefined ? localRules.dashboard : true,
-                    showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true
+                    showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true,
+                    hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false
                 };
 
                 // Merge and apply all rules
@@ -3091,7 +3792,7 @@ var CiteUnseenData = {
         decodeURIComponent: async function (str) {
             try {  // First try the built-in function
                 return decodeURIComponent(str);
-            } catch (e) {}  // Fallback to detection and decoding
+            } catch (e) { }  // Fallback to detection and decoding
 
             if (!window.jschardet) {
                 await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
@@ -3197,7 +3898,19 @@ var CiteUnseenData = {
             }
 
             // Find all reflists and track citations within each
-            const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist');
+            const reflists = [
+                ...Array.from(
+                    // div>ol.references captures most standard reference lists inside a containing div
+                    // div.refbegin captures reference lists using Template:Refbegin
+                    document.querySelectorAll(`#mw-content-text .mw-parser-output div>ol.references,
+                        #mw-content-text .mw-parser-output div.refbegin>ul`),
+                    (reflist) => reflist.parentNode // Use parent node as reflist element
+                ),
+                ...Array.from(
+                    // Captures ol.references lists at the "root" level i.e. no containing div
+                    document.querySelectorAll(`#mw-content-text .mw-parser-output > ol.references`)
+                )
+            ];
             CiteUnseen.reflists = [];
 
             if (reflists.length > 0) {
@@ -3239,7 +3952,8 @@ var CiteUnseenData = {
                 additionalDomains: {},
                 additionalStrings: {},
                 dashboard: true,
-                showSuggestions: true
+                showSuggestions: true,
+                hideSocialMediaReliabilityRatings: false
             };
         },
 
@@ -3254,7 +3968,8 @@ var CiteUnseenData = {
                 additionalDomains: {},
                 additionalStrings: {},
                 dashboard: true,
-                showSuggestions: true
+                showSuggestions: true,
+                hideSocialMediaReliabilityRatings: false
             };
         },
 
@@ -3341,6 +4056,7 @@ var CiteUnseenData = {
                         enableDisableCategories: CiteUnseen.convByVar(CiteUnseenI18n.enableDisableCategories),
                         showDashboard: CiteUnseen.convByVar(CiteUnseenI18n.showDashboard),
                         showSuggestionsButton: CiteUnseen.convByVar(CiteUnseenI18n.showSuggestionsButton),
+                        hideSocialMediaReliabilityRatings: CiteUnseen.convByVar(CiteUnseenI18n.hideSocialMediaReliabilityRatings),
                         domainsToIgnore: CiteUnseen.convByVar(CiteUnseenI18n.domainsToIgnore),
                         additionalDomains: CiteUnseen.convByVar(CiteUnseenI18n.additionalDomains),
                         additionalUrlStrings: CiteUnseen.convByVar(CiteUnseenI18n.additionalUrlStrings)
@@ -3356,7 +4072,8 @@ var CiteUnseenData = {
                                 additionalDomains: {},
                                 additionalStrings: {},
                                 dashboard: true,
-                                showSuggestions: true
+                                showSuggestions: true,
+                                hideSocialMediaReliabilityRatings: false
                             },
                             isSaving: false,
                             cleanupTimer: null
@@ -3495,7 +4212,8 @@ var CiteUnseenData = {
                                 additionalDomains: {},
                                 additionalStrings: {},
                                 dashboard: true,
-                                showSuggestions: true
+                                showSuggestions: true,
+                                hideSocialMediaReliabilityRatings: false
                             };
 
                             // Determine which wiki to load from
@@ -3520,7 +4238,8 @@ var CiteUnseenData = {
                                             additionalDomains: {},
                                             additionalStrings: {},
                                             dashboard: true,
-                                            showSuggestions: true
+                                            showSuggestions: true,
+                                            hideSocialMediaReliabilityRatings: false
                                         };
                                         CiteUnseen._metaRules = rules ? { ...defaultRules, ...rules } : defaultRules;
                                     } else {
@@ -3546,7 +4265,8 @@ var CiteUnseenData = {
                                             additionalDomains: {},
                                             additionalStrings: {},
                                             dashboard: true,
-                                            showSuggestions: true
+                                            showSuggestions: true,
+                                            hideSocialMediaReliabilityRatings: false
                                         };
                                     } else {
                                         CiteUnseen._localRules = {
@@ -3589,6 +4309,7 @@ var CiteUnseenData = {
                                 // Load boolean settings
                                 this.settings.dashboard = targetRules.dashboard !== false;
                                 this.settings.showSuggestions = targetRules.showSuggestions !== false;
+                                this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings === true;
                             } else {
                                 // For local rules, inherit from Meta if undefined, otherwise use local value
                                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
@@ -3608,6 +4329,10 @@ var CiteUnseenData = {
                                 this.settings.showSuggestions = targetRules.showSuggestions !== undefined ?
                                     targetRules.showSuggestions :
                                     (metaRules.showSuggestions !== false);
+
+                                this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings !== undefined ?
+                                    targetRules.hideSocialMediaReliabilityRatings :
+                                    (metaRules.hideSocialMediaReliabilityRatings === true);
                             }
 
                             // Load list settings
@@ -3626,7 +4351,8 @@ var CiteUnseenData = {
                                 additionalDomains: {},
                                 additionalStrings: {},
                                 dashboard: this.settings.dashboard,
-                                showSuggestions: this.settings.showSuggestions
+                                showSuggestions: this.settings.showSuggestions,
+                                hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings
                             };
 
                             const validationErrors = [];
@@ -3672,7 +4398,7 @@ var CiteUnseenData = {
                                     });
                                 });
 
-                                const correctionMessage = CiteUnseen.convByVar(CiteUnseenI18n.domainsCorrectedMessage) + correctionMessages.join('\n');
+                                const correctionMessage = CiteUnseen.convByVar(CiteUnseenI18n.domainsCorrectedMessage) + '\n\n' + correctionMessages.join('\n');
 
                                 mw.notify(correctionMessage, {
                                     type: 'info',
@@ -3694,7 +4420,7 @@ var CiteUnseenData = {
                             // If there are validation errors, show them and stop
                             if (validationErrors.length > 0) {
                                 this.isSaving = false;
-                                const errorMessage = CiteUnseen.convByVar(CiteUnseenI18n.invalidDomainFormatMessage) + validationErrors.join('\n');
+                                const errorMessage = CiteUnseen.convByVar(CiteUnseenI18n.invalidDomainFormatMessage) + '\n\n' + validationErrors.join('\n');
 
                                 mw.notify(errorMessage, {
                                     type: 'error',
@@ -3774,6 +4500,9 @@ var CiteUnseenData = {
                                     </cdx-checkbox>
                                     <cdx-checkbox v-model="settings.showSuggestions">
                                         {{ $options.i18n.showSuggestionsButton }}
+                                    </cdx-checkbox>
+                                    <cdx-checkbox v-model="settings.hideSocialMediaReliabilityRatings">
+                                        {{ $options.i18n.hideSocialMediaReliabilityRatings }}
                                     </cdx-checkbox>
                                 </cdx-tab>
 
@@ -3937,12 +4666,18 @@ cite_unseen_dashboard = ${settings.dashboard};`;
                     content += `\n// Suggestions button visibility setting
 cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                 }
+
+                if (settings.hideSocialMediaReliabilityRatings === true) {
+                    content += `\n// Hide social media reliability ratings setting
+cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
+                }
             } else {
                 // For local wiki, include boolean settings if they differ from Meta settings
                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
 
                 const metaDashboard = metaRules.dashboard !== false; // Meta default logic
                 const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
+                const metaRulesHideSocialMedia = metaRules.hideSocialMediaReliabilityRatings === true; // Meta default logic
 
                 if (settings.dashboard !== metaDashboard) {
                     content += `\n\n// Dashboard visibility setting
@@ -3952,6 +4687,11 @@ cite_unseen_dashboard = ${settings.dashboard};`;
                 if (settings.showSuggestions !== metaShowSuggestions) {
                     content += `\n\n// Suggestions button visibility setting
 cite_unseen_show_suggestions = ${settings.showSuggestions};`;
+                }
+
+                if (settings.hideSocialMediaReliabilityRatings !== metaRulesHideSocialMedia) {
+                    content += `\n\n// Hide social media reliability ratings setting
+cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
                 }
             }
 
@@ -4411,254 +5151,178 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
 
         /**
          * Find the header that comes before the reflist
-         * @param {Element} reflistElement - Optional specific reflist element
+         * Used to insert settings + suggest buttons in header
+         * @param {Element} reflistElement - The reflist element to search from
          * @returns {Element|null} The header element before reflist, or null if not found
          */
-        findHeaderBeforeReflist: function (reflistElement = null) {
-            let targetReflist = reflistElement;
+        findHeaderBeforeReflist: function (reflistElement) {
+            let searchElement = reflistElement;
 
-            // If no specific reflist provided, try to find any reflist on the page
-            if (!targetReflist) {
-                const reflists = document.querySelectorAll('#mw-content-text .mw-parser-output div.reflist, .references');
-                if (reflists.length > 0) {
-                    targetReflist = reflists[0]; // Use the first reflist found
-                } else {
-                    return null; // No reflist found
+            // Try up to 2 levels (current element, then parent)
+            for (let level = 0; level < 2; level++) {
+                let currentElement = searchElement.previousElementSibling;
+
+                while (currentElement) {
+                    // Skip our own dashboard elements
+                    if (currentElement.classList.contains('cite-unseen-dashboard')) {
+                        currentElement = currentElement.previousElementSibling;
+                        continue;
+                    }
+
+                    // Check if element is an h2/h3
+                    if (currentElement.matches('h2, h3') ||
+                        currentElement.classList.contains('mw-heading') ||
+                        currentElement.classList.contains('mw-heading2')) {
+                        return currentElement;
+                    }
+                    // Check if element contains h2/h3
+                    const header = currentElement.querySelector('h2, h3, .mw-heading, .mw-heading2');
+                    if (header) {
+                        return header.closest('.mw-heading, .mw-heading2') || header.parentElement || header;
+                    }
+
+                    currentElement = currentElement.previousElementSibling;
                 }
-            }
 
-            // Start from the reflist and walk backwards to find the closest heading
-            let currentElement = targetReflist.previousElementSibling;
-
-            while (currentElement) {
-                if (currentElement.matches('h2, h3') ||
-                    currentElement.classList.contains('mw-heading') ||
-                    currentElement.classList.contains('mw-heading2')) {
-                    return currentElement;
-                }
-
-                const heading = currentElement.querySelector('h2, h3, .mw-heading, .mw-heading2');
-                if (heading) {
-                    return heading.closest('.mw-heading, .mw-heading2') || heading.parentElement || heading;
-                }
-
-                currentElement = currentElement.previousElementSibling;
+                // Move up one level for next iteration
+                searchElement = searchElement.parentElement;
+                if (!searchElement) break;
             }
 
             return null;
         },
 
         /**
+         * Create a button link element
+         * @param {Element} button - The original button element
+         * @param {string} linkText - The text for the link
+         * @returns {Element|null} The created link element
+         */
+        createButtonLink: function (button, linkText) {
+            if (!button) return null;
+
+            const link = document.createElement('a');
+            link.href = '#';
+            link.className = 'cite-unseen-edit-style';
+            link.setAttribute('title', button.getAttribute('title') || '');
+
+            const span = document.createElement('span');
+            span.textContent = linkText;
+            link.appendChild(span);
+
+            link.onclick = function (e) {
+                e.preventDefault();
+                if (button.onclick) {
+                    button.onclick(e);
+                }
+            };
+
+            return link;
+        },
+
+        /**
+         * Create a button section with Cite Unseen buttons
+         * @param {string} sectionClass - CSS class for the section
+         * @returns {Object|null} Object with section element and suggestionsLink, or null if no buttons
+         */
+        createButtonSection: function (sectionClass) {
+            const section = document.createElement('span');
+            section.className = `mw-editsection cite-unseen-section ${sectionClass}`;
+
+            // Create opening bracket
+            const openingBracket = document.createElement('span');
+            openingBracket.className = 'mw-editsection-bracket';
+            openingBracket.textContent = '[';
+            section.appendChild(openingBracket);
+
+            let hasButtons = false;
+            let suggestionsLink = null;
+
+            // Add settings button
+            if (CiteUnseen.settingsButton) {
+                const settingsLink = CiteUnseen.createButtonLink(
+                    CiteUnseen.settingsButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
+                );
+                if (settingsLink) {
+                    section.appendChild(settingsLink);
+                    hasButtons = true;
+                }
+            }
+
+            // Add divider if both buttons exist
+            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
+                const divider = document.createElement('span');
+                divider.className = 'cite-unseen-editsection-divider';
+                divider.textContent = ' | ';
+                section.appendChild(divider);
+            }
+
+            // Add suggestions button
+            if (CiteUnseen.suggestionsToggleButton) {
+                suggestionsLink = CiteUnseen.createButtonLink(
+                    CiteUnseen.suggestionsToggleButton,
+                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
+                );
+                if (suggestionsLink) {
+                    section.appendChild(suggestionsLink);
+                    hasButtons = true;
+                }
+            }
+
+            // Create closing bracket
+            const closingBracket = document.createElement('span');
+            closingBracket.className = 'mw-editsection-bracket';
+            closingBracket.textContent = ']';
+            section.appendChild(closingBracket);
+
+            return hasButtons ? { section, suggestionsLink } : null;
+        },
+
+        /**
+         * Set up suggestions toggle functionality
+         * @param {Element} suggestionsLink - The suggestions link element
+         */
+        setupSuggestionsToggle: function (suggestionsLink) {
+            if (!suggestionsLink || !CiteUnseen.suggestionsToggleButton) return;
+
+            CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
+                suggestionsLink.classList.toggle('cite-unseen-suggestions-active', isActive);
+                suggestionsLink.classList.toggle('cite-unseen-suggestions-default', !isActive);
+            };
+        },
+
+        /**
          * Position buttons in the header before a specific reflist
          * @param {Object} reflistData - The reflist data object
+         * @returns {boolean} Success status
          */
         positionButtonsInHeaderForReflist: function (reflistData) {
             const header = CiteUnseen.findHeaderBeforeReflist(reflistData.element);
-            if (!header) {
-                return false;
-            }
+            if (!header) return false;
 
-            // Find the mw-editsection span within the header
+            // Check if buttons already exist
+            if (header.querySelector('.cite-unseen-section')) return true;
+
             const editSection = header.querySelector('.mw-editsection');
+            const sectionClass = editSection ? 'cite-unseen-edit-section' : 'cite-unseen-fallback-section';
+            const buttonData = CiteUnseen.createButtonSection(sectionClass);
+
+            if (!buttonData) return false;
+
+            CiteUnseen.setupSuggestionsToggle(buttonData.suggestionsLink);
 
             if (editSection) {
-                // Use existing [edit] button section
-                return CiteUnseen.injectButtonsInEditSection(header, editSection, reflistData);
+                // Insert after existing edit section
+                editSection.parentNode.insertBefore(buttonData.section, editSection.nextSibling);
             } else {
-                // Fallback: create standalone buttons
-                return CiteUnseen.injectStandaloneButtons(header, reflistData);
-            }
-        },
-
-        /**
-         * Inject buttons within the existing [edit] section
-         * @param {Element} header - The header element
-         * @param {Element} editSection - The edit section element
-         * @param {Object} reflistData - Optional reflist data for tracking
-         */
-        injectButtonsInEditSection: function (header, editSection, reflistData = null) {
-            // Check if buttons are already injected in this header
-            if (header.querySelector('.cite-unseen-section')) {
-                return true;
+                // Insert as standalone section
+                const h2Element = header.querySelector('h2');
+                const targetElement = (h2Element && header.classList.contains('mw-heading')) ? h2Element : header;
+                targetElement.appendChild(buttonData.section);
             }
 
-            const citeUnseenSection = document.createElement('span');
-            citeUnseenSection.className = 'mw-editsection cite-unseen-section cite-unseen-edit-section';
-
-            const openingBracket = document.createElement('span');
-            openingBracket.className = 'mw-editsection-bracket';
-            openingBracket.textContent = '[';
-            citeUnseenSection.appendChild(openingBracket);
-
-            const convertToEditSectionStyle = (button, linkText) => {
-                if (!button) return null;
-
-                const link = document.createElement('a');
-                link.href = '#';
-                link.className = 'cite-unseen-edit-style';
-                link.setAttribute('title', button.getAttribute('title') || '');
-
-                const span = document.createElement('span');
-                span.textContent = linkText;
-                link.appendChild(span);
-
-                link.onclick = function (e) {
-                    e.preventDefault();
-                    if (button.onclick) {
-                        button.onclick(e);
-                    }
-                };
-
-                return link;
-            };
-
-            let hasButtons = false;
-
-            if (CiteUnseen.settingsButton) {
-                const settingsLink = convertToEditSectionStyle(
-                    CiteUnseen.settingsButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
-                );
-                if (settingsLink) {
-                    citeUnseenSection.appendChild(settingsLink);
-                    hasButtons = true;
-                }
-            }
-
-            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
-                const divider = document.createElement('span');
-                divider.className = 'cite-unseen-editsection-divider';
-                divider.textContent = ' | ';
-                citeUnseenSection.appendChild(divider);
-            }
-
-            if (CiteUnseen.suggestionsToggleButton) {
-                const suggestionsLink = convertToEditSectionStyle(
-                    CiteUnseen.suggestionsToggleButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
-                );
-                if (suggestionsLink) {
-                    citeUnseenSection.appendChild(suggestionsLink);
-                    hasButtons = true;
-
-                    CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
-                        if (isActive) {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-active');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-default');
-                        } else {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-default');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-active');
-                        }
-                    };
-                }
-            }
-
-            const closingBracket = document.createElement('span');
-            closingBracket.className = 'mw-editsection-bracket';
-            closingBracket.textContent = ']';
-            citeUnseenSection.appendChild(closingBracket);
-
-            if (hasButtons) {
-                editSection.parentNode.insertBefore(citeUnseenSection, editSection.nextSibling);
-                return true;
-            }
-
-            return false;
-        },
-
-        /**
-         * Inject standalone buttons when edit section doesn't exist
-         * @param {Element} header - The header element
-         * @param {Object} reflistData - Optional reflist data for tracking
-         */
-        injectStandaloneButtons: function (header, reflistData = null) {
-            // Check if we already have buttons injected to avoid duplicates
-            if (header.querySelector('.cite-unseen-fallback-section')) {
-                return true;
-            }
-
-            const fallbackSection = document.createElement('span');
-            fallbackSection.className = 'mw-editsection cite-unseen-fallback-section';
-
-            const openingBracket = document.createElement('span');
-            openingBracket.className = 'mw-editsection-bracket';
-            openingBracket.textContent = '[';
-            fallbackSection.appendChild(openingBracket);
-
-            const convertToFallbackStyle = (button, linkText) => {
-                if (!button) return null;
-
-                const link = document.createElement('a');
-                link.href = '#';
-                link.className = 'cite-unseen-edit-style';
-                link.setAttribute('title', button.getAttribute('title') || '');
-
-                const span = document.createElement('span');
-                span.textContent = linkText;
-                link.appendChild(span);
-
-                link.onclick = function (e) {
-                    e.preventDefault();
-                    if (button.onclick) {
-                        button.onclick(e);
-                    }
-                };
-
-                return link;
-            };
-
-            let hasButtons = false;
-
-            if (CiteUnseen.settingsButton) {
-                const settingsLink = convertToFallbackStyle(
-                    CiteUnseen.settingsButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
-                );
-                if (settingsLink) {
-                    fallbackSection.appendChild(settingsLink);
-                    hasButtons = true;
-                }
-            }
-
-            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
-                const divider = document.createElement('span');
-                divider.className = 'cite-unseen-editsection-divider';
-                divider.textContent = ' | ';
-                fallbackSection.appendChild(divider);
-            }
-
-            if (CiteUnseen.suggestionsToggleButton) {
-                const suggestionsLink = convertToFallbackStyle(
-                    CiteUnseen.suggestionsToggleButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
-                );
-                if (suggestionsLink) {
-                    fallbackSection.appendChild(suggestionsLink);
-                    hasButtons = true;
-
-                    CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
-                        if (isActive) {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-active');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-default');
-                        } else {
-                            suggestionsLink.classList.add('cite-unseen-suggestions-default');
-                            suggestionsLink.classList.remove('cite-unseen-suggestions-active');
-                        }
-                    };
-                }
-            }
-
-            const closingBracket = document.createElement('span');
-            closingBracket.className = 'mw-editsection-bracket';
-            closingBracket.textContent = ']';
-            fallbackSection.appendChild(closingBracket);
-
-            if (hasButtons) {
-                header.appendChild(fallbackSection);
-                return true;
-            }
-
-            return false;
+            return true;
         },
 
         /**
@@ -4687,6 +5351,12 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
         // ===============================
 
         init: function () {
+            // Singleton
+            if (window._citeUnseenInitialized) {
+                return;
+            }
+            window._citeUnseenInitialized = true;
+
             console.time('[Cite Unseen] Runtime');
 
             // Import source categorization data
