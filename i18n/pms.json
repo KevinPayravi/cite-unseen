@@ -68,5 +68,21 @@
 	"domainsToIgnore": "Domini da ignoré (un për linia)",
 	"enableDisableCategories": "Ativé o disativé le categorìe",
 	"filterToggleTooltip": "Sgnaché për ativé o disativé cost filtr ëd categorìa. A peul selessioné vàire categorìe. Sgnaché su Scapé për dëscancelé tuti ij filtr.",
-	"filtersActive": "filtr ativ"
+	"filtersActive": "filtr ativ",
+	"hideSocialMediaReliabilityRatings": "Stërmé le valutassion ëd fidabilità për le liure a dij mojen sossiaj da editor nen valutà",
+	"ignoreDomainsTabGuidance": "Gionté ij domini da esclude da tute le categorìe. Le sorgiss da costi domini a saran pa marcà con la plancia ëd categorìa corëspondenta. Anserì un domini për linia ant ël formà 'esempi.com'.",
+	"invalidDomainFormatMessage": "Formà ëd domini nen bon trovà. Ij domini a dovrìo esse ant ël formà «nom.tld» (për es., esempi.com):",
+	"loading": "A caria...",
+	"local": "local",
+	"localSettingGuidance": "Ij paràmeter wiki locaj a l'ha la precedensa an sij paràmeter globaj.",
+	"metaWikiGlobal": "Meta-Wiki (global)",
+	"of": " ëd",
+	"optionalComment": "Coment opsional",
+	"reliabilityProjects": "Pàgine dël proget ëd fidabilità",
+	"save": "Argistré",
+	"saving": "A argistra...",
+	"selectAtLeastOneCategory": "Për piasì, ch'a selession-a almanch na categorìa",
+	"settingsButton": "Paràmeter ëd Cite Unseen",
+	"settingsButtonTooltip": "Configuré ij paràmeter ëd Cite Unseen.",
+	"settingsDialogTitle": "Paràmeter ëd Cite Unseen"
 }
