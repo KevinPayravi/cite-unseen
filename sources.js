@@ -337,7 +337,7 @@ var CiteUnseenData = {
             if (key) {
                 if (rest.length) {
                     // Key-value pair; if key is '1', map to 'url'.
-                    rule[key.trim() === '1' ? 'url' : key] = rest.join('=').trim();
+                    rule[key.trim() === '1' ? 'url' : key.trim()] = rest.join('=').trim();
                 } else {
                     // Only a single value without '='.
                     rule['url'] = key.trim();
