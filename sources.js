@@ -334,11 +334,17 @@ var CiteUnseenData = {
         const rule = {};
         parts.forEach(part => {
             const [key, ...rest] = part.split('=');
-            if (key && rest.length) {
-                rule[key.trim()] = rest.join('=').trim();
+            if (key) {
+                if (rest.length) {
+                    // Key-value pair; if key is '1', map to 'url'.
+                    rule[key.trim() === '1' ? 'url' : key.trim()] = rest.join('=').trim();
+                } else {
+                    // Only a single value without '='.
+                    rule['url'] = key.trim();
+                }
             }
         });
-        return rule;
+        return Object.keys(rule).length ? rule : null;  // Empty object should be falsy
     },
 
     /**
