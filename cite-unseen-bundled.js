@@ -1,7 +1,7 @@
 // Cite Unseen - Bundled Version
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.6
-// Timestamp: 2025-10-21T21:31:29.593Z
+// Release: 2.1.7
+// Timestamp: 2025-10-29T00:43:35.681Z
 
 (function() {
     'use strict';
@@ -631,7 +631,7 @@ window.CiteUnseenI18n = {
             "kg": "Bo ke sadilaka ve nto yai mpi bo fwete sadila yo ve. Bo lenda sadila yo sambu na kutendula yo mosi kukonda ntembe to mambu yina bantu ya mayele ke basisa bo mosi.",
             "ln": "Liziba oyo ezali lisusu na ntina te mpe esengeli kosalelama te. Ekoki kaka kosalelama mpo na kolobela makambo oyo bato bazali na yango to makambo oyo bato ya mayele babimisaka bango moko.",
             "mk": "Овој извор е застарен и не треба да се користи. Може сепак да се употребува за неспорни самоописи или содржина самообјавена од стручњаци.",
-            "pl": "To źródło jest przestarzałe i nie powinno być używane. Może nadal być używane do niekontrowersyjnych opisów własnych lub ekspertów treści samodzielnie publikowanych.",
+            "pl": "To źródło jest wycofane z użycia i nie powinno być stosowane z wyjątkiem niekontrowersyjnych samoopisów lub treści samodzielnie publikowanych przez ekspertów.",
             "pms": "Costa sorgiss a l'é veja e a dovrìa nen esse dovrà. A peul istess esse dovrà për dj'àuto-descrission nen controverse o dël contnù àuto-publicà da dj'espert.",
             "tr": "Bu kaynak artık kullanılmamaktadır ve kullanılmamalıdır. Ancak tartışma konusu olmayan öz tanımlamalar veya uzmanlarca yayımlanmış içerikler için hâlâ kullanılabilir.",
             "hans": "此来源已弃用，不应使用。它仍可用于无争议的自我描述，或来自专家的自行发表内容。",
@@ -669,7 +669,7 @@ window.CiteUnseenI18n = {
             "kg": "Bantu mingi ke monaka nde mukanda yai kele ve ya kutudila ntima. Bo lenda sadila yo sambu na kutendula yo mosi kukonda ntembe to mambu yina bantu ya mayele ke basisa bo mosi.",
             "ln": "Mingimingi, liziba oyo etalelami lokola oyo ekoki kotyelama motema te na bato ya mboka. Ekoki naino kosalelama mpo na komilobela oyo ezali na ntembe te to makambo oyo bato ya mayele bamibimisi.",
             "mk": "Заедницата начелно го смета овој извор за немеродавен. Може сепак да се употребува за неспорни самоописи или содржина самообјавена од стручњаци.",
-            "pl": "To źródło jest generalnie uważane za niewiarygodne przez społeczność. Może nadal być używane do niekontrowersyjnych opisów własnych lub ekspertów treści samodzielnie publikowanych.",
+            "pl": "To źródło jest generalnie uznawane za niewiarygodne przez społeczność. Może nadal być używane do niekontrowersyjnych samoopisów własnych lub treści samodzielnie publikowanych przez ekspertów.",
             "pms": "Costa sorgiss a l'é an general considerà nen fidà da la comunità. A peul istess esse dovrà për dj'àuto-descrission nen controverse o dël contnù àuto-publicà da dj'espert.",
             "tr": "Bu kaynak, topluluk tarafından genel olarak güvenilmez kabul edilmektedir. Ancak tartışma konusu olmayan öz tanımlamalar veya uzmanlarca yayımlanmış içerikler için hâlâ kullanılabilir.",
             "hans": "社区共识认为此来源通常不可靠。它仍可用于无争议的自我描述，或来自专家的自行发表内容。",
@@ -681,7 +681,7 @@ window.CiteUnseenI18n = {
             "ja": "この情報源は国有または国営メディア、または政府の情報源として識別されています。",
             "ln": "Liziba oyo emonisami lokola bopanzi sango ya leta to ya leta, to liziba ya leta.",
             "mk": "Овој извор медиум во државна сопственост или контрола, или пак владин извор.",
-            "pl": "To źródło jest zidentyfikowane jako medium państwowe lub prowadzone przez państwo, lub źródło rządowe.",
+            "pl": "To źródło jest zidentyfikowane jako medium państwowe, rządowe lub dofinansowywane przez instytucje państwowe.",
             "pms": "Costa sorgiss a l'é indentificà tanme un mojen possedù o controlà da lë stat, o na sorgiss governamental.",
             "tr": "Bu kaynak, devlet tarafından sahip olunan veya devletçe işletilen bir medya kuruluşu ya da bir devlet kaynağıdır.",
             "hans": "此来源已被识别为国有或国营媒体，或为政府来源。",
@@ -694,7 +694,7 @@ window.CiteUnseenI18n = {
             "kg": "Mukanda yai kele ya kutudila ntima. Yo lenda vanda mfunu na kutomisa yo na kutadila diambu mosi-mosi sambu na kuzaba kana yo kele ya kutudila ntima na konso mambu.",
             "ln": "Liziba oyo ezali mwa kotyela motema. Ekoki kozala na ntina kotalela yango na kotalela likambo mokomoko mpo na koyeba soki ekoki kotyelama motema na likambo mokomoko.",
             "mk": "Овој извор е маргинално веродостоен. Можеби е неопходно да се проверува од случај до случај за да се одреди неговата веродостојност во секој даден контекст.",
-            "pl": "To źródło jest marginalnie wiarygodne. Może być konieczne przejrzenie go przypadek po przypadku, aby określić jego wiarygodność w każdym kontekście.",
+            "pl": "To źródło jest ledwo wiarygodne. Może być konieczne przejrzenie go przypadek po przypadku, aby określić jego wiarygodność w każdym kontekście.",
             "pms": "Costa sorgiss a l'é pòch fidàbil. A peul essie damanca ëd controlela cas për cas për determiné sò afidament an minca 'n contest.",
             "tr": "Bu kaynak, sınırlı düzeyde güvenilirdir. Her bağlamda güvenilirliğini belirlemek için duruma göre ayrı ayrı incelenmesi gerekebilir.",
             "hans": "此来源半可靠。可能有必要在每次使用该来源时逐个进行审查，视情境决定是否可靠。",
@@ -906,7 +906,7 @@ window.CiteUnseenI18n = {
             "kg": "yina bo me bikisaka",
             "ln": "esili kozanga kosalelama",
             "mk": "застарено",
-            "pl": "przestarzałe",
+            "pl": "wycofane z użycia",
             "pms": "dësconsejà",
             "tr": "artık geçerli olmayan",
             "hans": "应停用",
@@ -968,7 +968,7 @@ window.CiteUnseenI18n = {
             "ja": "限られた信頼性",
             "ln": "oyo ekoki kotyelama motema na ndenge ya moke",
             "mk": "маргинално веродостоен",
-            "pl": "marginalnie wiarygodne",
+            "pl": "ledwo wiarygodne",
             "pms": "marginalmant fidàbil",
             "tr": "kısmen güvenilir",
             "hans": "半可靠",
@@ -1305,6 +1305,8 @@ window.CiteUnseenI18n = {
         "en": "Hide reliability ratings for social media links from unrated publishers",
         "ja": "未識別の発行元によるソーシャルメディアの情報源について、信頼性評価を非表示にする",
         "mk": "Скриј оценки на меродавност за врски до друштвени медиуми од неоценети објавувачи",
+        "pl": "Ukryj oceny wiarygodności linków do mediów społecznościowych, gdzie instytucje odpowiedzialne za linki nie zostały ocenione",
+        "pms": "Stërmé le valutassion ëd fidabilità për le liure a dij mojen sossiaj da editor nen valutà",
         "hans": "对于未识别发布者的社交媒体来源，隐藏可靠性评级",
         "hant": "對於未識別發佈者的社群媒體來源，隱藏可靠性評級"
     },
@@ -1315,6 +1317,7 @@ window.CiteUnseenI18n = {
         "ln": "Tyá ba domaines oyo okolongola na catégorie moko na moko. Ba sources oyo ewutaka na ba domaines oyo ekozala marqué te na icône ya catégorie oyo ekokani. Tyá domaine moko na ligne moko na format 'example.com'.",
         "mk": "Внесете домени за изземање од секоја категорија. Изворите од овие домени нема да се означуваат со соодветната категориска икона. Внесувајте по еден домен во секој ред, во форматот „example.com“.",
         "pl": "Wprowadź domeny do wykluczenia z każdej kategorii. Źródła z tych domen nie będą oznaczone odpowiednią ikoną kategorii. Wprowadź jedną domenę na linię w formacie 'przykład.com'.",
+        "pms": "Gionté ij domini da esclude da tute le categorìe. Le sorgiss da costi domini a saran pa marcà con la plancia ëd categorìa corëspondenta. Anserì un domini për linia ant ël formà 'esempi.com'.",
         "tr": "Her kategori için hariç tutulacak alan adlarını girin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenmeyecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
         "hans": "输入要从各类别中排除的域名。来自这些域名的来源将不会标记对应的类别图标。每行输入一个域名，格式为 'example.com'。",
         "hant": "輸入要從各類別中排除的網域。來自這些網域的來源將不會標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。"
@@ -1327,6 +1330,7 @@ window.CiteUnseenI18n = {
         "ln": "Format ya domaine ya mabe ezwami. Ba domaines esengeli kozala na format \"name.tld\" (ndakisa, example.com):",
         "mk": "Пронајден е неважечки формат за домен. Домените треба да бидат во форматот „name.tld“ (на пр. example.com):",
         "pl": "Wykryto nieprawidłowy format domeny. Domeny powinny być w formacie \"nazwa.tld\" (np. przykład.com):",
+        "pms": "Formà ëd domini nen bon trovà. Ij domini a dovrìo esse ant ël formà «nom.tld» (për es., esempi.com):",
         "tr": "Geçersiz alan adı biçimi algılandı. Alan adları \"name.tld\" biçiminde olmalıdır (örneğin, example.com):",
         "hans": "检测到无效的域名格式。域名应为 \"name.tld\" 格式（如 example.com）：",
         "hant": "偵測到無效的網域格式。網域應為 \"name.tld\" 格式（如 example.com）："
@@ -1339,6 +1343,7 @@ window.CiteUnseenI18n = {
         "ln": "Kokotisa biloko...",
         "mk": "Вчитувам...",
         "pl": "Ładowanie...",
+        "pms": "A caria...",
         "tr": "Yükleniyor...",
         "hans": "加载中……",
         "hant": "載入中……"
@@ -1350,6 +1355,7 @@ window.CiteUnseenI18n = {
         "ln": "ya bana-mboka",
         "mk": "месни",
         "pl": "lokalne",
+        "pms": "local",
         "tr": "yerel",
         "hans": "本地",
         "hant": "本地"
@@ -1361,6 +1367,7 @@ window.CiteUnseenI18n = {
         "ln": "Bobongisi ya wiki ya mboka elongolaka bobongisi ya mokili mobimba.",
         "mk": "Месните викинагодувања ги заменуваат глобалните.",
         "pl": "Lokalne ustawienia wiki zastępują ustawienia globalne.",
+        "pms": "Ij paràmeter wiki locaj a l'ha la precedensa an sij paràmeter globaj.",
         "tr": "Yerel wiki ayarları, küresel ayarları geçersiz kılar.",
         "hans": "本地维基设置会覆盖全域设置。",
         "hant": "本地維基設定會覆蓋全域設定。"
@@ -1372,6 +1379,7 @@ window.CiteUnseenI18n = {
         "ln": "Meta-Wiki (ya mokili mobimba) .",
         "mk": "Мета (глобално)",
         "pl": "Meta-Wiki (globalne)",
+        "pms": "Meta-Wiki (global)",
         "tr": "Meta-Wiki (küresel)",
         "hans": "元维基 (全域)",
         "hant": "元維基 (全域)"
@@ -1384,6 +1392,7 @@ window.CiteUnseenI18n = {
         "ln": "ya",
         "mk": " од",
         "pl": " z",
+        "pms": " ëd",
         "hans": " /",
         "hant": " /"
     },
@@ -1395,6 +1404,7 @@ window.CiteUnseenI18n = {
         "ln": "Commentaire oyo okoki kopona",
         "mk": "Незадолж. коментар",
         "pl": "Opcjonalny komentarz",
+        "pms": "Coment opsional",
         "tr": "İsteğe Bağlı Yorum",
         "hans": "可选意见",
         "hant": "可選意見"
@@ -1407,6 +1417,7 @@ window.CiteUnseenI18n = {
         "ln": "Lokasa ya mosala",
         "mk": "Проектни страници за меродавност",
         "pl": "Strony projektów wiarygodności",
+        "pms": "Pàgine dël proget ëd fidabilità",
         "tr": "Güvenilirlik Projesi Sayfaları",
         "hans": "可靠性项目页面",
         "hant": "可靠性專案頁面"
@@ -1418,6 +1429,7 @@ window.CiteUnseenI18n = {
         "ln": "Kobikisa",
         "mk": "Зачувај",
         "pl": "Zapisz",
+        "pms": "Argistré",
         "tr": "Kaydet",
         "hans": "保存",
         "hant": "儲存"
@@ -1429,6 +1441,7 @@ window.CiteUnseenI18n = {
         "ln": "Kobomba...",
         "mk": "Зачувувам...",
         "pl": "Zapisywanie...",
+        "pms": "A argistra...",
         "tr": "Kaydediliyor...",
         "hans": "保存中……",
         "hant": "儲存中……"
@@ -1440,6 +1453,7 @@ window.CiteUnseenI18n = {
         "ln": "Svp pona ata catégorie moko",
         "mk": "Изберете барем една категорија",
         "pl": "Wybierz przynajmniej jedną kategorię",
+        "pms": "Për piasì, ch'a selession-a almanch na categorìa",
         "tr": "Lütfen en az bir kategori seçin",
         "hans": "请至少选择一个类别",
         "hant": "請至少選擇一個類別"
@@ -1451,6 +1465,7 @@ window.CiteUnseenI18n = {
         "ln": "Citer Paramètres oyo emonanaka te",
         "mk": "Нагодувања на Cite Unseen",
         "pl": "Ustawienia Cite Unseen",
+        "pms": "Paràmeter ëd Cite Unseen",
         "tr": "Kaynağı Görmeden Alıntılama Ayarları",
         "hans": "Cite Unseen 设置",
         "hant": "Cite Unseen 設定"
@@ -1462,6 +1477,7 @@ window.CiteUnseenI18n = {
         "ln": "Configurer ba paramètres ya Cite Unseen.",
         "mk": "Поставете ги нагодувањата на Cite Unseen.",
         "pl": "Skonfiguruj ustawienia Cite Unseen.",
+        "pms": "Configuré ij paràmeter ëd Cite Unseen.",
         "tr": "Kaynağı Görmeden Alıntılama ayarlarını yapılandırın.",
         "hans": "配置 Cite Unseen 设置。",
         "hant": "設定 Cite Unseen 設定。"
@@ -1474,6 +1490,7 @@ window.CiteUnseenI18n = {
         "ln": "Kotanga bisika oyo emonanaka te",
         "mk": "Нагодувања на Cite Unseen",
         "pl": "Ustawienia Cite Unseen",
+        "pms": "Paràmeter ëd Cite Unseen",
         "tr": "Kaynağı Görmeden Alıntılama Ayarları",
         "hans": "Cite Unseen 设置",
         "hant": "Cite Unseen 設定"
@@ -1486,6 +1503,7 @@ window.CiteUnseenI18n = {
         "ln": "Ba paramètres ya kobomba mabunga:",
         "mk": "Грешка при зачувувањето на нагодувањата:",
         "pl": "Błąd zapisywania ustawień:",
+        "pms": "Eror ant l'argistrassion dij paràmeter:",
         "tr": "Ayarlar kaydedilirken hata oluştu:",
         "hans": "保存设置时出错：",
         "hant": "儲存設定時發生錯誤："
@@ -1498,6 +1516,7 @@ window.CiteUnseenI18n = {
         "ln": "Paramètres ebombami malamu! Recharger page pona ko appliquer ba changements?",
         "mk": "Нагодувањата се успешно зачувани! Да ја превчитам страницата за да ги применам промените?",
         "pl": "Ustawienia zapisane pomyślnie! Przeładować stronę, aby zastosować zmiany?",
+        "pms": "Ij paràmeter a son ëstàit argistrà për da bin. Veul-lo carié torna la pàgine për apliché le modìfiche?",
         "tr": "Ayarlar başarıyla kaydedildi! Değişiklikleri uygulamak için sayfayı yeniden yüklemek ister misiniz?",
         "hans": "设置已成功保存！重新加载页面以应用更改？",
         "hant": "設定已成功儲存！重新載入頁面以套用變更？"
@@ -1508,7 +1527,8 @@ window.CiteUnseenI18n = {
         "ja": "参考文献セクションの上にダッシュボードを表示",
         "ln": "Komonisa etanda ya liboso na likolo",
         "mk": "Прикажи управувачница над списоците со наводи",
-        "pl": "Pokaż pulpit powyżej list referencji",
+        "pl": "Pokaż pulpit powyżej list przypisów",
+        "pms": "Smon-e ël cruscòt dzora la lista dj'arferiment",
         "tr": "Kaynakça listelerinin üzerinde kontrol panelini göster",
         "hans": "在参考文献区段上方显示仪表板",
         "hant": "在參考文獻區段上方顯示儀表板"
@@ -1521,6 +1541,7 @@ window.CiteUnseenI18n = {
         "ln": "Bouton ya kolakisa makanisi",
         "mk": "Прикажи копче за предлози",
         "pl": "Pokaż przycisk sugestii",
+        "pms": "Smon-e ël boton dij sugeriment",
         "tr": "Öneriler butonunu göster",
         "hans": "显示建议按钮",
         "hant": "顯示建議按鈕"
@@ -1533,6 +1554,7 @@ window.CiteUnseenI18n = {
         "ln": "Komonisama",
         "mk": "Се прикажува",
         "pl": "Pokazuje",
+        "pms": "Smon-e",
         "tr": "Gösteriliyor",
         "hans": "显示",
         "hant": "顯示"
@@ -1545,6 +1567,7 @@ window.CiteUnseenI18n = {
         "ln": "URL ya source",
         "mk": "Изворна URL",
         "pl": "URL źródła",
+        "pms": "Sorgiss URL",
         "tr": "Kaynak URL'si",
         "hans": "来源网址",
         "hant": "來源網址"
@@ -1556,6 +1579,7 @@ window.CiteUnseenI18n = {
         "ln": "Fungola Formulaire ya Bobongisi",
         "mk": "Отвори образец за уредување",
         "pl": "Otwórz formularz edycji",
+        "pms": "Duverté ël formolari ëd modìfica",
         "tr": "Düzenleme Formunu Aç",
         "hans": "打开编辑表单",
         "hant": "開啟編輯表單"
@@ -1567,6 +1591,7 @@ window.CiteUnseenI18n = {
         "ln": "Kofungola...",
         "mk": "Отворам...",
         "pl": "Otwieranie...",
+        "pms": "An camin ch'as duverta...",
         "tr": "Açılıyor...",
         "hans": "打开中……",
         "hant": "開啟中……"
@@ -1579,6 +1604,7 @@ window.CiteUnseenI18n = {
         "ln": "Pesa likanisi ya kosala categorisation mpo na citation oyo",
         "mk": "Предложи категоризација за овој навод",
         "pl": "Zasugeruj kategoryzację dla tego cytowania",
+        "pms": "Sugerì na categorisassion për costa sitassion",
         "tr": "Bu kaynak için kategori öner",
         "hans": "为此引用建议分类",
         "hant": "為此引用建議分類"
@@ -1590,6 +1616,7 @@ window.CiteUnseenI18n = {
         "ln": "Ba catégories oyo ba proposer",
         "mk": "Предложени категории",
         "pl": "Sugerowane kategorie",
+        "pms": "Categorìe sugerìe",
         "tr": "Önerilen Kategoriler",
         "hans": "建议类别",
         "hant": "建議類別"
@@ -1602,6 +1629,7 @@ window.CiteUnseenI18n = {
         "ln": "Likanisi ya kokabola yango na biteni",
         "mk": "Предложи категоризација",
         "pl": "Zasugeruj kategoryzację",
+        "pms": "Categorisassion sugerìa",
         "tr": "Kategorizasyon Önerisi",
         "hans": "建议分类",
         "hant": "建議分類"
@@ -1613,6 +1641,7 @@ window.CiteUnseenI18n = {
         "ln": "Libunga na kofungola formulaire ya likanisi:",
         "mk": "Грешка при отворањето на образецот за предлози:",
         "pl": "Błąd otwierania formularza sugestii:",
+        "pms": "Eror ant la duvertura dël formolari ëd sugeriment:",
         "tr": "Öneri formu açılırken hata oluştu:",
         "hans": "打开建议表单时出错：",
         "hant": "開啟建議表單時發生錯誤："
@@ -1624,6 +1653,7 @@ window.CiteUnseenI18n = {
         "ln": "Formulaire ya éditer efungwami na onglet ya sika! Esengeli kotondisa liboso makambo oyo ezali na kati yango moko. Soki te, makambo oyo ezali na makanisi esalemi kopi na tableau de bord na yo.",
         "mk": "Образецот за уредување е отворен во ново јазиче! Содржината треба да е автоматски пополнета. Ако не е, содржината на предлогот е прекопирана во вашиот меѓусклад.",
         "pl": "Formularz edycji otwarty w nowej karcie! Zawartość powinna być automatycznie wypełniona. Jeśli nie, zawartość sugestii została skopiowana do schowka.",
+        "pms": "Ël formolari ëd modìfica a l'é duvertasse an na neuva scheda! Ël contnù a dovrìa esse già compilà an automàtich. Dësnò, ël contnù dël sugeriment a l'é stàit copià su soa taulëtta.",
         "tr": "Düzenleme formu yeni sekmede açıldı! İçerik otomatik olarak önceden doldurulmuş olmalı. Aksi takdirde öneri içeriği panonuza kopyalanmıştır.",
         "hans": "编辑表单已在新标签页中打开！内容应自动预填。如未预填，建议内容已复制到您的剪贴板。",
         "hant": "編輯表單已在新分頁中開啟！內容應自動預填。如未預填，建議內容已複製到您的剪貼簿。"
@@ -1636,6 +1666,7 @@ window.CiteUnseenI18n = {
         "ln": "Pona catégorie moko to ebele pona citation oyo pe na option pesa commentaire. Onglet ya sika ekofungwama na formulaire ya bobongisi oyo etondisami liboso na Meta Wiki esika okoki kotinda likanisi na yo mpo na botali.",
         "mk": "Изберете една или повеќе категории за овој навод и, по желба, внесете коментар. Ќе се отвори ново јазиче со веќе пополнет образец за уредување на Мета, каде ќе можете да го поднесете предлогот на разгледување.",
         "pl": "Wybierz jedną lub więcej kategorii dla tego cytowania i opcjonalnie podaj komentarz. Otworzy się nowa karta z wstępnie wypełnionym formularzem edycji na Meta Wiki, gdzie możesz przesłać swoją sugestię do przeglądu.",
+        "pms": "Ch'a selession-a un-a o pi catergorìe për costa sitassion e, ëd fasson opsional, ch'a fornissa un coment. As duvertërà na neuva scheda con un formolari ëd modìfica già compilà su Meta Wiki, andoa a peul mandé sò sugeriment për na revision.",
         "tr": "Bu kaynak için bir veya daha fazla kategori seçin ve isteğe bağlı olarak bir yorum ekleyin. Meta Wiki'de, önerinizi incelemeye gönderebileceğiniz önceden doldurulmuş bir düzenleme formu içeren yeni bir sekme açılacaktır.",
         "hans": "为此引用选择一个或多个类别，并可选择性地提供意见。将打开一个新标签页，其中包含 Meta Wiki 上预填的编辑表单，您可以在此提交建议供社区审查。",
         "hant": "為此引用選擇一或多個類別，並可選擇性地提供意見。將開啟一個新分頁，其中包含 Meta Wiki 上預填的編輯表單，您可以在此提交建議供社群審查。"
@@ -1647,7 +1678,8 @@ window.CiteUnseenI18n = {
         "kg": "Sambu na bitini ya kutudila ntima (yina kele na lisiti ya mbi, yina bo me sadila diaka ve, yina bo lenda tudila ntima ve, yina bantu lenda tudila ve ntima, yina bo ke ndimaka ve), beto ke lomba nge na kusosa dibaku ya kuwakana na mosi ya balutiti ya kisalu ya ke landa. Bo ke tomisaka bitini ya kutudila ntima mbala na mbala na kutadila kuwakana ya bantu yina bo me sonikaka na balutiti yai.",
         "ln": "Mpo na biteni ya bondimi (oyo ezali na liste ya moindo, oyo esili kosalelama te, oyo ezali mingimingi ya kotyela motema, oyo ezali mingimingi ya kotyela motema te, oyo ezali na bondimi moke, boyokani te), tosengi yo oluka libaku ya kozwa boyokani na moko ya nkasa ya mosala oyo elandi. Ba catégories ya bondimi ezongisami na mikolo na tango na kotalaka boyokani ya baimboka oyo ekomami na nkasa oyo.",
         "mk": "За категории на меродавност (на црн список, застарени, начелно меродавни, начелно немеродавни, маргинално меродавни, нема консензус), трудете се да постигнете консензус на една од следниве проектни страници. Категориите на меродавност се подновуваат редовно, во согласност со консензусот на заедницата документиран на овие страници.",
-        "pl": "Dla kategorii wiarygodności (na czarnej liście, przestarzałe, generalnie wiarygodne, generalnie niewiarygodne, marginalnie wiarygodne, brak konsensusu), prosimy o poszukanie możliwości osiągnięcia konsensusu na jednej z następujących stron projektu. Kategorie wiarygodności są regularnie aktualizowane na podstawie konsensusu społeczności udokumentowanego na tych stronach.",
+        "pl": "Dla kategorii wiarygodności (na czarnej liście, wycofane z użycia, ogólnie wiarygodne, ogólnie niewiarygodne, ledwo wiarygodne, brak konsensusu), prosimy o poszukanie możliwości osiągnięcia konsensusu na jednej z następujących stron projektu. Kategorie wiarygodności są regularnie aktualizowane na podstawie konsensusu społeczności udokumentowanego na tych stronach.",
+        "pms": "Për le categorìe d'afidament (ant la lista nèira, dësconsejà, an general fidàbil, an general nen fidàbil, fidàbil ëd fasson marginal, gnun consens), për piasì sërché ëd rivé a 'n consens ansima a un-a dle pàgine ëd proget sì-dapress. Le categorìe d'afidament a son agiornà ëd fasson regolar basand-se an sël consens documentà su coste pàgine.",
         "tr": "Güvenilirlik kategorileri (kara listeye alınmış, kullanımdan kaldırılmış, genel olarak güvenilir, genel olarak güvenilmez, kısmen güvenilir, fikir birliği yok) için lütfen aşağıdaki proje sayfalarından birinde fikir birliğine varma fırsatını arayın. Güvenilirlik kategorileri, bu sayfalarda belgelenen topluluk fikir birliğine dayanarak düzenli olarak güncellenmektedir.",
         "hans": "对于可靠性类别（列入黑名单、应停用、通常可靠、通常不可靠、半可靠、无共识），请寻求在以下项目页面上达成共识的机会。可靠性类别会根据这些页面上记录的社区共识定期更新。",
         "hant": "對於可靠性類別（列入黑名單、應停用、通常可靠、通常不可靠、半可靠、無共識），請尋求在以下專案頁面上達成共識的機會。可靠性類別會根據這些頁面上記錄的社群共識定期更新。"
@@ -1659,6 +1691,7 @@ window.CiteUnseenI18n = {
         "ln": "Pesá makanisi ya Catégories",
         "mk": "Предложи категории",
         "pl": "Zasugeruj kategorie",
+        "pms": "Sugerì dle categorìe",
         "tr": "Kategorileri Öner",
         "hans": "建议分类",
         "hant": "建議分類"
@@ -1671,6 +1704,7 @@ window.CiteUnseenI18n = {
         "ln": "Kopesa likanisi mpo na kopesa likanisi ya kokabola maloba",
         "mk": "Овозможи то режмот за предлози за да ви се предлагаат категории за наводи",
         "pl": "Włącz tryb sugestii, aby zaproponować kategoryzację dla cytowań",
+        "pms": "Ativé ël meud ëd sugeriment për propon-e la categorisassion për le sitassion",
         "tr": "Kaynaklara yönelik kategorizasyon önermek için öneri modunu etkinleştirin",
         "hans": "启用建议模式以为引用提议分类",
         "hant": "啟用建議模式以為引用提議分類"
@@ -1683,6 +1717,7 @@ window.CiteUnseenI18n = {
         "ln": "Ba Domaines ya kobakisa",
         "mk": "Дополнителни домени",
         "pl": "Dodatkowe domeny",
+        "pms": "Domini adissionaj",
         "tr": "Ek Alan Adları",
         "hans": "额外域名",
         "hant": "額外網域"
@@ -1694,6 +1729,7 @@ window.CiteUnseenI18n = {
         "ln": "Ba nsinga mosusu ya URL",
         "mk": "Дополнителни URL-низи",
         "pl": "Dodatkowe ciągi URL",
+        "pms": "Stringhe URL adissionaj",
         "tr": "Ek URL Dizeleri",
         "hans": "额外网址字符串",
         "hant": "額外網址字串"
@@ -1705,6 +1741,7 @@ window.CiteUnseenI18n = {
         "ln": "Ba catégories",
         "mk": "Категории",
         "pl": "Kategorie",
+        "pms": "Categorìe",
         "tr": "Kategoriler",
         "hans": "类别",
         "hant": "類別"
@@ -1716,6 +1753,7 @@ window.CiteUnseenI18n = {
         "ln": "Mbala mingi",
         "mk": "Општо",
         "pl": "Ogólne",
+        "pms": "General",
         "tr": "Genel",
         "hans": "常规",
         "hant": "一般"
@@ -1728,6 +1766,7 @@ window.CiteUnseenI18n = {
         "ln": "Ignorer ba Domaines",
         "mk": "Занемари домени",
         "pl": "Ignoruj domeny",
+        "pms": "Ignoré ij domini",
         "tr": "Alan Adlarını Yoksay",
         "hans": "忽略域名",
         "hant": "忽略網域"
@@ -1740,6 +1779,7 @@ window.CiteUnseenI18n = {
         "ln": "Mobimba",
         "mk": "Вкупно",
         "pl": "Łącznie",
+        "pms": "Total",
         "tr": "Toplam",
         "hans": "共",
         "hant": "共"
@@ -1751,6 +1791,7 @@ window.CiteUnseenI18n = {
         "ln": "Tala ba paramètres uta na:",
         "mk": "Погл. нагодувања од:",
         "pl": "Zobacz ustawienia z:",
+        "pms": "Smon-e ij paràmeter da:",
         "tr": "Ayarları şuradan görüntüleyin:",
         "hans": "检视设置：",
         "hant": "檢視設定："
@@ -2094,11 +2135,17 @@ var CiteUnseenData = {
         const rule = {};
         parts.forEach(part => {
             const [key, ...rest] = part.split('=');
-            if (key && rest.length) {
-                rule[key.trim()] = rest.join('=').trim();
+            if (key) {
+                if (rest.length) {
+                    // Key-value pair; if key is '1', map to 'url'.
+                    rule[key.trim() === '1' ? 'url' : key.trim()] = rest.join('=').trim();
+                } else {
+                    // Only a single value without '='.
+                    rule['url'] = key.trim();
+                }
             }
         });
-        return rule;
+        return Object.keys(rule).length ? rule : null;  // Empty object should be falsy
     },
 
     /**
