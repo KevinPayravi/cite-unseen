@@ -1499,6 +1499,13 @@
                     // Parse COinS string
                     let coinsString = await CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
                     coinsObject = CiteUnseen.parseCoinsString(coinsString);
+
+                    // Fallback to rfr_id if rft_id is missing
+                    if (!coinsObject['rft_id'] && coinsObject['rfr_id']) {
+                        coinsObject['rft_id'] = coinsObject['rfr_id'];
+                    }
+
+                    // As a last resort, try to get the href attribute of the <a> tag inside the cite
                     if (!coinsObject['rft_id']) {
                         let aTag = citeTag.querySelector('a.external');
                         if (aTag) {
