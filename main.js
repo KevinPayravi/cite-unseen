@@ -861,7 +861,7 @@
                 let insertPosition = reflistData.element;
                 // If the reflist is preceded by a floated element, insert before that.
                 // Note: On jawiki, there is a {{脚注ヘルプ}} that often floats right before the reflist.
-                if (insertPosition.previousElementSibling && insertPosition.previousElementSibling.getComputedStyle().float !== 'none') {
+                if (insertPosition.previousElementSibling && window.getComputedStyle(insertPosition.previousElementSibling).float !== 'none') {
                     insertPosition = insertPosition.previousElementSibling;
                 }
                 parentElement.insertBefore(dashboard.div, insertPosition);
