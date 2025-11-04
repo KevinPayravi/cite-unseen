@@ -650,13 +650,6 @@
                     CiteUnseen.trackUnknownCitation(iconsDiv);
                 }
             });
-
-            CiteUnseen.showSettingsButton();
-            CiteUnseen.showDashboard();
-            CiteUnseen.showSuggestionsToggleButton();
-            CiteUnseen.groupButtons();
-
-            console.timeEnd('[Cite Unseen] Runtime');
         },
 
         /**
@@ -3006,7 +2999,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
             }
             window._citeUnseenInitialized = true;
 
-            console.time('[Cite Unseen] Runtime');
+            console.time('[Cite Unseen] Dependency runtime');
 
             // Import source categorization data
             CiteUnseen.importDependencies().then(function (categorizedRules) {
@@ -3026,14 +3019,24 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
                 // Import user custom rules
                 CiteUnseen.importCustomRules().then(function () {
+                    console.timeEnd('[Cite Unseen] Dependency runtime');
+
                     // Run on every wikipage.content hook. This is to support gadgets like QuickEdit.
                     mw.hook('wikipage.content').add(function () {
                         if (document.querySelector('#cite-unseen-finished-loading')) {
                             return;
                         }
+                        console.time('[Cite Unseen] Render runtime');
 
                         CiteUnseen.findCitations().then(function () {
                             CiteUnseen.addIcons();
+                            CiteUnseen.showSettingsButton();
+                            CiteUnseen.showDashboard();
+                            CiteUnseen.showSuggestionsToggleButton();
+                            CiteUnseen.groupButtons();
+
+                            console.timeEnd('[Cite Unseen] Render runtime');
+
                             let finishedLoading = document.createElement('div');
                             finishedLoading.id = 'cite-unseen-finished-loading';
                             finishedLoading.classList.add('cite-unseen-finished-loading');
