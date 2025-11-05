@@ -2883,7 +2883,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
             // Add settings button
             if (CiteUnseen.settingsButton) {
-                section.appendChild(CiteUnseen.settingsButton);
+                section.appendChild(CiteUnseen.settingsButton.cloneNode(true));
                 hasButtons = true;
             }
 
@@ -2897,8 +2897,8 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
             // Add suggestions button
             if (CiteUnseen.suggestionsToggleButton) {
-                section.appendChild(CiteUnseen.suggestionsToggleButton);
-                suggestionsLink = CiteUnseen.suggestionsToggleButton;
+                suggestionsLink = CiteUnseen.suggestionsToggleButton.cloneNode(true);
+                section.appendChild(suggestionsLink);
                 hasButtons = true;
             }
 
