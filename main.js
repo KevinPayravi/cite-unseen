@@ -780,7 +780,8 @@
                     CiteUnseen.settingsButton.appendChild(label);
                 }
 
-                CiteUnseen.settingsButton.onclick = function () {
+                CiteUnseen.settingsButton.onclick = function (e) {
+                    e.preventDefault();
                     CiteUnseen.openSettingsDialog();
                 };
 
@@ -2402,7 +2403,8 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                     CiteUnseen.suggestionsToggleButton.appendChild(label);
                 }
 
-                CiteUnseen.suggestionsToggleButton.onclick = function () {
+                CiteUnseen.suggestionsToggleButton.onclick = function (e) {
+                    e.preventDefault();
                     CiteUnseen.toggleSuggestionsMode();
                 };
 
