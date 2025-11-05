@@ -79,34 +79,13 @@
    BUTTONS AND LINKS
    ========================================================================== */
 
-/* Base button styling */
-.cite-unseen-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    margin-bottom: 0.5em;
-    padding: 0 0.5em;
-    border-radius: 5px;
-    font-size: 0.8em;
-    font-family: inherit;
-    background-color: #f8f9fa;
-    cursor: pointer;
-    transition: all 0.2s ease;
+/* Minerva button styling */
+.cite-unseen-minerva-settings-icon {
+    mask-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCI+DQoJPHRpdGxlPg0KCQlzZXR0aW5ncw0KCTwvdGl0bGU+DQoJPGcgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwIDEwKSI+DQoJCTxwYXRoIGlkPSJhIiBkPSJNMS41LTEwaC0zbC0xIDYuNWg1bTAgN2gtNWwxIDYuNWgzIi8+DQoJCTx1c2UgeGxpbms6aHJlZj0iI2EiIHRyYW5zZm9ybT0icm90YXRlKDQ1KSIvPg0KCQk8dXNlIHhsaW5rOmhyZWY9IiNhIiB0cmFuc2Zvcm09InJvdGF0ZSg5MCkiLz4NCgkJPHVzZSB4bGluazpocmVmPSIjYSIgdHJhbnNmb3JtPSJyb3RhdGUoMTM1KSIvPg0KCTwvZz4NCgk8cGF0aCBkPSJNMTAgMi41YTcuNSA3LjUgMCAwIDAgMCAxNSA3LjUgNy41IDAgMCAwIDAtMTV2NGEzLjUgMy41IDAgMCAxIDAgNyAzLjUgMy41IDAgMCAxIDAtNyIvPg0KPC9zdmc+);
 }
 
-.cite-unseen-button:hover {
-    border-color: #a2a9b1;
-    background-color: #e8e9ea;
-}
-
-.cite-unseen-button span {
-    font-weight: 500;
-}
-
-.cite-unseen-button.suggestions-active {
-    border-color: #28a745;
-    color: #155724;
-    background-color: #d4edda;
+.cite-unseen-minerva-suggestions-icon {
+    mask-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCI+DQoJPGcgaWQ9InF1b3Rlcy1hZGQiPg0KCQk8cGF0aCBpZD0icXVvdGUiIGQ9Ik01LjkgMTAuNGMtLjQ0Ni41NS0xLjk3NCAyLjYtMS45IDUuN1YxOWg0LjdjLjkgMCAxLjU5My0uNyAxLjYtMS42VjEzSDcuMnMuMDUtLjc0LjYtMS40Yy40NTMtLjU0MyAxLS45IDEuNi0xLjIuMi0uMS40Ny0uMjEyLjYtLjUuMTI3LS4yODIuMi0uNS4yLS45di0uNmMtMSAuMi0xLjc0NC4xOTctMi42LjYtLjg1Ni40MDMtMS4yNzIuODczLTEuNyAxLjR6Ii8+DQoJCTxwYXRoIGlkPSJxdW90ZTIiIGQ9Ik0xNSA5LjM0NGMtLjQ3Ni4zMi0uNzguNjc3LTEuMDk0IDEuMDYyQTguNzYgOC43NiAwIDAgMCAxMiAxNi4wOTRWMTloNC42ODhhMS42IDEuNiAwIDAgMCAxLjYyNS0xLjU5NFYxM0gxNVY5LjM0NHoiLz4NCgkJPHBhdGggaWQ9ImFkZCIgZD0iTTE4IDZWMmgtMnY0aC00djJoNHY0aDJWOGg0VjZ6Ii8+DQoJPC9nPg0KPC9zdmc+);
 }
 
 /* Clear all button styling */
@@ -156,6 +135,10 @@
 .cite-unseen-suggestions-active {
     font-weight: bold;
     color: #28a745 !important;
+}
+
+.cite-unseen-suggestions-active .cite-unseen-minerva-suggestions-icon {
+    background-color: #28a745;
 }
 
 .cite-unseen-suggestions-default {
@@ -284,6 +267,11 @@
 /* Edit section margin */
 .cite-unseen-edit-section {
     margin-right: 0.5em;
+}
+
+.cite-unseen-edit-section.cite-unseen-minerva-edit-section {
+    /* Minerva mw-editsection has a margin-right of -12px, so we have to add 12px left space to make even. */
+    margin-left: 12px;
 }
 
 /* Category text spacing */
