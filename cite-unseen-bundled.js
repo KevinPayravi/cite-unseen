@@ -1,7 +1,7 @@
 // Cite Unseen - Bundled Version
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.7
-// Timestamp: 2025-10-29T00:43:35.681Z
+// Release: 2.1.8
+// Timestamp: 2025-11-05T05:21:03.591Z
 
 (function() {
     'use strict';
@@ -3055,13 +3055,6 @@ var CiteUnseenData = {
                     CiteUnseen.trackUnknownCitation(iconsDiv);
                 }
             });
-
-            CiteUnseen.showSettingsButton();
-            CiteUnseen.showDashboard();
-            CiteUnseen.showSuggestionsToggleButton();
-            CiteUnseen.groupButtons();
-
-            console.timeEnd('[Cite Unseen] Runtime');
         },
 
         /**
@@ -3270,7 +3263,13 @@ var CiteUnseenData = {
             // Insert the dashboard before this reflist
             const parentElement = reflistData.element.parentNode;
             if (parentElement) {
-                parentElement.insertBefore(dashboard.div, reflistData.element);
+                let insertPosition = reflistData.element;
+                // If the reflist is preceded by a floated element, insert before that.
+                // Note: On jawiki, there is a {{脚注ヘルプ}} that often floats right before the reflist.
+                if (insertPosition.previousElementSibling && window.getComputedStyle(insertPosition.previousElementSibling).float !== 'none') {
+                    insertPosition = insertPosition.previousElementSibling;
+                }
+                parentElement.insertBefore(dashboard.div, insertPosition);
             }
             CiteUnseen.updateDashboardCategories(dashboard, reflistCategoryCounts);
         },
@@ -3904,6 +3903,13 @@ var CiteUnseenData = {
                     // Parse COinS string
                     let coinsString = await CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
                     coinsObject = CiteUnseen.parseCoinsString(coinsString);
+
+                    // Fallback to rfr_id if rft_id is missing
+                    if (!coinsObject['rft_id'] && coinsObject['rfr_id']) {
+                        coinsObject['rft_id'] = coinsObject['rfr_id'];
+                    }
+
+                    // As a last resort, try to get the href attribute of the <a> tag inside the cite
                     if (!coinsObject['rft_id']) {
                         let aTag = citeTag.querySelector('a.external');
                         if (aTag) {
@@ -5404,7 +5410,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
             }
             window._citeUnseenInitialized = true;
 
-            console.time('[Cite Unseen] Runtime');
+            console.time('[Cite Unseen] Dependency runtime');
 
             // Import source categorization data
             CiteUnseen.importDependencies().then(function (categorizedRules) {
@@ -5424,14 +5430,24 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
                 // Import user custom rules
                 CiteUnseen.importCustomRules().then(function () {
+                    console.timeEnd('[Cite Unseen] Dependency runtime');
+
                     // Run on every wikipage.content hook. This is to support gadgets like QuickEdit.
                     mw.hook('wikipage.content').add(function () {
                         if (document.querySelector('#cite-unseen-finished-loading')) {
                             return;
                         }
+                        console.time('[Cite Unseen] Render runtime');
 
                         CiteUnseen.findCitations().then(function () {
                             CiteUnseen.addIcons();
+                            CiteUnseen.showSettingsButton();
+                            CiteUnseen.showDashboard();
+                            CiteUnseen.showSuggestionsToggleButton();
+                            CiteUnseen.groupButtons();
+
+                            console.timeEnd('[Cite Unseen] Render runtime');
+
                             let finishedLoading = document.createElement('div');
                             finishedLoading.id = 'cite-unseen-finished-loading';
                             finishedLoading.classList.add('cite-unseen-finished-loading');
