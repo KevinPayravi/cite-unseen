@@ -47,6 +47,7 @@ const i18nJs = `window.CiteUnseenI18n = ${JSON.stringify(nestedI18n, null, 4)};`
 
 // Create the bundled content
 let bundled = `// Cite Unseen - Bundled Version
+// Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
 // Release: ${process.env.CI_COMMIT_TAG}
 // Timestamp: ${new Date().toISOString()}
