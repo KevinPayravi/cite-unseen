@@ -764,15 +764,20 @@
                 CiteUnseen.settingsButton = document.createElement('div');
                 CiteUnseen.settingsButton.className = 'cite-unseen-button';
 
-                // Settings icon
-                const icon = document.createElement('span');
-                icon.innerHTML = '⚙️';
-                CiteUnseen.settingsButton.appendChild(icon);
-
-                // Settings label
-                const label = document.createElement('span');
-                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.settingsButton);
-                CiteUnseen.settingsButton.appendChild(label);
+                if (mw.config.get('skin') === 'minerva') {
+                    // Settings icon
+                    const icon = document.createElement('img');
+                    icon.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
+                    icon.classList.add('skin-invert');
+                    icon.classList.add('cite-unseen-minerva-icon');
+                    icon.setAttribute('src', 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCI+DQoJPHRpdGxlPg0KCQlzZXR0aW5ncw0KCTwvdGl0bGU+DQoJPGcgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwIDEwKSI+DQoJCTxwYXRoIGlkPSJhIiBkPSJNMS41LTEwaC0zbC0xIDYuNWg1bTAgN2gtNWwxIDYuNWgzIi8+DQoJCTx1c2UgeGxpbms6aHJlZj0iI2EiIHRyYW5zZm9ybT0icm90YXRlKDQ1KSIvPg0KCQk8dXNlIHhsaW5rOmhyZWY9IiNhIiB0cmFuc2Zvcm09InJvdGF0ZSg5MCkiLz4NCgkJPHVzZSB4bGluazpocmVmPSIjYSIgdHJhbnNmb3JtPSJyb3RhdGUoMTM1KSIvPg0KCTwvZz4NCgk8cGF0aCBkPSJNMTAgMi41YTcuNSA3LjUgMCAwIDAgMCAxNSA3LjUgNy41IDAgMCAwIDAtMTV2NGEzLjUgMy41IDAgMCAxIDAgNyAzLjUgMy41IDAgMCAxIDAtNyIvPg0KPC9zdmc+');
+                    CiteUnseen.settingsButton.appendChild(icon);
+                } else {
+                    // Settings label
+                    const label = document.createElement('span');
+                    label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.settingsButton);
+                    CiteUnseen.settingsButton.appendChild(label);
+                }
 
                 CiteUnseen.settingsButton.onclick = function () {
                     CiteUnseen.openSettingsDialog();
@@ -2379,15 +2384,21 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                 CiteUnseen.suggestionsToggleButton = document.createElement('div');
                 CiteUnseen.suggestionsToggleButton.className = 'cite-unseen-button';
 
-                // Inset plus icon
-                const icon = document.createElement('span');
-                icon.innerHTML = '💡';
-                CiteUnseen.suggestionsToggleButton.appendChild(icon);
+                if (mw.config.get('skin') === 'minerva') {
+                    // Suggestion icon
+                    const icon = document.createElement('img');
+                    icon.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
+                    icon.classList.add('skin-invert');
+                    icon.classList.add('cite-unseen-minerva-icon');
+                    icon.setAttribute('src', 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCI+DQoJPGcgaWQ9InF1b3Rlcy1hZGQiPg0KCQk8cGF0aCBpZD0icXVvdGUiIGQ9Ik01LjkgMTAuNGMtLjQ0Ni41NS0xLjk3NCAyLjYtMS45IDUuN1YxOWg0LjdjLjkgMCAxLjU5My0uNyAxLjYtMS42VjEzSDcuMnMuMDUtLjc0LjYtMS40Yy40NTMtLjU0MyAxLS45IDEuNi0xLjIuMi0uMS40Ny0uMjEyLjYtLjUuMTI3LS4yODIuMi0uNS4yLS45di0uNmMtMSAuMi0xLjc0NC4xOTctMi42LjYtLjg1Ni40MDMtMS4yNzIuODczLTEuNyAxLjR6Ii8+DQoJCTxwYXRoIGlkPSJxdW90ZTIiIGQ9Ik0xNSA5LjM0NGMtLjQ3Ni4zMi0uNzguNjc3LTEuMDk0IDEuMDYyQTguNzYgOC43NiAwIDAgMCAxMiAxNi4wOTRWMTloNC42ODhhMS42IDEuNiAwIDAgMCAxLjYyNS0xLjU5NFYxM0gxNVY5LjM0NHoiLz4NCgkJPHBhdGggaWQ9ImFkZCIgZD0iTTE4IDZWMmgtMnY0aC00djJoNHY0aDJWOGg0VjZ6Ii8+DQoJPC9nPg0KPC9zdmc+');
+                    CiteUnseen.suggestionsToggleButton.appendChild(icon);
+                } else {
+                    // Suggestion label
+                    const label = document.createElement('span');
+                    label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton);
+                    CiteUnseen.suggestionsToggleButton.appendChild(label);
+                }
 
-                // Button label
-                const label = document.createElement('span');
-                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton);
-                CiteUnseen.suggestionsToggleButton.appendChild(label);
                 CiteUnseen.suggestionsToggleButton.onclick = function () {
                     CiteUnseen.toggleSuggestionsMode();
                 };
@@ -2899,7 +2910,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
             }
 
             // Add divider if both buttons exist
-            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
+            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton && mw.config.get('skin') !== 'minerva') {
                 const divider = document.createElement('span');
                 divider.className = 'cite-unseen-editsection-divider';
                 divider.textContent = ' | ';
