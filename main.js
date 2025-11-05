@@ -761,20 +761,28 @@
             }
 
             if (CiteUnseen.settingsButton === null) {
-                CiteUnseen.settingsButton = document.createElement('div');
-                CiteUnseen.settingsButton.className = 'cite-unseen-button';
+                CiteUnseen.settingsButton = document.createElement('a');
+                CiteUnseen.settingsButton.href = '#';
 
-                // Settings icon
-                const icon = document.createElement('span');
-                icon.innerHTML = '⚙️';
-                CiteUnseen.settingsButton.appendChild(icon);
+                if (mw.config.get('skin') === 'minerva') {
+                    CiteUnseen.settingsButton.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
 
-                // Settings label
-                const label = document.createElement('span');
-                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.settingsButton);
-                CiteUnseen.settingsButton.appendChild(label);
+                    // Settings icon
+                    const icon = document.createElement('span');
+                    icon.classList.add('skin-invert', 'minerva-icon');
+                    icon.classList.add('cite-unseen-minerva-icon', 'cite-unseen-minerva-settings-icon');
+                    CiteUnseen.settingsButton.appendChild(icon);
+                } else {
+                    CiteUnseen.settingsButton.classList.add('cite-unseen-edit-style');
 
-                CiteUnseen.settingsButton.onclick = function () {
+                    // Settings label
+                    const label = document.createElement('span');
+                    label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.settingsButton);
+                    CiteUnseen.settingsButton.appendChild(label);
+                }
+
+                CiteUnseen.settingsButton.onclick = function (e) {
+                    e.preventDefault();
                     CiteUnseen.openSettingsDialog();
                 };
 
@@ -2376,19 +2384,28 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
             }
 
             if (CiteUnseen.suggestionsToggleButton === null) {
-                CiteUnseen.suggestionsToggleButton = document.createElement('div');
-                CiteUnseen.suggestionsToggleButton.className = 'cite-unseen-button';
+                CiteUnseen.suggestionsToggleButton = document.createElement('a');
+                CiteUnseen.suggestionsToggleButton.href = '#';
 
-                // Inset plus icon
-                const icon = document.createElement('span');
-                icon.innerHTML = '💡';
-                CiteUnseen.suggestionsToggleButton.appendChild(icon);
+                if (mw.config.get('skin') === 'minerva') {
+                    CiteUnseen.suggestionsToggleButton.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
 
-                // Button label
-                const label = document.createElement('span');
-                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton);
-                CiteUnseen.suggestionsToggleButton.appendChild(label);
-                CiteUnseen.suggestionsToggleButton.onclick = function () {
+                    // Suggestion icon
+                    const icon = document.createElement('span');
+                    icon.classList.add('skin-invert', 'minerva-icon');
+                    icon.classList.add('cite-unseen-minerva-icon', 'cite-unseen-minerva-suggestions-icon');
+                    CiteUnseen.suggestionsToggleButton.appendChild(icon);
+                } else {
+                    CiteUnseen.suggestionsToggleButton.classList.add('cite-unseen-edit-style');
+
+                    // Suggestion label
+                    const label = document.createElement('span');
+                    label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton);
+                    CiteUnseen.suggestionsToggleButton.appendChild(label);
+                }
+
+                CiteUnseen.suggestionsToggleButton.onclick = function (e) {
+                    e.preventDefault();
                     CiteUnseen.toggleSuggestionsMode();
                 };
 
@@ -2841,34 +2858,6 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
         },
 
         /**
-         * Create a button link element
-         * @param {Element} button - The original button element
-         * @param {string} linkText - The text for the link
-         * @returns {Element|null} The created link element
-         */
-        createButtonLink: function (button, linkText) {
-            if (!button) return null;
-
-            const link = document.createElement('a');
-            link.href = '#';
-            link.className = 'cite-unseen-edit-style';
-            link.setAttribute('title', button.getAttribute('title') || '');
-
-            const span = document.createElement('span');
-            span.textContent = linkText;
-            link.appendChild(span);
-
-            link.onclick = function (e) {
-                e.preventDefault();
-                if (button.onclick) {
-                    button.onclick(e);
-                }
-            };
-
-            return link;
-        },
-
-        /**
          * Create a button section with Cite Unseen buttons
          * @param {string} sectionClass - CSS class for the section
          * @returns {Object|null} Object with section element and suggestionsLink, or null if no buttons
@@ -2876,30 +2865,30 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
         createButtonSection: function (sectionClass) {
             const section = document.createElement('span');
             section.className = `mw-editsection cite-unseen-section ${sectionClass}`;
+            const mobile = mw.config.get('skin') === 'minerva';
+            if (mobile) {
+                section.classList.add('cite-unseen-minerva-edit-section');
+            }
 
             // Create opening bracket
-            const openingBracket = document.createElement('span');
-            openingBracket.className = 'mw-editsection-bracket';
-            openingBracket.textContent = '[';
-            section.appendChild(openingBracket);
+            if (!mobile) {
+                const openingBracket = document.createElement('span');
+                openingBracket.className = 'mw-editsection-bracket';
+                openingBracket.textContent = '[';
+                section.appendChild(openingBracket);
+            }
 
             let hasButtons = false;
             let suggestionsLink = null;
 
             // Add settings button
             if (CiteUnseen.settingsButton) {
-                const settingsLink = CiteUnseen.createButtonLink(
-                    CiteUnseen.settingsButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
-                );
-                if (settingsLink) {
-                    section.appendChild(settingsLink);
-                    hasButtons = true;
-                }
+                section.appendChild(CiteUnseen.settingsButton);
+                hasButtons = true;
             }
 
             // Add divider if both buttons exist
-            if (CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
+            if (!mobile && CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
                 const divider = document.createElement('span');
                 divider.className = 'cite-unseen-editsection-divider';
                 divider.textContent = ' | ';
@@ -2908,21 +2897,18 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
             // Add suggestions button
             if (CiteUnseen.suggestionsToggleButton) {
-                suggestionsLink = CiteUnseen.createButtonLink(
-                    CiteUnseen.suggestionsToggleButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
-                );
-                if (suggestionsLink) {
-                    section.appendChild(suggestionsLink);
-                    hasButtons = true;
-                }
+                section.appendChild(CiteUnseen.suggestionsToggleButton);
+                suggestionsLink = CiteUnseen.suggestionsToggleButton;
+                hasButtons = true;
             }
 
             // Create closing bracket
-            const closingBracket = document.createElement('span');
-            closingBracket.className = 'mw-editsection-bracket';
-            closingBracket.textContent = ']';
-            section.appendChild(closingBracket);
+            if (!mobile) {
+                const closingBracket = document.createElement('span');
+                closingBracket.className = 'mw-editsection-bracket';
+                closingBracket.textContent = ']';
+                section.appendChild(closingBracket);
+            }
 
             return hasButtons ? { section, suggestionsLink } : null;
         },
