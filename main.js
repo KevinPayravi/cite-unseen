@@ -761,8 +761,9 @@
             }
 
             if (CiteUnseen.settingsButton === null) {
-                CiteUnseen.settingsButton = document.createElement('div');
-                CiteUnseen.settingsButton.className = 'cite-unseen-button';
+                CiteUnseen.settingsButton = document.createElement('a');
+                CiteUnseen.settingsButton.href = '#';
+                CiteUnseen.settingsButton.className = 'cite-unseen-edit-style';
 
                 if (mw.config.get('skin') === 'minerva') {
                     // Settings icon
@@ -2381,11 +2382,13 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
             }
 
             if (CiteUnseen.suggestionsToggleButton === null) {
-                CiteUnseen.suggestionsToggleButton = document.createElement('div');
-                CiteUnseen.suggestionsToggleButton.className = 'cite-unseen-button';
+                CiteUnseen.suggestionsToggleButton = document.createElement('a');
+                CiteUnseen.suggestionsToggleButton.href = '#';
+                CiteUnseen.suggestionsToggleButton.className = 'cite-unseen-edit-style';
 
                 if (mw.config.get('skin') === 'minerva') {
                     // Suggestion icon
+                    console.log('[Cite Unseen] Using Minerva suggestion icon');
                     const icon = document.createElement('img');
                     icon.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
                     icon.classList.add('skin-invert');
@@ -2852,34 +2855,6 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
         },
 
         /**
-         * Create a button link element
-         * @param {Element} button - The original button element
-         * @param {string} linkText - The text for the link
-         * @returns {Element|null} The created link element
-         */
-        createButtonLink: function (button, linkText) {
-            if (!button) return null;
-
-            const link = document.createElement('a');
-            link.href = '#';
-            link.className = 'cite-unseen-edit-style';
-            link.setAttribute('title', button.getAttribute('title') || '');
-
-            const span = document.createElement('span');
-            span.textContent = linkText;
-            link.appendChild(span);
-
-            link.onclick = function (e) {
-                e.preventDefault();
-                if (button.onclick) {
-                    button.onclick(e);
-                }
-            };
-
-            return link;
-        },
-
-        /**
          * Create a button section with Cite Unseen buttons
          * @param {string} sectionClass - CSS class for the section
          * @returns {Object|null} Object with section element and suggestionsLink, or null if no buttons
@@ -2899,14 +2874,8 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
             // Add settings button
             if (CiteUnseen.settingsButton) {
-                const settingsLink = CiteUnseen.createButtonLink(
-                    CiteUnseen.settingsButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.settingsButton)
-                );
-                if (settingsLink) {
-                    section.appendChild(settingsLink);
-                    hasButtons = true;
-                }
+                section.appendChild(CiteUnseen.settingsButton);
+                hasButtons = true;
             }
 
             // Add divider if both buttons exist
@@ -2919,14 +2888,9 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
             // Add suggestions button
             if (CiteUnseen.suggestionsToggleButton) {
-                suggestionsLink = CiteUnseen.createButtonLink(
-                    CiteUnseen.suggestionsToggleButton,
-                    CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton)
-                );
-                if (suggestionsLink) {
-                    section.appendChild(suggestionsLink);
-                    hasButtons = true;
-                }
+                section.appendChild(CiteUnseen.suggestionsToggleButton);
+                suggestionsLink = CiteUnseen.suggestionsToggleButton;
+                hasButtons = true;
             }
 
             // Create closing bracket
