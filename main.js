@@ -751,6 +751,8 @@
 
         /**
          * Show the settings button for Cite Unseen configuration.
+         * @param {boolean} minerva - Whether the Minerva skin is used
+         * @returns {Element} The settings button element
          */
         createSettingsButton: function (minerva) {
             const settingsButton = document.createElement('a');
@@ -2358,6 +2360,9 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
         /**
          * Add suggestions toggle button.
+         * @param {boolean} minerva - Whether Minerva skin is active
+         * @param {Object} reflistData - Reference list data
+         * @return {HTMLElement} The suggestions toggle button element
          */
         createSuggestionsToggleButton: function (minerva, reflistData) {
             const suggestionsToggleButton = document.createElement('a');
@@ -2397,6 +2402,8 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
         /**
          * Show or hide plus signs next to citations for suggestions
+         * @param {boolean} suggestionsMode - Whether suggestions mode is active
+         * @param {Object} reflistData - Reference list data
          */
         toggleSuggestionPlusSigns: function (suggestionsMode, reflistData) {
             reflistData.refs.forEach(ref => {
@@ -2815,7 +2822,8 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
         /**
          * Create a button section with Cite Unseen buttons
          * @param {string} sectionClass - CSS class for the section
-         * @returns {Object|null} Object with section element and suggestionsLink, or null if no buttons
+         * @param {Object} reflistData - The reflist data object
+         * @returns {Element} The created button section element
          */
         createButtonSection: function (sectionClass, reflistData) {
             const section = document.createElement('span');
