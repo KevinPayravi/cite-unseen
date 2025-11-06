@@ -2960,9 +2960,11 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
                         CiteUnseen.findCitations().then(function () {
                             if (CiteUnseen.refs.length === 0) {
+                                console.timeEnd('[Cite Unseen] Render runtime');
                                 return;
                             }
 
+                            // Add icons to citations
                             CiteUnseen.addIcons();
 
                             for (const reflistData of CiteUnseen.reflists) {
@@ -2976,7 +2978,6 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                             }
 
                             console.timeEnd('[Cite Unseen] Render runtime');
-
                             let finishedLoading = document.createElement('div');
                             finishedLoading.id = 'cite-unseen-finished-loading';
                             finishedLoading.classList.add('cite-unseen-finished-loading');
