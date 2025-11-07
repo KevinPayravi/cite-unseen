@@ -16,10 +16,7 @@
         refCategories: {},
         reflists: [],
         convByVar: null,
-        settingsButton: null,
         vueApp: null,
-        suggestionsToggleButton: null,
-        suggestionsMode: false,
         currentSuggestionCitation: null,
         _metaRules: null, // Stores rules loaded from meta.wikimedia.org
         _localRules: null, // Stores rules loaded from local language wiki
@@ -754,54 +751,37 @@
 
         /**
          * Show the settings button for Cite Unseen configuration.
+         * @param {boolean} minerva - Whether the Minerva skin is used
+         * @returns {Element} The settings button element
          */
-        showSettingsButton: function () {
-            if (CiteUnseen.refs.length === 0) {
-                return;
+        createSettingsButton: function (minerva) {
+            const settingsButton = document.createElement('a');
+
+            if (minerva) {
+                settingsButton.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
+
+                // Settings icon
+                const icon = document.createElement('span');
+                icon.classList.add('skin-invert', 'minerva-icon');
+                icon.classList.add('cite-unseen-minerva-icon', 'cite-unseen-minerva-settings-icon');
+                settingsButton.appendChild(icon);
+            } else {
+                settingsButton.classList.add('cite-unseen-edit-style');
+
+                // Settings label
+                const label = document.createElement('span');
+                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.settingsButton);
+                settingsButton.appendChild(label);
             }
 
-            if (CiteUnseen.settingsButton === null) {
-                CiteUnseen.settingsButton = document.createElement('a');
-                CiteUnseen.settingsButton.href = '#';
+            settingsButton.onclick = function (e) {
+                e.preventDefault();
+                CiteUnseen.openSettingsDialog();
+            };
 
-                if (mw.config.get('skin') === 'minerva') {
-                    CiteUnseen.settingsButton.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
+            settingsButton.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.settingsButtonTooltip));
 
-                    // Settings icon
-                    const icon = document.createElement('span');
-                    icon.classList.add('skin-invert', 'minerva-icon');
-                    icon.classList.add('cite-unseen-minerva-icon', 'cite-unseen-minerva-settings-icon');
-                    CiteUnseen.settingsButton.appendChild(icon);
-                } else {
-                    CiteUnseen.settingsButton.classList.add('cite-unseen-edit-style');
-
-                    // Settings label
-                    const label = document.createElement('span');
-                    label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.settingsButton);
-                    CiteUnseen.settingsButton.appendChild(label);
-                }
-
-                CiteUnseen.settingsButton.onclick = function (e) {
-                    e.preventDefault();
-                    CiteUnseen.openSettingsDialog();
-                };
-
-                CiteUnseen.settingsButton.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.settingsButtonTooltip));
-            }
-        },
-
-        /**
-         * Add citation statistics dashboard for all reflists that contain citations.
-         */
-        showDashboard: function () {
-            if (CiteUnseen.refs.length === 0 || window.cite_unseen_dashboard === false) {
-                return;
-            }
-
-            // Create dashboards for each reflist that has citations
-            for (const reflistData of CiteUnseen.reflists) {
-                CiteUnseen.createDashboardForReflist(reflistData);
-            }
+            return settingsButton;
         },
 
         /**
@@ -871,6 +851,9 @@
                 // Note: On jawiki, there is a {{脚注ヘルプ}} that often floats right before the reflist.
                 if (insertPosition.previousElementSibling && window.getComputedStyle(insertPosition.previousElementSibling).float !== 'none') {
                     insertPosition = insertPosition.previousElementSibling;
+                }
+                if (insertPosition.previousElementSibling && insertPosition.previousElementSibling.classList.contains('cite-unseen-dashboard')) {
+                    return; // Dashboard already exists (duplication)
                 }
                 parentElement.insertBefore(dashboard.div, insertPosition);
             }
@@ -2377,81 +2360,60 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
         /**
          * Add suggestions toggle button.
+         * @param {boolean} minerva - Whether Minerva skin is active
+         * @param {Object} reflistData - Reference list data
+         * @return {HTMLElement} The suggestions toggle button element
          */
-        showSuggestionsToggleButton: function () {
-            if (CiteUnseen.refs.length === 0 || window.cite_unseen_show_suggestions === false) {
-                return;
-            }
+        createSuggestionsToggleButton: function (minerva, reflistData) {
+            const suggestionsToggleButton = document.createElement('a');
+            suggestionsToggleButton.className = 'cite-unseen-suggestions-default';
 
-            if (CiteUnseen.suggestionsToggleButton === null) {
-                CiteUnseen.suggestionsToggleButton = document.createElement('a');
-                CiteUnseen.suggestionsToggleButton.href = '#';
+            if (minerva) {
+                suggestionsToggleButton.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
 
-                if (mw.config.get('skin') === 'minerva') {
-                    CiteUnseen.suggestionsToggleButton.classList.add('cdx-button', 'cdx-button--size-large', 'cdx-button--fake-button', 'cdx-button--fake-button--enabled', 'cdx-button--icon-only', 'cdx-button--weight-quiet');
-
-                    // Suggestion icon
-                    const icon = document.createElement('span');
-                    icon.classList.add('skin-invert', 'minerva-icon');
-                    icon.classList.add('cite-unseen-minerva-icon', 'cite-unseen-minerva-suggestions-icon');
-                    CiteUnseen.suggestionsToggleButton.appendChild(icon);
-                } else {
-                    CiteUnseen.suggestionsToggleButton.classList.add('cite-unseen-edit-style');
-
-                    // Suggestion label
-                    const label = document.createElement('span');
-                    label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton);
-                    CiteUnseen.suggestionsToggleButton.appendChild(label);
-                }
-
-                CiteUnseen.suggestionsToggleButton.onclick = function (e) {
-                    e.preventDefault();
-                    CiteUnseen.toggleSuggestionsMode();
-                };
-
-                CiteUnseen.suggestionsToggleButton.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleTooltip));
-            }
-        },
-
-        /**
-         * Toggle suggestions mode on/off
-         */
-        toggleSuggestionsMode: function () {
-            CiteUnseen.suggestionsMode = !CiteUnseen.suggestionsMode;
-
-            if (CiteUnseen.suggestionsToggleButton.updateEditStyleLink) {
-                CiteUnseen.suggestionsToggleButton.updateEditStyleLink(CiteUnseen.suggestionsMode);
+                // Suggestion icon
+                const icon = document.createElement('span');
+                icon.classList.add('skin-invert', 'minerva-icon');
+                icon.classList.add('cite-unseen-minerva-icon', 'cite-unseen-minerva-suggestions-icon');
+                suggestionsToggleButton.appendChild(icon);
             } else {
-                CiteUnseen.suggestionsToggleButton.classList.toggle('suggestions-active', CiteUnseen.suggestionsMode);
+                suggestionsToggleButton.classList.add('cite-unseen-edit-style');
+
+                // Suggestion label
+                const label = document.createElement('span');
+                label.textContent = CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleButton);
+                suggestionsToggleButton.appendChild(label);
             }
 
-            CiteUnseen.toggleSuggestionPlusSigns();
-        },
+            suggestionsToggleButton.onclick = function (e) {
+                e.preventDefault();
 
-        /**
-         * Group the buttons together in the References headers for all reflists
-         */
-        groupButtons: function () {
-            if (CiteUnseen.settingsButton || CiteUnseen.suggestionsToggleButton) {
-                // Position buttons for each reflist that has a dashboard
-                for (const reflistData of CiteUnseen.reflists) {
-                    CiteUnseen.positionButtonsInHeaderForReflist(reflistData);
-                }
-            }
+                suggestionsToggleButton.classList.toggle('cite-unseen-suggestions-active');
+                suggestionsToggleButton.classList.toggle('cite-unseen-suggestions-default');
+
+                const suggestionsMode = suggestionsToggleButton.classList.contains('cite-unseen-suggestions-active');
+                CiteUnseen.toggleSuggestionPlusSigns(suggestionsMode, reflistData);
+            };
+
+            suggestionsToggleButton.setAttribute('title', CiteUnseen.convByVar(CiteUnseenI18n.suggestionsToggleTooltip));
+
+            return suggestionsToggleButton;
         },
 
         /**
          * Show or hide plus signs next to citations for suggestions
+         * @param {boolean} suggestionsMode - Whether suggestions mode is active
+         * @param {Object} reflistData - Reference list data
          */
-        toggleSuggestionPlusSigns: function () {
-            CiteUnseen.refs.forEach(ref => {
+        toggleSuggestionPlusSigns: function (suggestionsMode, reflistData) {
+            reflistData.refs.forEach(ref => {
                 // Get the citation container (usually the <li> element)
                 const citationContainer = CiteUnseen.getCitationContainer(ref.cite);
                 if (!citationContainer) return;
 
                 let plusSign = citationContainer.querySelector('.cite-unseen-suggestion-plus');
 
-                if (CiteUnseen.suggestionsMode) {
+                if (suggestionsMode) {
                     if (!plusSign) {
                         plusSign = document.createElement('img');
                         plusSign.className = 'cite-unseen-suggestion-plus';
@@ -2823,8 +2785,8 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
         findHeaderBeforeReflist: function (reflistElement) {
             let searchElement = reflistElement;
 
-            // Try up to 2 levels (current element, then parent)
-            for (let level = 0; level < 2; level++) {
+            // Traverse backwards to find the nearest preceding header
+            for (let level = 0;; level++) {
                 let currentElement = searchElement.previousElementSibling;
 
                 while (currentElement) {
@@ -2849,9 +2811,9 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                     currentElement = currentElement.previousElementSibling;
                 }
 
-                // Move up one level for next iteration
+                // Move up one level for next iteration; stop if we reach the main container
                 searchElement = searchElement.parentElement;
-                if (!searchElement) break;
+                if (!searchElement || searchElement.classList.contains('mw-parser-output') || searchElement.nodeName === 'MAIN') break;
             }
 
             return null;
@@ -2860,78 +2822,58 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
         /**
          * Create a button section with Cite Unseen buttons
          * @param {string} sectionClass - CSS class for the section
-         * @returns {Object|null} Object with section element and suggestionsLink, or null if no buttons
+         * @param {Object} reflistData - The reflist data object
+         * @returns {Element} The created button section element
          */
-        createButtonSection: function (sectionClass) {
+        createButtonSection: function (sectionClass, reflistData) {
             const section = document.createElement('span');
             section.className = `mw-editsection cite-unseen-section ${sectionClass}`;
-            const mobile = mw.config.get('skin') === 'minerva';
-            if (mobile) {
+            const minerva = mw.config.get('skin') === 'minerva';
+            if (minerva) {
                 section.classList.add('cite-unseen-minerva-edit-section');
             }
 
             // Create opening bracket
-            if (!mobile) {
+            if (!minerva) {
                 const openingBracket = document.createElement('span');
                 openingBracket.className = 'mw-editsection-bracket';
                 openingBracket.textContent = '[';
                 section.appendChild(openingBracket);
             }
 
-            let hasButtons = false;
-            let suggestionsLink = null;
-
             // Add settings button
-            if (CiteUnseen.settingsButton) {
-                section.appendChild(CiteUnseen.settingsButton.cloneNode(true));
-                hasButtons = true;
-            }
-
-            // Add divider if both buttons exist
-            if (!mobile && CiteUnseen.settingsButton && CiteUnseen.suggestionsToggleButton) {
-                const divider = document.createElement('span');
-                divider.className = 'cite-unseen-editsection-divider';
-                divider.textContent = ' | ';
-                section.appendChild(divider);
-            }
+            section.appendChild(CiteUnseen.createSettingsButton(minerva));
 
             // Add suggestions button
-            if (CiteUnseen.suggestionsToggleButton) {
-                suggestionsLink = CiteUnseen.suggestionsToggleButton.cloneNode(true);
-                section.appendChild(suggestionsLink);
-                hasButtons = true;
+            if (window.cite_unseen_show_suggestions !== false) {
+                // Add divider if not using Minerva skin
+                if (!minerva) {
+                    const divider = document.createElement('span');
+                    divider.className = 'cite-unseen-editsection-divider';
+                    divider.textContent = ' | ';
+                    section.appendChild(divider);
+                }
+
+                // Add suggestions button
+                section.appendChild(CiteUnseen.createSuggestionsToggleButton(minerva, reflistData));
             }
 
             // Create closing bracket
-            if (!mobile) {
+            if (!minerva) {
                 const closingBracket = document.createElement('span');
                 closingBracket.className = 'mw-editsection-bracket';
                 closingBracket.textContent = ']';
                 section.appendChild(closingBracket);
             }
 
-            return hasButtons ? { section, suggestionsLink } : null;
+            return section;
         },
-
         /**
-         * Set up suggestions toggle functionality
-         * @param {Element} suggestionsLink - The suggestions link element
-         */
-        setupSuggestionsToggle: function (suggestionsLink) {
-            if (!suggestionsLink || !CiteUnseen.suggestionsToggleButton) return;
-
-            CiteUnseen.suggestionsToggleButton.updateEditStyleLink = function (isActive) {
-                suggestionsLink.classList.toggle('cite-unseen-suggestions-active', isActive);
-                suggestionsLink.classList.toggle('cite-unseen-suggestions-default', !isActive);
-            };
-        },
-
-        /**
-         * Position buttons in the header before a specific reflist
+         * Create buttons in the header before a specific reflist
          * @param {Object} reflistData - The reflist data object
          * @returns {boolean} Success status
          */
-        positionButtonsInHeaderForReflist: function (reflistData) {
+        createButtons: function (reflistData) {
             const header = CiteUnseen.findHeaderBeforeReflist(reflistData.element);
             if (!header) return false;
 
@@ -2940,20 +2882,16 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 
             const editSection = header.querySelector('.mw-editsection');
             const sectionClass = editSection ? 'cite-unseen-edit-section' : 'cite-unseen-fallback-section';
-            const buttonData = CiteUnseen.createButtonSection(sectionClass);
-
-            if (!buttonData) return false;
-
-            CiteUnseen.setupSuggestionsToggle(buttonData.suggestionsLink);
+            const buttonSection = CiteUnseen.createButtonSection(sectionClass, reflistData);
 
             if (editSection) {
                 // Insert after existing edit section
-                editSection.parentNode.insertBefore(buttonData.section, editSection.nextSibling);
+                editSection.parentNode.insertBefore(buttonSection, editSection.nextSibling);
             } else {
                 // Insert as standalone section
                 const h2Element = header.querySelector('h2');
                 const targetElement = (h2Element && header.classList.contains('mw-heading')) ? h2Element : header;
-                targetElement.appendChild(buttonData.section);
+                targetElement.appendChild(buttonSection);
             }
 
             return true;
@@ -3021,14 +2959,25 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                         console.time('[Cite Unseen] Render runtime');
 
                         CiteUnseen.findCitations().then(function () {
+                            if (CiteUnseen.refs.length === 0) {
+                                console.timeEnd('[Cite Unseen] Render runtime');
+                                return;
+                            }
+
+                            // Add icons to citations
                             CiteUnseen.addIcons();
-                            CiteUnseen.showSettingsButton();
-                            CiteUnseen.showDashboard();
-                            CiteUnseen.showSuggestionsToggleButton();
-                            CiteUnseen.groupButtons();
+
+                            for (const reflistData of CiteUnseen.reflists) {
+                                if (window.cite_unseen_dashboard !== false) {
+                                    // Create dashboards for each reflist that has citations
+                                    CiteUnseen.createDashboardForReflist(reflistData);
+                                }
+
+                                // Create buttons for each reflist that has a dashboard
+                                CiteUnseen.createButtons(reflistData);
+                            }
 
                             console.timeEnd('[Cite Unseen] Render runtime');
-
                             let finishedLoading = document.createElement('div');
                             finishedLoading.id = 'cite-unseen-finished-loading';
                             finishedLoading.classList.add('cite-unseen-finished-loading');
