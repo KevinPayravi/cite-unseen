@@ -323,26 +323,10 @@
          * @returns {boolean} Whether URL matches
          */
         matchUrl: function (coins, rule) {
-            if (!rule['url'] || !coins['rft_id']) return false;
-
-            // Handle case where rule['url'] might be an array or non-string
-            const urlValue = rule['url'];
-            if (Array.isArray(urlValue)) {
-                return urlValue.some(url => {
-                    if (typeof url === 'string') {
-                        const urlRegex = CiteUnseen.urlRegex(url);
-                        return urlRegex.test(coins['rft_id']);
-                    }
-                    return false;
-                });
-            }
-
-            if (typeof urlValue === 'string') {
-                const urlRegex = CiteUnseen.urlRegex(urlValue);
-                return urlRegex.test(coins['rft_id']);
-            }
-
-            return false;
+            if (typeof rule['url'] !== 'string' || rule['url'] === '') return false;
+            const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
+            if (rftIds.length === 0) return false;
+            return rftIds.some(rftId => CiteUnseen.urlRegex(rule['url']).test(rftId));
         },
 
         /**
@@ -352,10 +336,10 @@
          * @returns {boolean} Whether URL string matches
          */
         matchUrlString: function (coins, rule) {
-            if (!rule['url_str'] || !coins['rft_id']) return false;
-
-            const urlStrings = CiteUnseen.ensureArray(rule['url_str']);
-            return urlStrings.some(str => coins['rft_id'].includes(str));
+            if (typeof rule['url_str'] !== 'string' || rule['url_str'] === '') return false;
+            const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
+            if (rftIds.length === 0) return false;
+            return rftIds.some(rftId => rftId.includes(rule['url_str']));
         },
 
         /**
@@ -2913,9 +2897,9 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
          * @returns {Array} Array version of the value
          */
         ensureArray: function (value) {
-            if (Array.isArray(value)) return value;
-            if (value == null) return [];
-            return [value];
+            if (Array.isArray(value)) return value.filter(v => typeof v === 'string' && v !== '');
+            if (typeof value === 'string' && value !== '') return [value];
+            return [];
         },
 
         // ===============================
