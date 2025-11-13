@@ -1491,7 +1491,7 @@
                     cite: citeTag, coins: coinsObject,
                 });
                 if (coinsObject['rft_id']) {
-                    CiteUnseen.refLinks.push(coinsObject['rft_id']);
+                    CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
                 }
             }
 
