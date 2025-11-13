@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.9
-// Timestamp: 2025-11-07T16:49:48.393Z
+// Release: 2.1.10
+// Timestamp: 2025-11-13T22:20:44.384Z
 
 (function() {
     'use strict';
@@ -458,6 +458,11 @@ window.CiteUnseenI18n = {
                 "Borichèt"
             ]
         },
+        "pt": {
+            "authors": [
+                "Mansil alfalb"
+            ]
+        },
         "tr": {
             "authors": [
                 "Hedda"
@@ -484,6 +489,7 @@ window.CiteUnseenI18n = {
         "mk": "Дополнителни домени (по еден во секој ред)",
         "pl": "Dodatkowe domeny (jedna na linię)",
         "pms": "Domini adissionaj (un për linia)",
+        "pt": "Domínios adicionais (um por linha)",
         "tr": "Ek Alan Adları (her satıra bir tane)",
         "hans": "额外域名（每行一个）",
         "hant": "額外網域（每行一個）"
@@ -496,6 +502,7 @@ window.CiteUnseenI18n = {
         "mk": "Додајте прилагодени домени за вклучување во секоја категорија. Изворите од овие домени ќе бидат обележани со соодветната категориска икона. Внесете по еден домен во секој нов ред, во форматот „example.com“.",
         "pl": "Dodaj niestandardowe domeny do uwzględnienia w każdej kategorii. Źródła z tych domen będą oznaczone odpowiednią ikoną kategorii. Wprowadź jedną domenę na linię w formacie 'przykład.com'.",
         "pms": "Gionté ij domini përsonalisà da anclude an minca na categorìa. Le sorgiss da costi domini a saran marcà con la plancia ëd categorìa corëspondenta. Anserì un domini pËr linia ant ël formà 'esempi.com'.",
+        "pt": "Adicione domínios personalizados para incluir em cada categoria. As fontes destes domínios serão marcadas com o ícone de categoria correspondente. Insira um domínio por linha no formato 'example.com'.",
         "tr": "Her kategoriye eklemek üzere özel alan adları ekleyin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
         "hans": "添加要包含在各类别中的自定义域名。来自这些域名的来源将标记对应的类别图标。每行输入一个域名，格式为 'example.com'。",
         "hant": "新增要包含在各類別中的自訂網域。來自這些網域的來源將標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。"
@@ -508,6 +515,7 @@ window.CiteUnseenI18n = {
         "mk": "Додајте прилагодени URL-шами за вклучување во секоја категорија. Изворите што ги содржат овие шеми ќе бидат обележани со соодветната категориска икона. Внесете по една шема во секој нов ред (како на пр. „/search?q=“, „/article/“, „?page=news“).",
         "pl": "Dodaj niestandardowe wzorce URL do uwzględnienia w każdej kategorii. Źródła zawierające te wzorce URL będą oznaczone odpowiednią ikoną kategorii. Wprowadź jeden wzorzec na linię (np. '/search?q=', '/article/', '?page=news').",
         "pms": "Gionté djë schema përsonalisà d'URL da include an ògni categorìa. Le sorgiss ch'a conten-o costi schema d'URL a saran marcà con la plancia ëd categorìa rëspondenta. Buté un ëschema për linia (per es., '/search?q=', '/article/', '?page=news').",
+        "pt": "Adicione padrões de URL personalizados para incluir em cada categoria. As fontes com estes padrões de URL serão marcadas com o ícone de categoria correspondente. Insira um padrão por linha (por exemplo, '/search?q=', '/article/', '?page=news').",
         "tr": "Her kategoriye dahil etmek için özel URL desenleri ekleyin. Bu URL desenlerini içeren kaynaklar ilgili kategori simgesiyle işaretlenecektir. Her satıra bir desen olacak şekilde girin. (örneğin '/search?q=', '/article/', '?page=news').",
         "hans": "添加要包含在各类别中的自定义网址模式。包含这些网址模式的来源将标记对应的类别图标。每行输入一个模式（例如 '/search?q='、'/article/'、'?page=news'）。",
         "hant": "新增要包含在各類別中的自訂網址模式。包含這些網址模式的來源將標記對應的類別圖示。每行輸入一個模式（例如 '/search?q='、'/article/'、'?page=news'）。"
@@ -521,6 +529,7 @@ window.CiteUnseenI18n = {
         "mk": "Дополнителни URL-низи (по една во секој ред)",
         "pl": "Dodatkowe ciągi URL (jeden na linię)",
         "pms": "Stringhe d'URL suplementar (un-a për linia)",
+        "pt": "Strings de URL adicionais (uma por linha)",
         "tr": "Ek URL Dizeleri (her satıra bir tane)",
         "hans": "额外网址字符串（每行一个）",
         "hant": "額外網址字串（每行一個）"
@@ -533,6 +542,7 @@ window.CiteUnseenI18n = {
         "mk": "Откажи",
         "pl": "Anuluj",
         "pms": "Anulé",
+        "pt": "Cancelar",
         "tr": "İptal",
         "hans": "取消",
         "hant": "取消"
@@ -545,6 +555,7 @@ window.CiteUnseenI18n = {
         "mk": "Овозможете или оневозможете одредени категории на наводи. Оневозможените категории нема да покажуваат икони и нема да се појавуваат во управувачницата.",
         "pl": "Włącz lub wyłącz określone kategorie cytowań. Wyłączone kategorie nie będą pokazywać ikon ani pojawiać się na pulpicie.",
         "pms": "Abilité o disabilité dle categorìe spessìfiche ëd sitassion. Le categorìe disabilità a smonëran nen dle plance nì a compariran ant ël cruscòt.",
+        "pt": "Ative ou desative categorias específicas de citações. As categorias desativadas não mostrarão ícones ou aparecerão no painel.",
         "tr": "Belirli alıntı kategorilerini etkinleştirin veya devre dışı bırakın. Devre dışı bırakılan kategoriler simge göstermeyecek ve panoda görünmeyecektir.",
         "hans": "启用或禁用特定引用类别。禁用的类别将不会显示图标或出现在仪表板中。",
         "hant": "啟用或停用特定引用類別。停用的類別將不會顯示圖示或出現在儀表板中。"
@@ -559,6 +570,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е застапничка организација.",
             "pl": "To źródło jest organizacją rzeczniczą.",
             "pms": "Costa sorgiss a l'é n'organisassion ëd part.",
+            "pt": "Esta fonte é uma organização de advocacia.",
             "tr": "Bu kaynak, bir savunma/çıkar grubu kuruluşudur.",
             "hans": "此来源为宣传机构。",
             "hant": "此來源為宣傳機構。"
@@ -572,6 +584,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е на црниот список поради постојана злоупотреба, обично во облик на спамирање со надворешни врски.",
             "pl": "To źródło zostało umieszczone na czarnej liście z powodu uporczywego nadużywania, zazwyczaj w formie spamowych linków zewnętrznych.",
             "pms": "Costa sorgiss a l'é stàita butà ant la lista nèira për via d'abus përsistent, ëd sòlit ant la forma ëd liure esterne ëd rumenta.",
+            "pt": "Esta fonte foi incluída na lista negra devido ao abuso persistente, normalmente na forma de hiperligações externas de lixo eletrónico.",
             "tr": "Bu kaynak, sürekli kötüye kullanım nedeniyle kara listeye alınmıştır; bu genellikle spam dış bağlantılar şeklinde gerçekleşir.",
             "hans": "由于持续滥用（通常以垃圾外部链接的形式），此来源已被列入黑名单。",
             "hant": "由於持續濫用（通常以垃圾外部連結的形式），此來源已被列入黑名單。"
@@ -584,6 +597,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е блоговска објава.",
             "pl": "To źródło jest wpisem na blogu.",
             "pms": "Costa sorgiss a l'é n'artìcol dë scartari.",
+            "pt": "Esta fonte é um artigo de blogue.",
             "tr": "Bu kaynak bir blog yazısıdır.",
             "hans": "此来源为博客文章。",
             "hant": "此來源為部落格文章。"
@@ -596,6 +610,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е публикација како книга, стручно списание или друг печатен материјал.",
             "pl": "To źródło jest publikacją taką jak książka, czasopismo lub inny materiał drukowany.",
             "pms": "Costa sorgiss a l'é na publicassion tanme un lìber, un giornal o d'àutr material ëstampà.",
+            "pt": "Esta fonte é uma publicação, tais como, um livro, revista, ou outro material impresso.",
             "tr": "Bu kaynak bir kitap, dergi ya da başka tür basılı yayın gibi bir yayındır.",
             "hans": "此来源为出版书籍、期刊或其他出版物。",
             "hant": "此來源為出版書籍、期刊或其他出版物。"
@@ -609,6 +624,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е вест создаден од заедница.",
             "pl": "To źródło to wiadomości tworzone przez społeczność.",
             "pms": "Costa sorgiss a l'é n'anformassion creà da na comunità.",
+            "pt": "Esta fonte são notícias criadas pela comunidade.",
             "tr": "Bu kaynak topluluk tarafından oluşturulmuş bir haber içeriğidir.",
             "hans": "此来源为社群创作的新闻。",
             "hant": "此來源為社群創作的新聞。"
@@ -710,6 +726,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е статија со вести од реноимрана новинска организација.",
             "pl": "To źródło to artykuł informacyjny z renomowanej organizacji prasowej.",
             "pms": "Costa sorgiss a l'é n'artìcol ëd neuve da n'organisassion d'anformassion rëspetàbil.",
+            "pt": "Esta fonte é um artigo de notícias de uma organização de notícias respeitável.",
             "tr": "Bu kaynak, saygın bir haber kuruluşuna ait bir haber makalesidir.",
             "hans": "此来源为来自知名新闻机构的新闻文章。",
             "hant": "此來源為來自知名新聞機構的新聞文章。"
@@ -723,6 +740,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е колумна.",
             "pl": "To źródło to artykuł opiniotwórczy.",
             "pms": "Costa a l'é na sorgiss d'opinion.",
+            "pt": "Esta fonte é um artigo de opinião.",
             "tr": "Bu kaynak bir görüş yazısıdır.",
             "hans": "此来源为观点文章。",
             "hant": "此來源為觀點文章。"
@@ -736,6 +754,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е од предаторски часопис.",
             "pl": "To źródło pochodzi z drapieżnego czasopisma.",
             "pms": "Costa sorgiss a l'é da 'n giornal predatòri.",
+            "pt": "Esta fonte é de uma revista predatória.",
             "tr": "Bu kaynak, yırtıcı (predatory) bir dergiden alınmıştır.",
             "hans": "此来源来自掠夺性期刊。",
             "hant": "此來源來自掠奪性期刊。"
@@ -748,6 +767,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е изјава за печат.",
             "pl": "To źródło to komunikat prasowy.",
             "pms": "Costa sorgiss a l'é un comunicà stampa.",
+            "pt": "Esta fonte é um comunicado de imprensa.",
             "tr": "Bu kaynak bir basın bültenidir.",
             "hans": "此来源为新闻稿。",
             "hant": "此來源為新聞稿。"
@@ -761,6 +781,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор објавува сатирични и пародиски содржини.",
             "pl": "To źródło publikuje treści satyryczne lub parodystyczne.",
             "pms": "Costa sorgiss a pùblich dël contnù satìrich o ëd parodìa.",
+            "pt": "Esta fonte publica conteúdo satírico ou de paródia.",
             "tr": "Bu kaynak, hiciv veya parodi içerik yayımlar.",
             "hans": "此来源发表讽刺、恶搞内容。",
             "hant": "此來源發表諷刺、惡搞內容。"
@@ -773,6 +794,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е од друштвен медиум, можеби објава.",
             "pl": "To źródło to strona mediów społecznościowych, możliwie post w mediach społecznościowych.",
             "pms": "Costa sorgiss a l'é un sit ëd mojen sossiaj, peul desse n'artìcol ëd mojen sossial.",
+            "pt": "Esta fonte é um ''site'' da Web de multimédia social, possivelmente uma publicação das redes sociais.",
             "tr": "Bu kaynak, bir sosyal medya sitesinden alınmıştır; muhtemelen bir sosyal medya gönderisidir.",
             "hans": "此来源为社交媒体网站，可能是社交媒体贴文。",
             "hant": "此來源為社群媒體網站，可能是社群媒體貼文。"
@@ -785,6 +807,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е спонзорирана содржина или промотивен материјал.",
             "pl": "To źródło to treść sponsorowana lub materiał promocyjny.",
             "pms": "Costa sorgiss a l'é un contnù d'areclam o dël material promossional.",
+            "pt": "Esta fonte é um conteúdo patrocinado ou material promocional.",
             "tr": "Bu kaynak, sponsorlu bir içerik ya da tanıtım materyalidir.",
             "hans": "此来源为商单、宣传稿。",
             "hant": "此來源為商單、宣傳稿。"
@@ -797,6 +820,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е таблоид или озборувачка вест.",
             "pl": "To źródło to tabloid lub wiadomości plotkarskie.",
             "pms": "Costa sorgiss a l'é un giornal ëd costume e petegolum.",
+            "pt": "Esta fonte é um tablóide ou uma notícia de fofocas.",
             "tr": "Bu kaynak, bir tabloid ya da magazin haberidir.",
             "hans": "此来源为小报或八卦新闻。",
             "hant": "此來源為小報或八卦新聞。"
@@ -809,6 +833,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е TV- или радиоемисија. Неговата меродавност зависи од поединечната емисија.",
             "pl": "To źródło to program telewizyjny lub radiowy. Jego wiarygodność zależy od konkretnego programu.",
             "pms": "Costa sorgiss a l'é un programa dla television o dla radio. Sò afidament a dipend dal programa particolar.",
+            "pt": "Esta fonte é um programa de TV ou de rádio. A sua fiabilidade depende do programa individual.",
             "tr": "Bu kaynak, bir TV ya da radyo programıdır. Güvenilirliği, ilgili programa bağlıdır.",
             "hans": "此来源为电视或广播节目。其可靠性取决于个别节目。",
             "hant": "此來源為電視或廣播節目。其可靠性取決於個別節目。"
@@ -821,6 +846,7 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор сè уште не е оценет.",
             "pl": "To źródło nie zostało jeszcze ocenione.",
             "pms": "Costa sorgiss a l'é ancor nen valutà.",
+            "pt": "Esta fonte ainda não foi avaliada.",
             "tr": "Bu kaynak henüz değerlendirilmemiştir.",
             "hans": "此来源尚未评估。",
             "hant": "此來源尚未評估。"
@@ -835,6 +861,7 @@ window.CiteUnseenI18n = {
             "mk": "застапништво",
             "pl": "rzecznictwo",
             "pms": "sostegn",
+            "pt": "advocacia",
             "tr": "savunma",
             "hans": "宣传机构",
             "hant": "宣傳機構"
@@ -847,6 +874,7 @@ window.CiteUnseenI18n = {
             "mk": "на црн список",
             "pl": "na czarnej liście",
             "pms": "ant la lista nèira",
+            "pt": "na lista negra",
             "tr": "kara listeye alınmış",
             "hans": "列入黑名单",
             "hant": "列入黑名單"
@@ -859,6 +887,7 @@ window.CiteUnseenI18n = {
             "mk": "блоговска објава",
             "pl": "wpis(y) na blogu",
             "pms": "artìcoj dë scartari",
+            "pt": "artigo(s) de blogue",
             "tr": "blog yazıları",
             "hans": "博客",
             "hant": "部落格"
@@ -872,6 +901,7 @@ window.CiteUnseenI18n = {
             "mk": "книги",
             "pl": "książki",
             "pms": "lìber",
+            "pt": "livros",
             "tr": "kitaplar",
             "hans": "书刊",
             "hant": "書刊"
@@ -884,6 +914,7 @@ window.CiteUnseenI18n = {
             "mk": "заедница",
             "pl": "społeczność",
             "pms": "comunità",
+            "pt": "comunidade",
             "tr": "topluluk",
             "hans": "社群新闻",
             "hant": "社群新聞"
@@ -897,6 +928,7 @@ window.CiteUnseenI18n = {
             "mk": "застарено",
             "pl": "wycofane z użycia",
             "pms": "dësconsejà",
+            "pt": "descontinuado",
             "tr": "artık geçerli olmayan",
             "hans": "应停用",
             "hant": "應停用"
@@ -909,6 +941,7 @@ window.CiteUnseenI18n = {
             "mk": "уредливо",
             "pl": "edytowalne",
             "pms": "modificàbil",
+            "pt": "editável",
             "tr": "düzenlenebilir",
             "hans": "可编辑",
             "hant": "可編輯"
@@ -922,6 +955,7 @@ window.CiteUnseenI18n = {
             "mk": "начелно меродавно",
             "pl": "ogólnie wiarygodne",
             "pms": "an general fidà",
+            "pt": "geralmente confiável",
             "tr": "genel olarak güvenilir",
             "hans": "通常可靠",
             "hant": "通常可靠"
@@ -935,6 +969,7 @@ window.CiteUnseenI18n = {
             "mk": "начелно немеродавно",
             "pl": "ogólnie niewiarygodne",
             "pms": "an general nen fidà",
+            "pt": "geralmente não confiável",
             "tr": "genellikle güvenilmez",
             "hans": "通常不可靠",
             "hant": "通常不可靠"
@@ -947,6 +982,7 @@ window.CiteUnseenI18n = {
             "mk": "владино",
             "pl": "rządowe",
             "pms": "goern",
+            "pt": "governo",
             "tr": "devlet",
             "hans": "政府",
             "hant": "政府"
@@ -959,6 +995,7 @@ window.CiteUnseenI18n = {
             "mk": "маргинално веродостоен",
             "pl": "ledwo wiarygodne",
             "pms": "marginalmant fidàbil",
+            "pt": "marginalmente confiável",
             "tr": "kısmen güvenilir",
             "hans": "半可靠",
             "hant": "半可靠"
@@ -972,6 +1009,7 @@ window.CiteUnseenI18n = {
             "mk": "нема консензус",
             "pl": "brak konsensusu",
             "pms": "gnun acòrd",
+            "pt": "sem consenso",
             "tr": "fikir birliği yok",
             "hans": "无共识",
             "hant": "無共識"
@@ -985,6 +1023,7 @@ window.CiteUnseenI18n = {
             "mk": "вести",
             "pl": "wiadomości",
             "pms": "neuve",
+            "pt": "notícias",
             "tr": "haberler",
             "hans": "新闻",
             "hant": "新聞"
@@ -998,6 +1037,7 @@ window.CiteUnseenI18n = {
             "mk": "колумна/ни",
             "pl": "artykuł(y) opiniotwórczy(e)",
             "pms": "tòch d'opinion",
+            "pt": "artigo(s) de opinião",
             "tr": "görüş yazıları",
             "hans": "观点",
             "hant": "觀點"
@@ -1010,6 +1050,7 @@ window.CiteUnseenI18n = {
             "mk": "предаторски часопис(и)",
             "pl": "drapieżne czasopismo(a)",
             "pms": "giornal predatòri",
+            "pt": "revista(s) predatória(s)",
             "tr": "yırtıcı dergiler",
             "hans": "掠夺性期刊",
             "hant": "掠奪性期刊"
@@ -1022,6 +1063,7 @@ window.CiteUnseenI18n = {
             "mk": "соопштение за печат",
             "pl": "komunikat(y) prasowy(e)",
             "pms": "comunicà dë stampa",
+            "pt": "comunicado(s) de imprensa",
             "tr": "basın bültenleri",
             "hans": "新闻稿",
             "hant": "新聞稿"
@@ -1034,6 +1076,7 @@ window.CiteUnseenI18n = {
             "mk": "сатирично",
             "pl": "satyryczne",
             "pms": "satìrich",
+            "pt": "satírico",
             "tr": "hicivsel",
             "hans": "幽默",
             "hant": "幽默"
@@ -1047,6 +1090,7 @@ window.CiteUnseenI18n = {
             "mk": "друштвен медиум",
             "pl": "media społecznościowe",
             "pms": "mojen sossial",
+            "pt": "redes sociais",
             "tr": "sosyal medya",
             "hans": "社交媒体",
             "hant": "社群媒體"
@@ -1060,6 +1104,7 @@ window.CiteUnseenI18n = {
             "mk": "спонзорирано",
             "pl": "sponsorowane",
             "pms": "areclam",
+            "pt": "patrocinado",
             "tr": "sponsorlu",
             "hans": "宣传稿",
             "hant": "宣傳稿"
@@ -1072,6 +1117,7 @@ window.CiteUnseenI18n = {
             "mk": "таблоид(и)",
             "pl": "tabloid(y)",
             "pms": "spetegolum",
+            "pt": "tablóide(s)",
             "tr": "tabloid gazeteler",
             "hans": "小报",
             "hant": "小報"
@@ -1085,6 +1131,7 @@ window.CiteUnseenI18n = {
             "mk": "ТВ-емисија",
             "pl": "program(y) telewizyjny(e)",
             "pms": "programa ëd television",
+            "pt": "programa(s) de TV",
             "tr": "TV programları",
             "hans": "电视节目",
             "hant": "電視節目"
@@ -1098,6 +1145,7 @@ window.CiteUnseenI18n = {
             "mk": "непознати врски",
             "pl": "nieznane linki",
             "pms": "liure sconossùe",
+            "pt": "hiperligações desconhecidas",
             "tr": "bilinmeyen bağlantılar",
             "hans": "未知链接",
             "hant": "未知連結"
@@ -1111,6 +1159,7 @@ window.CiteUnseenI18n = {
         "mk": " наводи",
         "pl": " cytowania",
         "pms": "sitassion",
+        "pt": "citações",
         "tr": "alıntılar",
         "hans": " 个来源",
         "hant": " 個來源"
@@ -1123,6 +1172,7 @@ window.CiteUnseenI18n = {
         "mk": " навод",
         "pl": " cytowanie",
         "pms": " sitassion",
+        "pt": "citação",
         "tr": "alıntı",
         "hans": " 个来源",
         "hant": " 個來源"
@@ -1136,6 +1186,7 @@ window.CiteUnseenI18n = {
         "mk": "Стиснете на иконата за да отворите страница со контролен список за да ги видите подробностите.",
         "pl": " Kliknij ikonę, aby otworzyć stronę listy kontrolnej i zobaczyć szczegóły.",
         "pms": " Sgnaché an sla plancia për duverté la pàgina dla lista ëd verìfica pr'ësmon-e ij detaj.",
+        "pt": "Clique no ícone para abrir a página de lista de verificação para ver os detalhes.",
         "tr": "Ayrıntıları görüntülemek için simgeye tıklayarak kontrol listesi sayfasını açın.",
         "hans": " 点击图标可打开检查表页面以查看详情。",
         "hant": " 點擊圖示可打開檢查表頁面以查看詳情。"
@@ -1149,6 +1200,7 @@ window.CiteUnseenI18n = {
         "mk": "Од",
         "pl": "Z",
         "pms": "Da",
+        "pt": "De",
         "hans": "来自",
         "hant": "來自"
     },
@@ -1161,6 +1213,7 @@ window.CiteUnseenI18n = {
         "mk": ":",
         "pl": ":",
         "pms": ":",
+        "pt": ":",
         "tr": ":",
         "hans": "：",
         "hant": "："
@@ -1173,6 +1226,7 @@ window.CiteUnseenI18n = {
         "mk": "Исчисти сè",
         "pl": "Wyczyść wszystkie",
         "pms": "Dëscancelé tut",
+        "pt": "Limpar Tudo",
         "tr": "Tümünü Temizle",
         "hans": "清除全部",
         "hant": "清除全部"
@@ -1185,6 +1239,7 @@ window.CiteUnseenI18n = {
         "mk": "Исчисти ги сите активни филтри",
         "pl": "Wyczyść wszystkie aktywne filtry",
         "pms": "Dëscancelé tuti ij filtr ativ",
+        "pt": "Limpar todos os filtros ativos",
         "tr": "Tüm etkin filtreleri temizle",
         "hans": "清除所有活动筛选",
         "hant": "清除所有活動篩選"
@@ -1197,6 +1252,7 @@ window.CiteUnseenI18n = {
         "mk": "Дополнителни информации за тоа зошто оваа категоризациај е соодветна...",
         "pl": "Dodatkowe informacje o tym, dlaczego ta kategoryzacja jest odpowiednia...",
         "pms": "Anformassion adissionaj an sël përchè costa categorisassion a va bin...",
+        "pt": "Informação adicional sobre o motivo para a classificação ser apropriada...",
         "tr": "Bu kategorizasyonun neden uygun olduğuna dair ek bilgi...",
         "hans": "关于为何此分类合适的额外信息……",
         "hant": "關於為何此分類合適的額外資訊……"
@@ -1210,6 +1266,7 @@ window.CiteUnseenI18n = {
         "mk": "Не успеав да го вчитам дијалогот. Обидете се повторно.",
         "pl": "Nie udało się załadować okna dialogowego. Spróbuj ponownie.",
         "pms": "Falì a carié ël diàlogh. Për piasì, ch'a preuva torna.",
+        "pt": "Não foi possível carregar a janela. Por favor, tente novamente.",
         "tr": "İletişim kutusu yüklenemedi. Lütfen tekrar deneyin.",
         "hans": "加载对话框失败。请重试。",
         "hant": "載入對話方塊失敗。請重試。"
@@ -1223,6 +1280,7 @@ window.CiteUnseenI18n = {
         "mk": "Документација",
         "pl": "Dokumentacja",
         "pms": "Documentassion",
+        "pt": "Documentação",
         "tr": "Belgeleme",
         "hans": "帮助文档",
         "hant": "幫助文檔"
@@ -1235,6 +1293,7 @@ window.CiteUnseenI18n = {
         "mk": "Следниве домени беа автоматски исправени:",
         "pl": "Następujące domeny zostały automatycznie poprawione:",
         "pms": "Ij domini sì-dapress a son ëstait coregiù an automàtich:",
+        "pt": "Os domínios seguintes foram corrigidos automaticamente:",
         "tr": "Aşağıdaki alan adları otomatik olarak düzeltildi:",
         "hans": "以下域名已自动修正：",
         "hant": "以下網域已自動修正："
@@ -1248,6 +1307,7 @@ window.CiteUnseenI18n = {
         "mk": "Домени за занемарување (по еден во секој ред)",
         "pl": "Domeny do ignorowania (jedna na linię)",
         "pms": "Domini da ignoré (un për linia)",
+        "pt": "Domínios a Ignorar (um por linha)",
         "tr": "Yok sayılacak alan adları (her satıra bir tane)",
         "hans": "要忽略的域名（每行一个）",
         "hant": "要忽略的網域（每行一個）"
@@ -1260,6 +1320,7 @@ window.CiteUnseenI18n = {
         "mk": "Овозможи/Оневозможи категории",
         "pl": "Włącz/Wyłącz kategorie",
         "pms": "Ativé o disativé le categorìe",
+        "pt": "Ativar/Desativar Categorias",
         "tr": "Kategorileri Etkinleştir/Devre Dışı Bırak",
         "hans": "启用/禁用类别",
         "hant": "啟用/停用類別"
@@ -1273,6 +1334,7 @@ window.CiteUnseenI18n = {
         "mk": "Стиснете за префрлање на овој категориски филтер. Можете да изберете повеќе категории. Стиснете на Escape за да ги исчистите сите филтри.",
         "pl": "Kliknij, aby przełączyć ten filtr kategorii. Możesz wybrać wiele kategorii. Naciśnij Escape, aby wyczyścić wszystkie filtry.",
         "pms": "Sgnaché për ativé o disativé cost filtr ëd categorìa. A peul selessioné vàire categorìe. Sgnaché su Scapé për dëscancelé tuti ij filtr.",
+        "pt": "Clique para alternar este filtro de categoria. Pode selecionar várias categorias. Pressione \"Escape\" para limpar todos os filtros.",
         "tr": "Bu kategori filtresini açıp kapatmak için tıklayın. Birden fazla kategori seçebilirsiniz. Tüm filtreleri temizlemek için Escape tuşuna basın.",
         "hans": "点击以切换此类别筛选。您可以选择多个类别。按 Escape 清除所有筛选。",
         "hant": "點擊以切換此類別篩選。您可以選擇多個類別。按 Escape 清除所有篩選。"
@@ -1285,6 +1347,7 @@ window.CiteUnseenI18n = {
         "mk": " активни филтри",
         "pl": " aktywnych filtrów",
         "pms": "filtr ativ",
+        "pt": "filtros ativos",
         "tr": "filtreler aktif",
         "hans": " 个筛选生效",
         "hant": " 個篩選生效"
@@ -1333,6 +1396,7 @@ window.CiteUnseenI18n = {
         "mk": "Вчитувам...",
         "pl": "Ładowanie...",
         "pms": "A caria...",
+        "pt": "A carregar...",
         "tr": "Yükleniyor...",
         "hans": "加载中……",
         "hant": "載入中……"
@@ -1345,6 +1409,7 @@ window.CiteUnseenI18n = {
         "mk": "месни",
         "pl": "lokalne",
         "pms": "local",
+        "pt": "local",
         "tr": "yerel",
         "hans": "本地",
         "hant": "本地"
@@ -1357,6 +1422,7 @@ window.CiteUnseenI18n = {
         "mk": "Месните викинагодувања ги заменуваат глобалните.",
         "pl": "Lokalne ustawienia wiki zastępują ustawienia globalne.",
         "pms": "Ij paràmeter wiki locaj a l'ha la precedensa an sij paràmeter globaj.",
+        "pt": "As definições locais da wiki substituem as definições globais.",
         "tr": "Yerel wiki ayarları, küresel ayarları geçersiz kılar.",
         "hans": "本地维基设置会覆盖全域设置。",
         "hant": "本地維基設定會覆蓋全域設定。"
@@ -1369,6 +1435,7 @@ window.CiteUnseenI18n = {
         "mk": "Мета (глобално)",
         "pl": "Meta-Wiki (globalne)",
         "pms": "Meta-Wiki (global)",
+        "pt": "Meta-Wiki (global)",
         "tr": "Meta-Wiki (küresel)",
         "hans": "元维基 (全域)",
         "hant": "元維基 (全域)"
@@ -1382,6 +1449,7 @@ window.CiteUnseenI18n = {
         "mk": " од",
         "pl": " z",
         "pms": " ëd",
+        "pt": "de",
         "hans": " /",
         "hant": " /"
     },
@@ -1394,6 +1462,7 @@ window.CiteUnseenI18n = {
         "mk": "Незадолж. коментар",
         "pl": "Opcjonalny komentarz",
         "pms": "Coment opsional",
+        "pt": "Comentário Opcional",
         "tr": "İsteğe Bağlı Yorum",
         "hans": "可选意见",
         "hant": "可選意見"
@@ -1407,6 +1476,7 @@ window.CiteUnseenI18n = {
         "mk": "Проектни страници за меродавност",
         "pl": "Strony projektów wiarygodności",
         "pms": "Pàgine dël proget ëd fidabilità",
+        "pt": "Páginas do Projeto de Confiabilidade",
         "tr": "Güvenilirlik Projesi Sayfaları",
         "hans": "可靠性项目页面",
         "hant": "可靠性專案頁面"
@@ -1419,6 +1489,7 @@ window.CiteUnseenI18n = {
         "mk": "Зачувај",
         "pl": "Zapisz",
         "pms": "Argistré",
+        "pt": "Guardar",
         "tr": "Kaydet",
         "hans": "保存",
         "hant": "儲存"
@@ -1431,6 +1502,7 @@ window.CiteUnseenI18n = {
         "mk": "Зачувувам...",
         "pl": "Zapisywanie...",
         "pms": "A argistra...",
+        "pt": "A guardar...",
         "tr": "Kaydediliyor...",
         "hans": "保存中……",
         "hant": "儲存中……"
@@ -1443,6 +1515,7 @@ window.CiteUnseenI18n = {
         "mk": "Изберете барем една категорија",
         "pl": "Wybierz przynajmniej jedną kategorię",
         "pms": "Për piasì, ch'a selession-a almanch na categorìa",
+        "pt": "Por favor, selecione pelo menos uma categoria",
         "tr": "Lütfen en az bir kategori seçin",
         "hans": "请至少选择一个类别",
         "hant": "請至少選擇一個類別"
@@ -1455,6 +1528,7 @@ window.CiteUnseenI18n = {
         "mk": "Нагодувања на Cite Unseen",
         "pl": "Ustawienia Cite Unseen",
         "pms": "Paràmeter ëd Cite Unseen",
+        "pt": "Definições de Cite Unseen",
         "tr": "Kaynağı Görmeden Alıntılama Ayarları",
         "hans": "Cite Unseen 设置",
         "hant": "Cite Unseen 設定"
@@ -1467,6 +1541,7 @@ window.CiteUnseenI18n = {
         "mk": "Поставете ги нагодувањата на Cite Unseen.",
         "pl": "Skonfiguruj ustawienia Cite Unseen.",
         "pms": "Configuré ij paràmeter ëd Cite Unseen.",
+        "pt": "Configure as definições de Cite Unseen.",
         "tr": "Kaynağı Görmeden Alıntılama ayarlarını yapılandırın.",
         "hans": "配置 Cite Unseen 设置。",
         "hant": "設定 Cite Unseen 設定。"
@@ -1480,6 +1555,7 @@ window.CiteUnseenI18n = {
         "mk": "Нагодувања на Cite Unseen",
         "pl": "Ustawienia Cite Unseen",
         "pms": "Paràmeter ëd Cite Unseen",
+        "pt": "Definições de Cite Unseen",
         "tr": "Kaynağı Görmeden Alıntılama Ayarları",
         "hans": "Cite Unseen 设置",
         "hant": "Cite Unseen 設定"
@@ -1493,6 +1569,7 @@ window.CiteUnseenI18n = {
         "mk": "Грешка при зачувувањето на нагодувањата:",
         "pl": "Błąd zapisywania ustawień:",
         "pms": "Eror ant l'argistrassion dij paràmeter:",
+        "pt": "Erro ao guardar as definições:",
         "tr": "Ayarlar kaydedilirken hata oluştu:",
         "hans": "保存设置时出错：",
         "hant": "儲存設定時發生錯誤："
@@ -1506,6 +1583,7 @@ window.CiteUnseenI18n = {
         "mk": "Нагодувањата се успешно зачувани! Да ја превчитам страницата за да ги применам промените?",
         "pl": "Ustawienia zapisane pomyślnie! Przeładować stronę, aby zastosować zmiany?",
         "pms": "Ij paràmeter a son ëstàit argistrà për da bin. Veul-lo carié torna la pàgine për apliché le modìfiche?",
+        "pt": "Definições guardadas com sucesso! Recarregar a página para aplicar as alterações?",
         "tr": "Ayarlar başarıyla kaydedildi! Değişiklikleri uygulamak için sayfayı yeniden yüklemek ister misiniz?",
         "hans": "设置已成功保存！重新加载页面以应用更改？",
         "hant": "設定已成功儲存！重新載入頁面以套用變更？"
@@ -1518,6 +1596,7 @@ window.CiteUnseenI18n = {
         "mk": "Прикажи управувачница над списоците со наводи",
         "pl": "Pokaż pulpit powyżej list przypisów",
         "pms": "Smon-e ël cruscòt dzora la lista dj'arferiment",
+        "pt": "Mostrar o painel acima das listas de referência",
         "tr": "Kaynakça listelerinin üzerinde kontrol panelini göster",
         "hans": "在参考文献区段上方显示仪表板",
         "hant": "在參考文獻區段上方顯示儀表板"
@@ -1531,6 +1610,7 @@ window.CiteUnseenI18n = {
         "mk": "Прикажи копче за предлози",
         "pl": "Pokaż przycisk sugestii",
         "pms": "Smon-e ël boton dij sugeriment",
+        "pt": "Mostrar botão de sugestões",
         "tr": "Öneriler butonunu göster",
         "hans": "显示建议按钮",
         "hant": "顯示建議按鈕"
@@ -1544,6 +1624,7 @@ window.CiteUnseenI18n = {
         "mk": "Се прикажува",
         "pl": "Pokazuje",
         "pms": "Smon-e",
+        "pt": "A mostrar",
         "tr": "Gösteriliyor",
         "hans": "显示",
         "hant": "顯示"
@@ -1557,6 +1638,7 @@ window.CiteUnseenI18n = {
         "mk": "Изворна URL",
         "pl": "URL źródła",
         "pms": "Sorgiss URL",
+        "pt": "URL Fonte",
         "tr": "Kaynak URL'si",
         "hans": "来源网址",
         "hant": "來源網址"
@@ -1569,6 +1651,7 @@ window.CiteUnseenI18n = {
         "mk": "Отвори образец за уредување",
         "pl": "Otwórz formularz edycji",
         "pms": "Duverté ël formolari ëd modìfica",
+        "pt": "Abrir Formulário de Edição",
         "tr": "Düzenleme Formunu Aç",
         "hans": "打开编辑表单",
         "hant": "開啟編輯表單"
@@ -1581,6 +1664,7 @@ window.CiteUnseenI18n = {
         "mk": "Отворам...",
         "pl": "Otwieranie...",
         "pms": "An camin ch'as duverta...",
+        "pt": "A abrir...",
         "tr": "Açılıyor...",
         "hans": "打开中……",
         "hant": "開啟中……"
@@ -1594,6 +1678,7 @@ window.CiteUnseenI18n = {
         "mk": "Предложи категоризација за овој навод",
         "pl": "Zasugeruj kategoryzację dla tego cytowania",
         "pms": "Sugerì na categorisassion për costa sitassion",
+        "pt": "Sugerir a categorização para esta citação",
         "tr": "Bu kaynak için kategori öner",
         "hans": "为此引用建议分类",
         "hant": "為此引用建議分類"
@@ -1606,6 +1691,7 @@ window.CiteUnseenI18n = {
         "mk": "Предложени категории",
         "pl": "Sugerowane kategorie",
         "pms": "Categorìe sugerìe",
+        "pt": "Categorias Sugeridas",
         "tr": "Önerilen Kategoriler",
         "hans": "建议类别",
         "hant": "建議類別"
@@ -1619,6 +1705,7 @@ window.CiteUnseenI18n = {
         "mk": "Предложи категоризација",
         "pl": "Zasugeruj kategoryzację",
         "pms": "Categorisassion sugerìa",
+        "pt": "Sugerir Categorização",
         "tr": "Kategorizasyon Önerisi",
         "hans": "建议分类",
         "hant": "建議分類"
@@ -1681,6 +1768,7 @@ window.CiteUnseenI18n = {
         "mk": "Предложи категории",
         "pl": "Zasugeruj kategorie",
         "pms": "Sugerì dle categorìe",
+        "pt": "Categorias Sugeridas",
         "tr": "Kategorileri Öner",
         "hans": "建议分类",
         "hant": "建議分類"
@@ -1694,6 +1782,7 @@ window.CiteUnseenI18n = {
         "mk": "Овозможи то режмот за предлози за да ви се предлагаат категории за наводи",
         "pl": "Włącz tryb sugestii, aby zaproponować kategoryzację dla cytowań",
         "pms": "Ativé ël meud ëd sugeriment për propon-e la categorisassion për le sitassion",
+        "pt": "Ativar o modo de sugestão para propor categorização para as citações",
         "tr": "Kaynaklara yönelik kategorizasyon önermek için öneri modunu etkinleştirin",
         "hans": "启用建议模式以为引用提议分类",
         "hant": "啟用建議模式以為引用提議分類"
@@ -1707,6 +1796,7 @@ window.CiteUnseenI18n = {
         "mk": "Дополнителни домени",
         "pl": "Dodatkowe domeny",
         "pms": "Domini adissionaj",
+        "pt": "Domínios Adicionais",
         "tr": "Ek Alan Adları",
         "hans": "额外域名",
         "hant": "額外網域"
@@ -1719,6 +1809,7 @@ window.CiteUnseenI18n = {
         "mk": "Дополнителни URL-низи",
         "pl": "Dodatkowe ciągi URL",
         "pms": "Stringhe URL adissionaj",
+        "pt": "Strings de URL Adicionais",
         "tr": "Ek URL Dizeleri",
         "hans": "额外网址字符串",
         "hant": "額外網址字串"
@@ -1731,6 +1822,7 @@ window.CiteUnseenI18n = {
         "mk": "Категории",
         "pl": "Kategorie",
         "pms": "Categorìe",
+        "pt": "Categorias",
         "tr": "Kategoriler",
         "hans": "类别",
         "hant": "類別"
@@ -1743,6 +1835,7 @@ window.CiteUnseenI18n = {
         "mk": "Општо",
         "pl": "Ogólne",
         "pms": "General",
+        "pt": "Geral",
         "tr": "Genel",
         "hans": "常规",
         "hant": "一般"
@@ -1756,6 +1849,7 @@ window.CiteUnseenI18n = {
         "mk": "Занемари домени",
         "pl": "Ignoruj domeny",
         "pms": "Ignoré ij domini",
+        "pt": "Ignorar Domínios",
         "tr": "Alan Adlarını Yoksay",
         "hans": "忽略域名",
         "hant": "忽略網域"
@@ -1769,6 +1863,7 @@ window.CiteUnseenI18n = {
         "mk": "Вкупно",
         "pl": "Łącznie",
         "pms": "Total",
+        "pt": "Total",
         "tr": "Toplam",
         "hans": "共",
         "hant": "共"
@@ -1781,6 +1876,7 @@ window.CiteUnseenI18n = {
         "mk": "Погл. нагодувања од:",
         "pl": "Zobacz ustawienia z:",
         "pms": "Smon-e ij paràmeter da:",
+        "pt": "Ver definições de:",
         "tr": "Ayarları şuradan görüntüleyin:",
         "hans": "检视设置：",
         "hant": "檢視設定："
@@ -1811,6 +1907,7 @@ var CiteUnseenData = {
         'enJAPANS',
         'enKOREAS',
         'enAS',
+        'enFILMR',
         'enNPPSG/1',
         'enNPPSG/2',
     ],
@@ -1873,7 +1970,8 @@ var CiteUnseenData = {
                 ["enNPPSG/1", "enNppsgGenerallyUnreliable"],
                 ["enVGS", "enVgsGenerallyUnreliable"],
                 ["zhACGS", "zhAcgsGenerallyUnreliable"],
-                ["zhVGS", "zhVgsGenerallyUnreliable"]
+                ["zhVGS", "zhVgsGenerallyUnreliable"],
+                ["enFILMR", "enFilmrGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -1906,7 +2004,8 @@ var CiteUnseenData = {
                 ["enNPPSG/2", "enNppsgGenerallyReliable"],
                 ["enVGS", "enVgsGenerallyReliable"],
                 ["zhACGS", "zhAcgsGenerallyReliable"],
-                ["zhVGS", "zhVgsGenerallyReliable"]
+                ["zhVGS", "zhVgsGenerallyReliable"],
+                ["enFILMR", "enFilmrGenerallyReliable"]
             ],
         ],
     ],
@@ -1944,6 +2043,7 @@ var CiteUnseenData = {
     citeUnseenSourceToPageMapping: {
         'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
+        'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
         'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
         'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
         'enNPPSG/1': 'en:Wikipedia:New pages patrol source guide',
@@ -2717,26 +2817,10 @@ var CiteUnseenData = {
          * @returns {boolean} Whether URL matches
          */
         matchUrl: function (coins, rule) {
-            if (!rule['url'] || !coins['rft_id']) return false;
-
-            // Handle case where rule['url'] might be an array or non-string
-            const urlValue = rule['url'];
-            if (Array.isArray(urlValue)) {
-                return urlValue.some(url => {
-                    if (typeof url === 'string') {
-                        const urlRegex = CiteUnseen.urlRegex(url);
-                        return urlRegex.test(coins['rft_id']);
-                    }
-                    return false;
-                });
-            }
-
-            if (typeof urlValue === 'string') {
-                const urlRegex = CiteUnseen.urlRegex(urlValue);
-                return urlRegex.test(coins['rft_id']);
-            }
-
-            return false;
+            if (typeof rule['url'] !== 'string' || rule['url'] === '') return false;
+            const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
+            if (rftIds.length === 0) return false;
+            return rftIds.some(rftId => CiteUnseen.urlRegex(rule['url']).test(rftId));
         },
 
         /**
@@ -2746,10 +2830,10 @@ var CiteUnseenData = {
          * @returns {boolean} Whether URL string matches
          */
         matchUrlString: function (coins, rule) {
-            if (!rule['url_str'] || !coins['rft_id']) return false;
-
-            const urlStrings = CiteUnseen.ensureArray(rule['url_str']);
-            return urlStrings.some(str => coins['rft_id'].includes(str));
+            if (typeof rule['url_str'] !== 'string' || rule['url_str'] === '') return false;
+            const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
+            if (rftIds.length === 0) return false;
+            return rftIds.some(rftId => rftId.includes(rule['url_str']));
         },
 
         /**
@@ -3901,7 +3985,7 @@ var CiteUnseenData = {
                     cite: citeTag, coins: coinsObject,
                 });
                 if (coinsObject['rft_id']) {
-                    CiteUnseen.refLinks.push(coinsObject['rft_id']);
+                    CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
                 }
             }
 
@@ -5307,9 +5391,9 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
          * @returns {Array} Array version of the value
          */
         ensureArray: function (value) {
-            if (Array.isArray(value)) return value;
-            if (value == null) return [];
-            return [value];
+            if (Array.isArray(value)) return value.filter(v => typeof v === 'string' && v !== '');
+            if (typeof value === 'string' && value !== '') return [value];
+            return [];
         },
 
         // ===============================
