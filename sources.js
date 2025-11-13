@@ -84,7 +84,8 @@ var CiteUnseenData = {
                 ["enNPPSG/1", "enNppsgGenerallyUnreliable"],
                 ["enVGS", "enVgsGenerallyUnreliable"],
                 ["zhACGS", "zhAcgsGenerallyUnreliable"],
-                ["zhVGS", "zhVgsGenerallyUnreliable"]
+                ["zhVGS", "zhVgsGenerallyUnreliable"],
+                ["enFILMR", "enFilmrGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -104,8 +105,7 @@ var CiteUnseenData = {
                 ["enNPPSG/2", "enNppsgMulti"],
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
-                ["zhVGS", "zhVgsMulti"],
-                ["enFILMR", "enFilmrMulti"]
+                ["zhVGS", "zhVgsMulti"]
             ],
         ], [
             "generallyReliable", [
