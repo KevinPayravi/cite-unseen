@@ -21,6 +21,7 @@ var CiteUnseenData = {
         'enJAPANS',
         'enKOREAS',
         'enAS',
+        'enFILMR',
         'enNPPSG/1',
         'enNPPSG/2',
     ],
@@ -103,7 +104,8 @@ var CiteUnseenData = {
                 ["enNPPSG/2", "enNppsgMulti"],
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
-                ["zhVGS", "zhVgsMulti"]
+                ["zhVGS", "zhVgsMulti"],
+                ["enFILMR", "enFilmrMulti"]
             ],
         ], [
             "generallyReliable", [
@@ -116,7 +118,8 @@ var CiteUnseenData = {
                 ["enNPPSG/2", "enNppsgGenerallyReliable"],
                 ["enVGS", "enVgsGenerallyReliable"],
                 ["zhACGS", "zhAcgsGenerallyReliable"],
-                ["zhVGS", "zhVgsGenerallyReliable"]
+                ["zhVGS", "zhVgsGenerallyReliable"],
+                ["enFILMR", "enFilmrGenerallyReliable"]
             ],
         ],
     ],
@@ -154,6 +157,7 @@ var CiteUnseenData = {
     citeUnseenSourceToPageMapping: {
         'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
+        'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
         'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
         'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
         'enNPPSG/1': 'en:Wikipedia:New pages patrol source guide',
