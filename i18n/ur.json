@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"امین اکبر"
+		]
+	},
+	"additionalDomains": "اضافی ڈومینز (ایک فی لائن)",
+	"additionalUrlStrings": "اضافی یو آر ایل سٹرنگز (ایک فی لائن)",
+	"cancel": "منسوخ",
+	"categoryHints.blacklisted": "اس ماخذ کو مسلسل غلط استعمال کی وجہ سے بلیک لسٹ کیا گیا ہے، عام طور پر سپیم بیرونی لنکس کی شکل میں۔",
+	"categoryHints.blogs": "یہ ماخذ ایک بلاگ پوسٹ ہے۔",
+	"categoryHints.books": "یہ ماخذ ایک اشاعت، جیسے کتاب، جریدہ، یا دیگر مطبوعہ مواد سے متعلقہ ہے۔",
+	"categoryHints.community": "یہ ماخذ کمیونٹی کی تخلیق کردہ خبریں ہیں۔",
+	"categoryHints.editable": "یہ ماخذ کمیونٹی کے ذریعہ قابل ترمیم ہے (مثال کے طور پر، ایک ویکی یا ڈیٹا بیس) ۔",
+	"categoryHints.government": "اس ماخذ کی شناخت سرکاری ملکیت یا سرکاری میڈیا، یا سرکاری ذرائع کے طور پر کی جاتی ہے۔",
+	"categoryHints.news": "یہ ماخذ ایک معروف خبر رساں تنظیم کا ایک نیوز آرٹیکل ہے۔",
+	"categoryHints.press": "یہ ماخذ ایک پریس ریلیز ہے۔",
+	"categoryHints.satire": "یہ ماخذ طنزیہ یا پیروڈی مواد شائع کرتا ہے۔",
+	"categoryHints.social": "یہ ماخذ ایک سوشل میڈیا ویب سائٹ ہے، ممکنہ طور پر ایک سوشل میڈیا پوسٹ۔",
+	"categoryHints.sponsored": "یہ ماخذ ایک اسپانسر شدہ مواد یا تشہیری مواد ہے۔",
+	"categoryLabels.blogs": "بلاگ پوسٹ",
+	"categoryLabels.books": "کتابیں",
+	"categoryLabels.deprecated": "مسترد شدہ",
+	"categoryLabels.editable": "قابل ترمیم",
+	"categoryLabels.generallyReliable": "عام طور پر قابل اعتماد",
+	"categoryLabels.generallyUnreliable": "عام طور پر ناقابل اعتماد",
+	"categoryLabels.government": "حکومت",
+	"categoryLabels.multi": "کوئی اتفاق نہیں",
+	"categoryLabels.news": "خبریں",
+	"categoryLabels.press": "پریس ریلیز",
+	"categoryLabels.satire": "طنزیہ",
+	"categoryLabels.social": "سوشل میڈیا",
+	"categoryLabels.sponsored": "سپانسر شدہ"
+}
