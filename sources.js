@@ -2,7 +2,7 @@ var CiteUnseenData = {
     _sourceRevisions: null, // Stores revision IDs fetched from cite-unseen-revids
 
     /**
-     * Definition page names for source lists. Prefixed with "Meta:Cite Unseen/sources/".
+     * Definition page names for source lists. Prefixed with "Cite Unseen/sources/".
      * @type {Array.<string>}
      * @constant
      */
@@ -261,8 +261,8 @@ var CiteUnseenData = {
      * @returns {Promise<string>} A Promise containing the full wikitext.
      */
     getFullText: async function () {
-        // Add 'Meta:Cite_Unseen/sources/' to the beginning each of the source names, then join them with '|'.
-        let source_titles = this.citeUnseenSources.map(source => `Meta:Cite_Unseen/sources/${source}`).join('|');
+        // Add 'Cite_Unseen/sources/' to the beginning each of the source names, then join them with '|'.
+        let source_titles = this.citeUnseenSources.map(source => `Cite_Unseen/sources/${source}`).join('|');
 
         var api = this.createApiInstance();
         var response = await api.get({

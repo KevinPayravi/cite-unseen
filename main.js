@@ -2091,7 +2091,7 @@
                             <template #header>
                                 <div class="cite-unseen-dialog-header">
                                     <span>{{ dialogTitle }}</span>
-                                    <a href="https://meta.wikimedia.org/wiki/Meta:Cite_Unseen" target="_blank" class="cite-unseen-dialog-docs-link">
+                                    <a href="https://meta.wikimedia.org/wiki/Cite_Unseen" target="_blank" class="cite-unseen-dialog-docs-link">
                                         {{ $options.i18n.documentationLink }}
                                     </a>
                                 </div>
@@ -2713,10 +2713,10 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                     const editSummary = `Categorization suggestion for ${domain}`;
                     const baseUrl = 'https://meta.wikimedia.org/w/index.php';
 
-                    let editUrl = baseUrl + '?title=' + encodeURIComponent('Meta_talk:Cite_Unseen/Suggestions');
+                    let editUrl = baseUrl + '?title=' + encodeURIComponent('Talk:Cite_Unseen/Suggestions');
                     editUrl += '&action=edit';
                     editUrl += '&section=new';
-                    editUrl += '&preload=' + encodeURIComponent('Meta:Cite_Unseen/Suggestions/Template');
+                    editUrl += '&preload=' + encodeURIComponent('Cite_Unseen/Suggestions/Template');
                     editUrl += '&preloadtitle=' + encodeURIComponent(domain);
                     editUrl += '&summary=' + encodeURIComponent(editSummary);
 
