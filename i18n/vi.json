@@ -1,12 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Duongvu"
+			"Duongvu",
+			"Minh Nguyen"
 		]
 	},
 	"additionalDomains": "Tên miên bổ sung (một trong mỗi dòng)",
-	"additionalDomainsTabGuidance": "Thêm các tên miền tùy chỉnh để đưa vào từng danh mục. Các nguồn từ các tên miền này sẽ được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một tên miền trên mỗi dòng theo định dạng 'example.com'.",
-	"additionalStringsTabGuidance": "Thêm các mẫu URL tùy chỉnh để đưa vào từng danh mục. Các nguồn chứa các mẫu URL này sẽ được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một mẫu trên mỗi dòng (ví dụ: '/search?q=', '/article/', '?page=news').",
+	"additionalDomainsTabGuidance": "Thêm các tên miền tùy chỉnh để đưa vào từng danh mục. Các nguồn từ các tên miền này sẽ được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một tên miền trên mỗi dòng theo định dạng “example.com”.",
+	"additionalStringsTabGuidance": "Thêm các mẫu URL tùy chỉnh để đưa vào từng danh mục. Các nguồn chứa các mẫu URL này sẽ được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một mẫu trên mỗi dòng (ví dụ: “/timkiem?q=”, “/baiviet/”, “?trang=tintuc”).",
 	"additionalUrlStrings": "Các chuỗi URL bổ sung (mỗi dòng một chuỗi)",
 	"cancel": "Hủy bỏ",
 	"categoriesTabGuidance": "Cho phép hoặc vô hiệu hóa các danh mục trích dẫn cụ thể. Các danh mục bị vô hiệu hóa sẽ không hiển thị biểu tượng hoặc xuất hiện trong bảng điều khiển.",
@@ -61,7 +62,7 @@
 	"citationTooltipSuffix": ":",
 	"clearAllFilters": "Xóa tất cả",
 	"clearAllFiltersTooltip": "Xóa tất cả các bộ lọc đang hoạt động",
-	"commentPlaceholder": "Thông tin bổ sung về lý do tại sao cách phân loại này là phù hợp...",
+	"commentPlaceholder": "Thông tin bổ sung về lý do tại sao cách phân loại này là phù hợp…",
 	"dialogLoadError": "Không thể tải hộp thoại. Vui lòng thử lại.",
 	"documentationLink": "Tài liệu",
 	"domainsCorrectedMessage": "Các lĩnh vực sau đã được tự động sửa lỗi:",
@@ -70,9 +71,9 @@
 	"filterToggleTooltip": "Nhấp chuột để bật/tắt bộ lọc danh mục này. Bạn có thể chọn nhiều danh mục. Nhấn phím Escape để xóa tất cả các bộ lọc.",
 	"filtersActive": "bộ lọc đang hoạt động",
 	"hideSocialMediaReliabilityRatings": "Ẩn xếp hạng độ tin cậy cho các liên kết mạng xã hội từ các nhà xuất bản chưa được xếp hạng.",
-	"ignoreDomainsTabGuidance": "Nhập các tên miền cần loại trừ khỏi mỗi danh mục. Các nguồn từ các tên miền này sẽ không được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một tên miền trên mỗi dòng theo định dạng 'example.com'.",
-	"invalidDomainFormatMessage": "Đã phát hiện định dạng tên miền không hợp lệ. Tên miền phải có định dạng \"name.tld\" (ví dụ: example.com):",
-	"loading": "Đang tải...",
+	"ignoreDomainsTabGuidance": "Nhập các tên miền cần loại trừ khỏi mỗi danh mục. Các nguồn từ các tên miền này sẽ không được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một tên miền trên mỗi dòng theo định dạng “example.com”.",
+	"invalidDomainFormatMessage": "Đã phát hiện định dạng tên miền không hợp lệ. Tên miền phải có định dạng “name.tld” (ví dụ: example.com):",
+	"loading": "Đang tải…",
 	"local": "Địa phương",
 	"localSettingGuidance": "Các thiết lập wiki cục bộ sẽ ghi đè lên các thiết lập toàn cầu.",
 	"metaWikiGlobal": "Meta-Wiki (toàn cầu)",
@@ -80,7 +81,7 @@
 	"optionalComment": "Bình luận tùy chọn",
 	"reliabilityProjects": "Trang dự án độ tin cậy",
 	"save": "Lưu",
-	"saving": "Đang lưu...",
+	"saving": "Đang lưu…",
 	"selectAtLeastOneCategory": "Vui lòng chọn ít nhất một danh mục",
 	"settingsButton": "Trích dẫn các cài đặt không nhìn thấy được",
 	"settingsButtonTooltip": "Cấu hình cài đặt Trích dẫn ẩn danh.",
@@ -92,7 +93,7 @@
 	"showing": "Đang hiển thị",
 	"sourceUrl": "URL nguồn",
 	"submit": "Mở biểu mẫu chỉnh sửa",
-	"submitting": "Đang mở...",
+	"submitting": "Đang mở…",
 	"suggestCategorization": "Đề xuất phân loại cho trích dẫn này.",
 	"suggestedCategories": "Các danh mục được đề xuất",
 	"suggestionDialogTitle": "Đề xuất phân loại",
