@@ -24,6 +24,8 @@ var CiteUnseenData = {
         'enFILMR',
         'enNPPSG/1',
         'enNPPSG/2',
+        'frJVS',
+        'ruAIKI'
     ],
 
     /**
@@ -85,7 +87,9 @@ var CiteUnseenData = {
                 ["enVGS", "enVgsGenerallyUnreliable"],
                 ["zhACGS", "zhAcgsGenerallyUnreliable"],
                 ["zhVGS", "zhVgsGenerallyUnreliable"],
-                ["enFILMR", "enFilmrGenerallyUnreliable"]
+                ["enFILMR", "enFilmrGenerallyUnreliable"],
+                ["frJVS", "frJvsGenerallyUnreliable"],
+                ["ruAIKI", "ruAikiGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -96,7 +100,8 @@ var CiteUnseenData = {
                 ["enKOREAS", "enKoreasMarginallyReliable"],
                 ["enVGS", "enVgsMarginallyReliable"],
                 ["zhACGS", "zhAcgsMarginallyReliable"],
-                ["zhVGS", "zhVgsMarginallyReliable"]
+                ["zhVGS", "zhVgsMarginallyReliable"],
+                ["frJVS", "frJvsMarginallyReliable"]
             ],
         ], [
             "multi", [
@@ -119,7 +124,9 @@ var CiteUnseenData = {
                 ["enVGS", "enVgsGenerallyReliable"],
                 ["zhACGS", "zhAcgsGenerallyReliable"],
                 ["zhVGS", "zhVgsGenerallyReliable"],
-                ["enFILMR", "enFilmrGenerallyReliable"]
+                ["enFILMR", "enFilmrGenerallyReliable"],
+                ["frJVS", "frJvsGenerallyReliable"],
+                ["ruAIKI", "ruAikiGenerallyReliable"]
             ],
         ],
     ],
@@ -155,8 +162,8 @@ var CiteUnseenData = {
      * @constant
      */
     citeUnseenSourceToPageMapping: {
-        'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
+        'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
         'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
         'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
@@ -164,6 +171,8 @@ var CiteUnseenData = {
         'enNPPSG/2': 'en:Wikipedia:New pages patrol source guide',
         'enRSP': 'en:Wikipedia:Reliable sources/Perennial sources',
         'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
+        'frJVS': 'fr:Projet:Jeu vidéo/Sources',
+        'ruAIKI': 'ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр',
         'zhACGS': 'zh:维基专题:ACG/來源考量',
         'zhRSP': 'zh:维基百科:可靠来源/常见有争议来源列表',
         'zhVGS': 'zh:维基专题:电子游戏/来源考量'
