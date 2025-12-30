@@ -1,5 +1,5 @@
 // Loads i18n JSON files from the GitLab repository and exposes them as a global object.
-// Caches the result in sessionStorage for 12 hours to reduce network requests.
+// Caches the result in localStorage for 72 hours to reduce network requests.
 
 (function () {
     const BRANCH = 'main';
@@ -115,7 +115,7 @@
         // Try cache first
         let cached;
         try {
-            const cachedRaw = sessionStorage.getItem(CACHE_KEY);
+            const cachedRaw = localStorage.getItem(CACHE_KEY);
             if (cachedRaw) {
                 cached = JSON.parse(cachedRaw);
                 if (isCacheFresh(cached)) {
@@ -133,7 +133,7 @@
             data = await buildI18nObject();
             window.CiteUnseenI18n = data;
             try {
-                sessionStorage.setItem(CACHE_KEY, JSON.stringify({timestamp: Date.now(), data}));
+                localStorage.setItem(CACHE_KEY, JSON.stringify({timestamp: Date.now(), data}));
             } catch (e) {
                 // Ignore storage failures
                 console.warn('[Cite Unseen][i18n] Cache write failed', e);

@@ -419,7 +419,7 @@ var CiteUnseenData = {
         // Try cache first
         let cached;
         try {
-            const raw = sessionStorage.getItem(CACHE_KEY);
+            const raw = localStorage.getItem(CACHE_KEY);
             if (raw) {
                 cached = JSON.parse(raw);
                 if (cached && cached.timestamp && (Date.now() - cached.timestamp) < CACHE_TTL_MS && cached.data && this.isValidData(cached.data)) {
@@ -455,7 +455,7 @@ var CiteUnseenData = {
 
         // Write cache
         try {
-            sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
         } catch (e) {
             console.warn('[Cite Unseen][sources] Cache write failed', e);
         }
