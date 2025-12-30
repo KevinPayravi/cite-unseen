@@ -414,7 +414,7 @@ var CiteUnseenData = {
      */
     getCategorizedRules: async function () {
         const CACHE_KEY = 'CiteUnseenSourcesCache';
-        const CACHE_TTL_MS = 3 * 60 * 60 * 1000; // 3 hours
+        const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
         // Try cache first
         let cached;

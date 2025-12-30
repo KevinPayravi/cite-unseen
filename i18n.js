@@ -6,7 +6,7 @@
     const FOLDER = 'i18n';
     const API_BASE = `https://gitlab.wikimedia.org/api/v4/projects/kevinpayravi%2Fcite-unseen/repository`;
     const CACHE_KEY = 'CiteUnseenI18nCache-v2.1.6'; // bump to invalidate
-    const CACHE_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
+    const CACHE_TTL_MS = 72 * 60 * 60 * 1000; // 72 hours
 
     // Expose placeholders immediately
     window.CiteUnseenI18n = window.CiteUnseenI18n || {}; // will be replaced once loaded
