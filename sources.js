@@ -7,11 +7,24 @@ var CiteUnseenData = {
      * @constant
      */
     citeUnseenSources: [
-        'medium',
-        'type',
-        'influence',
         'advocacy/1',
         'advocacy/2',
+        'advocacy/3',
+        'advocacy/4',
+        "blogs",
+        "books",
+        "community",
+        "editable",
+        "government",
+        "news",
+        "opinions",
+        "predatory",
+        "press",
+        "satire",
+        "social",
+        "sponsored",
+        "tabloids",
+        "tvPrograms",
         'zhRSP',
         'zhVGS',
         'zhACGS',
@@ -152,7 +165,9 @@ var CiteUnseenData = {
      */
     citeUnseenSourceToCategoryMapping: {
         'advocacy1': 'advocacy',
-        'advocacy2': 'advocacy'
+        'advocacy2': 'advocacy',
+        'advocacy3': 'advocacy',
+        'advocacy4': 'advocacy'
     },
 
     /**
