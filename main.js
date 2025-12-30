@@ -672,7 +672,7 @@
                 const pageLink = CiteUnseen.citeUnseenData.resolveSourceToPageLink(checklist);
                 const displayName = pageLink || checklist;
                 message = CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipPrefix) + ' ' + displayName +
-                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + message + ' ' +
+                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + ' ' + message + ' ' +
                     CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipAction);
             }
             iconNode.setAttribute("alt", message);
@@ -2071,7 +2071,7 @@
                                     }
                                 },
                                 (error) => {
-                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.settingsSaveError) + (error.message || error), {
+                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.settingsSaveError) + ' ' + (error.message || error), {
                                         type: 'error',
                                         title: '[Cite Unseen]'
                                     });
@@ -2555,7 +2555,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                                 })
                                 .catch((error) => {
                                     console.error('[Cite Unseen] Failed to submit suggestion:', error);
-                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.suggestionSubmitError) + (error.message || error), {
+                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.suggestionSubmitError) + ' ' + (error.message || error), {
                                         type: 'error',
                                         title: '[Cite Unseen]'
                                     });
