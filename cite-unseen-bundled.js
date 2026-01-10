@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.11
-// Timestamp: 2025-12-02T06:39:15.850Z
+// Release: 2.1.12
+// Timestamp: 2026-01-10T19:16:56.275Z
 
 (function() {
     'use strict';
@@ -428,6 +428,11 @@ window.CiteUnseenI18n = {
                 "Meno25"
             ]
         },
+        "id": {
+            "authors": [
+                "Penyuwangi"
+            ]
+        },
         "ja": {
             "authors": [
                 "SuperGrey"
@@ -478,6 +483,12 @@ window.CiteUnseenI18n = {
                 "امین اکبر"
             ]
         },
+        "vi": {
+            "authors": [
+                "Duongvu",
+                "Minh Nguyen"
+            ]
+        },
         "hans": {
             "authors": [
                 "SuperGrey"
@@ -494,6 +505,7 @@ window.CiteUnseenI18n = {
     "additionalDomains": {
         "ar": "المجالات الإضافية (واحد لكل سطر)",
         "en": "Additional Domains (one per line)",
+        "id": "Domain Tambahan (satu per baris)",
         "ja": "追加ドメイン（1行に1つ）",
         "ln": "Ba Domaines ya kobakisa (moko na ligne moko) .",
         "mk": "Дополнителни домени (по еден во секој ред)",
@@ -503,12 +515,14 @@ window.CiteUnseenI18n = {
         "pt": "Domínios adicionais (um por linha)",
         "tr": "Ek Alan Adları (her satıra bir tane)",
         "ur": "اضافی ڈومینز (ایک فی لائن)",
+        "vi": "Tên miên bổ sung (một trong mỗi dòng)",
         "hans": "额外域名（每行一个）",
         "hant": "額外網域（每行一個）"
     },
     "additionalDomainsTabGuidance": {
         "ar": "أضف نطاقات مخصصة لتضمينها في كل فئة. سيتم تمييز المصادر من هذه النطاقات برمز الفئة المقابلة. أدخل نطاقًا واحدًا في كل سطر بالتنسيق \"example.com\".",
         "en": "Add custom domains to include in each category. Sources from these domains will be marked with the corresponding category icon. Enter one domain per line in the format 'example.com'.",
+        "id": "Tambahkan domain kustom untuk disertakan dalam tiap kategori. Sumber dari domain ini akan ditandai dengan ikon kategori yang sesuai. Masukkan satu domain per baris dalam format 'example.com'.",
         "ja": "各カテゴリに含めるカスタムドメインを追加します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されます。1行に1つのドメインを 'example.com' の形式で入力してください。",
         "ln": "Bakisa ba domaines personnalisés mpo na kokotisa na catégorie moko na moko. Ba sources oyo ewutaka na ba domaines wana ekozala marqué na icône ya catégorie oyo ekokani. Tyá domaine moko na ligne moko na format 'example.com'.",
         "mk": "Додајте прилагодени домени за вклучување во секоја категорија. Изворите од овие домени ќе бидат обележани со соодветната категориска икона. Внесете по еден домен во секој нов ред, во форматот „example.com“.",
@@ -516,12 +530,14 @@ window.CiteUnseenI18n = {
         "pms": "Gionté ij domini përsonalisà da anclude an minca na categorìa. Le sorgiss da costi domini a saran marcà con la plancia ëd categorìa corëspondenta. Anserì un domini pËr linia ant ël formà 'esempi.com'.",
         "pt": "Adicione domínios personalizados para incluir em cada categoria. As fontes destes domínios serão marcadas com o ícone de categoria correspondente. Insira um domínio por linha no formato 'example.com'.",
         "tr": "Her kategoriye eklemek üzere özel alan adları ekleyin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
+        "vi": "Thêm các tên miền tùy chỉnh để đưa vào từng danh mục. Các nguồn từ các tên miền này sẽ được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một tên miền trên mỗi dòng theo định dạng “example.com”.",
         "hans": "添加要包含在各类别中的自定义域名。来自这些域名的来源将标记对应的类别图标。每行输入一个域名，格式为 'example.com'。",
         "hant": "新增要包含在各類別中的自訂網域。來自這些網域的來源將標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。"
     },
     "additionalStringsTabGuidance": {
         "ar": "أضف أنماط عناوين URL مخصصة لتضمينها في كل فئة. سيتم تمييز المصادر التي تحتوي على أنماط عناوين URL هذه بأيقونة الفئة المقابلة. أدخل نمطًا واحدًا في كل سطر (مثل: '/search?q='، '/article/'، '?page=news').",
         "en": "Add custom URL patterns to include in each category. Sources containing these URL patterns will be marked with the corresponding category icon. Enter one pattern per line (e.g., '/search?q=', '/article/', '?page=news').",
+        "id": "Tambahkan pola URL kustom untuk disertakan dalam setiap kategori. Sumber yang berisi pola URL ini akan ditandai dengan ikon kategori yang sesuai. Masukkan satu pola per baris (misal, '/search?q=', '/article/', '?page=news').",
         "ja": "各カテゴリに含めるカスタムURLパターンを追加します。これらのURLパターンを含む情報源には対応するカテゴリアイコンが表示されます。1行に1つのパターンを入力してください（例：'/search?q='、'/article/'、'?page=news'）。",
         "ln": "Bakisa ba modèles ya URL personnalisé mpo na kokotisa na catégorie moko na moko. Ba sources oyo ezali na ba modèles ya URL oyo ekozala na elembo ya catégorie oyo ekokani. Tyá motindo moko na molɔngɔ moko (ndakisa, '/search?q=', '/article/', '?page=nsango').",
         "mk": "Додајте прилагодени URL-шами за вклучување во секоја категорија. Изворите што ги содржат овие шеми ќе бидат обележани со соодветната категориска икона. Внесете по една шема во секој нов ред (како на пр. „/search?q=“, „/article/“, „?page=news“).",
@@ -529,12 +545,14 @@ window.CiteUnseenI18n = {
         "pms": "Gionté djë schema përsonalisà d'URL da include an ògni categorìa. Le sorgiss ch'a conten-o costi schema d'URL a saran marcà con la plancia ëd categorìa rëspondenta. Buté un ëschema për linia (per es., '/search?q=', '/article/', '?page=news').",
         "pt": "Adicione padrões de URL personalizados para incluir em cada categoria. As fontes com estes padrões de URL serão marcadas com o ícone de categoria correspondente. Insira um padrão por linha (por exemplo, '/search?q=', '/article/', '?page=news').",
         "tr": "Her kategoriye dahil etmek için özel URL desenleri ekleyin. Bu URL desenlerini içeren kaynaklar ilgili kategori simgesiyle işaretlenecektir. Her satıra bir desen olacak şekilde girin. (örneğin '/search?q=', '/article/', '?page=news').",
+        "vi": "Thêm các mẫu URL tùy chỉnh để đưa vào từng danh mục. Các nguồn chứa các mẫu URL này sẽ được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một mẫu trên mỗi dòng (ví dụ: “/timkiem?q=”, “/baiviet/”, “?trang=tintuc”).",
         "hans": "添加要包含在各类别中的自定义网址模式。包含这些网址模式的来源将标记对应的类别图标。每行输入一个模式（例如 '/search?q='、'/article/'、'?page=news'）。",
         "hant": "新增要包含在各類別中的自訂網址模式。包含這些網址模式的來源將標記對應的類別圖示。每行輸入一個模式（例如 '/search?q='、'/article/'、'?page=news'）。"
     },
     "additionalUrlStrings": {
         "ar": "سلاسل عناوين URL إضافية (واحدة لكل سطر)",
         "en": "Additional URL Strings (one per line)",
+        "id": "Untai URL Tambahan (satu per baris)",
         "ja": "追加URL文字列（1行に1つ）",
         "kg": "Bansinga ya nkaka ya URL (mosi na ndonga mosi)",
         "ln": "Ba nsinga mosusu ya URL (moko na molongo)",
@@ -544,12 +562,14 @@ window.CiteUnseenI18n = {
         "pt": "Strings de URL adicionais (uma por linha)",
         "tr": "Ek URL Dizeleri (her satıra bir tane)",
         "ur": "اضافی یو آر ایل سٹرنگز (ایک فی لائن)",
+        "vi": "Các chuỗi URL bổ sung (mỗi dòng một chuỗi)",
         "hans": "额外网址字符串（每行一个）",
         "hant": "額外網址字串（每行一個）"
     },
     "cancel": {
         "ar": "إلغاء",
         "en": "Cancel",
+        "id": "Batal",
         "ja": "キャンセル",
         "ln": "Kolongola",
         "mk": "Откажи",
@@ -559,12 +579,14 @@ window.CiteUnseenI18n = {
         "pt": "Cancelar",
         "tr": "İptal",
         "ur": "منسوخ",
+        "vi": "Hủy bỏ",
         "hans": "取消",
         "hant": "取消"
     },
     "categoriesTabGuidance": {
         "ar": "تفعيل أو تعطيل فئات محددة من الاستشهادات. لن تظهر الفئات المعطلة في لوحة المعلومات أو أيقوناتها.",
         "en": "Enable or disable specific categories of citations. Disabled categories will not show icons or appear in the dashboard.",
+        "id": "Nyalakan atau matikan kategori rujukan tertentu. Kategori yang dimatikan tidak akan menampilkan ikon atau muncul di dasbor.",
         "ja": "特定の引用カテゴリを有効または無効にします。無効にしたカテゴリはアイコンが表示されず、ダッシュボードにも表示されません。",
         "ln": "Activer to désactiver ba catégories spécifiques ya ba citations. Ba catégories désactivées ekolakisa ba icônes te to ekobima na tableau de bord te.",
         "mk": "Овозможете или оневозможете одредени категории на наводи. Оневозможените категории нема да покажуваат икони и нема да се појавуваат во управувачницата.",
@@ -572,6 +594,7 @@ window.CiteUnseenI18n = {
         "pms": "Abilité o disabilité dle categorìe spessìfiche ëd sitassion. Le categorìe disabilità a smonëran nen dle plance nì a compariran ant ël cruscòt.",
         "pt": "Ative ou desative categorias específicas de citações. As categorias desativadas não mostrarão ícones ou aparecerão no painel.",
         "tr": "Belirli alıntı kategorilerini etkinleştirin veya devre dışı bırakın. Devre dışı bırakılan kategoriler simge göstermeyecek ve panoda görünmeyecektir.",
+        "vi": "Cho phép hoặc vô hiệu hóa các danh mục trích dẫn cụ thể. Các danh mục bị vô hiệu hóa sẽ không hiển thị biểu tượng hoặc xuất hiện trong bảng điều khiển.",
         "hans": "启用或禁用特定引用类别。禁用的类别将不会显示图标或出现在仪表板中。",
         "hant": "啟用或停用特定引用類別。停用的類別將不會顯示圖示或出現在儀表板中。"
     },
@@ -579,6 +602,7 @@ window.CiteUnseenI18n = {
         "advocacy": {
             "ar": "هذا المصدر هو منظمة للدفاع عن حقوق الإنسان.",
             "en": "This source is an advocacy organization.",
+            "id": "Sumber ini adalah sebuah organisasi advokasi.",
             "ja": "この情報源はアドボカシー組織です。",
             "kg": "Nto yai kele kimvuka ya ke nwaninaka banswa ya bantu.",
             "ln": "Source oyo ezali organisation ya défense.",
@@ -588,12 +612,14 @@ window.CiteUnseenI18n = {
             "ps": "دا سرچينه يو مدافع ټولنه ده.",
             "pt": "Esta fonte é uma organização de advocacia.",
             "tr": "Bu kaynak, bir savunma/çıkar grubu kuruluşudur.",
+            "vi": "Nguồn thông tin này đến từ một tổ chức vận động chính sách.",
             "hans": "此来源为宣传机构。",
             "hant": "此來源為宣傳機構。"
         },
         "blacklisted": {
             "ar": "لقد تمت إضافة هذا المصدر إلى القائمة السوداء بسبب الإساءة المستمرة، عادةً في شكل روابط خارجية غير مرغوب فيها.",
             "en": "This source has been blacklisted due to persistent abuse, typically in the form of spam external links.",
+            "id": "Sumber ini telah didaftarhitamkan sebab penyalahgunaan yang terus-menerus, biasanya dalam bentuk tautan luar spam.",
             "ja": "この情報源は、持続的な濫用（通常はスパム外部リンクの形で）によりブラックリスト入りしています。",
             "kg": "Bo me tula nto yai na ndonga ya mbi sambu na mambu ya mbi yina ke landa kusalama, mingi-mingi na mutindu ya bansangu ya mbi ya nganda.",
             "ln": "Source oyo etiemaki na liste noire mpo na abuse persistant, typiquement na forme ya ba liens externes ya spam.",
@@ -603,12 +629,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte foi incluída na lista negra devido ao abuso persistente, normalmente na forma de hiperligações externas de lixo eletrónico.",
             "tr": "Bu kaynak, sürekli kötüye kullanım nedeniyle kara listeye alınmıştır; bu genellikle spam dış bağlantılar şeklinde gerçekleşir.",
             "ur": "اس ماخذ کو مسلسل غلط استعمال کی وجہ سے بلیک لسٹ کیا گیا ہے، عام طور پر سپیم بیرونی لنکس کی شکل میں۔",
+            "vi": "Nguồn này đã bị đưa vào danh sách đen do liên tục lạm dụng, thường là dưới dạng các liên kết spam từ bên ngoài.",
             "hans": "由于持续滥用（通常以垃圾外部链接的形式），此来源已被列入黑名单。",
             "hant": "由於持續濫用（通常以垃圾外部連結的形式），此來源已被列入黑名單。"
         },
         "blogs": {
             "ar": "هذا المصدر عبارة عن تدوينة.",
             "en": "This source is a blog post.",
+            "id": "Sumber ini adalah sebuah postingan blog.",
             "ja": "この情報源はブログ記事です。",
             "ln": "Source oyo ezali poste ya blog.",
             "mk": "Овој извор е блоговска објава.",
@@ -618,12 +646,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte é um artigo de blogue.",
             "tr": "Bu kaynak bir blog yazısıdır.",
             "ur": "یہ ماخذ ایک بلاگ پوسٹ ہے۔",
+            "vi": "Nguồn này là một bài đăng trên blog.",
             "hans": "此来源为博客文章。",
             "hant": "此來源為部落格文章。"
         },
         "books": {
             "ar": "هذا المصدر هو منشور مثل كتاب أو مجلة أو أي مادة مطبوعة أخرى.",
             "en": "This source is a publication such as a book, journal, or other printed material.",
+            "id": "Sumber ini adalah terbitan buku, jurnal, atau bahan cetak lainnya.",
             "ja": "この情報源は書籍、ジャーナル、またはその他の印刷物などの出版物です。",
             "ln": "Eutelo oyo ezali mokanda lokola buku, zulunalo, to mikanda misusu.",
             "mk": "Овој извор е публикација како книга, стручно списание или друг печатен материјал.",
@@ -632,12 +662,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte é uma publicação, tais como, um livro, revista, ou outro material impresso.",
             "tr": "Bu kaynak bir kitap, dergi ya da başka tür basılı yayın gibi bir yayındır.",
             "ur": "یہ ماخذ ایک اشاعت، جیسے کتاب، جریدہ، یا دیگر مطبوعہ مواد سے متعلقہ ہے۔",
+            "vi": "Nguồn này là một ấn phẩm như sách, tạp chí hoặc tài liệu in ấn khác.",
             "hans": "此来源为出版书籍、期刊或其他出版物。",
             "hant": "此來源為出版書籍、期刊或其他出版物。"
         },
         "community": {
             "ar": "هذا المصدر هو أخبار تم إنشاؤها بواسطة المجتمع.",
             "en": "This source is community-created news.",
+            "id": "Sumber ini adalah berita yang dibuat komunitas.",
             "ja": "この情報源はコミュニティが作成したニュースです。",
             "kg": "Nto yai kele bansangu ya kimvuka.",
             "ln": "Liziba oyo ezali nsango ya mboka.",
@@ -648,12 +680,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte são notícias criadas pela comunidade.",
             "tr": "Bu kaynak topluluk tarafından oluşturulmuş bir haber içeriğidir.",
             "ur": "یہ ماخذ کمیونٹی کی تخلیق کردہ خبریں ہیں۔",
+            "vi": "Đây là nguồn tin do cộng đồng tạo ra.",
             "hans": "此来源为社群创作的新闻。",
             "hant": "此來源為社群創作的新聞。"
         },
         "deprecated": {
             "ar": "هذا المصدر مُهمَل ولا يُنصح باستخدامه. مع ذلك، يُمكن استخدامه للوصف الذاتي غير المثير للجدل أو المحتوى الذي ينشره الخبراء بأنفسهم.",
             "en": "This source is deprecated and should not be used. It may still be used for non-controversial self-descriptions or expert self-published content.",
+            "id": "Sumber ini sudah usang dan tidak boleh digunakan. Sumber ini masih dapat digunakan untuk deskripsi diri yang tak kontroversial atau konten yang diterbitkan sendiri oleh pakar.",
             "ja": "この情報源は非推奨であり、使用しないでください。無争議の自己記述や専門家による自己出版コンテンツには引き続き使用できます。",
             "kg": "Bo ke sadilaka ve nto yai mpi bo fwete sadila yo ve. Bo lenda sadila yo sambu na kutendula yo mosi kukonda ntembe to mambu yina bantu ya mayele ke basisa bo mosi.",
             "ln": "Liziba oyo ezali lisusu na ntina te mpe esengeli kosalelama te. Ekoki kaka kosalelama mpo na kolobela makambo oyo bato bazali na yango to makambo oyo bato ya mayele babimisaka bango moko.",
@@ -661,12 +695,14 @@ window.CiteUnseenI18n = {
             "pl": "To źródło jest wycofane z użycia i nie powinno być stosowane z wyjątkiem niekontrowersyjnych samoopisów lub treści samodzielnie publikowanych przez ekspertów.",
             "pms": "Costa sorgiss a l'é veja e a dovrìa nen esse dovrà. A peul istess esse dovrà për dj'àuto-descrission nen controverse o dël contnù àuto-publicà da dj'espert.",
             "tr": "Bu kaynak artık kullanılmamaktadır ve kullanılmamalıdır. Ancak tartışma konusu olmayan öz tanımlamalar veya uzmanlarca yayımlanmış içerikler için hâlâ kullanılabilir.",
+            "vi": "Nguồn này đã lỗi thời và không nên được sử dụng. Tuy nhiên, nó vẫn có thể được sử dụng cho các mô tả bản thân không gây tranh cãi hoặc nội dung tự xuất bản của chuyên gia.",
             "hans": "此来源已弃用，不应使用。它仍可用于无争议的自我描述，或来自专家的自行发表内容。",
             "hant": "此來源已棄用，不應使用。它仍可用於無爭議的自我描述，或來自專家的自行發表內容。"
         },
         "editable": {
             "ar": "هذا المصدر قابل للتعديل بواسطة المجتمع (على سبيل المثال، ويكي أو قاعدة بيانات).",
             "en": "This source is editable by the community (e.g., a wiki or database).",
+            "id": "Sumber ini dapat disunting komunitas (misal, wiki atau pangkalan data).",
             "ja": "この情報源はコミュニティによって編集可能です（例：ウィキやデータベース）。",
             "kg": "Bantu lenda yidika nto yai (mu mbandu, wiki to base de données).",
             "ln": "Liziba oyo ekoki kobongisama na lisanga (ndakisa, wiki to base de données).",
@@ -675,24 +711,28 @@ window.CiteUnseenI18n = {
             "pms": "Costa sorgiss a l'é modificàbil da la comunità (për es., na wiki o na base ëd dàit).",
             "tr": "Bu kaynak topluluk tarafından düzenlenebilir (örneğin bir wiki veya veritabanı).",
             "ur": "یہ ماخذ کمیونٹی کے ذریعہ قابل ترمیم ہے (مثال کے طور پر، ایک ویکی یا ڈیٹا بیس) ۔",
+            "vi": "Nguồn này có thể được chỉnh sửa bởi cộng đồng (ví dụ: wiki hoặc cơ sở dữ liệu).",
             "hans": "此来源可由社群编辑（例如 Wiki 或数据库）。",
             "hant": "此來源可由社群編輯（例如 Wiki 或資料庫）。"
         },
         "generallyReliable": {
             "ar": "يتفق المحررون عمومًا على أن هذا المصدر موثوق به فيما يتعلق بالموضوعات التي تقع في مجال تخصصه.",
             "en": "Editors generally agree that this source is reliable on topics in its area of expertise.",
+            "id": "Para penyunting umumnya sepakat bahwa sumber ini terandalkan untuk topik-topik dalam bidang kepakarannya.",
             "ja": "編集者は一般的に、この情報源がその専門分野のトピックにおいて信頼できると考えています。",
             "ln": "Ba rédacteurs bandimaka mingi que source oyo ezali fiable na ba sujets na domaine ya expertise na yango.",
             "mk": "Уредниците начелно се согласуваат дека овој извор е меродавен на теми во неговата област на стручност.",
             "pl": "Redaktorzy generalnie zgadzają się, że to źródło jest wiarygodne w tematach z jego obszaru wiedzy specjalistycznej.",
             "pms": "J'editor a son an general d'acòrd che costa sorgiss a l'é fidà an sj'argoment ëd soa àrea ëd competensa.",
             "tr": "Editörler genellikle bu kaynağın kendi uzmanlık alanındaki konularda güvenilir olduğu konusunda hemfikirdir.",
+            "vi": "Các biên tập viên nhìn chung đều đồng ý rằng nguồn thông tin này đáng tin cậy về các chủ đề thuộc lĩnh vực chuyên môn của nó.",
             "hans": "编辑们一致认为此来源在其专业领域的主题上通常可靠。",
             "hant": "編輯們一致認為此來源在其專業領域的主題上通常可靠。"
         },
         "generallyUnreliable": {
             "ar": "يُعتبر هذا المصدر عمومًا غير موثوق به من قِبل المجتمع. مع ذلك، يُمكن استخدامه للوصف الذاتي غير المثير للجدل أو المحتوى الذي ينشره الخبراء بأنفسهم.",
             "en": "This source is generally considered unreliable by the community. It may still be used for non-controversial self-descriptions or expert self-published content.",
+            "id": "Sumber ini umumnya dianggap tak terandalkan oleh komunitas. Namun, sumber ini masih dapat digunakan untuk deskripsi diri yang tidak kontroversial atau konten yang diterbitkan sendiri oleh pakar.",
             "ja": "この情報源はコミュニティによって通常信頼できないと考えられています。無争議の自己記述や専門家による自己出版コンテンツには引き続き使用できます。",
             "kg": "Bantu mingi ke monaka nde mukanda yai kele ve ya kutudila ntima. Bo lenda sadila yo sambu na kutendula yo mosi kukonda ntembe to mambu yina bantu ya mayele ke basisa bo mosi.",
             "ln": "Mingimingi, liziba oyo etalelami lokola oyo ekoki kotyelama motema te na bato ya mboka. Ekoki naino kosalelama mpo na komilobela oyo ezali na ntembe te to makambo oyo bato ya mayele bamibimisi.",
@@ -700,12 +740,14 @@ window.CiteUnseenI18n = {
             "pl": "To źródło jest generalnie uznawane za niewiarygodne przez społeczność. Może nadal być używane do niekontrowersyjnych samoopisów własnych lub treści samodzielnie publikowanych przez ekspertów.",
             "pms": "Costa sorgiss a l'é an general considerà nen fidà da la comunità. A peul istess esse dovrà për dj'àuto-descrission nen controverse o dël contnù àuto-publicà da dj'espert.",
             "tr": "Bu kaynak, topluluk tarafından genel olarak güvenilmez kabul edilmektedir. Ancak tartışma konusu olmayan öz tanımlamalar veya uzmanlarca yayımlanmış içerikler için hâlâ kullanılabilir.",
+            "vi": "Nguồn thông tin này nhìn chung được cộng đồng đánh giá là không đáng tin cậy. Tuy nhiên, nó vẫn có thể được sử dụng cho các mô tả cá nhân không gây tranh cãi hoặc nội dung tự xuất bản của chuyên gia.",
             "hans": "社区共识认为此来源通常不可靠。它仍可用于无争议的自我描述，或来自专家的自行发表内容。",
             "hant": "社群共識認為此來源通常不可靠。它仍可用於無爭議的自我描述，或來自專家的自行發表內容。"
         },
         "government": {
             "ar": "يتم تحديد هذا المصدر على أنه وسيلة إعلام مملوكة للدولة أو تديرها الدولة، أو مصدر حكومي.",
             "en": "This source is identified as a state-owned or state-run media, or a government source.",
+            "id": "Sumber ini diidentifikasi sebagai media milik negara atau yang dikelola negara, atau sumber pemerintah.",
             "ja": "この情報源は国有または国営メディア、または政府の情報源として識別されています。",
             "ln": "Liziba oyo emonisami lokola bopanzi sango ya leta to ya leta, to liziba ya leta.",
             "mk": "Овој извор медиум во државна сопственост или контрола, или пак владин извор.",
@@ -713,12 +755,14 @@ window.CiteUnseenI18n = {
             "pms": "Costa sorgiss a l'é indentificà tanme un mojen possedù o controlà da lë stat, o na sorgiss governamental.",
             "tr": "Bu kaynak, devlet tarafından sahip olunan veya devletçe işletilen bir medya kuruluşu ya da bir devlet kaynağıdır.",
             "ur": "اس ماخذ کی شناخت سرکاری ملکیت یا سرکاری میڈیا، یا سرکاری ذرائع کے طور پر کی جاتی ہے۔",
+            "vi": "Nguồn tin này được xác định là phương tiện truyền thông thuộc sở hữu nhà nước hoặc do nhà nước điều hành, hoặc nguồn tin của chính phủ.",
             "hans": "此来源已被识别为国有或国营媒体，或为政府来源。",
             "hant": "此來源已被識別為國有或國營媒體，或為政府來源。"
         },
         "marginallyReliable": {
             "ar": "هذا المصدر ذو موثوقية محدودة. قد يلزم مراجعته على أساس كل حالة على حدة لتحديد مدى موثوقيته في كل سياق.",
             "en": "This source is marginally reliable. It may be necessary to review it on a case-by-case basis to determine its reliability in each context.",
+            "id": "Sumber ini memiliki tingkat keandalan yang terbatas. Mungkin perlu dilakukan peninjauan kasus per kasus untuk menentukan keandalannya dalam tiap konteks.",
             "ja": "この情報源は限られた信頼性があります。各コンテキストでの信頼性を判断するために、個別にレビューする必要があるかもしれません。",
             "kg": "Mukanda yai kele ya kutudila ntima. Yo lenda vanda mfunu na kutomisa yo na kutadila diambu mosi-mosi sambu na kuzaba kana yo kele ya kutudila ntima na konso mambu.",
             "ln": "Liziba oyo ezali mwa kotyela motema. Ekoki kozala na ntina kotalela yango na kotalela likambo mokomoko mpo na koyeba soki ekoki kotyelama motema na likambo mokomoko.",
@@ -726,12 +770,14 @@ window.CiteUnseenI18n = {
             "pl": "To źródło jest ledwo wiarygodne. Może być konieczne przejrzenie go przypadek po przypadku, aby określić jego wiarygodność w każdym kontekście.",
             "pms": "Costa sorgiss a l'é pòch fidàbil. A peul essie damanca ëd controlela cas për cas për determiné sò afidament an minca 'n contest.",
             "tr": "Bu kaynak, sınırlı düzeyde güvenilirdir. Her bağlamda güvenilirliğini belirlemek için duruma göre ayrı ayrı incelenmesi gerekebilir.",
+            "vi": "Nguồn thông tin này có độ tin cậy ở mức trung bình. Có thể cần phải xem xét lại từng trường hợp cụ thể để xác định độ tin cậy của nó trong mỗi ngữ cảnh.",
             "hans": "此来源半可靠。可能有必要在每次使用该来源时逐个进行审查，视情境决定是否可靠。",
             "hant": "此來源半可靠。可能有必要在每次使用該來源時逐個進行審查，視情境決定是否可靠。"
         },
         "multi": {
             "ar": "لا يوجد إجماع في المجتمع حول موثوقية هذا المصدر. قد تتأثر موثوقيته بعامل أو أكثر، مثل مجال الموضوع، أو المؤلف، أو تاريخ النشر.",
             "en": "There is no consensus in the community about the reliability of this source. Its reliability may be affected by one or more factors, such as the subject area, author, or publication time.",
+            "id": "Tak ada konsensus di komunitas mengenai keandalan sumber ini. Keandalannya mungkin dipengaruhi oleh satu atau lebih faktor, seperti bidang subjek, pengarang, atau waktu penerbitan.",
             "ja": "この情報源の信頼性についてコミュニティ内でコンセンサスがありません。その信頼性は、主題領域、著者、または出版時間など、1つ以上の要因によって影響を受ける可能性があります。",
             "kg": "Bantu ke ndimaka ve kana nto yai kele ya kutudila ntima. Kutula ntima na yo lenda vanda na bupusi na diambu mosi to mingi, bonso kisika ya ntu-diambu, nsoniki, to ntangu ya kubasika.",
             "ln": "Boyokani ezali te na kati ya lisanga mpo na bondimi ya source oyo. Bondimi na yango ekoki kozala na bopusi na likambo moko to mingi, lokola esika ya lisolo, mokomi, to ntango ya kobimisa mikanda.",
@@ -739,12 +785,14 @@ window.CiteUnseenI18n = {
             "pl": "Nie ma konsensusu w społeczności co do wiarygodności tego źródła. Na jego wiarygodność może wpływać jeden lub więcej czynników, takich jak obszar tematyczny, autor lub czas publikacji.",
             "pms": "A-i é nen d'acòrd ant la comunità a propòsit dl'afidament ëd costa sorgiss. Sò afidament a peul esse anfluensà da un o vàire fator, tanme l'argoment, l'autor o ël temp ëd publicassion.",
             "tr": "Topluluk içinde bu kaynağın güvenilirliği konusunda bir görüş birliği yoktur. Güvenilirliği; konu alanı, yazar veya yayımlanma zamanı gibi bir ya da birden fazla faktörden etkilenebilir.",
+            "vi": "Hiện chưa có sự đồng thuận trong cộng đồng về độ tin cậy của nguồn thông tin này. Độ tin cậy của nó có thể bị ảnh hưởng bởi một hoặc nhiều yếu tố, chẳng hạn như lĩnh vực nghiên cứu, tác giả hoặc thời điểm xuất bản.",
             "hans": "社区对此来源的可靠性没有共识。其可靠性可能受到一个或多个因素影响（例如主题领域、作者或出版时间）。",
             "hant": "社群對此來源的可靠性沒有共識。其可靠性可能受到一個或多個因素影響（例如主題領域、作者或出版時間）。"
         },
         "news": {
             "ar": "هذا المصدر عبارة عن مقالة إخبارية من مؤسسة إخبارية مرموقة.",
             "en": "This source is a news article from a reputable news organization.",
+            "id": "Sumber ini adalah artikel berita dari organisasi berita yang bereputasi.",
             "ja": "この情報源は信頼できるニュース組織からのニュース記事です。",
             "ln": "Eutelo oyo ezali lisolo ya bansango ya ebongiseli moko ya bansango oyo eyebani mingi.",
             "mk": "Овој извор е статија со вести од реноимрана новинска организација.",
@@ -753,12 +801,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte é um artigo de notícias de uma organização de notícias respeitável.",
             "tr": "Bu kaynak, saygın bir haber kuruluşuna ait bir haber makalesidir.",
             "ur": "یہ ماخذ ایک معروف خبر رساں تنظیم کا ایک نیوز آرٹیکل ہے۔",
+            "vi": "Nguồn tin này là một bài báo từ một tổ chức truyền thông uy tín.",
             "hans": "此来源为来自知名新闻机构的新闻文章。",
             "hant": "此來源為來自知名新聞機構的新聞文章。"
         },
         "opinions": {
             "ar": "هذا المصدر عبارة عن مقالة رأي.",
             "en": "This source is an opinion piece.",
+            "id": "Sumber ini adalah artikel pendapat.",
             "ja": "この情報源は意見記事です。",
             "kg": "Nto yai kele kitini ya ngindu.",
             "ln": "Source oyo ezali pièce ya opinion.",
@@ -768,12 +818,14 @@ window.CiteUnseenI18n = {
             "ps": "دا سرچينه يو اند ټوټه ده.",
             "pt": "Esta fonte é um artigo de opinião.",
             "tr": "Bu kaynak bir görüş yazısıdır.",
+            "vi": "Nguồn này là một bài viết mang tính quan điểm.",
             "hans": "此来源为观点文章。",
             "hant": "此來源為觀點文章。"
         },
         "predatory": {
             "ar": "هذا المصدر من مجلة مفترسة.",
             "en": "This source is from a predatory journal.",
+            "id": "Sumber ini berasal dari jurnal memangsa.",
             "ja": "この情報源はハゲタカジャーナルからのものです。",
             "kg": "Mukanda yai me katuka na zulunalu mosi ya ke tubilaka mambu ya mbi.",
             "ln": "Liziba oyo euti na zulunalo moko oyo elyaka banyama mosusu.",
@@ -783,12 +835,14 @@ window.CiteUnseenI18n = {
             "ps": "دا سرچينه د يو ښکارۍ مهالنۍ بڼه ده.",
             "pt": "Esta fonte é de uma revista predatória.",
             "tr": "Bu kaynak, yırtıcı (predatory) bir dergiden alınmıştır.",
+            "vi": "Nguồn này đến từ một tạp chí lừa đảo.",
             "hans": "此来源来自掠夺性期刊。",
             "hant": "此來源來自掠奪性期刊。"
         },
         "press": {
             "ar": "هذا المصدر عبارة عن بيان صحفي.",
             "en": "This source is a press release.",
+            "id": "Sumber ini adalah siaran pers.",
             "ja": "この情報源はプレスリリースです。",
             "ln": "Source oyo ezali communiqué ya presse.",
             "mk": "Овој извор е изјава за печат.",
@@ -798,12 +852,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte é um comunicado de imprensa.",
             "tr": "Bu kaynak bir basın bültenidir.",
             "ur": "یہ ماخذ ایک پریس ریلیز ہے۔",
+            "vi": "Nguồn này là một thông cáo báo chí.",
             "hans": "此来源为新闻稿。",
             "hant": "此來源為新聞稿。"
         },
         "satire": {
             "ar": "ينشر هذا المصدر محتوى ساخرًا أو محاكاة ساخرة.",
             "en": "This source publishes satirical or parody content.",
+            "id": "Sumber ini menerbitkan konten satire atau parodi.",
             "ja": "この情報源は風刺やパロディのコンテンツを公開しています。",
             "kg": "Kisika yai ke basisaka mambu ya satirique to parody.",
             "ln": "Eutelo oyo ebimisaka makambo ya satirique to ya parody.",
@@ -814,12 +870,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte publica conteúdo satírico ou de paródia.",
             "tr": "Bu kaynak, hiciv veya parodi içerik yayımlar.",
             "ur": "یہ ماخذ طنزیہ یا پیروڈی مواد شائع کرتا ہے۔",
+            "vi": "Nguồn này đến từ một tạp chí lừa đảo.",
             "hans": "此来源发表讽刺、恶搞内容。",
             "hant": "此來源發表諷刺、惡搞內容。"
         },
         "social": {
             "ar": "هذا المصدر هو موقع تواصل اجتماعي، وربما منشور على إحدى وسائل التواصل الاجتماعي.",
             "en": "This source is a social media website, possibly a social media post.",
+            "id": "Sumber ini adalah situs web media sosial, kemungkinan berupa sebuah postingan media sosial.",
             "ja": "この情報源はソーシャルメディアのウェブサイトで、ソーシャルメディアの投稿である可能性があります。",
             "ln": "Eutelo oyo ezali site ya social media, mbala mosusu poste ya social media.",
             "mk": "Овој извор е од друштвен медиум, можеби објава.",
@@ -828,12 +886,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte é um ''site'' da Web de multimédia social, possivelmente uma publicação das redes sociais.",
             "tr": "Bu kaynak, bir sosyal medya sitesinden alınmıştır; muhtemelen bir sosyal medya gönderisidir.",
             "ur": "یہ ماخذ ایک سوشل میڈیا ویب سائٹ ہے، ممکنہ طور پر ایک سوشل میڈیا پوسٹ۔",
+            "vi": "Nguồn này là một trang web mạng xã hội, có thể là một bài đăng trên mạng xã hội.",
             "hans": "此来源为社交媒体网站，可能是社交媒体贴文。",
             "hant": "此來源為社群媒體網站，可能是社群媒體貼文。"
         },
         "sponsored": {
             "ar": "هذا المصدر عبارة عن محتوى برعاية أو مادة ترويجية.",
             "en": "This source is a sponsored content or promotional material.",
+            "id": "Sumber ini merupakan konten bersponsor atau bahan promosi.",
             "ja": "この情報源はスポンサー付きのコンテンツまたはプロモーション資料です。",
             "ln": "Source oyo ezali contenus sponsorisé to matériel promotionnel.",
             "mk": "Овој извор е спонзорирана содржина или промотивен материјал.",
@@ -842,12 +902,14 @@ window.CiteUnseenI18n = {
             "pt": "Esta fonte é um conteúdo patrocinado ou material promocional.",
             "tr": "Bu kaynak, sponsorlu bir içerik ya da tanıtım materyalidir.",
             "ur": "یہ ماخذ ایک اسپانسر شدہ مواد یا تشہیری مواد ہے۔",
+            "vi": "Nguồn này là nội dung được tài trợ hoặc tài liệu quảng cáo.",
             "hans": "此来源为商单、宣传稿。",
             "hant": "此來源為商單、宣傳稿。"
         },
         "tabloids": {
             "ar": "هذا المصدر هو صحيفة صفراء أو أخبار شائعة.",
             "en": "This source is a tabloid or gossip news.",
+            "id": "Sumber ini adalah tabloid atau berita menggunjing.",
             "ja": "この情報源はタブロイドまたはゴシップニュースです。",
             "ln": "Source oyo eza tabloïde to sango ya bilobaloba.",
             "mk": "Овој извор е таблоид или озборувачка вест.",
@@ -855,12 +917,14 @@ window.CiteUnseenI18n = {
             "pms": "Costa sorgiss a l'é un giornal ëd costume e petegolum.",
             "pt": "Esta fonte é um tablóide ou uma notícia de fofocas.",
             "tr": "Bu kaynak, bir tabloid ya da magazin haberidir.",
+            "vi": "Nguồn tin này thuộc thể loại báo lá cải hoặc tin đồn.",
             "hans": "此来源为小报或八卦新闻。",
             "hant": "此來源為小報或八卦新聞。"
         },
         "tvPrograms": {
             "ar": "هذا المصدر هو برنامج تلفزيوني أو إذاعي. تعتمد موثوقيته على كل برنامج.",
             "en": "This source is a TV or radio program. Its reliability depends on the individual program.",
+            "id": "Sumber ini adalah program televisi atau radio. Keandalannya bergantung pada program individu tersebut.",
             "ja": "この情報源はテレビまたはラジオ番組です。その信頼性は個々の番組によって異なります。",
             "ln": "Liziba oyo ezali programme ya TV to ya radio. Bondimi na yango etali programme ya moto na moto.",
             "mk": "Овој извор е TV- или радиоемисија. Неговата меродавност зависи од поединечната емисија.",
@@ -868,12 +932,14 @@ window.CiteUnseenI18n = {
             "pms": "Costa sorgiss a l'é un programa dla television o dla radio. Sò afidament a dipend dal programa particolar.",
             "pt": "Esta fonte é um programa de TV ou de rádio. A sua fiabilidade depende do programa individual.",
             "tr": "Bu kaynak, bir TV ya da radyo programıdır. Güvenilirliği, ilgili programa bağlıdır.",
+            "vi": "Nguồn thông tin này là một chương trình truyền hình hoặc phát thanh. Độ tin cậy của nó phụ thuộc vào từng chương trình cụ thể.",
             "hans": "此来源为电视或广播节目。其可靠性取决于个别节目。",
             "hant": "此來源為電視或廣播節目。其可靠性取決於個別節目。"
         },
         "unknown": {
             "ar": "لم يتم تقييم هذا المصدر بعد.",
             "en": "This source is not yet evaluated.",
+            "id": "Sumber ini belum dievaluasi.",
             "ja": "この情報源はまだ評価されていません。",
             "ln": "Liziba oyo etalelami naino te.",
             "mk": "Овој извор сè уште не е оценет.",
@@ -882,6 +948,7 @@ window.CiteUnseenI18n = {
             "ps": "دا سرچينه لاارزول شوې نه ده.",
             "pt": "Esta fonte ainda não foi avaliada.",
             "tr": "Bu kaynak henüz değerlendirilmemiştir.",
+            "vi": "Nguồn thông tin này chưa được đánh giá.",
             "hans": "此来源尚未评估。",
             "hant": "此來源尚未評估。"
         }
@@ -890,6 +957,7 @@ window.CiteUnseenI18n = {
         "advocacy": {
             "ar": "المناصرة",
             "en": "advocacy",
+            "id": "advokasi",
             "ja": "アドボカシー",
             "ln": "kosunga",
             "mk": "застапништво",
@@ -898,12 +966,14 @@ window.CiteUnseenI18n = {
             "ps": "استازولي",
             "pt": "advocacia",
             "tr": "savunma",
+            "vi": "Bày tỏ quan điểm",
             "hans": "宣传机构",
             "hant": "宣傳機構"
         },
         "blacklisted": {
             "ar": "مُدرج في القائمة السوداء",
             "en": "blacklisted",
+            "id": "didaftarhitamkan",
             "ja": "ブラックリスト入り",
             "ln": "na liste ya moindo",
             "mk": "на црн список",
@@ -912,12 +982,14 @@ window.CiteUnseenI18n = {
             "ps": "تورلېست‌شوي",
             "pt": "na lista negra",
             "tr": "kara listeye alınmış",
+            "vi": "Danh sách đen",
             "hans": "列入黑名单",
             "hant": "列入黑名單"
         },
         "blogs": {
             "ar": "تدوينات المدونة",
             "en": "blog post(s)",
+            "id": "postingan blog",
             "ja": "ブログ",
             "ln": "post(s) ya blog .",
             "mk": "блоговска објава",
@@ -927,12 +999,14 @@ window.CiteUnseenI18n = {
             "pt": "artigo(s) de blogue",
             "tr": "blog yazıları",
             "ur": "بلاگ پوسٹ",
+            "vi": "bài đăng trên blog",
             "hans": "博客",
             "hant": "部落格"
         },
         "books": {
             "ar": "كتب",
             "en": "books",
+            "id": "buku",
             "ja": "出版物",
             "kg": "mikanda",
             "ln": "mikanda",
@@ -943,12 +1017,14 @@ window.CiteUnseenI18n = {
             "pt": "livros",
             "tr": "kitaplar",
             "ur": "کتابیں",
+            "vi": "Sách",
             "hans": "书刊",
             "hant": "書刊"
         },
         "community": {
             "ar": "مجتمع",
             "en": "community",
+            "id": "komunitas",
             "ja": "コミュニティ",
             "ln": "esika bofandi",
             "mk": "заедница",
@@ -957,12 +1033,14 @@ window.CiteUnseenI18n = {
             "ps": "ټولنه",
             "pt": "comunidade",
             "tr": "topluluk",
+            "vi": "Cộng đồng",
             "hans": "社群新闻",
             "hant": "社群新聞"
         },
         "deprecated": {
             "ar": "مُهمَل",
             "en": "deprecated",
+            "id": "usang",
             "ja": "非推奨",
             "kg": "yina bo me bikisaka",
             "ln": "esili kozanga kosalelama",
@@ -972,12 +1050,14 @@ window.CiteUnseenI18n = {
             "pt": "descontinuado",
             "tr": "artık geçerli olmayan",
             "ur": "مسترد شدہ",
+            "vi": "Lỗi thời",
             "hans": "应停用",
             "hant": "應停用"
         },
         "editable": {
             "ar": "قابلة للتحرير",
             "en": "editable",
+            "id": "dapat disunting",
             "ja": "編集可能",
             "ln": "ekoki kobongisama",
             "mk": "уредливо",
@@ -987,12 +1067,14 @@ window.CiteUnseenI18n = {
             "pt": "editável",
             "tr": "düzenlenebilir",
             "ur": "قابل ترمیم",
+            "vi": "Có thể chỉnh sửa",
             "hans": "可编辑",
             "hant": "可編輯"
         },
         "generallyReliable": {
             "ar": "موثوقة بشكل عام",
             "en": "generally reliable",
+            "id": "umumnya terandalkan",
             "ja": "通常信頼できる",
             "kg": "mingi-mingi ya kutudila ntima",
             "ln": "mingimingi ekoki kotyelama motema",
@@ -1003,12 +1085,14 @@ window.CiteUnseenI18n = {
             "pt": "geralmente confiável",
             "tr": "genel olarak güvenilir",
             "ur": "عام طور پر قابل اعتماد",
+            "vi": "Đáng tin cậy nói chung",
             "hans": "通常可靠",
             "hant": "通常可靠"
         },
         "generallyUnreliable": {
             "ar": "غير موثوق بها بشكل عام",
             "en": "generally unreliable",
+            "id": "umumnya tak terandalkan",
             "ja": "通常信頼できない",
             "kg": "Mbala mingi bo lenda tudila yo ve ntima",
             "ln": "mingimingi ekoki kotyelama motema te",
@@ -1019,12 +1103,14 @@ window.CiteUnseenI18n = {
             "pt": "geralmente não confiável",
             "tr": "genellikle güvenilmez",
             "ur": "عام طور پر ناقابل اعتماد",
+            "vi": "Thường không đáng tin cậy",
             "hans": "通常不可靠",
             "hant": "通常不可靠"
         },
         "government": {
             "ar": "حكومة",
             "en": "government",
+            "id": "pemerintah",
             "ja": "政府",
             "ln": "boyangeli",
             "mk": "владино",
@@ -1034,12 +1120,14 @@ window.CiteUnseenI18n = {
             "pt": "governo",
             "tr": "devlet",
             "ur": "حکومت",
+            "vi": "Chính phủ",
             "hans": "政府",
             "hant": "政府"
         },
         "marginallyReliable": {
             "ar": "موثوق بها بشكل هامشي",
             "en": "marginally reliable",
+            "id": "lumayan terandalkan sedikit",
             "ja": "限られた信頼性",
             "ln": "oyo ekoki kotyelama motema na ndenge ya moke",
             "mk": "маргинално веродостоен",
@@ -1048,12 +1136,14 @@ window.CiteUnseenI18n = {
             "ps": "لږ د باور وړ",
             "pt": "marginalmente confiável",
             "tr": "kısmen güvenilir",
+            "vi": "Đáng tin cậy",
             "hans": "半可靠",
             "hant": "半可靠"
         },
         "multi": {
             "ar": "لا يوجد إجماع",
             "en": "no consensus",
+            "id": "tiada konsensus",
             "ja": "コンセンサスなし",
             "kg": "bo me ndima ve",
             "ln": "boyokani moko te",
@@ -1063,12 +1153,14 @@ window.CiteUnseenI18n = {
             "pt": "sem consenso",
             "tr": "fikir birliği yok",
             "ur": "کوئی اتفاق نہیں",
+            "vi": "Không có sự đồng thuận",
             "hans": "无共识",
             "hant": "無共識"
         },
         "news": {
             "ar": "أخبار",
             "en": "news",
+            "id": "berita",
             "ja": "ニュース",
             "kg": "bansangu",
             "ln": "bansango",
@@ -1079,12 +1171,14 @@ window.CiteUnseenI18n = {
             "pt": "notícias",
             "tr": "haberler",
             "ur": "خبریں",
+            "vi": "tin tức",
             "hans": "新闻",
             "hant": "新聞"
         },
         "opinions": {
             "ar": "مقالة رأي",
             "en": "opinion piece(s)",
+            "id": "artikel pendapat",
             "ja": "意見",
             "kg": "Bangindu ya bantu",
             "ln": "eteni(s) ya makanisi .",
@@ -1094,12 +1188,14 @@ window.CiteUnseenI18n = {
             "ps": "اند ټوټه(ې)",
             "pt": "artigo(s) de opinião",
             "tr": "görüş yazıları",
+            "vi": "Bài báo (s) ý kiến",
             "hans": "观点",
             "hant": "觀點"
         },
         "predatory": {
             "ar": "المجلات المفترسة",
             "en": "predatory journal(s)",
+            "id": "jurnal memangsa",
             "ja": "ハゲタカジャーナル",
             "ln": "(ba) zulunalo oyo elyaka banyama mosusu .",
             "mk": "предаторски часопис(и)",
@@ -1108,12 +1204,14 @@ window.CiteUnseenI18n = {
             "ps": "ښکار مهالنۍ",
             "pt": "revista(s) predatória(s)",
             "tr": "yırtıcı dergiler",
+            "vi": "tạp chí (các tạp chí) mang tính chất săn mồi",
             "hans": "掠夺性期刊",
             "hant": "掠奪性期刊"
         },
         "press": {
             "ar": "بيان صحفي",
             "en": "press release(s)",
+            "id": "siaran pers",
             "ja": "プレスリリース",
             "ln": "communiqué(s) ya bapanzi sango .",
             "mk": "соопштение за печат",
@@ -1123,12 +1221,14 @@ window.CiteUnseenI18n = {
             "pt": "comunicado(s) de imprensa",
             "tr": "basın bültenleri",
             "ur": "پریس ریلیز",
+            "vi": "Thông cáo báo chí",
             "hans": "新闻稿",
             "hant": "新聞稿"
         },
         "satire": {
             "ar": "ساخر",
             "en": "satirical",
+            "id": "satire",
             "ja": "風刺",
             "ln": "ya satirique",
             "mk": "сатирично",
@@ -1138,12 +1238,14 @@ window.CiteUnseenI18n = {
             "pt": "satírico",
             "tr": "hicivsel",
             "ur": "طنزیہ",
+            "vi": "Châm biếm",
             "hans": "幽默",
             "hant": "幽默"
         },
         "social": {
             "ar": "وسائل التواصل الاجتماعي",
             "en": "social media",
+            "id": "media sosial",
             "ja": "ソーシャルメディア",
             "kg": "basite ya bansangu",
             "ln": "ba réseaux sociaux",
@@ -1154,12 +1256,14 @@ window.CiteUnseenI18n = {
             "pt": "redes sociais",
             "tr": "sosyal medya",
             "ur": "سوشل میڈیا",
+            "vi": "Mạng xã hội",
             "hans": "社交媒体",
             "hant": "社群媒體"
         },
         "sponsored": {
             "ar": "برعاية",
             "en": "sponsored",
+            "id": "disponsori",
             "ja": "スポンサー付き",
             "kg": "bo ke pesaka mbongo",
             "ln": "oyo esungami",
@@ -1170,12 +1274,14 @@ window.CiteUnseenI18n = {
             "pt": "patrocinado",
             "tr": "sponsorlu",
             "ur": "سپانسر شدہ",
+            "vi": "Được tài trợ",
             "hans": "宣传稿",
             "hant": "宣傳稿"
         },
         "tabloids": {
             "ar": "صحيفة(ات) شعبية",
             "en": "tabloid(s)",
+            "id": "tabloid",
             "ja": "タブロイド",
             "ln": "(ba) tabloïde .",
             "mk": "таблоид(и)",
@@ -1183,12 +1289,14 @@ window.CiteUnseenI18n = {
             "pms": "spetegolum",
             "pt": "tablóide(s)",
             "tr": "tabloid gazeteler",
+            "vi": "báo lá cải",
             "hans": "小报",
             "hant": "小報"
         },
         "tvPrograms": {
             "ar": "البرامج التلفزيونية",
             "en": "TV program(s)",
+            "id": "Program televisi",
             "ja": "テレビ番組",
             "kg": "Programe ya TV",
             "ln": "Programme(s) ya TV .",
@@ -1198,12 +1306,14 @@ window.CiteUnseenI18n = {
             "ps": "تلوېزيوني خپرونه(ې)",
             "pt": "programa(s) de TV",
             "tr": "TV programları",
+            "vi": "Chương trình truyền hình",
             "hans": "电视节目",
             "hant": "電視節目"
         },
         "unknown": {
             "ar": "روابط غير معروفة",
             "en": "unknown links",
+            "id": "tautan tak dikenal",
             "ja": "不明なリンク",
             "kg": "ba lien ya me zabana ve",
             "ln": "ba liens oyo eyebani te",
@@ -1213,55 +1323,63 @@ window.CiteUnseenI18n = {
             "ps": "نامالوم تړوني",
             "pt": "hiperligações desconhecidas",
             "tr": "bilinmeyen bağlantılar",
+            "vi": "Liên kết không xác định",
             "hans": "未知链接",
             "hant": "未知連結"
         }
     },
     "citationPlural": {
         "ar": "الاستشهادات",
-        "en": " citations",
-        "ja": " 件の引用",
+        "en": "citations",
+        "id": "rujukan",
+        "ja": "件の引用",
         "ln": "ba citations oyo elobami",
-        "mk": " наводи",
-        "pl": " cytowania",
+        "mk": "наводи",
+        "pl": "cytowania",
         "pms": "sitassion",
         "ps": "اخځونه",
         "pt": "citações",
         "tr": "alıntılar",
-        "hans": " 个来源",
-        "hant": " 個來源"
+        "vi": "Chú thích",
+        "hans": "个来源",
+        "hant": "個來源"
     },
     "citationSingular": {
         "ar": "الاستشهاد",
-        "en": " citation",
-        "ja": " 件の引用",
+        "en": "citation",
+        "id": "rujukan",
+        "ja": "件の引用",
         "ln": "citation ya kotanga",
-        "mk": " навод",
-        "pl": " cytowanie",
-        "pms": " sitassion",
+        "mk": "навод",
+        "pl": "cytowanie",
+        "pms": "sitassion",
         "ps": "اخځ",
         "pt": "citação",
         "tr": "alıntı",
-        "hans": " 个来源",
-        "hant": " 個來源"
+        "vi": "Trích dẫn",
+        "hans": "个来源",
+        "hant": "個來源"
     },
     "citationTooltipAction": {
         "ar": "انقر على الرمز لفتح صفحة قائمة التحقق لعرض التفاصيل.",
-        "en": " Click the icon to open the checklist page to view details.",
-        "ja": " アイコンをクリックすると、チェックリストページを開いて詳細を確認できます。",
+        "en": "Click the icon to open the checklist page to view details.",
+        "id": "Klik ikon untuk membuka halaman daftar periksa dan melihat rincian.",
+        "ja": "アイコンをクリックすると、チェックリストページを開いて詳細を確認できます。",
         "kg": "Findilaka kidimbu sambu na kukangula lutiti ya lisiti sambu na kutala mambu ya nkaka.",
         "ln": "Finá elembo mpo na kofungola lokasa ya liste ya makambo mpo na komona makambo mosusu.",
         "mk": "Стиснете на иконата за да отворите страница со контролен список за да ги видите подробностите.",
-        "pl": " Kliknij ikonę, aby otworzyć stronę listy kontrolnej i zobaczyć szczegóły.",
-        "pms": " Sgnaché an sla plancia për duverté la pàgina dla lista ëd verìfica pr'ësmon-e ij detaj.",
+        "pl": "Kliknij ikonę, aby otworzyć stronę listy kontrolnej i zobaczyć szczegóły.",
+        "pms": "Sgnaché an sla plancia për duverté la pàgina dla lista ëd verìfica pr'ësmon-e ij detaj.",
         "pt": "Clique no ícone para abrir a página de lista de verificação para ver os detalhes.",
         "tr": "Ayrıntıları görüntülemek için simgeye tıklayarak kontrol listesi sayfasını açın.",
-        "hans": " 点击图标可打开检查表页面以查看详情。",
-        "hant": " 點擊圖示可打開檢查表頁面以查看詳情。"
+        "vi": "Nhấp vào biểu tượng để mở trang danh sách kiểm tra và xem chi tiết.",
+        "hans": "点击图标可打开检查表页面以查看详情。",
+        "hant": "點擊圖示可打開檢查表頁面以查看詳情。"
     },
     "citationTooltipPrefix": {
         "ar": "من",
-        "en": "From ",
+        "en": "From",
+        "id": "Dari",
         "ja": "出典",
         "kg": "Na nima ya kukatuka na",
         "ln": "Euti na",
@@ -1270,12 +1388,15 @@ window.CiteUnseenI18n = {
         "pms": "Da",
         "ps": "له",
         "pt": "De",
+        "tr": "Şuradan:",
+        "vi": "Từ",
         "hans": "来自",
         "hant": "來自"
     },
     "citationTooltipSuffix": {
         "ar": ":",
-        "en": ": ",
+        "en": ":",
+        "id": ":",
         "ja": "：",
         "kg": ":",
         "ln": ":",
@@ -1285,12 +1406,14 @@ window.CiteUnseenI18n = {
         "ps": ":",
         "pt": ":",
         "tr": ":",
+        "vi": ":",
         "hans": "：",
         "hant": "："
     },
     "clearAllFilters": {
         "ar": "مسح الكل",
         "en": "Clear All",
+        "id": "Kosongkan Semua",
         "ja": "全てクリア",
         "ln": "Effacer Nionso",
         "mk": "Исчисти сè",
@@ -1299,12 +1422,14 @@ window.CiteUnseenI18n = {
         "ps": "ټول سپينول",
         "pt": "Limpar Tudo",
         "tr": "Tümünü Temizle",
+        "vi": "Xóa tất cả",
         "hans": "清除全部",
         "hant": "清除全部"
     },
     "clearAllFiltersTooltip": {
         "ar": "مسح جميع المرشحات النشطة",
         "en": "Clear all active filters",
+        "id": "Kosongkan semua penyaring menyala",
         "ja": "全てのアクティブフィルタをクリア",
         "ln": "Effacer ba filtres nionso oyo ezali active",
         "mk": "Исчисти ги сите активни филтри",
@@ -1313,12 +1438,14 @@ window.CiteUnseenI18n = {
         "ps": "ټول کارنده چاڼگر سپينول",
         "pt": "Limpar todos os filtros ativos",
         "tr": "Tüm etkin filtreleri temizle",
+        "vi": "Xóa tất cả các bộ lọc đang hoạt động",
         "hans": "清除所有活动筛选",
         "hant": "清除所有活動篩選"
     },
     "commentPlaceholder": {
         "ar": "معلومات إضافية حول سبب ملاءمة هذا التصنيف...",
         "en": "Additional information about why this categorization is appropriate...",
+        "id": "Informasi tambahan mengenai mengapa pengategorian ini tepat...",
         "ja": "この分類が適切である理由についての追加情報...",
         "ln": "Ba informations ya kobakisa pona nini categorisation oyo ebongi...",
         "mk": "Дополнителни информации за тоа зошто оваа категоризациај е соодветна...",
@@ -1326,12 +1453,14 @@ window.CiteUnseenI18n = {
         "pms": "Anformassion adissionaj an sël përchè costa categorisassion a va bin...",
         "pt": "Informação adicional sobre o motivo para a classificação ser apropriada...",
         "tr": "Bu kategorizasyonun neden uygun olduğuna dair ek bilgi...",
+        "vi": "Thông tin bổ sung về lý do tại sao cách phân loại này là phù hợp…",
         "hans": "关于为何此分类合适的额外信息……",
         "hant": "關於為何此分類合適的額外資訊……"
     },
     "dialogLoadError": {
         "ar": "فشل تحميل الحوار. يُرجى المحاولة مرة أخرى.",
         "en": "Failed to load dialog. Please try again.",
+        "id": "Gagal memuat dialog. Harap coba lagi.",
         "ja": "ダイアログの読み込みに失敗しました。もう一度お試しください。",
         "kg": "Kukonda kukotisa masolo. Beto ke lomba nge na kumeka diaka.",
         "ln": "Elongi te ko charger dialogue. Svp meka lisusu.",
@@ -1340,12 +1469,14 @@ window.CiteUnseenI18n = {
         "pms": "Falì a carié ël diàlogh. Për piasì, ch'a preuva torna.",
         "pt": "Não foi possível carregar a janela. Por favor, tente novamente.",
         "tr": "İletişim kutusu yüklenemedi. Lütfen tekrar deneyin.",
+        "vi": "Không thể tải hộp thoại. Vui lòng thử lại.",
         "hans": "加载对话框失败。请重试。",
         "hant": "載入對話方塊失敗。請重試。"
     },
     "documentationLink": {
         "ar": "التوثيق",
         "en": "Documentation",
+        "id": "Dokumentasi",
         "ja": "ドキュメント",
         "kg": "Mikanda",
         "ln": "Mikanda ya kosala mikanda",
@@ -1355,12 +1486,14 @@ window.CiteUnseenI18n = {
         "ps": "لاسوند",
         "pt": "Documentação",
         "tr": "Belgeleme",
+        "vi": "Tài liệu",
         "hans": "帮助文档",
         "hant": "幫助文檔"
     },
     "domainsCorrectedMessage": {
         "ar": "تم تصحيح المجالات التالية تلقائيًا:",
         "en": "The following domains were automatically corrected:",
+        "id": "Domain-domain berikut telah diralat secara otomatis:",
         "ja": "以下のドメインが自動修正されました：",
         "ln": "Ba domaines oyo elandi e corrigé automatiquement:",
         "mk": "Следниве домени беа автоматски исправени:",
@@ -1368,12 +1501,14 @@ window.CiteUnseenI18n = {
         "pms": "Ij domini sì-dapress a son ëstait coregiù an automàtich:",
         "pt": "Os domínios seguintes foram corrigidos automaticamente:",
         "tr": "Aşağıdaki alan adları otomatik olarak düzeltildi:",
+        "vi": "Các lĩnh vực sau đã được tự động sửa lỗi:",
         "hans": "以下域名已自动修正：",
         "hant": "以下網域已自動修正："
     },
     "domainsToIgnore": {
         "ar": "المجالات التي يجب تجاهلها (مجال واحد لكل سطر)",
         "en": "Domains to Ignore (one per line)",
+        "id": "Domain untuk Diabaikan (satu per baris)",
         "ja": "無視するドメイン（1行に1つ）",
         "kg": "Bisika ya Kuvila (mosi na ndonga mosi)",
         "ln": "Ba domaines oyo esengeli ko ignorer (moko na ligne moko) .",
@@ -1382,12 +1517,14 @@ window.CiteUnseenI18n = {
         "pms": "Domini da ignoré (un për linia)",
         "pt": "Domínios a Ignorar (um por linha)",
         "tr": "Yok sayılacak alan adları (her satıra bir tane)",
+        "vi": "Các tên miền cần bỏ qua (mỗi dòng một tên miền)",
         "hans": "要忽略的域名（每行一个）",
         "hant": "要忽略的網域（每行一個）"
     },
     "enableDisableCategories": {
         "ar": "تمكين/تعطيل الفئات",
         "en": "Enable/Disable Categories",
+        "id": "Nyalakan/Matikan Kategori",
         "ja": "カテゴリの有効/無効",
         "ln": "Activer/Desactiver ba Catégories",
         "mk": "Овозможи/Оневозможи категории",
@@ -1395,12 +1532,14 @@ window.CiteUnseenI18n = {
         "pms": "Ativé o disativé le categorìe",
         "pt": "Ativar/Desativar Categorias",
         "tr": "Kategorileri Etkinleştir/Devre Dışı Bırak",
+        "vi": "Bật/Tắt danh mục",
         "hans": "启用/禁用类别",
         "hant": "啟用/停用類別"
     },
     "filterToggleTooltip": {
         "ar": "انقر لتبديل مرشح هذه الفئة. يمكنك تحديد فئات متعددة. اضغط على مفتاح \"Escape\" لمسح جميع المرشحات.",
         "en": "Click to toggle this category filter. You can select multiple categories. Press Escape to clear all filters.",
+        "id": "Klik untuk menyalakan/mematikan penyaring kategori ini. Anda dapat memilih beberapa kategori. Tekan Escape untuk mengosongkan semua penyaring.",
         "ja": "このカテゴリフィルタを切り替えるにはクリックしてください。複数のカテゴリを選択できます。Escape キーで全てのフィルタをクリアします。",
         "kg": "Pusa sambu na kusoba filtre ya kitini yai. Nge lenda pona bitini mingi. Kupesa bansangu sambu na kukatula ba filtre yonso.",
         "ln": "Finá mpo na kobongola filtre ya catégorie oyo. Okoki kopona biteni mingi. Press Escape mpo na kolongola ba filtre nyonso.",
@@ -1409,47 +1548,56 @@ window.CiteUnseenI18n = {
         "pms": "Sgnaché për ativé o disativé cost filtr ëd categorìa. A peul selessioné vàire categorìe. Sgnaché su Scapé për dëscancelé tuti ij filtr.",
         "pt": "Clique para alternar este filtro de categoria. Pode selecionar várias categorias. Pressione \"Escape\" para limpar todos os filtros.",
         "tr": "Bu kategori filtresini açıp kapatmak için tıklayın. Birden fazla kategori seçebilirsiniz. Tüm filtreleri temizlemek için Escape tuşuna basın.",
+        "vi": "Nhấp chuột để bật/tắt bộ lọc danh mục này. Bạn có thể chọn nhiều danh mục. Nhấn phím Escape để xóa tất cả các bộ lọc.",
         "hans": "点击以切换此类别筛选。您可以选择多个类别。按 Escape 清除所有筛选。",
         "hant": "點擊以切換此類別篩選。您可以選擇多個類別。按 Escape 清除所有篩選。"
     },
     "filtersActive": {
         "ar": "المرشحات النشطة",
-        "en": " filters active",
-        "ja": " つのフィルタが有効",
+        "en": "filters active",
+        "id": "penyaring menyala",
+        "ja": "つのフィルタが有効",
         "ln": "ba filtres oyo ezali kosala",
-        "mk": " активни филтри",
-        "pl": " aktywnych filtrów",
+        "mk": "активни филтри",
+        "pl": "aktywnych filtrów",
         "pms": "filtr ativ",
         "pt": "filtros ativos",
         "tr": "filtreler aktif",
-        "hans": " 个筛选生效",
-        "hant": " 個篩選生效"
+        "vi": "bộ lọc đang hoạt động",
+        "hans": "个筛选生效",
+        "hant": "個篩選生效"
     },
     "hideSocialMediaReliabilityRatings": {
         "ar": "إخفاء تقييمات الموثوقية لروابط وسائل التواصل الاجتماعي من الناشرين غير المصنفين",
         "en": "Hide reliability ratings for social media links from unrated publishers",
+        "id": "Sembunyikan penilaian keandalan untuk tautan media sosial dari penerbit yang tak dinilai.",
         "ja": "未識別の発行元によるソーシャルメディアの情報源について、信頼性評価を非表示にする",
         "mk": "Скриј оценки на меродавност за врски до друштвени медиуми од неоценети објавувачи",
         "pl": "Ukryj oceny wiarygodności linków do mediów społecznościowych, gdzie instytucje odpowiedzialne za linki nie zostały ocenione",
         "pms": "Stërmé le valutassion ëd fidabilità për le liure a dij mojen sossiaj da editor nen valutà",
+        "tr": "Derecelendirilmemiş yayıncılardan gelen sosyal medya bağlantıları için güvenilirlik derecelendirmelerini gizle",
+        "vi": "Ẩn xếp hạng độ tin cậy cho các liên kết mạng xã hội từ các nhà xuất bản chưa được xếp hạng.",
         "hans": "对于未识别发布者的社交媒体来源，隐藏可靠性评级",
         "hant": "對於未識別發佈者的社群媒體來源，隱藏可靠性評級"
     },
     "ignoreDomainsTabGuidance": {
         "ar": "أدخل النطاقات التي ترغب في استبعادها من كل فئة. لن تُميّز المصادر من هذه النطاقات بأيقونة الفئة المقابلة. أدخل نطاقًا واحدًا في كل سطر بالتنسيق \"example.com\".",
         "en": "Enter domains to exclude from each category. Sources from these domains will not be marked with the corresponding category icon. Enter one domain per line in the format 'example.com'.",
+        "id": "Masukkan domain yang ingin dikecualikan dari tiap kategori. Sumber dari domain-domain ini tidak akan ditandai dengan ikon kategori yang sesuai. Masukkan satu domain per baris dalam format 'example.com'.",
         "ja": "各カテゴリから除外するドメインを入力します。これらのドメインからの情報源には対応するカテゴリアイコンが表示されません。1行に1つのドメインを 'example.com' の形式で入力してください。",
         "ln": "Tyá ba domaines oyo okolongola na catégorie moko na moko. Ba sources oyo ewutaka na ba domaines oyo ekozala marqué te na icône ya catégorie oyo ekokani. Tyá domaine moko na ligne moko na format 'example.com'.",
         "mk": "Внесете домени за изземање од секоја категорија. Изворите од овие домени нема да се означуваат со соодветната категориска икона. Внесувајте по еден домен во секој ред, во форматот „example.com“.",
         "pl": "Wprowadź domeny do wykluczenia z każdej kategorii. Źródła z tych domen nie będą oznaczone odpowiednią ikoną kategorii. Wprowadź jedną domenę na linię w formacie 'przykład.com'.",
         "pms": "Gionté ij domini da esclude da tute le categorìe. Le sorgiss da costi domini a saran pa marcà con la plancia ëd categorìa corëspondenta. Anserì un domini për linia ant ël formà 'esempi.com'.",
         "tr": "Her kategori için hariç tutulacak alan adlarını girin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenmeyecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
+        "vi": "Nhập các tên miền cần loại trừ khỏi mỗi danh mục. Các nguồn từ các tên miền này sẽ không được đánh dấu bằng biểu tượng danh mục tương ứng. Nhập một tên miền trên mỗi dòng theo định dạng “example.com”.",
         "hans": "输入要从各类别中排除的域名。来自这些域名的来源将不会标记对应的类别图标。每行输入一个域名，格式为 'example.com'。",
         "hant": "輸入要從各類別中排除的網域。來自這些網域的來源將不會標記對應的類別圖示。每行輸入一個網域，格式為 'example.com'。"
     },
     "invalidDomainFormatMessage": {
         "ar": "تم اكتشاف تنسيق نطاق غير صالح. يجب أن تكون النطاقات بصيغة \"name.tld\" (مثل example.com):",
         "en": "Invalid domain format detected. Domains should be in format \"name.tld\" (e.g., example.com):",
+        "id": "Format domain tidak sah terdeteksi. Domain harus dalam format \"nama.tld\" (misalnya, example.com):",
         "ja": "無効なドメイン形式が検出されました。ドメインは \"name.tld\" 形式（例：example.com）である必要があります：",
         "kg": "Bo me mona mutindu ya mbote ya kusala mambu. Bisika fwete vanda na mutindu ya \"name.tld\" (mu mbandu, example.com):",
         "ln": "Format ya domaine ya mabe ezwami. Ba domaines esengeli kozala na format \"name.tld\" (ndakisa, example.com):",
@@ -1457,12 +1605,14 @@ window.CiteUnseenI18n = {
         "pl": "Wykryto nieprawidłowy format domeny. Domeny powinny być w formacie \"nazwa.tld\" (np. przykład.com):",
         "pms": "Formà ëd domini nen bon trovà. Ij domini a dovrìo esse ant ël formà «nom.tld» (për es., esempi.com):",
         "tr": "Geçersiz alan adı biçimi algılandı. Alan adları \"name.tld\" biçiminde olmalıdır (örneğin, example.com):",
+        "vi": "Đã phát hiện định dạng tên miền không hợp lệ. Tên miền phải có định dạng “name.tld” (ví dụ: example.com):",
         "hans": "检测到无效的域名格式。域名应为 \"name.tld\" 格式（如 example.com）：",
         "hant": "偵測到無效的網域格式。網域應為 \"name.tld\" 格式（如 example.com）："
     },
     "loading": {
         "ar": "تحميل...",
         "en": "Loading...",
+        "id": "Memuat...",
         "ja": "読み込み中...",
         "kg": "Bo me tula yo na valere...",
         "ln": "Kokotisa biloko...",
@@ -1472,12 +1622,14 @@ window.CiteUnseenI18n = {
         "ps": "بارېږي...",
         "pt": "A carregar...",
         "tr": "Yükleniyor...",
+        "vi": "Đang tải…",
         "hans": "加载中……",
         "hant": "載入中……"
     },
     "local": {
         "ar": "محلي",
         "en": "local",
+        "id": "lokal",
         "ja": "ローカル",
         "ln": "ya bana-mboka",
         "mk": "месни",
@@ -1486,12 +1638,14 @@ window.CiteUnseenI18n = {
         "ps": "سيمه‌ييز",
         "pt": "local",
         "tr": "yerel",
+        "vi": "Địa phương",
         "hans": "本地",
         "hant": "本地"
     },
     "localSettingGuidance": {
         "ar": "إعدادات wiki المحلية تتغلب على الإعدادات العالمية.",
         "en": "Local wiki settings override global settings.",
+        "id": "Pengaturan wiki lokal akan menimpa pengaturan global.",
         "ja": "ローカルウィキの設定はグローバル設定を上書きします。",
         "ln": "Bobongisi ya wiki ya mboka elongolaka bobongisi ya mokili mobimba.",
         "mk": "Месните викинагодувања ги заменуваат глобалните.",
@@ -1499,12 +1653,14 @@ window.CiteUnseenI18n = {
         "pms": "Ij paràmeter wiki locaj a l'ha la precedensa an sij paràmeter globaj.",
         "pt": "As definições locais da wiki substituem as definições globais.",
         "tr": "Yerel wiki ayarları, küresel ayarları geçersiz kılar.",
+        "vi": "Các thiết lập wiki cục bộ sẽ ghi đè lên các thiết lập toàn cầu.",
         "hans": "本地维基设置会覆盖全域设置。",
         "hant": "本地維基設定會覆蓋全域設定。"
     },
     "metaWikiGlobal": {
         "ar": "ميتا ويكي (عالمي)",
         "en": "Meta-Wiki (global)",
+        "id": "Meta-Wiki (global)",
         "ja": "メタウィキ (グローバル)",
         "ln": "Meta-Wiki (ya mokili mobimba) .",
         "mk": "Мета (глобално)",
@@ -1513,26 +1669,31 @@ window.CiteUnseenI18n = {
         "ps": "مېټا-ويکي (ټوليز)",
         "pt": "Meta-Wiki (global)",
         "tr": "Meta-Wiki (küresel)",
+        "vi": "Meta-Wiki (toàn cầu)",
         "hans": "元维基 (全域)",
         "hant": "元維基 (全域)"
     },
     "of": {
         "ar": "ل",
-        "en": " of ",
-        "ja": " /",
+        "en": "of",
+        "id": "dari",
+        "ja": "/",
         "kg": "ya",
         "ln": "ya",
-        "mk": " од",
-        "pl": " z",
-        "pms": " ëd",
+        "mk": "од",
+        "pl": "z",
+        "pms": "ëd",
         "ps": "د",
         "pt": "de",
-        "hans": " /",
-        "hant": " /"
+        "tr": "/",
+        "vi": "Của",
+        "hans": "/",
+        "hant": "/"
     },
     "optionalComment": {
         "ar": "تعليق اختياري",
         "en": "Optional Comment",
+        "id": "Komentar Opsional",
         "ja": "オプションコメント",
         "kg": "Mambu ya nge lenda tuba",
         "ln": "Commentaire oyo okoki kopona",
@@ -1542,12 +1703,14 @@ window.CiteUnseenI18n = {
         "ps": "اختياري څرگندونه",
         "pt": "Comentário Opcional",
         "tr": "İsteğe Bağlı Yorum",
+        "vi": "Bình luận tùy chọn",
         "hans": "可选意见",
         "hant": "可選意見"
     },
     "reliabilityProjects": {
         "ar": "صفحات مشروع الموثوقية",
         "en": "Reliability Project Pages",
+        "id": "Halaman Proyek Keandalan",
         "ja": "信頼性プロジェクトページ",
         "kg": "Lutiti ya Kisalu ya Kutula Ntima",
         "ln": "Lokasa ya mosala",
@@ -1557,12 +1720,14 @@ window.CiteUnseenI18n = {
         "ps": "باوري پروژې مخونه",
         "pt": "Páginas do Projeto de Confiabilidade",
         "tr": "Güvenilirlik Projesi Sayfaları",
+        "vi": "Trang dự án độ tin cậy",
         "hans": "可靠性项目页面",
         "hant": "可靠性專案頁面"
     },
     "save": {
         "ar": "يحفظ",
         "en": "Save",
+        "id": "Simpan",
         "ja": "保存",
         "ln": "Kobikisa",
         "mk": "Зачувај",
@@ -1571,12 +1736,14 @@ window.CiteUnseenI18n = {
         "ps": "خوندي‌کول",
         "pt": "Guardar",
         "tr": "Kaydet",
+        "vi": "Lưu",
         "hans": "保存",
         "hant": "儲存"
     },
     "saving": {
         "ar": "توفير...",
         "en": "Saving...",
+        "id": "Menyimpan...",
         "ja": "保存中...",
         "ln": "Kobomba...",
         "mk": "Зачувувам...",
@@ -1585,12 +1752,14 @@ window.CiteUnseenI18n = {
         "ps": "خوندي کېږي...",
         "pt": "A guardar...",
         "tr": "Kaydediliyor...",
+        "vi": "Đang lưu…",
         "hans": "保存中……",
         "hant": "儲存中……"
     },
     "selectAtLeastOneCategory": {
         "ar": "الرجاء تحديد فئة واحدة على الأقل",
         "en": "Please select at least one category",
+        "id": "Harap pilih setidaknya satu kategori.",
         "ja": "少なくとも1つのカテゴリを選択してください",
         "ln": "Svp pona ata catégorie moko",
         "mk": "Изберете барем една категорија",
@@ -1598,12 +1767,14 @@ window.CiteUnseenI18n = {
         "pms": "Për piasì, ch'a selession-a almanch na categorìa",
         "pt": "Por favor, selecione pelo menos uma categoria",
         "tr": "Lütfen en az bir kategori seçin",
+        "vi": "Vui lòng chọn ít nhất một danh mục",
         "hans": "请至少选择一个类别",
         "hant": "請至少選擇一個類別"
     },
     "settingsButton": {
         "ar": "استشهد بالإعدادات غير المرئية",
         "en": "Cite Unseen Settings",
+        "id": "Pengaturan Cite Unseen",
         "ja": "Cite Unseen 設定",
         "ln": "Citer Paramètres oyo emonanaka te",
         "mk": "Нагодувања на Cite Unseen",
@@ -1611,12 +1782,14 @@ window.CiteUnseenI18n = {
         "pms": "Paràmeter ëd Cite Unseen",
         "pt": "Definições de Cite Unseen",
         "tr": "Kaynağı Görmeden Alıntılama Ayarları",
+        "vi": "Trích dẫn các cài đặt không nhìn thấy được",
         "hans": "Cite Unseen 设置",
         "hant": "Cite Unseen 設定"
     },
     "settingsButtonTooltip": {
         "ar": "تكوين إعدادات Cite Unseen.",
         "en": "Configure Cite Unseen settings.",
+        "id": "Konfigurasikan pengaturan Cite Unseen.",
         "ja": "Cite Unseen 設定。",
         "ln": "Configurer ba paramètres ya Cite Unseen.",
         "mk": "Поставете ги нагодувањата на Cite Unseen.",
@@ -1624,12 +1797,14 @@ window.CiteUnseenI18n = {
         "pms": "Configuré ij paràmeter ëd Cite Unseen.",
         "pt": "Configure as definições de Cite Unseen.",
         "tr": "Kaynağı Görmeden Alıntılama ayarlarını yapılandırın.",
+        "vi": "Cấu hình cài đặt Trích dẫn ẩn danh.",
         "hans": "配置 Cite Unseen 设置。",
         "hant": "設定 Cite Unseen 設定。"
     },
     "settingsDialogTitle": {
         "ar": "استشهد بالإعدادات غير المرئية",
         "en": "Cite Unseen Settings",
+        "id": "Pengaturan Cite Unseen",
         "ja": "Cite Unseen 設定",
         "kg": "Bisika ya Ke Monanaka Ve",
         "ln": "Kotanga bisika oyo emonanaka te",
@@ -1638,12 +1813,14 @@ window.CiteUnseenI18n = {
         "pms": "Paràmeter ëd Cite Unseen",
         "pt": "Definições de Cite Unseen",
         "tr": "Kaynağı Görmeden Alıntılama Ayarları",
+        "vi": "Trích dẫn các cài đặt không nhìn thấy được",
         "hans": "Cite Unseen 设置",
         "hant": "Cite Unseen 設定"
     },
     "settingsSaveError": {
         "ar": "خطأ في حفظ الإعدادات:",
-        "en": "Error saving settings: ",
+        "en": "Error saving settings:",
+        "id": "Galat saat menyimpan pengaturan:",
         "ja": "設定の保存中にエラーが発生しました：",
         "kg": "Bametode ya kubumba bifu:",
         "ln": "Ba paramètres ya kobomba mabunga:",
@@ -1652,12 +1829,14 @@ window.CiteUnseenI18n = {
         "pms": "Eror ant l'argistrassion dij paràmeter:",
         "pt": "Erro ao guardar as definições:",
         "tr": "Ayarlar kaydedilirken hata oluştu:",
+        "vi": "Lỗi khi lưu cài đặt:",
         "hans": "保存设置时出错：",
         "hant": "儲存設定時發生錯誤："
     },
     "settingsSavedSuccess": {
         "ar": "تم حفظ الإعدادات بنجاح! هل تريد إعادة تحميل الصفحة لتطبيق التغييرات؟",
         "en": "Settings saved successfully! Reload the page to apply changes?",
+        "id": "Pengaturan berhasil disimpan! Muat ulang halaman untuk menerapkan perubahan?",
         "ja": "設定が保存されました！変更を適用するためにページを再読み込みしますか？",
         "kg": "Bo me taninaka yo mbote-mbote! Tula diaka lutiti sambu na kusala bansoba?",
         "ln": "Paramètres ebombami malamu! Recharger page pona ko appliquer ba changements?",
@@ -1666,12 +1845,14 @@ window.CiteUnseenI18n = {
         "pms": "Ij paràmeter a son ëstàit argistrà për da bin. Veul-lo carié torna la pàgine për apliché le modìfiche?",
         "pt": "Definições guardadas com sucesso! Recarregar a página para aplicar as alterações?",
         "tr": "Ayarlar başarıyla kaydedildi! Değişiklikleri uygulamak için sayfayı yeniden yüklemek ister misiniz?",
+        "vi": "Cài đặt đã được lưu thành công! Vui lòng tải lại trang để áp dụng thay đổi?",
         "hans": "设置已成功保存！重新加载页面以应用更改？",
         "hant": "設定已成功儲存！重新載入頁面以套用變更？"
     },
     "showDashboard": {
         "ar": "إظهار لوحة المعلومات أعلى القوائم المرجعية",
         "en": "Show dashboard above reflists",
+        "id": "Tampilkan dasbor di atas daftar referensi",
         "ja": "参考文献セクションの上にダッシュボードを表示",
         "ln": "Komonisa etanda ya liboso na likolo",
         "mk": "Прикажи управувачница над списоците со наводи",
@@ -1679,12 +1860,14 @@ window.CiteUnseenI18n = {
         "pms": "Smon-e ël cruscòt dzora la lista dj'arferiment",
         "pt": "Mostrar o painel acima das listas de referência",
         "tr": "Kaynakça listelerinin üzerinde kontrol panelini göster",
+        "vi": "Hiển thị bảng điều khiển phía trên danh sách tham khảo",
         "hans": "在参考文献区段上方显示仪表板",
         "hant": "在參考文獻區段上方顯示儀表板"
     },
     "showSuggestionsButton": {
         "ar": "زر إظهار الاقتراحات",
         "en": "Show suggestions button",
+        "id": "Tampilkan tombol saran",
         "ja": "提案ボタンを表示",
         "kg": "Songa bangindu",
         "ln": "Bouton ya kolakisa makanisi",
@@ -1693,12 +1876,14 @@ window.CiteUnseenI18n = {
         "pms": "Smon-e ël boton dij sugeriment",
         "pt": "Mostrar botão de sugestões",
         "tr": "Öneriler butonunu göster",
+        "vi": "Hiển thị nút đề xuất",
         "hans": "显示建议按钮",
         "hant": "顯示建議按鈕"
     },
     "showing": {
         "ar": "عرض",
-        "en": "Showing ",
+        "en": "Showing",
+        "id": "Menampilkan",
         "ja": "表示中",
         "kg": "Kumonisa",
         "ln": "Komonisama",
@@ -1708,12 +1893,14 @@ window.CiteUnseenI18n = {
         "ps": "ښودل",
         "pt": "A mostrar",
         "tr": "Gösteriliyor",
+        "vi": "Đang hiển thị",
         "hans": "显示",
         "hant": "顯示"
     },
     "sourceUrl": {
         "ar": "رابط المصدر",
         "en": "Source URL",
+        "id": "URL Sumber",
         "ja": "ソースURL",
         "kg": "Source URL",
         "ln": "URL ya source",
@@ -1723,12 +1910,14 @@ window.CiteUnseenI18n = {
         "ps": "سرچينې وېبتړ",
         "pt": "URL Fonte",
         "tr": "Kaynak URL'si",
+        "vi": "URL nguồn",
         "hans": "来源网址",
         "hant": "來源網址"
     },
     "submit": {
         "ar": "فتح نموذج التحرير",
         "en": "Open Edit Form",
+        "id": "Buka Isian Penyuntingan",
         "ja": "編集フォームを開く",
         "ln": "Fungola Formulaire ya Bobongisi",
         "mk": "Отвори образец за уредување",
@@ -1737,12 +1926,14 @@ window.CiteUnseenI18n = {
         "ps": "سمون فورمه پرانېستل",
         "pt": "Abrir Formulário de Edição",
         "tr": "Düzenleme Formunu Aç",
+        "vi": "Mở biểu mẫu chỉnh sửa",
         "hans": "打开编辑表单",
         "hant": "開啟編輯表單"
     },
     "submitting": {
         "ar": "افتتاح...",
         "en": "Opening...",
+        "id": "Membuka...",
         "ja": "開いています...",
         "ln": "Kofungola...",
         "mk": "Отворам...",
@@ -1751,12 +1942,14 @@ window.CiteUnseenI18n = {
         "ps": "پرانېستل...",
         "pt": "A abrir...",
         "tr": "Açılıyor...",
+        "vi": "Đang mở…",
         "hans": "打开中……",
         "hant": "開啟中……"
     },
     "suggestCategorization": {
         "ar": "اقترح تصنيفًا لهذا الاقتباس",
         "en": "Suggest categorization for this citation",
+        "id": "Sarankan pengategorian untuk rujukan ini",
         "ja": "この引用の分類を提案",
         "kg": "Beto baka ngindu ya kukabisa na bitini sambu na mambu yai",
         "ln": "Pesa likanisi ya kosala categorisation mpo na citation oyo",
@@ -1766,12 +1959,14 @@ window.CiteUnseenI18n = {
         "ps": "د دې اخځ ډلبندۍ لپاره وړانديز کول",
         "pt": "Sugerir a categorização para esta citação",
         "tr": "Bu kaynak için kategori öner",
+        "vi": "Đề xuất phân loại cho trích dẫn này.",
         "hans": "为此引用建议分类",
         "hant": "為此引用建議分類"
     },
     "suggestedCategories": {
         "ar": "الفئات المقترحة",
         "en": "Suggested Categories",
+        "id": "Kategori yang Disarankan",
         "ja": "提案カテゴリ",
         "ln": "Ba catégories oyo ba proposer",
         "mk": "Предложени категории",
@@ -1780,12 +1975,14 @@ window.CiteUnseenI18n = {
         "ps": "وړانديز شوې وېشنيزې",
         "pt": "Categorias Sugeridas",
         "tr": "Önerilen Kategoriler",
+        "vi": "Các danh mục được đề xuất",
         "hans": "建议类别",
         "hant": "建議類別"
     },
     "suggestionDialogTitle": {
         "ar": "اقتراح التصنيف",
         "en": "Suggest Categorization",
+        "id": "Sarankan Kategorisasi",
         "ja": "分類の提案",
         "kg": "Bangindu ya kukabisa na bimvuka",
         "ln": "Likanisi ya kokabola yango na biteni",
@@ -1795,36 +1992,42 @@ window.CiteUnseenI18n = {
         "ps": "وړانديز شوې ډلبندي",
         "pt": "Sugerir Categorização",
         "tr": "Kategorizasyon Önerisi",
+        "vi": "Đề xuất phân loại",
         "hans": "建议分类",
         "hant": "建議分類"
     },
     "suggestionSubmitError": {
         "ar": "حدث خطأ أثناء فتح نموذج الاقتراح:",
-        "en": "Error opening suggestion form: ",
+        "en": "Error opening suggestion form:",
+        "id": "Galat saat membuka isian saran:",
         "ja": "提案フォームを開く際にエラーが発生しました：",
         "ln": "Libunga na kofungola formulaire ya likanisi:",
         "mk": "Грешка при отворањето на образецот за предлози:",
         "pl": "Błąd otwierania formularza sugestii:",
         "pms": "Eror ant la duvertura dël formolari ëd sugeriment:",
         "tr": "Öneri formu açılırken hata oluştu:",
+        "vi": "Lỗi khi mở biểu mẫu góp ý:",
         "hans": "打开建议表单时出错：",
         "hant": "開啟建議表單時發生錯誤："
     },
     "suggestionSubmitted": {
         "ar": "تم فتح نموذج التعديل في علامة تبويب جديدة! يجب ملء المحتوى مسبقًا تلقائيًا. إذا لم يكن كذلك، فقد تم نسخ محتوى الاقتراح إلى الحافظة.",
         "en": "Edit form opened in new tab! The content should be pre-filled automatically. If not, the suggestion content has been copied to your clipboard.",
+        "id": "Isian penyuntingan dibuka di tab baru! Isinya seharusnya sudah terisi otomatis. Jika tidak, isi saran telah disalin ke papan klip Anda.",
         "ja": "編集フォームが新しいタブで開かれました！内容は自動的に事前入力されるはずです。されていない場合は、提案内容がクリップボードにコピーされています。",
         "ln": "Formulaire ya éditer efungwami na onglet ya sika! Esengeli kotondisa liboso makambo oyo ezali na kati yango moko. Soki te, makambo oyo ezali na makanisi esalemi kopi na tableau de bord na yo.",
         "mk": "Образецот за уредување е отворен во ново јазиче! Содржината треба да е автоматски пополнета. Ако не е, содржината на предлогот е прекопирана во вашиот меѓусклад.",
         "pl": "Formularz edycji otwarty w nowej karcie! Zawartość powinna być automatycznie wypełniona. Jeśli nie, zawartość sugestii została skopiowana do schowka.",
         "pms": "Ël formolari ëd modìfica a l'é duvertasse an na neuva scheda! Ël contnù a dovrìa esse già compilà an automàtich. Dësnò, ël contnù dël sugeriment a l'é stàit copià su soa taulëtta.",
         "tr": "Düzenleme formu yeni sekmede açıldı! İçerik otomatik olarak önceden doldurulmuş olmalı. Aksi takdirde öneri içeriği panonuza kopyalanmıştır.",
+        "vi": "Biểu mẫu chỉnh sửa đã được mở trong tab mới! Nội dung sẽ được điền tự động. Nếu không, nội dung gợi ý đã được sao chép vào clipboard của bạn.",
         "hans": "编辑表单已在新标签页中打开！内容应自动预填。如未预填，建议内容已复制到您的剪贴板。",
         "hant": "編輯表單已在新分頁中開啟！內容應自動預填。如未預填，建議內容已複製到您的剪貼簿。"
     },
     "suggestionsDialogGuidance": {
         "ar": "اختر فئةً واحدةً أو أكثر لهذا الاستشهاد، ويمكنك إضافة تعليقٍ إن شئت. ستُفتح لك علامة تبويب جديدة على ميتا ويكي تحتوي على نموذج تعديل مُعبأ مسبقًا، حيث يمكنك إرسال اقتراحك للمراجعة.",
         "en": "Select one or more categories for this citation and optionally provide a comment. A new tab will open with a pre-filled edit form on Meta Wiki where you can submit your suggestion for review.",
+        "id": "Pilih satu atau lebih kategori untuk rujukan ini dan berikan komentar (opsional). Tab baru akan terbuka dengan isian penyuntingan yang sudah terisi di Meta Wiki tempat Anda dapat mengirimkan saran Anda untuk ditinjau.",
         "ja": "この引用に対して1つ以上のカテゴリを選択し、オプションでコメントを提供してください。Meta Wikiの事前入力された編集フォームで新しいタブが開き、コミュニティレビューのために提案を提出できます。",
         "kg": "Pona kitini mosi to mingi sambu na mambu yai mpi pesa komantere. Tab ya mpa ta kanguka ti formilere ya kutomisa yina bo me fulusa na ntwala na Meta Wiki kisika nge lenda tinda ngindu na nge sambu na kutomisa yo.",
         "ln": "Pona catégorie moko to ebele pona citation oyo pe na option pesa commentaire. Onglet ya sika ekofungwama na formulaire ya bobongisi oyo etondisami liboso na Meta Wiki esika okoki kotinda likanisi na yo mpo na botali.",
@@ -1832,12 +2035,14 @@ window.CiteUnseenI18n = {
         "pl": "Wybierz jedną lub więcej kategorii dla tego cytowania i opcjonalnie podaj komentarz. Otworzy się nowa karta z wstępnie wypełnionym formularzem edycji na Meta Wiki, gdzie możesz przesłać swoją sugestię do przeglądu.",
         "pms": "Ch'a selession-a un-a o pi catergorìe për costa sitassion e, ëd fasson opsional, ch'a fornissa un coment. As duvertërà na neuva scheda con un formolari ëd modìfica già compilà su Meta Wiki, andoa a peul mandé sò sugeriment për na revision.",
         "tr": "Bu kaynak için bir veya daha fazla kategori seçin ve isteğe bağlı olarak bir yorum ekleyin. Meta Wiki'de, önerinizi incelemeye gönderebileceğiniz önceden doldurulmuş bir düzenleme formu içeren yeni bir sekme açılacaktır.",
+        "vi": "Chọn một hoặc nhiều danh mục cho trích dẫn này và tùy chọn cung cấp nhận xét. Một tab mới sẽ mở ra với biểu mẫu chỉnh sửa được điền sẵn trên Meta Wiki, nơi bạn có thể gửi đề xuất của mình để được xem xét.",
         "hans": "为此引用选择一个或多个类别，并可选择性地提供意见。将打开一个新标签页，其中包含 Meta Wiki 上预填的编辑表单，您可以在此提交建议供社区审查。",
         "hant": "為此引用選擇一或多個類別，並可選擇性地提供意見。將開啟一個新分頁，其中包含 Meta Wiki 上預填的編輯表單，您可以在此提交建議供社群審查。"
     },
     "suggestionsDialogReliabilityGuidance": {
         "ar": "بالنسبة لفئات الموثوقية (المحظورة، المهملة، الموثوقة عمومًا، غير الموثوقة عمومًا، الموثوقة بشكل طفيف، لا يوجد إجماع)، يُرجى البحث عن فرصة للتوصل إلى إجماع في إحدى صفحات المشروع التالية. يتم تحديث فئات الموثوقية بانتظام بناءً على إجماع المجتمع الموثق في هذه الصفحات.",
         "en": "For reliability categories (blacklisted, deprecated, generally reliable, generally unreliable, marginally reliable, no consensus), please seek the opportunity to reach consensus on one of the following project pages. The reliability categories are updated regularly based on community consensus documented on these pages.",
+        "id": "Untuk kategori keandalan (didaftarhitamkan, usang, umumnya terandalkan, umumnya tak terandalkan, lumayan terandalkan sedikit, tiada konsensus), harap upayakan pencapaian konsensus di salah satu halaman proyek berikut. Kategori keandalan diperbarui secara berkala berdasarkan konsensus komunitas yang didokumentasikan di halaman-halaman tersebut.",
         "ja": "信頼性カテゴリ（ブラックリスト入り、非推奨、通常信頼できる、通常信頼できない、限られた信頼性、コンセンサスなし）については、以下のプロジェクトページでコンセンサスに達する機会を探してください。これらのページに記録されたコミュニティのコンセンサスに基づいて、信頼性カテゴリは定期的に更新されます。",
         "kg": "Sambu na bitini ya kutudila ntima (yina kele na lisiti ya mbi, yina bo me sadila diaka ve, yina bo lenda tudila ntima ve, yina bantu lenda tudila ve ntima, yina bo ke ndimaka ve), beto ke lomba nge na kusosa dibaku ya kuwakana na mosi ya balutiti ya kisalu ya ke landa. Bo ke tomisaka bitini ya kutudila ntima mbala na mbala na kutadila kuwakana ya bantu yina bo me sonikaka na balutiti yai.",
         "ln": "Mpo na biteni ya bondimi (oyo ezali na liste ya moindo, oyo esili kosalelama te, oyo ezali mingimingi ya kotyela motema, oyo ezali mingimingi ya kotyela motema te, oyo ezali na bondimi moke, boyokani te), tosengi yo oluka libaku ya kozwa boyokani na moko ya nkasa ya mosala oyo elandi. Ba catégories ya bondimi ezongisami na mikolo na tango na kotalaka boyokani ya baimboka oyo ekomami na nkasa oyo.",
@@ -1845,12 +2050,14 @@ window.CiteUnseenI18n = {
         "pl": "Dla kategorii wiarygodności (na czarnej liście, wycofane z użycia, ogólnie wiarygodne, ogólnie niewiarygodne, ledwo wiarygodne, brak konsensusu), prosimy o poszukanie możliwości osiągnięcia konsensusu na jednej z następujących stron projektu. Kategorie wiarygodności są regularnie aktualizowane na podstawie konsensusu społeczności udokumentowanego na tych stronach.",
         "pms": "Për le categorìe d'afidament (ant la lista nèira, dësconsejà, an general fidàbil, an general nen fidàbil, fidàbil ëd fasson marginal, gnun consens), për piasì sërché ëd rivé a 'n consens ansima a un-a dle pàgine ëd proget sì-dapress. Le categorìe d'afidament a son agiornà ëd fasson regolar basand-se an sël consens documentà su coste pàgine.",
         "tr": "Güvenilirlik kategorileri (kara listeye alınmış, kullanımdan kaldırılmış, genel olarak güvenilir, genel olarak güvenilmez, kısmen güvenilir, fikir birliği yok) için lütfen aşağıdaki proje sayfalarından birinde fikir birliğine varma fırsatını arayın. Güvenilirlik kategorileri, bu sayfalarda belgelenen topluluk fikir birliğine dayanarak düzenli olarak güncellenmektedir.",
+        "vi": "Đối với các hạng mục độ tin cậy (bị đưa vào danh sách đen, bị loại bỏ, nhìn chung đáng tin cậy, nhìn chung không đáng tin cậy, độ tin cậy thấp, không có sự đồng thuận), vui lòng tìm cách đạt được sự đồng thuận trên một trong các trang dự án sau đây. Các hạng mục độ tin cậy được cập nhật thường xuyên dựa trên sự đồng thuận của cộng đồng được ghi lại trên các trang này.",
         "hans": "对于可靠性类别（列入黑名单、应停用、通常可靠、通常不可靠、半可靠、无共识），请寻求在以下项目页面上达成共识的机会。可靠性类别会根据这些页面上记录的社区共识定期更新。",
         "hant": "對於可靠性類別（列入黑名單、應停用、通常可靠、通常不可靠、半可靠、無共識），請尋求在以下專案頁面上達成共識的機會。可靠性類別會根據這些頁面上記錄的社群共識定期更新。"
     },
     "suggestionsToggleButton": {
         "ar": "اقتراح الفئات",
         "en": "Suggest Categories",
+        "id": "Sarankan Kategori",
         "ja": "分類を提案",
         "ln": "Pesá makanisi ya Catégories",
         "mk": "Предложи категории",
@@ -1859,12 +2066,14 @@ window.CiteUnseenI18n = {
         "ps": "وړانديز شوې وېشنيزې",
         "pt": "Categorias Sugeridas",
         "tr": "Kategorileri Öner",
+        "vi": "Đề xuất danh mục",
         "hans": "建议分类",
         "hant": "建議分類"
     },
     "suggestionsToggleTooltip": {
         "ar": "تمكين وضع الاقتراح لاقتراح تصنيف الاستشهادات",
         "en": "Enable suggestion mode to propose categorization for citations",
+        "id": "Nyalakan mode saran untuk mengusulkan pengategorian untuk rujukan.",
         "ja": "引用の分類を提案するための提案モードを有効にする",
         "kg": "Kupesa ngindu sambu na kupesa ngindu ya kukabisa na bitini sambu na mambu ya bo me vutukila",
         "ln": "Kopesa likanisi mpo na kopesa likanisi ya kokabola maloba",
@@ -1873,12 +2082,14 @@ window.CiteUnseenI18n = {
         "pms": "Ativé ël meud ëd sugeriment për propon-e la categorisassion për le sitassion",
         "pt": "Ativar o modo de sugestão para propor categorização para as citações",
         "tr": "Kaynaklara yönelik kategorizasyon önermek için öneri modunu etkinleştirin",
+        "vi": "Bật chế độ đề xuất để đưa ra gợi ý phân loại cho các trích dẫn.",
         "hans": "启用建议模式以为引用提议分类",
         "hant": "啟用建議模式以為引用提議分類"
     },
     "tabAdditionalDomains": {
         "ar": "المجالات الإضافية",
         "en": "Additional Domains",
+        "id": "Domain Tambahan",
         "ja": "追加ドメイン",
         "kg": "Bisika ya Nkaka",
         "ln": "Ba Domaines ya kobakisa",
@@ -1888,12 +2099,14 @@ window.CiteUnseenI18n = {
         "ps": "زياتي واک‌سيمې",
         "pt": "Domínios Adicionais",
         "tr": "Ek Alan Adları",
+        "vi": "Tùy chọn khác",
         "hans": "额外域名",
         "hant": "額外網域"
     },
     "tabAdditionalStrings": {
         "ar": "سلاسل عناوين URL الإضافية",
         "en": "Additional URL Strings",
+        "id": "Untai URL Tambahan",
         "ja": "追加URL文字列",
         "ln": "Ba nsinga mosusu ya URL",
         "mk": "Дополнителни URL-низи",
@@ -1901,12 +2114,14 @@ window.CiteUnseenI18n = {
         "pms": "Stringhe URL adissionaj",
         "pt": "Strings de URL Adicionais",
         "tr": "Ek URL Dizeleri",
+        "vi": "Chuỗi URL bổ sung",
         "hans": "额外网址字符串",
         "hant": "額外網址字串"
     },
     "tabCategories": {
         "ar": "فئات",
         "en": "Categories",
+        "id": "Kategori",
         "ja": "カテゴリ",
         "ln": "Ba catégories",
         "mk": "Категории",
@@ -1915,12 +2130,14 @@ window.CiteUnseenI18n = {
         "ps": "وېشنيزې",
         "pt": "Categorias",
         "tr": "Kategoriler",
+        "vi": "Thể loại",
         "hans": "类别",
         "hant": "類別"
     },
     "tabGeneral": {
         "ar": "عام",
         "en": "General",
+        "id": "Umum",
         "ja": "全般",
         "ln": "Mbala mingi",
         "mk": "Општо",
@@ -1929,12 +2146,14 @@ window.CiteUnseenI18n = {
         "ps": "ټولواله",
         "pt": "Geral",
         "tr": "Genel",
+        "vi": "Tổng quát",
         "hans": "常规",
         "hant": "一般"
     },
     "tabIgnoreDomains": {
         "ar": "تجاهل المجالات",
         "en": "Ignore Domains",
+        "id": "Abaikan Domain",
         "ja": "ドメインを無視",
         "kg": "Kuvila Bisika",
         "ln": "Ignorer ba Domaines",
@@ -1944,12 +2163,14 @@ window.CiteUnseenI18n = {
         "ps": "واک‌سيمې له پامه غورځول",
         "pt": "Ignorar Domínios",
         "tr": "Alan Adlarını Yoksay",
+        "vi": "Bỏ qua các tên miền",
         "hans": "忽略域名",
         "hant": "忽略網域"
     },
     "totalCitations": {
         "ar": "المجموع",
-        "en": "Total ",
+        "en": "Total",
+        "id": "Total",
         "ja": "合計",
         "kg": "Ntalu na yo",
         "ln": "Mobimba",
@@ -1959,12 +2180,14 @@ window.CiteUnseenI18n = {
         "ps": "ټولټال",
         "pt": "Total",
         "tr": "Toplam",
+        "vi": "Tổng cộng",
         "hans": "共",
         "hant": "共"
     },
     "viewSettingsFrom": {
         "ar": "عرض الإعدادات من:",
         "en": "View settings from:",
+        "id": "Lihat pengaturan dari:",
         "ja": "設定を表示：",
         "ln": "Tala ba paramètres uta na:",
         "mk": "Погл. нагодувања од:",
@@ -1973,6 +2196,7 @@ window.CiteUnseenI18n = {
         "ps": "له لاندې ځای څخه د اوڼنو کتل:",
         "pt": "Ver definições de:",
         "tr": "Ayarları şuradan görüntüleyin:",
+        "vi": "Xem cài đặt từ:",
         "hans": "检视设置：",
         "hant": "檢視設定："
     }
@@ -1988,11 +2212,24 @@ var CiteUnseenData = {
      * @constant
      */
     citeUnseenSources: [
-        'medium',
-        'type',
-        'influence',
         'advocacy/1',
         'advocacy/2',
+        'advocacy/3',
+        'advocacy/4',
+        "blogs",
+        "books",
+        "community",
+        "editable",
+        "government",
+        "news",
+        "opinions",
+        "predatory",
+        "press",
+        "satire",
+        "social",
+        "sponsored",
+        "tabloids",
+        "tvPrograms",
         'zhRSP',
         'zhVGS',
         'zhACGS',
@@ -2005,6 +2242,8 @@ var CiteUnseenData = {
         'enFILMR',
         'enNPPSG/1',
         'enNPPSG/2',
+        'frJVS',
+        'ruAIKI'
     ],
 
     /**
@@ -2066,7 +2305,9 @@ var CiteUnseenData = {
                 ["enVGS", "enVgsGenerallyUnreliable"],
                 ["zhACGS", "zhAcgsGenerallyUnreliable"],
                 ["zhVGS", "zhVgsGenerallyUnreliable"],
-                ["enFILMR", "enFilmrGenerallyUnreliable"]
+                ["enFILMR", "enFilmrGenerallyUnreliable"],
+                ["frJVS", "frJvsGenerallyUnreliable"],
+                ["ruAIKI", "ruAikiGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -2077,7 +2318,8 @@ var CiteUnseenData = {
                 ["enKOREAS", "enKoreasMarginallyReliable"],
                 ["enVGS", "enVgsMarginallyReliable"],
                 ["zhACGS", "zhAcgsMarginallyReliable"],
-                ["zhVGS", "zhVgsMarginallyReliable"]
+                ["zhVGS", "zhVgsMarginallyReliable"],
+                ["frJVS", "frJvsMarginallyReliable"]
             ],
         ], [
             "multi", [
@@ -2100,7 +2342,9 @@ var CiteUnseenData = {
                 ["enVGS", "enVgsGenerallyReliable"],
                 ["zhACGS", "zhAcgsGenerallyReliable"],
                 ["zhVGS", "zhVgsGenerallyReliable"],
-                ["enFILMR", "enFilmrGenerallyReliable"]
+                ["enFILMR", "enFilmrGenerallyReliable"],
+                ["frJVS", "frJvsGenerallyReliable"],
+                ["ruAIKI", "ruAikiGenerallyReliable"]
             ],
         ],
     ],
@@ -2126,7 +2370,9 @@ var CiteUnseenData = {
      */
     citeUnseenSourceToCategoryMapping: {
         'advocacy1': 'advocacy',
-        'advocacy2': 'advocacy'
+        'advocacy2': 'advocacy',
+        'advocacy3': 'advocacy',
+        'advocacy4': 'advocacy'
     },
 
     /**
@@ -2136,8 +2382,8 @@ var CiteUnseenData = {
      * @constant
      */
     citeUnseenSourceToPageMapping: {
-        'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
+        'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
         'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
         'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
@@ -2145,6 +2391,8 @@ var CiteUnseenData = {
         'enNPPSG/2': 'en:Wikipedia:New pages patrol source guide',
         'enRSP': 'en:Wikipedia:Reliable sources/Perennial sources',
         'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
+        'frJVS': 'fr:Projet:Jeu vidéo/Sources',
+        'ruAIKI': 'ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр',
         'zhACGS': 'zh:维基专题:ACG/來源考量',
         'zhRSP': 'zh:维基百科:可靠来源/常见有争议来源列表',
         'zhVGS': 'zh:维基专题:电子游戏/来源考量'
@@ -2386,12 +2634,12 @@ var CiteUnseenData = {
      */
     getCategorizedRules: async function () {
         const CACHE_KEY = 'CiteUnseenSourcesCache';
-        const CACHE_TTL_MS = 3 * 60 * 60 * 1000; // 3 hours
+        const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
         // Try cache first
         let cached;
         try {
-            const raw = sessionStorage.getItem(CACHE_KEY);
+            const raw = localStorage.getItem(CACHE_KEY);
             if (raw) {
                 cached = JSON.parse(raw);
                 if (cached && cached.timestamp && (Date.now() - cached.timestamp) < CACHE_TTL_MS && cached.data && this.isValidData(cached.data)) {
@@ -2427,7 +2675,7 @@ var CiteUnseenData = {
 
         // Write cache
         try {
-            sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
         } catch (e) {
             console.warn('[Cite Unseen][sources] Cache write failed', e);
         }
@@ -3160,6 +3408,7 @@ var CiteUnseenData = {
                 const classList = ref.cite.classList;
                 const bookClasses = ["book", "journal", "encyclopaedia", "conference", "thesis", "magazine"];
                 const tvClasses = ["episode", "podcast", "media"];
+                const hasNewsClass = classList.contains("news");
 
                 // Check CSS-based classifications first
                 if (bookClasses.some(cls => classList.contains(cls))) {
@@ -3216,6 +3465,13 @@ var CiteUnseenData = {
                     }
                 }
 
+                if (processedCategories.size === 0 && hasNewsClass && CiteUnseen.citeUnseenCategories.news) {
+                    // If a template is already categorized as news via CSS but we could not process links,
+                    // treat it as news instead of falling back to unknown.
+                    CiteUnseen.processIcon(iconsDiv, "news");
+                    processedCategories.add("news");
+                }
+
                 if (CiteUnseen.citeUnseenCategories.unknown && processedCategories.size === 0) {
                     CiteUnseen.trackUnknownCitation(iconsDiv);
                 }
@@ -3253,7 +3509,7 @@ var CiteUnseenData = {
                 const pageLink = CiteUnseen.citeUnseenData.resolveSourceToPageLink(checklist);
                 const displayName = pageLink || checklist;
                 message = CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipPrefix) + ' ' + displayName +
-                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + message + ' ' +
+                    CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipSuffix) + ' ' + message + ' ' +
                     CiteUnseen.convByVar(CiteUnseenI18n.citationTooltipAction);
             }
             iconNode.setAttribute("alt", message);
@@ -4652,7 +4908,7 @@ var CiteUnseenData = {
                                     }
                                 },
                                 (error) => {
-                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.settingsSaveError) + (error.message || error), {
+                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.settingsSaveError) + ' ' + (error.message || error), {
                                         type: 'error',
                                         title: '[Cite Unseen]'
                                     });
@@ -5136,7 +5392,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                                 })
                                 .catch((error) => {
                                     console.error('[Cite Unseen] Failed to submit suggestion:', error);
-                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.suggestionSubmitError) + (error.message || error), {
+                                    mw.notify(CiteUnseen.convByVar(CiteUnseenI18n.suggestionSubmitError) + ' ' + (error.message || error), {
                                         type: 'error',
                                         title: '[Cite Unseen]'
                                     });
@@ -5568,4 +5824,5 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
 })();
 
 // </nowiki>
+
 })();
