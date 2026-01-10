@@ -7,11 +7,24 @@ var CiteUnseenData = {
      * @constant
      */
     citeUnseenSources: [
-        'medium',
-        'type',
-        'influence',
         'advocacy/1',
         'advocacy/2',
+        'advocacy/3',
+        'advocacy/4',
+        "blogs",
+        "books",
+        "community",
+        "editable",
+        "government",
+        "news",
+        "opinions",
+        "predatory",
+        "press",
+        "satire",
+        "social",
+        "sponsored",
+        "tabloids",
+        "tvPrograms",
         'zhRSP',
         'zhVGS',
         'zhACGS',
@@ -152,7 +165,9 @@ var CiteUnseenData = {
      */
     citeUnseenSourceToCategoryMapping: {
         'advocacy1': 'advocacy',
-        'advocacy2': 'advocacy'
+        'advocacy2': 'advocacy',
+        'advocacy3': 'advocacy',
+        'advocacy4': 'advocacy'
     },
 
     /**
@@ -414,12 +429,12 @@ var CiteUnseenData = {
      */
     getCategorizedRules: async function () {
         const CACHE_KEY = 'CiteUnseenSourcesCache';
-        const CACHE_TTL_MS = 3 * 60 * 60 * 1000; // 3 hours
+        const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
         // Try cache first
         let cached;
         try {
-            const raw = sessionStorage.getItem(CACHE_KEY);
+            const raw = localStorage.getItem(CACHE_KEY);
             if (raw) {
                 cached = JSON.parse(raw);
                 if (cached && cached.timestamp && (Date.now() - cached.timestamp) < CACHE_TTL_MS && cached.data && this.isValidData(cached.data)) {
@@ -455,7 +470,7 @@ var CiteUnseenData = {
 
         // Write cache
         try {
-            sessionStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
         } catch (e) {
             console.warn('[Cite Unseen][sources] Cache write failed', e);
         }
