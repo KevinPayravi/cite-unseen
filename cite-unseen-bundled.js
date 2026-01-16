@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.12
-// Timestamp: 2026-01-10T19:16:56.275Z
+// Release: 2.1.13
+// Timestamp: 2026-01-16T07:50:00.732Z
 
 (function() {
     'use strict';
@@ -2243,7 +2243,8 @@ var CiteUnseenData = {
         'enNPPSG/1',
         'enNPPSG/2',
         'frJVS',
-        'ruAIKI'
+        'ruAIKI',
+        'enBGS'
     ],
 
     /**
@@ -2307,7 +2308,8 @@ var CiteUnseenData = {
                 ["zhVGS", "zhVgsGenerallyUnreliable"],
                 ["enFILMR", "enFilmrGenerallyUnreliable"],
                 ["frJVS", "frJvsGenerallyUnreliable"],
-                ["ruAIKI", "ruAikiGenerallyUnreliable"]
+                ["ruAIKI", "ruAikiGenerallyUnreliable"],
+                ["enBGS", "enBgsGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -2319,7 +2321,8 @@ var CiteUnseenData = {
                 ["enVGS", "enVgsMarginallyReliable"],
                 ["zhACGS", "zhAcgsMarginallyReliable"],
                 ["zhVGS", "zhVgsMarginallyReliable"],
-                ["frJVS", "frJvsMarginallyReliable"]
+                ["frJVS", "frJvsMarginallyReliable"],
+                ["enBGS", "enBgsMarginallyReliable"]
             ],
         ], [
             "multi", [
@@ -2344,7 +2347,8 @@ var CiteUnseenData = {
                 ["zhVGS", "zhVgsGenerallyReliable"],
                 ["enFILMR", "enFilmrGenerallyReliable"],
                 ["frJVS", "frJvsGenerallyReliable"],
-                ["ruAIKI", "ruAikiGenerallyReliable"]
+                ["ruAIKI", "ruAikiGenerallyReliable"],
+                ["enBGS", "enBgsGenerallyReliable"]
             ],
         ],
     ],
@@ -2384,6 +2388,7 @@ var CiteUnseenData = {
     citeUnseenSourceToPageMapping: {
         'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
         'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
+        'enBGS': 'en:Wikipedia:WikiProject Board and table games/Sources',
         'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
         'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
         'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
