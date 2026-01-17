@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.13
-// Timestamp: 2026-01-16T07:50:00.732Z
+// Release: 2.1.14
+// Timestamp: 2026-01-17T21:36:27.674Z
 
 (function() {
     'use strict';
@@ -791,7 +791,7 @@ window.CiteUnseenI18n = {
         },
         "news": {
             "ar": "هذا المصدر عبارة عن مقالة إخبارية من مؤسسة إخبارية مرموقة.",
-            "en": "This source is a news article from a reputable news organization.",
+            "en": "This source is from an outlet whose primary purpose is journalistic reporting on current/recent events, under an editorial process.",
             "id": "Sumber ini adalah artikel berita dari organisasi berita yang bereputasi.",
             "ja": "この情報源は信頼できるニュース組織からのニュース記事です。",
             "ln": "Eutelo oyo ezali lisolo ya bansango ya ebongiseli moko ya bansango oyo eyebani mingi.",
@@ -802,8 +802,8 @@ window.CiteUnseenI18n = {
             "tr": "Bu kaynak, saygın bir haber kuruluşuna ait bir haber makalesidir.",
             "ur": "یہ ماخذ ایک معروف خبر رساں تنظیم کا ایک نیوز آرٹیکل ہے۔",
             "vi": "Nguồn tin này là một bài báo từ một tổ chức truyền thông uy tín.",
-            "hans": "此来源为来自知名新闻机构的新闻文章。",
-            "hant": "此來源為來自知名新聞機構的新聞文章。"
+            "hans": "此来源来自以报道时事为主、并有编辑审核流程的媒体。",
+            "hant": "此來源來自以報導時事為主、並有編輯審核流程的媒體。"
         },
         "opinions": {
             "ar": "هذا المصدر عبارة عن مقالة رأي.",
