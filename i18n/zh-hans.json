@@ -22,7 +22,7 @@
 	"categoryHints.government": "此来源已被识别为国有或国营媒体，或为政府来源。",
 	"categoryHints.marginallyReliable": "此来源半可靠。可能有必要在每次使用该来源时逐个进行审查，视情境决定是否可靠。",
 	"categoryHints.multi": "社区对此来源的可靠性没有共识。其可靠性可能受到一个或多个因素影响（例如主题领域、作者或出版时间）。",
-	"categoryHints.news": "此来源为来自知名新闻机构的新闻文章。",
+	"categoryHints.news": "此来源来自以报道时事为主、并有编辑审核流程的媒体。",
 	"categoryHints.opinions": "此来源为观点文章。",
 	"categoryHints.predatory": "此来源来自掠夺性期刊。",
 	"categoryHints.press": "此来源为新闻稿。",
