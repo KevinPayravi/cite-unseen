@@ -17,7 +17,7 @@
   "categoryHints.government": "This source is identified as a state-owned or state-run media, or a government source.",
   "categoryHints.marginallyReliable": "This source is marginally reliable. It may be necessary to review it on a case-by-case basis to determine its reliability in each context.",
   "categoryHints.multi": "There is no consensus in the community about the reliability of this source. Its reliability may be affected by one or more factors, such as the subject area, author, or publication time.",
-  "categoryHints.news": "This source is a news article from a reputable news organization.",
+  "categoryHints.news": "This source is from an outlet whose primary purpose is journalistic reporting on current/recent events, under an editorial process.",
   "categoryHints.opinions": "This source is an opinion piece.",
   "categoryHints.predatory": "This source is from a predatory journal.",
   "categoryHints.press": "This source is a press release.",
