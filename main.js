@@ -626,13 +626,13 @@
                             processedCategories.add(typeMatch);
                         }
                     }
-                }
-
-                if (processedCategories.size === 0 && hasNewsClass && CiteUnseen.citeUnseenCategories.news) {
+                } else {
                     // If a template is already categorized as news via CSS but we could not process links,
                     // treat it as news instead of falling back to unknown.
-                    CiteUnseen.processIcon(iconsDiv, "news");
-                    processedCategories.add("news");
+                    if (processedCategories.size === 0 && hasNewsClass && CiteUnseen.citeUnseenCategories.news) {
+                        CiteUnseen.processIcon(iconsDiv, "news");
+                        processedCategories.add("news");
+                    }
                 }
 
                 if (CiteUnseen.citeUnseenCategories.unknown && processedCategories.size === 0) {
