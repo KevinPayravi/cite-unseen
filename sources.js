@@ -39,7 +39,8 @@ var CiteUnseenData = {
         'enNPPSG/2',
         'frJVS',
         'ruAIKI',
-        'enBGS'
+        'enBGS',
+        'enCHARTS'
     ],
 
     /**
@@ -87,7 +88,8 @@ var CiteUnseenData = {
         ], [
             "deprecated", [
                 ["enRSP", "enRspDeprecated"],
-                ["zhRSP", "zhRspDeprecated"]
+                ["zhRSP", "zhRspDeprecated"],
+                ["enCHARTS", "enChartsDeprecated"]
             ],
         ], [
             "generallyUnreliable", [
@@ -104,7 +106,8 @@ var CiteUnseenData = {
                 ["enFILMR", "enFilmrGenerallyUnreliable"],
                 ["frJVS", "frJvsGenerallyUnreliable"],
                 ["ruAIKI", "ruAikiGenerallyUnreliable"],
-                ["enBGS", "enBgsGenerallyUnreliable"]
+                ["enBGS", "enBgsGenerallyUnreliable"],
+                ["enCHARTS", "enChartsGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -143,7 +146,8 @@ var CiteUnseenData = {
                 ["enFILMR", "enFilmrGenerallyReliable"],
                 ["frJVS", "frJvsGenerallyReliable"],
                 ["ruAIKI", "ruAikiGenerallyReliable"],
-                ["enBGS", "enBgsGenerallyReliable"]
+                ["enBGS", "enBgsGenerallyReliable"],
+                ["enCHARTS", "enChartsGenerallyReliable"]
             ],
         ],
     ],
@@ -184,6 +188,7 @@ var CiteUnseenData = {
         'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
         'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enBGS': 'en:Wikipedia:WikiProject Board and table games/Sources',
+        'enCHARTS': 'en:Wikipedia:Record charts',
         'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
         'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
         'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
