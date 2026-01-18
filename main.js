@@ -596,7 +596,8 @@
                 }
 
                 // If rft_id, check URL-based classifications
-                if (ref.coins['rft_id']) {
+                const rftIds = CiteUnseen.ensureArray(ref.coins['rft_id']);
+                if (rftIds.length > 0) {
                     // Find reliability and type matches
                     const reliabilityMatches = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
                     const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
@@ -626,13 +627,15 @@
                             processedCategories.add(typeMatch);
                         }
                     }
-                }
-
-                if (processedCategories.size === 0 && hasNewsClass && CiteUnseen.citeUnseenCategories.news) {
-                    // If a template is already categorized as news via CSS but we could not process links,
+                } 
+                
+                if (rftIds.length === 0 || rftIds.some(id => id.startsWith('info:sid/'))) {
+                    // If a template is already categorized as news via CSS but links are missing,
                     // treat it as news instead of falling back to unknown.
-                    CiteUnseen.processIcon(iconsDiv, "news");
-                    processedCategories.add("news");
+                    if (processedCategories.size === 0 && hasNewsClass && CiteUnseen.citeUnseenCategories.news) {
+                        CiteUnseen.processIcon(iconsDiv, "news");
+                        processedCategories.add("news");
+                    }
                 }
 
                 if (CiteUnseen.citeUnseenCategories.unknown && processedCategories.size === 0) {
