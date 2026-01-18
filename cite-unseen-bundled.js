@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.14
-// Timestamp: 2026-01-17T21:36:27.674Z
+// Release: 2.1.15
+// Timestamp: 2026-01-18T07:23:46.341Z
 
 (function() {
     'use strict';
@@ -2244,7 +2244,8 @@ var CiteUnseenData = {
         'enNPPSG/2',
         'frJVS',
         'ruAIKI',
-        'enBGS'
+        'enBGS',
+        'enCHARTS'
     ],
 
     /**
@@ -2292,7 +2293,8 @@ var CiteUnseenData = {
         ], [
             "deprecated", [
                 ["enRSP", "enRspDeprecated"],
-                ["zhRSP", "zhRspDeprecated"]
+                ["zhRSP", "zhRspDeprecated"],
+                ["enCHARTS", "enChartsDeprecated"]
             ],
         ], [
             "generallyUnreliable", [
@@ -2309,7 +2311,8 @@ var CiteUnseenData = {
                 ["enFILMR", "enFilmrGenerallyUnreliable"],
                 ["frJVS", "frJvsGenerallyUnreliable"],
                 ["ruAIKI", "ruAikiGenerallyUnreliable"],
-                ["enBGS", "enBgsGenerallyUnreliable"]
+                ["enBGS", "enBgsGenerallyUnreliable"],
+                ["enCHARTS", "enChartsGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -2348,7 +2351,8 @@ var CiteUnseenData = {
                 ["enFILMR", "enFilmrGenerallyReliable"],
                 ["frJVS", "frJvsGenerallyReliable"],
                 ["ruAIKI", "ruAikiGenerallyReliable"],
-                ["enBGS", "enBgsGenerallyReliable"]
+                ["enBGS", "enBgsGenerallyReliable"],
+                ["enCHARTS", "enChartsGenerallyReliable"]
             ],
         ],
     ],
@@ -2389,6 +2393,7 @@ var CiteUnseenData = {
         'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
         'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
         'enBGS': 'en:Wikipedia:WikiProject Board and table games/Sources',
+        'enCHARTS': 'en:Wikipedia:Record charts',
         'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
         'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
         'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
@@ -3438,7 +3443,8 @@ var CiteUnseenData = {
                 }
 
                 // If rft_id, check URL-based classifications
-                if (ref.coins['rft_id']) {
+                const rftIds = CiteUnseen.ensureArray(ref.coins['rft_id']);
+                if (rftIds.length > 0) {
                     // Find reliability and type matches
                     const reliabilityMatches = CiteUnseen.findReliabilityMatch(ref.coins, filteredCategorizedRules);
                     const typeMatches = CiteUnseen.findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories);
@@ -3468,13 +3474,15 @@ var CiteUnseenData = {
                             processedCategories.add(typeMatch);
                         }
                     }
-                }
-
-                if (processedCategories.size === 0 && hasNewsClass && CiteUnseen.citeUnseenCategories.news) {
-                    // If a template is already categorized as news via CSS but we could not process links,
+                } 
+                
+                if (rftIds.length === 0 || rftIds.some(id => id.startsWith('info:sid/'))) {
+                    // If a template is already categorized as news via CSS but links are missing,
                     // treat it as news instead of falling back to unknown.
-                    CiteUnseen.processIcon(iconsDiv, "news");
-                    processedCategories.add("news");
+                    if (processedCategories.size === 0 && hasNewsClass && CiteUnseen.citeUnseenCategories.news) {
+                        CiteUnseen.processIcon(iconsDiv, "news");
+                        processedCategories.add("news");
+                    }
                 }
 
                 if (CiteUnseen.citeUnseenCategories.unknown && processedCategories.size === 0) {
