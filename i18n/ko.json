@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bisang",
 			"YeBoy371",
 			"Ykhwong"
 		]
@@ -20,7 +21,7 @@
 	"categoryHints.tabloids": "이 출처는 타블로이드 또는 가십 뉴스입니다.",
 	"categoryHints.tvPrograms": "이 출처는 TV 또는 라디오 프로그램입니다. 그 신뢰성은 개별 프로그램에 따라 다릅니다.",
 	"categoryHints.unknown": "이 출처는 아직 평가되지 않았습니다.",
-	"categoryLabels.blogs": "블로그",
+	"categoryLabels.blogs": "블로그 게시물",
 	"categoryLabels.books": "책",
 	"categoryLabels.community": "커뮤니티",
 	"categoryLabels.editable": "편집 가능",
@@ -42,7 +43,7 @@
 	"enableDisableCategories": "분류 활성화/비활성화",
 	"loading": "불러오는 중...",
 	"metaWikiGlobal": "메타위키 (전역)",
-	"of": "/",
+	"of": "의",
 	"reliabilityProjects": "신뢰성 프로젝트 문서",
 	"save": "저장",
 	"saving": "저장 중...",
@@ -61,5 +62,5 @@
 	"tabGeneral": "일반",
 	"tabIgnoreDomains": "도메인 무시",
 	"totalCitations": "전체",
-	"viewSettingsFrom": "설정 표시:"
+	"viewSettingsFrom": "다음에서 설정 표시:"
 }
