@@ -41,6 +41,7 @@ var CiteUnseenData = {
         'ruAIKI',
         'enBGS',
         'enCHARTS'
+        'viDSNDTC'
     ],
 
     /**
@@ -83,7 +84,8 @@ var CiteUnseenData = {
             "blacklisted", [
                 ["enRSP", "enRspBlacklisted"],
                 ["zhRSP", "zhRspBlacklisted"],
-                ["enKOREAS", "enKoreasBlacklisted"]
+                ["enKOREAS", "enKoreasBlacklisted"],
+                ["viDSNDTC", "viDsndtcBlacklisted"]
             ],
         ], [
             "deprecated", [
@@ -107,7 +109,8 @@ var CiteUnseenData = {
                 ["frJVS", "frJvsGenerallyUnreliable"],
                 ["ruAIKI", "ruAikiGenerallyUnreliable"],
                 ["enBGS", "enBgsGenerallyUnreliable"],
-                ["enCHARTS", "enChartsGenerallyUnreliable"]
+                ["enCHARTS", "enChartsGenerallyUnreliable"],
+                ["viDSNDTC", "viDsndtcGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -120,7 +123,8 @@ var CiteUnseenData = {
                 ["zhACGS", "zhAcgsMarginallyReliable"],
                 ["zhVGS", "zhVgsMarginallyReliable"],
                 ["frJVS", "frJvsMarginallyReliable"],
-                ["enBGS", "enBgsMarginallyReliable"]
+                ["enBGS", "enBgsMarginallyReliable"],
+                ["viDSNDTC", "viDsndtcMarginallyReliable"]
             ],
         ], [
             "multi", [
@@ -129,7 +133,8 @@ var CiteUnseenData = {
                 ["enNPPSG/2", "enNppsgMulti"],
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
-                ["zhVGS", "zhVgsMulti"]
+                ["zhVGS", "zhVgsMulti"],
+                ["viDSNDTC", "viDsndtcMulti"]
             ],
         ], [
             "generallyReliable", [
@@ -147,7 +152,8 @@ var CiteUnseenData = {
                 ["frJVS", "frJvsGenerallyReliable"],
                 ["ruAIKI", "ruAikiGenerallyReliable"],
                 ["enBGS", "enBgsGenerallyReliable"],
-                ["enCHARTS", "enChartsGenerallyReliable"]
+                ["enCHARTS", "enChartsGenerallyReliable"],
+                ["viDSNDTC", "viDsndtcGenerallyReliable"]
             ],
         ],
     ],
@@ -198,6 +204,7 @@ var CiteUnseenData = {
         'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
         'frJVS': 'fr:Projet:Jeu vidéo/Sources',
         'ruAIKI': 'ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр',
+        'viDSNDTC': 'vi:Wikipedia:Danh sách nguồn đáng tin cậy',
         'zhACGS': 'zh:维基专题:ACG/來源考量',
         'zhRSP': 'zh:维基百科:可靠来源/常见有争议来源列表',
         'zhVGS': 'zh:维基专题:电子游戏/来源考量'
