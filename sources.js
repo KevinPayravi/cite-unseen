@@ -40,7 +40,8 @@ var CiteUnseenData = {
         'frJVS',
         'ruAIKI',
         'enBGS',
-        'enCHARTS'
+        'enCHARTS',
+        'enVSAFES',
         'viDSNDTC'
     ],
 
@@ -85,6 +86,7 @@ var CiteUnseenData = {
                 ["enRSP", "enRspBlacklisted"],
                 ["zhRSP", "zhRspBlacklisted"],
                 ["enKOREAS", "enKoreasBlacklisted"],
+                ["enVSAFES", "enVsafesBlacklisted"],
                 ["viDSNDTC", "viDsndtcBlacklisted"]
             ],
         ], [
@@ -110,6 +112,7 @@ var CiteUnseenData = {
                 ["ruAIKI", "ruAikiGenerallyUnreliable"],
                 ["enBGS", "enBgsGenerallyUnreliable"],
                 ["enCHARTS", "enChartsGenerallyUnreliable"],
+                ["enVSAFES", "enVsafesGenerallyUnreliable"],
                 ["viDSNDTC", "viDsndtcGenerallyUnreliable"]
             ],
         ], [
@@ -124,6 +127,7 @@ var CiteUnseenData = {
                 ["zhVGS", "zhVgsMarginallyReliable"],
                 ["frJVS", "frJvsMarginallyReliable"],
                 ["enBGS", "enBgsMarginallyReliable"],
+                ["enVSAFES", "enVsafesMarginallyReliable"],
                 ["viDSNDTC", "viDsndtcMarginallyReliable"]
             ],
         ], [
@@ -134,6 +138,7 @@ var CiteUnseenData = {
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
                 ["zhVGS", "zhVgsMulti"],
+                ["enVSAFES", "enVsafesMulti"],
                 ["viDSNDTC", "viDsndtcMulti"]
             ],
         ], [
@@ -153,6 +158,7 @@ var CiteUnseenData = {
                 ["ruAIKI", "ruAikiGenerallyReliable"],
                 ["enBGS", "enBgsGenerallyReliable"],
                 ["enCHARTS", "enChartsGenerallyReliable"],
+                ["enVSAFES", "enVsafesGenerallyReliable"],
                 ["viDSNDTC", "viDsndtcGenerallyReliable"]
             ],
         ],
@@ -202,6 +208,7 @@ var CiteUnseenData = {
         'enNPPSG/2': 'en:Wikipedia:New pages patrol source guide',
         'enRSP': 'en:Wikipedia:Reliable sources/Perennial sources',
         'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
+        'enVSAFES': 'en:Wikipedia:Vaccine safety/Perennial sources',
         'frJVS': 'fr:Projet:Jeu vidéo/Sources',
         'ruAIKI': 'ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр',
         'viDSNDTC': 'vi:Wikipedia:Danh sách nguồn đáng tin cậy',
