@@ -421,7 +421,8 @@
             const createCleanMatch = (match) => ({
                 type: match.type,
                 name: match.name,
-                language: match.language
+                language: match.language,
+                spec: match.spec
             });
 
             const results = { current: [], other: [] };
