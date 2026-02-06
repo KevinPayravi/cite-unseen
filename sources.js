@@ -78,7 +78,7 @@ var CiteUnseenData = {
 
     /**
      * Source lists grouped by reliability category.
-     * @type {Array.<Array.<string>>}
+     * @type {Array.<Array.<string, Array.<Array.<string, string>>>>}
      * @constant
      */
     citeUnseenChecklists: [
@@ -450,12 +450,25 @@ var CiteUnseenData = {
      * @returns {boolean} True if valid, false otherwise.
      */
     isValidData: function (data) {
-        if (!data || typeof data !== 'object') return false;
-        if (!data.getCategorizedRules || typeof data.getCategorizedRules !== 'function') return false;
-        if (!data.citeUnseenCategories || typeof data.citeUnseenCategories !== 'object') return false;
-        if (!data.citeUnseenCategoryTypes || !Array.isArray(data.citeUnseenCategoryTypes)) return false;
-        if (!data.citeUnseenChecklists || !Array.isArray(data.citeUnseenChecklists)) return false;
-        if (!data.citeUnseenCategoryData || typeof data.citeUnseenCategoryData !== 'object') return false;
+        const isPlainObject = value => value && typeof value === 'object' && !Array.isArray(value);
+        if (!isPlainObject(data)) return false;
+        
+        const isFixedLengthArray = (value, length) => Array.isArray(value) && value.length === length;
+
+        // Function
+        if (typeof data.getCategorizedRules !== 'function') return false;
+
+        // Object.<string, boolean>
+        if (!(isPlainObject(data.citeUnseenCategories) && Object.values(data.citeUnseenCategories).every(value => typeof value === 'boolean'))) return false;
+
+        // Array.<string>
+        if (!(Array.isArray(data.citeUnseenCategoryTypes) && data.citeUnseenCategoryTypes.every(item => typeof item === 'string'))) return false;
+
+        // Array.<Array.<string, Array.<Array.<string, string>>>>
+        if (!(Array.isArray(data.citeUnseenChecklists) && data.citeUnseenChecklists.every(item => isFixedLengthArray(item, 2) && typeof item[0] === 'string' && Array.isArray(item[1]) && item[1].every(subItem => isFixedLengthArray(subItem, 2) && subItem.every(str => typeof str === 'string'))))) return false;
+
+        // Object.<string, Object<string, string|number>>
+        if (!(isPlainObject(data.citeUnseenCategoryData) && Object.values(data.citeUnseenCategoryData).every(entry => isPlainObject(entry) && typeof entry.icon === 'string' && typeof entry.count === 'number'))) return false;
         return true;
     },
 
@@ -527,7 +540,7 @@ var CiteUnseenData = {
     /**
      * Category data, icons, and counters in use.
      * Labels and hints are now externalized to CiteUnseenI18n for better internationalization.
-     * @type {Object.<string, Object>}
+     * @type {Object.<string, Object<string, string|number>>}
      * @constant
      */
     citeUnseenCategoryData: {
