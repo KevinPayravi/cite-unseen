@@ -169,6 +169,10 @@
     vertical-align: middle;
 }
 
+.cite-unseen-icons:empty {
+    padding-right: 0px;
+}
+
 /* Icon container for language indicators */
 .cite-unseen-icon-container {
     position: relative;
