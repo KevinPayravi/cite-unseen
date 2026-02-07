@@ -11,6 +11,7 @@ var CiteUnseenData = {
         'advocacy/2',
         'advocacy/3',
         'advocacy/4',
+        'aiGenerated',
         "blogs",
         "books",
         "community",
@@ -40,7 +41,9 @@ var CiteUnseenData = {
         'frJVS',
         'ruAIKI',
         'enBGS',
-        'enCHARTS'
+        'enCHARTS',
+        'enVSAFES',
+        'viDSNDTC'
     ],
 
     /**
@@ -75,7 +78,7 @@ var CiteUnseenData = {
 
     /**
      * Source lists grouped by reliability category.
-     * @type {Array.<Array.<string>>}
+     * @type {Array.<Array.<string, Array.<Array.<string, string>>>>}
      * @constant
      */
     citeUnseenChecklists: [
@@ -83,7 +86,9 @@ var CiteUnseenData = {
             "blacklisted", [
                 ["enRSP", "enRspBlacklisted"],
                 ["zhRSP", "zhRspBlacklisted"],
-                ["enKOREAS", "enKoreasBlacklisted"]
+                ["enKOREAS", "enKoreasBlacklisted"],
+                ["enVSAFES", "enVsafesBlacklisted"],
+                ["viDSNDTC", "viDsndtcBlacklisted"]
             ],
         ], [
             "deprecated", [
@@ -107,7 +112,9 @@ var CiteUnseenData = {
                 ["frJVS", "frJvsGenerallyUnreliable"],
                 ["ruAIKI", "ruAikiGenerallyUnreliable"],
                 ["enBGS", "enBgsGenerallyUnreliable"],
-                ["enCHARTS", "enChartsGenerallyUnreliable"]
+                ["enCHARTS", "enChartsGenerallyUnreliable"],
+                ["enVSAFES", "enVsafesGenerallyUnreliable"],
+                ["viDSNDTC", "viDsndtcGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -120,7 +127,9 @@ var CiteUnseenData = {
                 ["zhACGS", "zhAcgsMarginallyReliable"],
                 ["zhVGS", "zhVgsMarginallyReliable"],
                 ["frJVS", "frJvsMarginallyReliable"],
-                ["enBGS", "enBgsMarginallyReliable"]
+                ["enBGS", "enBgsMarginallyReliable"],
+                ["enVSAFES", "enVsafesMarginallyReliable"],
+                ["viDSNDTC", "viDsndtcMarginallyReliable"]
             ],
         ], [
             "multi", [
@@ -129,7 +138,9 @@ var CiteUnseenData = {
                 ["enNPPSG/2", "enNppsgMulti"],
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
-                ["zhVGS", "zhVgsMulti"]
+                ["zhVGS", "zhVgsMulti"],
+                ["enVSAFES", "enVsafesMulti"],
+                ["viDSNDTC", "viDsndtcMulti"]
             ],
         ], [
             "generallyReliable", [
@@ -147,21 +158,35 @@ var CiteUnseenData = {
                 ["frJVS", "frJvsGenerallyReliable"],
                 ["ruAIKI", "ruAikiGenerallyReliable"],
                 ["enBGS", "enBgsGenerallyReliable"],
-                ["enCHARTS", "enChartsGenerallyReliable"]
+                ["enCHARTS", "enChartsGenerallyReliable"],
+                ["enVSAFES", "enVsafesGenerallyReliable"],
+                ["viDSNDTC", "viDsndtcGenerallyReliable"]
             ],
         ],
     ],
 
     /**
      * Types of source categories.
-     * @type {Array.<Array.<string>>}
+     * @type {Array.<string>}
      * @constant
      */
     citeUnseenCategoryTypes: [
-        ["medium", ['books', 'tabloids', 'tvPrograms']],
-        ["type", ['news', "opinions", "press", "satire"]],
-        ['userGenerated', ['blogs', 'community', 'editable', 'social']],
-        ["influence", ['advocacy', "government", "predatory", "sponsored"]],
+        'advocacy',
+        'aiGenerated',
+        'blogs',
+        'books',
+        'community',
+        'editable',
+        'government',
+        'news',
+        'opinions',
+        'predatory',
+        'press',
+        'satire',
+        'social',
+        'sponsored',
+        'tabloids',
+        'tvPrograms'
     ],
 
     /**
@@ -196,8 +221,10 @@ var CiteUnseenData = {
         'enNPPSG/2': 'en:Wikipedia:New pages patrol source guide',
         'enRSP': 'en:Wikipedia:Reliable sources/Perennial sources',
         'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
+        'enVSAFES': 'en:Wikipedia:Vaccine safety/Perennial sources',
         'frJVS': 'fr:Projet:Jeu vidéo/Sources',
         'ruAIKI': 'ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр',
+        'viDSNDTC': 'vi:Wikipedia:Danh sách nguồn đáng tin cậy',
         'zhACGS': 'zh:维基专题:ACG/來源考量',
         'zhRSP': 'zh:维基百科:可靠来源/常见有争议来源列表',
         'zhVGS': 'zh:维基专题:电子游戏/来源考量'
@@ -423,12 +450,25 @@ var CiteUnseenData = {
      * @returns {boolean} True if valid, false otherwise.
      */
     isValidData: function (data) {
-        if (!data || typeof data !== 'object') return false;
-        if (!data.getCategorizedRules || typeof data.getCategorizedRules !== 'function') return false;
-        if (!data.citeUnseenCategories || typeof data.citeUnseenCategories !== 'object') return false;
-        if (!data.citeUnseenCategoryTypes || !Array.isArray(data.citeUnseenCategoryTypes)) return false;
-        if (!data.citeUnseenChecklists || !Array.isArray(data.citeUnseenChecklists)) return false;
-        if (!data.citeUnseenCategoryData || typeof data.citeUnseenCategoryData !== 'object') return false;
+        const isPlainObject = value => value && typeof value === 'object' && !Array.isArray(value);
+        if (!isPlainObject(data)) return false;
+        
+        const isFixedLengthArray = (value, length) => Array.isArray(value) && value.length === length;
+
+        // Function
+        if (typeof data.getCategorizedRules !== 'function') return false;
+
+        // Object.<string, boolean>
+        if (!(isPlainObject(data.citeUnseenCategories) && Object.values(data.citeUnseenCategories).every(value => typeof value === 'boolean'))) return false;
+
+        // Array.<string>
+        if (!(Array.isArray(data.citeUnseenCategoryTypes) && data.citeUnseenCategoryTypes.every(item => typeof item === 'string'))) return false;
+
+        // Array.<Array.<string, Array.<Array.<string, string>>>>
+        if (!(Array.isArray(data.citeUnseenChecklists) && data.citeUnseenChecklists.every(item => isFixedLengthArray(item, 2) && typeof item[0] === 'string' && Array.isArray(item[1]) && item[1].every(subItem => isFixedLengthArray(subItem, 2) && subItem.every(str => typeof str === 'string'))))) return false;
+
+        // Object.<string, Object<string, string|number>>
+        if (!(isPlainObject(data.citeUnseenCategoryData) && Object.values(data.citeUnseenCategoryData).every(entry => isPlainObject(entry) && typeof entry.icon === 'string' && typeof entry.count === 'number'))) return false;
         return true;
     },
 
@@ -500,13 +540,20 @@ var CiteUnseenData = {
     /**
      * Category data, icons, and counters in use.
      * Labels and hints are now externalized to CiteUnseenI18n for better internationalization.
-     * @type {Object.<string, Object>}
+     * @type {Object.<string, Object<string, string|number>>}
      * @constant
      */
     citeUnseenCategoryData: {
         // Advocacy groups
         "advocacy": {
             "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAPCAMAAAA1b9QjAAAAbFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0Iv+qAAAAI3RSTlMA1A5E+vZW38mMJx7s2aOZjWdaQzoUCvHkyrmvhXx2bWBTMqn0tOoAAAB/SURBVBjTZc9XDoQwDARQZzc9lKVub/j+d8SMAIGYH8svsSXTLt1D7WFwzKctfAxD4hmx4camUiKB1zwjTWIYUeGXiERamt8v0kLyg7hl6v7+d5CGSl6ii4TN1H6l87YqM77WEIoihdT+pVlDepEce5tsvsILWVDyDrWW3xBkBEQGDke/jOMVAAAAAElFTkSuQmCC",
+            "count": 0,
+        },
+
+        // AI-generated content
+        "aiGenerated": {
+            "icon":
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAACXBIWXMAAAyMAAAMjAHam4ZQAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAZZJREFUOI2dlM1LVFEYxn/vmXE0EjSECQ0sN+nYImFctQhaGLhopfMHtClyJ9oq0BmhFv0FtWgvqLhz6yJoVTsHNcEgKAg/aBE017lznhaTNt575w70wFmc33ne97zn0yTRTuuV8Tmw1waLM8vVN+18rm0GAOwh4qqkqTRXapJG6BaAY2fZ56lzSUpt68vj+5081jTeKeF4LNEVWxDcE3yIcaNu3t7NVHY2bLM80R/q7AeQSy05WWeq1fIuoJaPJPDAHhBGAsK/3LewnL+Sux7bWDPmZ8vVAqZnEf50tlwtmGwxGpN0OqcA8pxcxmpy50+iAbZaHrudkdtvYb9kbBt2H6mvhf+U8d7EA6D3HDbMj2YTKuk18QhiN7m/yePKulB1MhzGRsy6kW609L8hBVGbC1W3dm9nbalQNOc+nvfl/WRpZfdTktcksVm5m/e+Me0d3RczwLCkF/8KsZcevl6MewJfD7ZKrw6O7O2TYtfA4O/PgluJJaXJ7Mvp955Rd22odvO/EgBII335YNh5Gh2+gw7Khpk/I1LDpMIsVHEAAAAASUVORK5CYII=",
             "count": 0,
         },
 

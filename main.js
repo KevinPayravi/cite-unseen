@@ -558,7 +558,7 @@
                         CiteUnseen.refLinks.some(link => link.includes(domain));
                 });
             });
-            const typeCategories = CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]);
+            const typeCategories = CiteUnseen.citeUnseenCategoryTypes;
 
             CiteUnseen.refs.forEach(ref => {
                 // Insert icon area before the <cite> tag
@@ -897,7 +897,7 @@
          * @returns {Array} Array of all category type strings
          */
         getAllCategoryTypes: function () {
-            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]), 'unknown'];
+            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...CiteUnseen.citeUnseenCategoryTypes, 'unknown'];
         },
 
         /**
@@ -2223,9 +2223,7 @@
          */
         getSettingCategories: function (includeReliability = true) {
             // Get all type categories from citeUnseenCategoryTypes
-            const typeCategories = CiteUnseen.citeUnseenCategoryTypes ?
-                CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]) :
-                ['advocacy', 'blogs', 'books', 'community', 'editable', 'government', 'news', 'opinions', 'predatory', 'press', 'satire', 'social', 'sponsored', 'tabloids', 'tvPrograms'];
+            const typeCategories = CiteUnseen.citeUnseenCategoryTypes;
 
             if (!includeReliability) {
                 return [...typeCategories, 'unknown'];
