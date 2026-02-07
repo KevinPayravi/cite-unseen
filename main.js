@@ -36,7 +36,7 @@
             ],
 
             mergeableProps: ['categories', 'domainIgnore', 'additionalDomains', 'additionalStrings'],
-            booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings'],
+            booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings', 'showOtherLanguageReliabilityRatings'],
 
             globalMapping: {
                 categories: 'cite_unseen_categories',
@@ -45,7 +45,8 @@
                 additionalStrings: 'cite_unseen_additional_strings',
                 dashboard: 'cite_unseen_dashboard',
                 showSuggestions: 'cite_unseen_show_suggestions',
-                hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings'
+                hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings',
+                showOtherLanguageReliabilityRatings: 'cite_unseen_show_other_language_reliability_ratings'
             }
         },
 
@@ -383,7 +384,7 @@
                     let hasDirectMatch = false, hasConstrainedMatch = false;
 
                     for (const rule of rules) {
-                        const specificity = (Boolean(rule['author']) ? 1.5 : 0) + (Boolean(rule['date']) ? 1 : 0) + (Boolean(rule['pub']) ? 0.7 : 0);
+                        const specificity = (Boolean(rule['author']) ? 1.5 : 0.0) + (Boolean(rule['date']) ? 1.0 : 0.0) + (Boolean(rule['pub']) ? 0.7 : 0.0);
                         if (CiteUnseen.match(coins, rule)) {
                             hasDirectMatch = true;
                             addMatch(languageMatches, language, {
@@ -392,8 +393,8 @@
                                 language: language,
                                 spec: specificity
                             });
-                            if (specificity === 0) break;  // No need to check further if matched with no conditions
-                        } else if (specificity > 0 && (CiteUnseen.matchUrl(coins, rule) || CiteUnseen.matchUrlString(coins, rule))) {
+                            if (specificity === 0.0) break;  // No need to check further if matched with no conditions
+                        } else if (specificity > 0.0 && (CiteUnseen.matchUrl(coins, rule) || CiteUnseen.matchUrlString(coins, rule))) {
                             hasConstrainedMatch = true;
                         }
                     }
@@ -404,7 +405,7 @@
                             type: 'multi',
                             name: checklistName,
                             language: language,
-                            spec: -1  // Constrained match takes the least priority
+                            spec: -1.0  // Constrained match takes the least priority
                         });
                     }
                 }
@@ -420,7 +421,8 @@
             const createCleanMatch = (match) => ({
                 type: match.type,
                 name: match.name,
-                language: match.language
+                language: match.language,
+                spec: match.spec
             });
 
             const results = { current: [], other: [] };
@@ -441,7 +443,11 @@
                 }
             });
 
-            return results.current.length > 0 ? results.current : results.other;
+            if (window.cite_unseen_show_other_language_reliability_ratings === true) {
+                return results.current.concat(results.other);
+            } else {
+                return results.current.length > 0 ? results.current : results.other;
+            }
         },
 
         /**
@@ -606,7 +612,7 @@
                     // Process reliability categories
                     for (const reliabilityMatch of reliabilityMatches) {
                         // If hiding social media reliability ratings, skip generic (spec=0) matches
-                        if (hideSocialMediaReliabilityRating && reliabilityMatch.spec === 0) {
+                        if (hideSocialMediaReliabilityRating && reliabilityMatch.spec === 0.0) {
                             continue;
                         }
 
@@ -1344,7 +1350,8 @@
                     additionalStrings: metaState.additionalStrings || {},
                     dashboard: metaState.dashboard !== undefined ? metaState.dashboard : true,
                     showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true,
-                    hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false
+                    hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false,
+                    showOtherLanguageReliabilityRatings: metaState.showOtherLanguageReliabilityRatings === true || false
                 };
 
                 // Load local rules
@@ -1360,7 +1367,8 @@
                     additionalStrings: localRules?.additionalStrings || {},
                     dashboard: localRules?.dashboard !== undefined ? localRules.dashboard : true,
                     showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true,
-                    hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false
+                    hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false,
+                    showOtherLanguageReliabilityRatings: localRules?.showOtherLanguageReliabilityRatings === true || false
                 };
 
                 // Merge and apply all rules
@@ -1587,7 +1595,8 @@
                 additionalStrings: {},
                 dashboard: true,
                 showSuggestions: true,
-                hideSocialMediaReliabilityRatings: false
+                hideSocialMediaReliabilityRatings: false,
+                showOtherLanguageReliabilityRatings: false
             };
         },
 
@@ -1603,7 +1612,8 @@
                 additionalStrings: {},
                 dashboard: true,
                 showSuggestions: true,
-                hideSocialMediaReliabilityRatings: false
+                hideSocialMediaReliabilityRatings: false,
+                showOtherLanguageReliabilityRatings: false
             };
         },
 
@@ -1691,6 +1701,7 @@
                         showDashboard: CiteUnseen.convByVar(CiteUnseenI18n.showDashboard),
                         showSuggestionsButton: CiteUnseen.convByVar(CiteUnseenI18n.showSuggestionsButton),
                         hideSocialMediaReliabilityRatings: CiteUnseen.convByVar(CiteUnseenI18n.hideSocialMediaReliabilityRatings),
+                        showOtherLanguageReliabilityRatings: CiteUnseen.convByVar(CiteUnseenI18n.showOtherLanguageReliabilityRatings),
                         domainsToIgnore: CiteUnseen.convByVar(CiteUnseenI18n.domainsToIgnore),
                         additionalDomains: CiteUnseen.convByVar(CiteUnseenI18n.additionalDomains),
                         additionalUrlStrings: CiteUnseen.convByVar(CiteUnseenI18n.additionalUrlStrings)
@@ -1707,7 +1718,8 @@
                                 additionalStrings: {},
                                 dashboard: true,
                                 showSuggestions: true,
-                                hideSocialMediaReliabilityRatings: false
+                                hideSocialMediaReliabilityRatings: false,
+                                showOtherLanguageReliabilityRatings: false
                             },
                             isSaving: false,
                             cleanupTimer: null
@@ -1847,7 +1859,8 @@
                                 additionalStrings: {},
                                 dashboard: true,
                                 showSuggestions: true,
-                                hideSocialMediaReliabilityRatings: false
+                                hideSocialMediaReliabilityRatings: false,
+                                showOtherLanguageReliabilityRatings: false
                             };
 
                             // Determine which wiki to load from
@@ -1873,7 +1886,8 @@
                                             additionalStrings: {},
                                             dashboard: true,
                                             showSuggestions: true,
-                                            hideSocialMediaReliabilityRatings: false
+                                            hideSocialMediaReliabilityRatings: false,
+                                            showOtherLanguageReliabilityRatings: false
                                         };
                                         CiteUnseen._metaRules = rules ? { ...defaultRules, ...rules } : defaultRules;
                                     } else {
@@ -1900,7 +1914,8 @@
                                             additionalStrings: {},
                                             dashboard: true,
                                             showSuggestions: true,
-                                            hideSocialMediaReliabilityRatings: false
+                                            hideSocialMediaReliabilityRatings: false,
+                                            showOtherLanguageReliabilityRatings: false
                                         };
                                     } else {
                                         CiteUnseen._localRules = {
@@ -1944,6 +1959,7 @@
                                 this.settings.dashboard = targetRules.dashboard !== false;
                                 this.settings.showSuggestions = targetRules.showSuggestions !== false;
                                 this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings === true;
+                                this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings === true;
                             } else {
                                 // For local rules, inherit from Meta if undefined, otherwise use local value
                                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
@@ -1967,6 +1983,10 @@
                                 this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings !== undefined ?
                                     targetRules.hideSocialMediaReliabilityRatings :
                                     (metaRules.hideSocialMediaReliabilityRatings === true);
+
+                                this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings !== undefined ?
+                                    targetRules.showOtherLanguageReliabilityRatings :
+                                    (metaRules.showOtherLanguageReliabilityRatings === true);
                             }
 
                             // Load list settings
@@ -1986,7 +2006,8 @@
                                 additionalStrings: {},
                                 dashboard: this.settings.dashboard,
                                 showSuggestions: this.settings.showSuggestions,
-                                hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings
+                                hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings,
+                                showOtherLanguageReliabilityRatings: this.settings.showOtherLanguageReliabilityRatings
                             };
 
                             const validationErrors = [];
@@ -2137,6 +2158,9 @@
                                     </cdx-checkbox>
                                     <cdx-checkbox v-model="settings.hideSocialMediaReliabilityRatings">
                                         {{ $options.i18n.hideSocialMediaReliabilityRatings }}
+                                    </cdx-checkbox>
+                                    <cdx-checkbox v-model="settings.showOtherLanguageReliabilityRatings">
+                                        {{ $options.i18n.showOtherLanguageReliabilityRatings }}
                                     </cdx-checkbox>
                                 </cdx-tab>
 
@@ -2305,6 +2329,11 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                     content += `\n// Hide social media reliability ratings setting
 cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
                 }
+
+                if (settings.showOtherLanguageReliabilityRatings === true) {
+                    content += `\n// Show other language reliability ratings setting
+cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLanguageReliabilityRatings};`;
+                }
             } else {
                 // For local wiki, include boolean settings if they differ from Meta settings
                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
@@ -2312,6 +2341,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                 const metaDashboard = metaRules.dashboard !== false; // Meta default logic
                 const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
                 const metaRulesHideSocialMedia = metaRules.hideSocialMediaReliabilityRatings === true; // Meta default logic
+                const metaRulesShowOtherLanguage = metaRules.showOtherLanguageReliabilityRatings === true; // Meta default logic
 
                 if (settings.dashboard !== metaDashboard) {
                     content += `\n\n// Dashboard visibility setting
@@ -2326,6 +2356,11 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                 if (settings.hideSocialMediaReliabilityRatings !== metaRulesHideSocialMedia) {
                     content += `\n\n// Hide social media reliability ratings setting
 cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
+                }
+
+                if (settings.showOtherLanguageReliabilityRatings !== metaRulesShowOtherLanguage) {
+                    content += `\n\n// Show other language reliability ratings setting
+cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLanguageReliabilityRatings};`;
                 }
             }
 

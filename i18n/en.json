@@ -65,6 +65,7 @@
   "filterToggleTooltip": "Click to toggle this category filter. You can select multiple categories. Press Escape to clear all filters.",
   "filtersActive": "filters active",
   "hideSocialMediaReliabilityRatings": "Hide reliability ratings for social media links from unrated publishers",
+  "showOtherLanguageReliabilityRatings": "Show reliability ratings from other language Wikipedias when local ratings are available",
   "ignoreDomainsTabGuidance": "Enter domains to exclude from each category. Sources from these domains will not be marked with the corresponding category icon. Enter one domain per line in the format 'example.com'.",
   "invalidDomainFormatMessage": "Invalid domain format detected. Domains should be in format \"name.tld\" (e.g., example.com):",
   "loading": "Loading...",
