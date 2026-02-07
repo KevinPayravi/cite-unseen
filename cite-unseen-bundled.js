@@ -2,7 +2,7 @@
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
 // Release: 2.2.0
-// Timestamp: 2026-02-07T10:39:26.354Z
+// Timestamp: 2026-02-07T10:58:44.838Z
 
 (function() {
     'use strict';
@@ -789,8 +789,8 @@ window.CiteUnseenI18n = {
             "pms": "Costa sorgiss a l'é pòch fidàbil. A peul essie damanca ëd controlela cas për cas për determiné sò afidament an minca 'n contest.",
             "tr": "Bu kaynak, sınırlı düzeyde güvenilirdir. Her bağlamda güvenilirliğini belirlemek için duruma göre ayrı ayrı incelenmesi gerekebilir.",
             "vi": "Nguồn thông tin này có độ tin cậy ở mức trung bình. Có thể cần phải xem xét lại từng trường hợp cụ thể để xác định độ tin cậy của nó trong mỗi ngữ cảnh.",
-            "hans": "此来源半可靠。可能有必要在每次使用该来源时逐个进行审查，视情境决定是否可靠。",
-            "hant": "此來源半可靠。可能有必要在每次使用該來源時逐個進行審查，視情境決定是否可靠。"
+            "hans": "此来源半可靠或应替代。可能有必要在每次使用该来源时逐个进行审查，视情境决定是否可靠。",
+            "hant": "此來源半可靠或應替代。可能有必要在每次使用該來源時逐個進行審查，視情境決定是否可靠。"
         },
         "multi": {
             "ar": "لا يوجد إجماع في المجتمع حول موثوقية هذا المصدر. قد تتأثر موثوقيته بعامل أو أكثر، مثل مجال الموضوع، أو المؤلف، أو تاريخ النشر.",
