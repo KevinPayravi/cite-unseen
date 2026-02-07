@@ -24,7 +24,7 @@
 	"categoryHints.generallyReliable": "編輯們一致認為此來源在其專業領域的主題上通常可靠。",
 	"categoryHints.generallyUnreliable": "社群共識認為此來源通常不可靠。它仍可用於無爭議的自我描述，或來自專家的自行發表內容。",
 	"categoryHints.government": "此來源已被識別為國有或國營媒體，或為政府來源。",
-	"categoryHints.marginallyReliable": "此來源半可靠。可能有必要在每次使用該來源時逐個進行審查，視情境決定是否可靠。",
+	"categoryHints.marginallyReliable": "此來源半可靠或應替代。可能有必要在每次使用該來源時逐個進行審查，視情境決定是否可靠。",
 	"categoryHints.multi": "社群對此來源的可靠性沒有共識。其可靠性可能受到一個或多個因素影響（例如主題領域、作者或出版時間）。",
 	"categoryHints.news": "此來源來自以報導時事為主、並有編輯審核流程的媒體。",
 	"categoryHints.opinions": "此來源為觀點文章。",
