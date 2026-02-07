@@ -560,8 +560,18 @@
 
                 filteredCategorizedRules[key] = CiteUnseen.categorizedRules[key].filter(rule => {
                     const domain = rule['url'];
-                    return !domainIgnoreList.includes(domain) &&
-                        CiteUnseen.refLinks.some(link => link.includes(domain));
+                    const urlStr = rule['url_str'];
+                    
+                    // If rule has url field, check if any domains match
+                    if (domain) {
+                        return !domainIgnoreList.includes(domain) &&
+                            CiteUnseen.refLinks.some(link => link.includes(domain));
+                    }
+                    
+                    // If rule has url_str field, check if any links contain the string
+                    if (urlStr) {
+                        return CiteUnseen.refLinks.some(link => link.includes(urlStr));
+                    }
                 });
             });
             const typeCategories = CiteUnseen.citeUnseenCategoryTypes;
