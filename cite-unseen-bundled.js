@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.1.15
-// Timestamp: 2026-01-18T07:23:46.341Z
+// Release: 2.2.0
+// Timestamp: 2026-02-07T10:39:26.354Z
 
 (function() {
     'use strict';
@@ -177,6 +177,10 @@
     gap: 0 5px;
     padding-right: 5px;
     vertical-align: middle;
+}
+
+.cite-unseen-icons:empty {
+    padding-right: 0px;
 }
 
 /* Icon container for language indicators */
@@ -443,6 +447,13 @@ window.CiteUnseenI18n = {
                 "Marphy 123"
             ]
         },
+        "ko": {
+            "authors": [
+                "Bisang",
+                "YeBoy371",
+                "Ykhwong"
+            ]
+        },
         "ln": {
             "authors": [
                 "Marphy 123"
@@ -507,6 +518,7 @@ window.CiteUnseenI18n = {
         "en": "Additional Domains (one per line)",
         "id": "Domain Tambahan (satu per baris)",
         "ja": "追加ドメイン（1行に1つ）",
+        "ko": "추가 도메인 (한 줄에 하나씩)",
         "ln": "Ba Domaines ya kobakisa (moko na ligne moko) .",
         "mk": "Дополнителни домени (по еден во секој ред)",
         "pl": "Dodatkowe domeny (jedna na linię)",
@@ -555,6 +567,7 @@ window.CiteUnseenI18n = {
         "id": "Untai URL Tambahan (satu per baris)",
         "ja": "追加URL文字列（1行に1つ）",
         "kg": "Bansinga ya nkaka ya URL (mosi na ndonga mosi)",
+        "ko": "추가 URL 문자열 (한 줄에 하나씩)",
         "ln": "Ba nsinga mosusu ya URL (moko na molongo)",
         "mk": "Дополнителни URL-низи (по една во секој ред)",
         "pl": "Dodatkowe ciągi URL (jeden na linię)",
@@ -571,6 +584,7 @@ window.CiteUnseenI18n = {
         "en": "Cancel",
         "id": "Batal",
         "ja": "キャンセル",
+        "ko": "취소",
         "ln": "Kolongola",
         "mk": "Откажи",
         "pl": "Anuluj",
@@ -605,6 +619,7 @@ window.CiteUnseenI18n = {
             "id": "Sumber ini adalah sebuah organisasi advokasi.",
             "ja": "この情報源はアドボカシー組織です。",
             "kg": "Nto yai kele kimvuka ya ke nwaninaka banswa ya bantu.",
+            "ko": "이 출처는 옹호 단체입니다.",
             "ln": "Source oyo ezali organisation ya défense.",
             "mk": "Овој извор е застапничка организација.",
             "pl": "To źródło jest organizacją rzeczniczą.",
@@ -638,6 +653,7 @@ window.CiteUnseenI18n = {
             "en": "This source is a blog post.",
             "id": "Sumber ini adalah sebuah postingan blog.",
             "ja": "この情報源はブログ記事です。",
+            "ko": "이 출처는 블로그 게시물입니다.",
             "ln": "Source oyo ezali poste ya blog.",
             "mk": "Овој извор е блоговска објава.",
             "pl": "To źródło jest wpisem na blogu.",
@@ -655,6 +671,7 @@ window.CiteUnseenI18n = {
             "en": "This source is a publication such as a book, journal, or other printed material.",
             "id": "Sumber ini adalah terbitan buku, jurnal, atau bahan cetak lainnya.",
             "ja": "この情報源は書籍、ジャーナル、またはその他の印刷物などの出版物です。",
+            "ko": "이 출처는 책, 저널 또는 기타 인쇄물과 같은 출판물입니다.",
             "ln": "Eutelo oyo ezali mokanda lokola buku, zulunalo, to mikanda misusu.",
             "mk": "Овој извор е публикација како книга, стручно списание или друг печатен материјал.",
             "pl": "To źródło jest publikacją taką jak książka, czasopismo lub inny materiał drukowany.",
@@ -672,6 +689,7 @@ window.CiteUnseenI18n = {
             "id": "Sumber ini adalah berita yang dibuat komunitas.",
             "ja": "この情報源はコミュニティが作成したニュースです。",
             "kg": "Nto yai kele bansangu ya kimvuka.",
+            "ko": "이 출처는 커뮤니티에서 작성한 뉴스입니다.",
             "ln": "Liziba oyo ezali nsango ya mboka.",
             "mk": "Овој извор е вест создаден од заедница.",
             "pl": "To źródło to wiadomości tworzone przez społeczność.",
@@ -794,6 +812,7 @@ window.CiteUnseenI18n = {
             "en": "This source is from an outlet whose primary purpose is journalistic reporting on current/recent events, under an editorial process.",
             "id": "Sumber ini adalah artikel berita dari organisasi berita yang bereputasi.",
             "ja": "この情報源は信頼できるニュース組織からのニュース記事です。",
+            "ko": "이 출처는 신뢰할 수 있는 언론사의 뉴스 기사입니다.",
             "ln": "Eutelo oyo ezali lisolo ya bansango ya ebongiseli moko ya bansango oyo eyebani mingi.",
             "mk": "Овој извор е статија со вести од реноимрана новинска организација.",
             "pl": "To źródło to artykuł informacyjny z renomowanej organizacji prasowej.",
@@ -811,6 +830,7 @@ window.CiteUnseenI18n = {
             "id": "Sumber ini adalah artikel pendapat.",
             "ja": "この情報源は意見記事です。",
             "kg": "Nto yai kele kitini ya ngindu.",
+            "ko": "이 출처는 의견이 담긴 글입니다.",
             "ln": "Source oyo ezali pièce ya opinion.",
             "mk": "Овој извор е колумна.",
             "pl": "To źródło to artykuł opiniotwórczy.",
@@ -828,6 +848,7 @@ window.CiteUnseenI18n = {
             "id": "Sumber ini berasal dari jurnal memangsa.",
             "ja": "この情報源はハゲタカジャーナルからのものです。",
             "kg": "Mukanda yai me katuka na zulunalu mosi ya ke tubilaka mambu ya mbi.",
+            "ko": "이 출처는 독수리 저널에서 가져온 것입니다.",
             "ln": "Liziba oyo euti na zulunalo moko oyo elyaka banyama mosusu.",
             "mk": "Овој извор е од предаторски часопис.",
             "pl": "To źródło pochodzi z drapieżnego czasopisma.",
@@ -844,6 +865,7 @@ window.CiteUnseenI18n = {
             "en": "This source is a press release.",
             "id": "Sumber ini adalah siaran pers.",
             "ja": "この情報源はプレスリリースです。",
+            "ko": "이 출처는 보도 자료입니다.",
             "ln": "Source oyo ezali communiqué ya presse.",
             "mk": "Овој извор е изјава за печат.",
             "pl": "To źródło to komunikat prasowy.",
@@ -879,6 +901,7 @@ window.CiteUnseenI18n = {
             "en": "This source is a social media website, possibly a social media post.",
             "id": "Sumber ini adalah situs web media sosial, kemungkinan berupa sebuah postingan media sosial.",
             "ja": "この情報源はソーシャルメディアのウェブサイトで、ソーシャルメディアの投稿である可能性があります。",
+            "ko": "이 출처는 소셜 미디어의 웹 사이트로, 아마도 소셜 미디어 게시물일 것입니다.",
             "ln": "Eutelo oyo ezali site ya social media, mbala mosusu poste ya social media.",
             "mk": "Овој извор е од друштвен медиум, можеби објава.",
             "pl": "To źródło to strona mediów społecznościowych, możliwie post w mediach społecznościowych.",
@@ -911,6 +934,7 @@ window.CiteUnseenI18n = {
             "en": "This source is a tabloid or gossip news.",
             "id": "Sumber ini adalah tabloid atau berita menggunjing.",
             "ja": "この情報源はタブロイドまたはゴシップニュースです。",
+            "ko": "이 출처는 타블로이드 또는 가십 뉴스입니다.",
             "ln": "Source oyo eza tabloïde to sango ya bilobaloba.",
             "mk": "Овој извор е таблоид или озборувачка вест.",
             "pl": "To źródło to tabloid lub wiadomości plotkarskie.",
@@ -926,6 +950,7 @@ window.CiteUnseenI18n = {
             "en": "This source is a TV or radio program. Its reliability depends on the individual program.",
             "id": "Sumber ini adalah program televisi atau radio. Keandalannya bergantung pada program individu tersebut.",
             "ja": "この情報源はテレビまたはラジオ番組です。その信頼性は個々の番組によって異なります。",
+            "ko": "이 출처는 TV 또는 라디오 프로그램입니다. 그 신뢰성은 개별 프로그램에 따라 다릅니다.",
             "ln": "Liziba oyo ezali programme ya TV to ya radio. Bondimi na yango etali programme ya moto na moto.",
             "mk": "Овој извор е TV- или радиоемисија. Неговата меродавност зависи од поединечната емисија.",
             "pl": "To źródło to program telewizyjny lub radiowy. Jego wiarygodność zależy od konkretnego programu.",
@@ -941,6 +966,7 @@ window.CiteUnseenI18n = {
             "en": "This source is not yet evaluated.",
             "id": "Sumber ini belum dievaluasi.",
             "ja": "この情報源はまだ評価されていません。",
+            "ko": "이 출처는 아직 평가되지 않았습니다.",
             "ln": "Liziba oyo etalelami naino te.",
             "mk": "Овој извор сè уште не е оценет.",
             "pl": "To źródło nie zostało jeszcze ocenione.",
@@ -951,6 +977,16 @@ window.CiteUnseenI18n = {
             "vi": "Nguồn thông tin này chưa được đánh giá.",
             "hans": "此来源尚未评估。",
             "hant": "此來源尚未評估。"
+        },
+        "aiGenerated": {
+            "en": "This source is associated with unedited AI-generated content. It may be a website that publishes substantial AI-generated material without human editorial oversight.",
+            "hans": "此来源与未经编辑的 AI 生成内容相关，比如发布大量 AI 生成材料且没有人工编辑监督的网站。",
+            "hant": "此來源與未經編輯的 AI 生成內容相關，比如發布大量 AI 生成材料且沒有人工編輯監督的網站，或是帶有 AI 引用參數的來源連結。"
+        },
+        "aiReferred": {
+            "en": "The URL of this source includes tracking parameters (such as utm_source=chatgpt.com) indicating it was copied from an AI assistant. The associated text may have also been AI-generated, and the source may or may not corroborate the given statements.",
+            "hans": "此来源的网址包含跟踪参数（如 utm_source=chatgpt.com），表明它是从 AI 助手复制的。相关文本也可能是 AI 生成的，并且该来源可能不会证实给定的陈述。",
+            "hant": "此來源的網址包含跟踪參數（如 utm_source=chatgpt.com），表明它是從 AI 助手複製的。相關文本也可能是 AI 生成的，並且該來源可能不會證實給定的陳述。"
         }
     },
     "categoryLabels": {
@@ -991,6 +1027,7 @@ window.CiteUnseenI18n = {
             "en": "blog post(s)",
             "id": "postingan blog",
             "ja": "ブログ",
+            "ko": "블로그 게시물",
             "ln": "post(s) ya blog .",
             "mk": "блоговска објава",
             "pl": "wpis(y) na blogu",
@@ -1009,6 +1046,7 @@ window.CiteUnseenI18n = {
             "id": "buku",
             "ja": "出版物",
             "kg": "mikanda",
+            "ko": "책",
             "ln": "mikanda",
             "mk": "книги",
             "pl": "książki",
@@ -1026,6 +1064,7 @@ window.CiteUnseenI18n = {
             "en": "community",
             "id": "komunitas",
             "ja": "コミュニティ",
+            "ko": "커뮤니티",
             "ln": "esika bofandi",
             "mk": "заедница",
             "pl": "społeczność",
@@ -1059,6 +1098,7 @@ window.CiteUnseenI18n = {
             "en": "editable",
             "id": "dapat disunting",
             "ja": "編集可能",
+            "ko": "편집 가능",
             "ln": "ekoki kobongisama",
             "mk": "уредливо",
             "pl": "edytowalne",
@@ -1077,6 +1117,7 @@ window.CiteUnseenI18n = {
             "id": "umumnya terandalkan",
             "ja": "通常信頼できる",
             "kg": "mingi-mingi ya kutudila ntima",
+            "ko": "일반적으로 신뢰할 수 있음",
             "ln": "mingimingi ekoki kotyelama motema",
             "mk": "начелно меродавно",
             "pl": "ogólnie wiarygodne",
@@ -1095,6 +1136,7 @@ window.CiteUnseenI18n = {
             "id": "umumnya tak terandalkan",
             "ja": "通常信頼できない",
             "kg": "Mbala mingi bo lenda tudila yo ve ntima",
+            "ko": "일반적으로 신뢰할 수 없음",
             "ln": "mingimingi ekoki kotyelama motema te",
             "mk": "начелно немеродавно",
             "pl": "ogólnie niewiarygodne",
@@ -1112,6 +1154,7 @@ window.CiteUnseenI18n = {
             "en": "government",
             "id": "pemerintah",
             "ja": "政府",
+            "ko": "정부",
             "ln": "boyangeli",
             "mk": "владино",
             "pl": "rządowe",
@@ -1129,6 +1172,7 @@ window.CiteUnseenI18n = {
             "en": "marginally reliable",
             "id": "lumayan terandalkan sedikit",
             "ja": "限られた信頼性",
+            "ko": "제한된 신뢰성",
             "ln": "oyo ekoki kotyelama motema na ndenge ya moke",
             "mk": "маргинално веродостоен",
             "pl": "ledwo wiarygodne",
@@ -1146,6 +1190,7 @@ window.CiteUnseenI18n = {
             "id": "tiada konsensus",
             "ja": "コンセンサスなし",
             "kg": "bo me ndima ve",
+            "ko": "합의 없음",
             "ln": "boyokani moko te",
             "mk": "нема консензус",
             "pl": "brak konsensusu",
@@ -1163,6 +1208,7 @@ window.CiteUnseenI18n = {
             "id": "berita",
             "ja": "ニュース",
             "kg": "bansangu",
+            "ko": "뉴스",
             "ln": "bansango",
             "mk": "вести",
             "pl": "wiadomości",
@@ -1213,6 +1259,7 @@ window.CiteUnseenI18n = {
             "en": "press release(s)",
             "id": "siaran pers",
             "ja": "プレスリリース",
+            "ko": "보도 자료",
             "ln": "communiqué(s) ya bapanzi sango .",
             "mk": "соопштение за печат",
             "pl": "komunikat(y) prasowy(e)",
@@ -1248,6 +1295,7 @@ window.CiteUnseenI18n = {
             "id": "media sosial",
             "ja": "ソーシャルメディア",
             "kg": "basite ya bansangu",
+            "ko": "소셜 미디어",
             "ln": "ba réseaux sociaux",
             "mk": "друштвен медиум",
             "pl": "media społecznościowe",
@@ -1283,6 +1331,7 @@ window.CiteUnseenI18n = {
             "en": "tabloid(s)",
             "id": "tabloid",
             "ja": "タブロイド",
+            "ko": "타블로이드",
             "ln": "(ba) tabloïde .",
             "mk": "таблоид(и)",
             "pl": "tabloid(y)",
@@ -1299,6 +1348,7 @@ window.CiteUnseenI18n = {
             "id": "Program televisi",
             "ja": "テレビ番組",
             "kg": "Programe ya TV",
+            "ko": "TV 프로그램",
             "ln": "Programme(s) ya TV .",
             "mk": "ТВ-емисија",
             "pl": "program(y) telewizyjny(e)",
@@ -1316,6 +1366,7 @@ window.CiteUnseenI18n = {
             "id": "tautan tak dikenal",
             "ja": "不明なリンク",
             "kg": "ba lien ya me zabana ve",
+            "ko": "알 수 없는 링크",
             "ln": "ba liens oyo eyebani te",
             "mk": "непознати врски",
             "pl": "nieznane linki",
@@ -1326,6 +1377,16 @@ window.CiteUnseenI18n = {
             "vi": "Liên kết không xác định",
             "hans": "未知链接",
             "hant": "未知連結"
+        },
+        "aiGenerated": {
+            "en": "AI-generated",
+            "hans": "AI生成",
+            "hant": "AI生成"
+        },
+        "aiReferred": {
+            "en": "AI-referred",
+            "hans": "AI搜索",
+            "hant": "AI搜尋"
         }
     },
     "citationPlural": {
@@ -1399,6 +1460,7 @@ window.CiteUnseenI18n = {
         "id": ":",
         "ja": "：",
         "kg": ":",
+        "ko": ":",
         "ln": ":",
         "mk": ":",
         "pl": ":",
@@ -1415,6 +1477,7 @@ window.CiteUnseenI18n = {
         "en": "Clear All",
         "id": "Kosongkan Semua",
         "ja": "全てクリア",
+        "ko": "모두 지우기",
         "ln": "Effacer Nionso",
         "mk": "Исчисти сè",
         "pl": "Wyczyść wszystkie",
@@ -1431,6 +1494,7 @@ window.CiteUnseenI18n = {
         "en": "Clear all active filters",
         "id": "Kosongkan semua penyaring menyala",
         "ja": "全てのアクティブフィルタをクリア",
+        "ko": "모든 활성 필터를 지우기",
         "ln": "Effacer ba filtres nionso oyo ezali active",
         "mk": "Исчисти ги сите активни филтри",
         "pl": "Wyczyść wszystkie aktywne filtry",
@@ -1479,6 +1543,7 @@ window.CiteUnseenI18n = {
         "id": "Dokumentasi",
         "ja": "ドキュメント",
         "kg": "Mikanda",
+        "ko": "문서",
         "ln": "Mikanda ya kosala mikanda",
         "mk": "Документација",
         "pl": "Dokumentacja",
@@ -1526,6 +1591,7 @@ window.CiteUnseenI18n = {
         "en": "Enable/Disable Categories",
         "id": "Nyalakan/Matikan Kategori",
         "ja": "カテゴリの有効/無効",
+        "ko": "분류 활성화/비활성화",
         "ln": "Activer/Desactiver ba Catégories",
         "mk": "Овозможи/Оневозможи категории",
         "pl": "Włącz/Wyłącz kategorie",
@@ -1615,6 +1681,7 @@ window.CiteUnseenI18n = {
         "id": "Memuat...",
         "ja": "読み込み中...",
         "kg": "Bo me tula yo na valere...",
+        "ko": "불러오는 중...",
         "ln": "Kokotisa biloko...",
         "mk": "Вчитувам...",
         "pl": "Ładowanie...",
@@ -1662,6 +1729,7 @@ window.CiteUnseenI18n = {
         "en": "Meta-Wiki (global)",
         "id": "Meta-Wiki (global)",
         "ja": "メタウィキ (グローバル)",
+        "ko": "메타위키 (전역)",
         "ln": "Meta-Wiki (ya mokili mobimba) .",
         "mk": "Мета (глобално)",
         "pl": "Meta-Wiki (globalne)",
@@ -1679,6 +1747,7 @@ window.CiteUnseenI18n = {
         "id": "dari",
         "ja": "/",
         "kg": "ya",
+        "ko": "의",
         "ln": "ya",
         "mk": "од",
         "pl": "z",
@@ -1713,6 +1782,7 @@ window.CiteUnseenI18n = {
         "id": "Halaman Proyek Keandalan",
         "ja": "信頼性プロジェクトページ",
         "kg": "Lutiti ya Kisalu ya Kutula Ntima",
+        "ko": "신뢰성 프로젝트 문서",
         "ln": "Lokasa ya mosala",
         "mk": "Проектни страници за меродавност",
         "pl": "Strony projektów wiarygodności",
@@ -1729,6 +1799,7 @@ window.CiteUnseenI18n = {
         "en": "Save",
         "id": "Simpan",
         "ja": "保存",
+        "ko": "저장",
         "ln": "Kobikisa",
         "mk": "Зачувај",
         "pl": "Zapisz",
@@ -1745,6 +1816,7 @@ window.CiteUnseenI18n = {
         "en": "Saving...",
         "id": "Menyimpan...",
         "ja": "保存中...",
+        "ko": "저장 중...",
         "ln": "Kobomba...",
         "mk": "Зачувувам...",
         "pl": "Zapisywanie...",
@@ -1823,6 +1895,7 @@ window.CiteUnseenI18n = {
         "id": "Galat saat menyimpan pengaturan:",
         "ja": "設定の保存中にエラーが発生しました：",
         "kg": "Bametode ya kubumba bifu:",
+        "ko": "설정 저장 오류:",
         "ln": "Ba paramètres ya kobomba mabunga:",
         "mk": "Грешка при зачувувањето на нагодувањата:",
         "pl": "Błąd zapisywania ustawień:",
@@ -1886,6 +1959,7 @@ window.CiteUnseenI18n = {
         "id": "Menampilkan",
         "ja": "表示中",
         "kg": "Kumonisa",
+        "ko": "표시 중",
         "ln": "Komonisama",
         "mk": "Се прикажува",
         "pl": "Pokazuje",
@@ -1903,6 +1977,7 @@ window.CiteUnseenI18n = {
         "id": "URL Sumber",
         "ja": "ソースURL",
         "kg": "Source URL",
+        "ko": "출처 URL",
         "ln": "URL ya source",
         "mk": "Изворна URL",
         "pl": "URL źródła",
@@ -1919,6 +1994,7 @@ window.CiteUnseenI18n = {
         "en": "Open Edit Form",
         "id": "Buka Isian Penyuntingan",
         "ja": "編集フォームを開く",
+        "ko": "편집 양식 열기",
         "ln": "Fungola Formulaire ya Bobongisi",
         "mk": "Отвори образец за уредување",
         "pl": "Otwórz formularz edycji",
@@ -1935,6 +2011,7 @@ window.CiteUnseenI18n = {
         "en": "Opening...",
         "id": "Membuka...",
         "ja": "開いています...",
+        "ko": "여는 중...",
         "ln": "Kofungola...",
         "mk": "Отворам...",
         "pl": "Otwieranie...",
@@ -1968,6 +2045,7 @@ window.CiteUnseenI18n = {
         "en": "Suggested Categories",
         "id": "Kategori yang Disarankan",
         "ja": "提案カテゴリ",
+        "ko": "제안된 분류",
         "ln": "Ba catégories oyo ba proposer",
         "mk": "Предложени категории",
         "pl": "Sugerowane kategorie",
@@ -1985,6 +2063,7 @@ window.CiteUnseenI18n = {
         "id": "Sarankan Kategorisasi",
         "ja": "分類の提案",
         "kg": "Bangindu ya kukabisa na bimvuka",
+        "ko": "분류 제안",
         "ln": "Likanisi ya kokabola yango na biteni",
         "mk": "Предложи категоризација",
         "pl": "Zasugeruj kategoryzację",
@@ -2001,6 +2080,7 @@ window.CiteUnseenI18n = {
         "en": "Error opening suggestion form:",
         "id": "Galat saat membuka isian saran:",
         "ja": "提案フォームを開く際にエラーが発生しました：",
+        "ko": "제안 양식을 여는데 오류가 발생했습니다:",
         "ln": "Libunga na kofungola formulaire ya likanisi:",
         "mk": "Грешка при отворањето на образецот за предлози:",
         "pl": "Błąd otwierania formularza sugestii:",
@@ -2059,6 +2139,7 @@ window.CiteUnseenI18n = {
         "en": "Suggest Categories",
         "id": "Sarankan Kategori",
         "ja": "分類を提案",
+        "ko": "분류 제안",
         "ln": "Pesá makanisi ya Catégories",
         "mk": "Предложи категории",
         "pl": "Zasugeruj kategorie",
@@ -2092,6 +2173,7 @@ window.CiteUnseenI18n = {
         "id": "Domain Tambahan",
         "ja": "追加ドメイン",
         "kg": "Bisika ya Nkaka",
+        "ko": "추가 도메인",
         "ln": "Ba Domaines ya kobakisa",
         "mk": "Дополнителни домени",
         "pl": "Dodatkowe domeny",
@@ -2108,6 +2190,7 @@ window.CiteUnseenI18n = {
         "en": "Additional URL Strings",
         "id": "Untai URL Tambahan",
         "ja": "追加URL文字列",
+        "ko": "추가 URL 설정",
         "ln": "Ba nsinga mosusu ya URL",
         "mk": "Дополнителни URL-низи",
         "pl": "Dodatkowe ciągi URL",
@@ -2123,6 +2206,7 @@ window.CiteUnseenI18n = {
         "en": "Categories",
         "id": "Kategori",
         "ja": "カテゴリ",
+        "ko": "분류",
         "ln": "Ba catégories",
         "mk": "Категории",
         "pl": "Kategorie",
@@ -2139,6 +2223,7 @@ window.CiteUnseenI18n = {
         "en": "General",
         "id": "Umum",
         "ja": "全般",
+        "ko": "일반",
         "ln": "Mbala mingi",
         "mk": "Општо",
         "pl": "Ogólne",
@@ -2156,6 +2241,7 @@ window.CiteUnseenI18n = {
         "id": "Abaikan Domain",
         "ja": "ドメインを無視",
         "kg": "Kuvila Bisika",
+        "ko": "도메인 무시",
         "ln": "Ignorer ba Domaines",
         "mk": "Занемари домени",
         "pl": "Ignoruj domeny",
@@ -2173,6 +2259,7 @@ window.CiteUnseenI18n = {
         "id": "Total",
         "ja": "合計",
         "kg": "Ntalu na yo",
+        "ko": "전체",
         "ln": "Mobimba",
         "mk": "Вкупно",
         "pl": "Łącznie",
@@ -2189,6 +2276,7 @@ window.CiteUnseenI18n = {
         "en": "View settings from:",
         "id": "Lihat pengaturan dari:",
         "ja": "設定を表示：",
+        "ko": "다음에서 설정 표시:",
         "ln": "Tala ba paramètres uta na:",
         "mk": "Погл. нагодувања од:",
         "pl": "Zobacz ustawienia z:",
@@ -2199,6 +2287,11 @@ window.CiteUnseenI18n = {
         "vi": "Xem cài đặt từ:",
         "hans": "检视设置：",
         "hant": "檢視設定："
+    },
+    "showOtherLanguageReliabilityRatings": {
+        "en": "Show reliability ratings from other language Wikipedias when local ratings are available",
+        "hans": "本地评级可用时，显示其他语言维基百科的可靠性评级",
+        "hant": "本地評級可用時，顯示其他語言維基百科的可靠性評級"
     }
 };
 
@@ -2216,6 +2309,8 @@ var CiteUnseenData = {
         'advocacy/2',
         'advocacy/3',
         'advocacy/4',
+        'aiGenerated',
+        'aiReferred',
         "blogs",
         "books",
         "community",
@@ -2245,7 +2340,9 @@ var CiteUnseenData = {
         'frJVS',
         'ruAIKI',
         'enBGS',
-        'enCHARTS'
+        'enCHARTS',
+        'enVSAFES',
+        'viDSNDTC'
     ],
 
     /**
@@ -2280,7 +2377,7 @@ var CiteUnseenData = {
 
     /**
      * Source lists grouped by reliability category.
-     * @type {Array.<Array.<string>>}
+     * @type {Array.<Array.<string, Array.<Array.<string, string>>>>}
      * @constant
      */
     citeUnseenChecklists: [
@@ -2288,7 +2385,9 @@ var CiteUnseenData = {
             "blacklisted", [
                 ["enRSP", "enRspBlacklisted"],
                 ["zhRSP", "zhRspBlacklisted"],
-                ["enKOREAS", "enKoreasBlacklisted"]
+                ["enKOREAS", "enKoreasBlacklisted"],
+                ["enVSAFES", "enVsafesBlacklisted"],
+                ["viDSNDTC", "viDsndtcBlacklisted"]
             ],
         ], [
             "deprecated", [
@@ -2312,7 +2411,9 @@ var CiteUnseenData = {
                 ["frJVS", "frJvsGenerallyUnreliable"],
                 ["ruAIKI", "ruAikiGenerallyUnreliable"],
                 ["enBGS", "enBgsGenerallyUnreliable"],
-                ["enCHARTS", "enChartsGenerallyUnreliable"]
+                ["enCHARTS", "enChartsGenerallyUnreliable"],
+                ["enVSAFES", "enVsafesGenerallyUnreliable"],
+                ["viDSNDTC", "viDsndtcGenerallyUnreliable"]
             ],
         ], [
             "marginallyReliable", [
@@ -2325,7 +2426,9 @@ var CiteUnseenData = {
                 ["zhACGS", "zhAcgsMarginallyReliable"],
                 ["zhVGS", "zhVgsMarginallyReliable"],
                 ["frJVS", "frJvsMarginallyReliable"],
-                ["enBGS", "enBgsMarginallyReliable"]
+                ["enBGS", "enBgsMarginallyReliable"],
+                ["enVSAFES", "enVsafesMarginallyReliable"],
+                ["viDSNDTC", "viDsndtcMarginallyReliable"]
             ],
         ], [
             "multi", [
@@ -2334,7 +2437,9 @@ var CiteUnseenData = {
                 ["enNPPSG/2", "enNppsgMulti"],
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
-                ["zhVGS", "zhVgsMulti"]
+                ["zhVGS", "zhVgsMulti"],
+                ["enVSAFES", "enVsafesMulti"],
+                ["viDSNDTC", "viDsndtcMulti"]
             ],
         ], [
             "generallyReliable", [
@@ -2352,21 +2457,36 @@ var CiteUnseenData = {
                 ["frJVS", "frJvsGenerallyReliable"],
                 ["ruAIKI", "ruAikiGenerallyReliable"],
                 ["enBGS", "enBgsGenerallyReliable"],
-                ["enCHARTS", "enChartsGenerallyReliable"]
+                ["enCHARTS", "enChartsGenerallyReliable"],
+                ["enVSAFES", "enVsafesGenerallyReliable"],
+                ["viDSNDTC", "viDsndtcGenerallyReliable"]
             ],
         ],
     ],
 
     /**
      * Types of source categories.
-     * @type {Array.<Array.<string>>}
+     * @type {Array.<string>}
      * @constant
      */
     citeUnseenCategoryTypes: [
-        ["medium", ['books', 'tabloids', 'tvPrograms']],
-        ["type", ['news', "opinions", "press", "satire"]],
-        ['userGenerated', ['blogs', 'community', 'editable', 'social']],
-        ["influence", ['advocacy', "government", "predatory", "sponsored"]],
+        'advocacy',
+        'aiGenerated',
+        'aiReferred',
+        'blogs',
+        'books',
+        'community',
+        'editable',
+        'government',
+        'news',
+        'opinions',
+        'predatory',
+        'press',
+        'satire',
+        'social',
+        'sponsored',
+        'tabloids',
+        'tvPrograms'
     ],
 
     /**
@@ -2401,8 +2521,10 @@ var CiteUnseenData = {
         'enNPPSG/2': 'en:Wikipedia:New pages patrol source guide',
         'enRSP': 'en:Wikipedia:Reliable sources/Perennial sources',
         'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
+        'enVSAFES': 'en:Wikipedia:Vaccine safety/Perennial sources',
         'frJVS': 'fr:Projet:Jeu vidéo/Sources',
         'ruAIKI': 'ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр',
+        'viDSNDTC': 'vi:Wikipedia:Danh sách nguồn đáng tin cậy',
         'zhACGS': 'zh:维基专题:ACG/來源考量',
         'zhRSP': 'zh:维基百科:可靠来源/常见有争议来源列表',
         'zhVGS': 'zh:维基专题:电子游戏/来源考量'
@@ -2628,12 +2750,25 @@ var CiteUnseenData = {
      * @returns {boolean} True if valid, false otherwise.
      */
     isValidData: function (data) {
-        if (!data || typeof data !== 'object') return false;
-        if (!data.getCategorizedRules || typeof data.getCategorizedRules !== 'function') return false;
-        if (!data.citeUnseenCategories || typeof data.citeUnseenCategories !== 'object') return false;
-        if (!data.citeUnseenCategoryTypes || !Array.isArray(data.citeUnseenCategoryTypes)) return false;
-        if (!data.citeUnseenChecklists || !Array.isArray(data.citeUnseenChecklists)) return false;
-        if (!data.citeUnseenCategoryData || typeof data.citeUnseenCategoryData !== 'object') return false;
+        const isPlainObject = value => value && typeof value === 'object' && !Array.isArray(value);
+        if (!isPlainObject(data)) return false;
+        
+        const isFixedLengthArray = (value, length) => Array.isArray(value) && value.length === length;
+
+        // Function
+        if (typeof data.getCategorizedRules !== 'function') return false;
+
+        // Object.<string, boolean>
+        if (!(isPlainObject(data.citeUnseenCategories) && Object.values(data.citeUnseenCategories).every(value => typeof value === 'boolean'))) return false;
+
+        // Array.<string>
+        if (!(Array.isArray(data.citeUnseenCategoryTypes) && data.citeUnseenCategoryTypes.every(item => typeof item === 'string'))) return false;
+
+        // Array.<Array.<string, Array.<Array.<string, string>>>>
+        if (!(Array.isArray(data.citeUnseenChecklists) && data.citeUnseenChecklists.every(item => isFixedLengthArray(item, 2) && typeof item[0] === 'string' && Array.isArray(item[1]) && item[1].every(subItem => isFixedLengthArray(subItem, 2) && subItem.every(str => typeof str === 'string'))))) return false;
+
+        // Object.<string, Object<string, string|number>>
+        if (!(isPlainObject(data.citeUnseenCategoryData) && Object.values(data.citeUnseenCategoryData).every(entry => isPlainObject(entry) && typeof entry.icon === 'string' && typeof entry.count === 'number'))) return false;
         return true;
     },
 
@@ -2705,13 +2840,27 @@ var CiteUnseenData = {
     /**
      * Category data, icons, and counters in use.
      * Labels and hints are now externalized to CiteUnseenI18n for better internationalization.
-     * @type {Object.<string, Object>}
+     * @type {Object.<string, Object<string, string|number>>}
      * @constant
      */
     citeUnseenCategoryData: {
         // Advocacy groups
         "advocacy": {
             "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAPCAMAAAA1b9QjAAAAbFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0Iv+qAAAAI3RSTlMA1A5E+vZW38mMJx7s2aOZjWdaQzoUCvHkyrmvhXx2bWBTMqn0tOoAAAB/SURBVBjTZc9XDoQwDARQZzc9lKVub/j+d8SMAIGYH8svsSXTLt1D7WFwzKctfAxD4hmx4camUiKB1zwjTWIYUeGXiERamt8v0kLyg7hl6v7+d5CGSl6ii4TN1H6l87YqM77WEIoihdT+pVlDepEce5tsvsILWVDyDrWW3xBkBEQGDke/jOMVAAAAAElFTkSuQmCC",
+            "count": 0,
+        },
+
+        // AI-generated content
+        "aiGenerated": {
+            "icon":
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAMAAAD3n0w0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA1VBMVEUAAAD1QzX1RTb1RTb1RTb1RTf1RDb1Rjf1Rjb1Rjf0RTb0RTf0RDf0RTb0RDb2RTb2Rjf1RTb1RTb0RTf1RTf1RTb1RTb1RjT1RTb1RTb1RTj1Rjb1RTX0RDf1RTb1RTb2RjX2RDb1RTb1RTX1RTb1RTb0RjX2RDb1Rjb1RTbvQDD1RjfyQDPzRjrtSTf0Rjb2RjX2RjX1Rjf1RDb0QzX0RDb1RTv2RTb4RDX0Rzb1RDX3Rzb4RTf1Rjf3Rjb1RDX1Rjb0RTX2RDf2Qzb1RTb1RTb///921ircAAAARXRSTlMANeLhNJ+dZmOajUZ0d8KJh/DtXUrU00nuhU5MhmGb/Ivy8Z79849tkvUQMxQWDnVXOrtLSF4aVSIvmT0lYiFp3Fw4OeCMfoJMAAAAAWJLR0RGF7r57QAAAAd0SU1FB+oCBwk7GcsUheoAAAC1SURBVBjTdY/XEoIwFETXCgKi2HtXVOyKvWv+/5fMjQyjoOdhd/bMZJIADoFgKAwvEcaiPikxJvskYjG/g6J8DFWLC3T93ZoKJJiPJAyeqXQmSyuXTxd4GaBRBErUZaBCLSS/V6auAjVX1qONJnWr0e640guX3Z4puZj9gZAmhhZnNKacYCrkDPMFZ2nSyRVsR643nK1H7vacg0ce6c+7L3lypEV5xkXI6+1uuTzs57/H73/wAtD4QkpckAT9AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDI2LTAyLTA3VDA5OjU5OjI1KzAwOjAw7epnTAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyNi0wMi0wN1QwOTo1OToyNSswMDowMJy33/AAAAAASUVORK5CYII=",
+            "count": 0,
+        },
+
+        // AI referrer present in the URL
+        "aiReferred": {
+            "icon":
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAMAAAD3n0w0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABF1BMVEUAAACtgiatgCWtgCWsgCetgCWugCWtgCatgSSsgCSugCSrgCSugCWugSSugCWtgCWugCatgCWtgCWtgSSsgCatgCWtgCWvgSatgCatgCStgCSugCWtgCSugSWtgCStgCWsgCWtgCWsgCWtgCWtgCWtgCWtgCaugSStgCaugCWtgCWsgCSsgCaugCOvgiOugyWAgACfgCCtgCWqhiSsgSWugCWtgCWtgCatgCWtgCaugCaugCWxgCetgCWugSStgCWtgCatgSatgSWsgyKsgCWtgCWsgCSugCWvgCitgCWtgCatgCWZmTOrgCStgCWugCisgSWtgCSvgySsgSS/gECtgCWtgCWzgCasgCaugSatgCWtgCX///8KW/WgAAAAW3RSTlMANeLhNJ+dZmOajUZ0d8KJh/DtXUrU00nuhU5MhmGb/Ivy8Z79/pxPRNX3YlAWMykCCLIVU4TcIvWAo1IazVXIvldLJbOutr8gg7flBUD0JnXgI2kE9uwUKGWZ8V12aQAAAAFiS0dEXOrYAJcAAAAHdElNRQfqAgcJOwJBcUwGAAAA8UlEQVQY03XO6VLCMBQF4CNYKFsRUMGqgEK0YltEFESQxQ3Qoijgdt//PUxShmGonh85uV8ykwDzrPn861iNQhTwYJBI9SBCIa8hHF4aItGYjKa5HY0AcfJkAwm+JlObW2LaTqcyvBIQww6gi94F9kRL5O+qoveB7AJzgfyB6MN8objA1QhkR8eGYQRPSqeGqTAXmQ7LtstnlXPNruKCSSzgUhzX6tYVsQauJTZb3G7anSy6REWrJ/H2jt+7x8Njvc83A1PiEE9Ez86oRPIwLvHl1THHb0O8T2JjfVqeuV/6UD8xmilfDlD9zvz7+Z8/8gsjVVhOKHyY2AAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyNi0wMi0wN1QwOTo1OTowMiswMDowMGpoXr8AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjYtMDItMDdUMDk6NTk6MDIrMDA6MDAbNeYDAAAAAElFTkSuQmCC",
             "count": 0,
         },
 
@@ -2883,7 +3032,7 @@ var CiteUnseenData = {
             ],
 
             mergeableProps: ['categories', 'domainIgnore', 'additionalDomains', 'additionalStrings'],
-            booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings'],
+            booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings', 'showOtherLanguageReliabilityRatings'],
 
             globalMapping: {
                 categories: 'cite_unseen_categories',
@@ -2892,7 +3041,8 @@ var CiteUnseenData = {
                 additionalStrings: 'cite_unseen_additional_strings',
                 dashboard: 'cite_unseen_dashboard',
                 showSuggestions: 'cite_unseen_show_suggestions',
-                hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings'
+                hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings',
+                showOtherLanguageReliabilityRatings: 'cite_unseen_show_other_language_reliability_ratings'
             }
         },
 
@@ -3230,7 +3380,7 @@ var CiteUnseenData = {
                     let hasDirectMatch = false, hasConstrainedMatch = false;
 
                     for (const rule of rules) {
-                        const specificity = (Boolean(rule['author']) ? 1.5 : 0) + (Boolean(rule['date']) ? 1 : 0) + (Boolean(rule['pub']) ? 0.7 : 0);
+                        const specificity = (Boolean(rule['author']) ? 1.5 : 0.0) + (Boolean(rule['date']) ? 1.0 : 0.0) + (Boolean(rule['pub']) ? 0.7 : 0.0);
                         if (CiteUnseen.match(coins, rule)) {
                             hasDirectMatch = true;
                             addMatch(languageMatches, language, {
@@ -3239,8 +3389,8 @@ var CiteUnseenData = {
                                 language: language,
                                 spec: specificity
                             });
-                            if (specificity === 0) break;  // No need to check further if matched with no conditions
-                        } else if (specificity > 0 && (CiteUnseen.matchUrl(coins, rule) || CiteUnseen.matchUrlString(coins, rule))) {
+                            if (specificity === 0.0) break;  // No need to check further if matched with no conditions
+                        } else if (specificity > 0.0 && (CiteUnseen.matchUrl(coins, rule) || CiteUnseen.matchUrlString(coins, rule))) {
                             hasConstrainedMatch = true;
                         }
                     }
@@ -3251,7 +3401,7 @@ var CiteUnseenData = {
                             type: 'multi',
                             name: checklistName,
                             language: language,
-                            spec: -1  // Constrained match takes the least priority
+                            spec: -1.0  // Constrained match takes the least priority
                         });
                     }
                 }
@@ -3267,7 +3417,8 @@ var CiteUnseenData = {
             const createCleanMatch = (match) => ({
                 type: match.type,
                 name: match.name,
-                language: match.language
+                language: match.language,
+                spec: match.spec
             });
 
             const results = { current: [], other: [] };
@@ -3288,7 +3439,11 @@ var CiteUnseenData = {
                 }
             });
 
-            return results.current.length > 0 ? results.current : results.other;
+            if (window.cite_unseen_show_other_language_reliability_ratings === true) {
+                return results.current.concat(results.other);
+            } else {
+                return results.current.length > 0 ? results.current : results.other;
+            }
         },
 
         /**
@@ -3401,11 +3556,21 @@ var CiteUnseenData = {
 
                 filteredCategorizedRules[key] = CiteUnseen.categorizedRules[key].filter(rule => {
                     const domain = rule['url'];
-                    return !domainIgnoreList.includes(domain) &&
-                        CiteUnseen.refLinks.some(link => link.includes(domain));
+                    const urlStr = rule['url_str'];
+                    
+                    // If rule has url field, check if any domains match
+                    if (domain) {
+                        return !domainIgnoreList.includes(domain) &&
+                            CiteUnseen.refLinks.some(link => link.includes(domain));
+                    }
+                    
+                    // If rule has url_str field, check if any links contain the string
+                    if (urlStr) {
+                        return CiteUnseen.refLinks.some(link => link.includes(urlStr));
+                    }
                 });
             });
-            const typeCategories = CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]);
+            const typeCategories = CiteUnseen.citeUnseenCategoryTypes;
 
             CiteUnseen.refs.forEach(ref => {
                 // Insert icon area before the <cite> tag
@@ -3453,7 +3618,7 @@ var CiteUnseenData = {
                     // Process reliability categories
                     for (const reliabilityMatch of reliabilityMatches) {
                         // If hiding social media reliability ratings, skip generic (spec=0) matches
-                        if (hideSocialMediaReliabilityRating && reliabilityMatch.spec === 0) {
+                        if (hideSocialMediaReliabilityRating && reliabilityMatch.spec === 0.0) {
                             continue;
                         }
 
@@ -3744,7 +3909,7 @@ var CiteUnseenData = {
          * @returns {Array} Array of all category type strings
          */
         getAllCategoryTypes: function () {
-            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]), 'unknown'];
+            return [...CiteUnseen.citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...CiteUnseen.citeUnseenCategoryTypes, 'unknown'];
         },
 
         /**
@@ -4191,7 +4356,8 @@ var CiteUnseenData = {
                     additionalStrings: metaState.additionalStrings || {},
                     dashboard: metaState.dashboard !== undefined ? metaState.dashboard : true,
                     showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true,
-                    hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false
+                    hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false,
+                    showOtherLanguageReliabilityRatings: metaState.showOtherLanguageReliabilityRatings === true || false
                 };
 
                 // Load local rules
@@ -4207,7 +4373,8 @@ var CiteUnseenData = {
                     additionalStrings: localRules?.additionalStrings || {},
                     dashboard: localRules?.dashboard !== undefined ? localRules.dashboard : true,
                     showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true,
-                    hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false
+                    hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false,
+                    showOtherLanguageReliabilityRatings: localRules?.showOtherLanguageReliabilityRatings === true || false
                 };
 
                 // Merge and apply all rules
@@ -4434,7 +4601,8 @@ var CiteUnseenData = {
                 additionalStrings: {},
                 dashboard: true,
                 showSuggestions: true,
-                hideSocialMediaReliabilityRatings: false
+                hideSocialMediaReliabilityRatings: false,
+                showOtherLanguageReliabilityRatings: false
             };
         },
 
@@ -4450,7 +4618,8 @@ var CiteUnseenData = {
                 additionalStrings: {},
                 dashboard: true,
                 showSuggestions: true,
-                hideSocialMediaReliabilityRatings: false
+                hideSocialMediaReliabilityRatings: false,
+                showOtherLanguageReliabilityRatings: false
             };
         },
 
@@ -4538,6 +4707,7 @@ var CiteUnseenData = {
                         showDashboard: CiteUnseen.convByVar(CiteUnseenI18n.showDashboard),
                         showSuggestionsButton: CiteUnseen.convByVar(CiteUnseenI18n.showSuggestionsButton),
                         hideSocialMediaReliabilityRatings: CiteUnseen.convByVar(CiteUnseenI18n.hideSocialMediaReliabilityRatings),
+                        showOtherLanguageReliabilityRatings: CiteUnseen.convByVar(CiteUnseenI18n.showOtherLanguageReliabilityRatings),
                         domainsToIgnore: CiteUnseen.convByVar(CiteUnseenI18n.domainsToIgnore),
                         additionalDomains: CiteUnseen.convByVar(CiteUnseenI18n.additionalDomains),
                         additionalUrlStrings: CiteUnseen.convByVar(CiteUnseenI18n.additionalUrlStrings)
@@ -4554,7 +4724,8 @@ var CiteUnseenData = {
                                 additionalStrings: {},
                                 dashboard: true,
                                 showSuggestions: true,
-                                hideSocialMediaReliabilityRatings: false
+                                hideSocialMediaReliabilityRatings: false,
+                                showOtherLanguageReliabilityRatings: false
                             },
                             isSaving: false,
                             cleanupTimer: null
@@ -4694,7 +4865,8 @@ var CiteUnseenData = {
                                 additionalStrings: {},
                                 dashboard: true,
                                 showSuggestions: true,
-                                hideSocialMediaReliabilityRatings: false
+                                hideSocialMediaReliabilityRatings: false,
+                                showOtherLanguageReliabilityRatings: false
                             };
 
                             // Determine which wiki to load from
@@ -4720,7 +4892,8 @@ var CiteUnseenData = {
                                             additionalStrings: {},
                                             dashboard: true,
                                             showSuggestions: true,
-                                            hideSocialMediaReliabilityRatings: false
+                                            hideSocialMediaReliabilityRatings: false,
+                                            showOtherLanguageReliabilityRatings: false
                                         };
                                         CiteUnseen._metaRules = rules ? { ...defaultRules, ...rules } : defaultRules;
                                     } else {
@@ -4747,7 +4920,8 @@ var CiteUnseenData = {
                                             additionalStrings: {},
                                             dashboard: true,
                                             showSuggestions: true,
-                                            hideSocialMediaReliabilityRatings: false
+                                            hideSocialMediaReliabilityRatings: false,
+                                            showOtherLanguageReliabilityRatings: false
                                         };
                                     } else {
                                         CiteUnseen._localRules = {
@@ -4791,6 +4965,7 @@ var CiteUnseenData = {
                                 this.settings.dashboard = targetRules.dashboard !== false;
                                 this.settings.showSuggestions = targetRules.showSuggestions !== false;
                                 this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings === true;
+                                this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings === true;
                             } else {
                                 // For local rules, inherit from Meta if undefined, otherwise use local value
                                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
@@ -4814,6 +4989,10 @@ var CiteUnseenData = {
                                 this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings !== undefined ?
                                     targetRules.hideSocialMediaReliabilityRatings :
                                     (metaRules.hideSocialMediaReliabilityRatings === true);
+
+                                this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings !== undefined ?
+                                    targetRules.showOtherLanguageReliabilityRatings :
+                                    (metaRules.showOtherLanguageReliabilityRatings === true);
                             }
 
                             // Load list settings
@@ -4833,7 +5012,8 @@ var CiteUnseenData = {
                                 additionalStrings: {},
                                 dashboard: this.settings.dashboard,
                                 showSuggestions: this.settings.showSuggestions,
-                                hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings
+                                hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings,
+                                showOtherLanguageReliabilityRatings: this.settings.showOtherLanguageReliabilityRatings
                             };
 
                             const validationErrors = [];
@@ -4985,6 +5165,9 @@ var CiteUnseenData = {
                                     <cdx-checkbox v-model="settings.hideSocialMediaReliabilityRatings">
                                         {{ $options.i18n.hideSocialMediaReliabilityRatings }}
                                     </cdx-checkbox>
+                                    <cdx-checkbox v-model="settings.showOtherLanguageReliabilityRatings">
+                                        {{ $options.i18n.showOtherLanguageReliabilityRatings }}
+                                    </cdx-checkbox>
                                 </cdx-tab>
 
                                 <cdx-tab name="categories" :label="$options.i18n.tabCategories">
@@ -5070,9 +5253,7 @@ var CiteUnseenData = {
          */
         getSettingCategories: function (includeReliability = true) {
             // Get all type categories from citeUnseenCategoryTypes
-            const typeCategories = CiteUnseen.citeUnseenCategoryTypes ?
-                CiteUnseen.citeUnseenCategoryTypes.flatMap(x => x[1]) :
-                ['advocacy', 'blogs', 'books', 'community', 'editable', 'government', 'news', 'opinions', 'predatory', 'press', 'satire', 'social', 'sponsored', 'tabloids', 'tvPrograms'];
+            const typeCategories = CiteUnseen.citeUnseenCategoryTypes;
 
             if (!includeReliability) {
                 return [...typeCategories, 'unknown'];
@@ -5152,6 +5333,11 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                     content += `\n// Hide social media reliability ratings setting
 cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
                 }
+
+                if (settings.showOtherLanguageReliabilityRatings === true) {
+                    content += `\n// Show other language reliability ratings setting
+cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLanguageReliabilityRatings};`;
+                }
             } else {
                 // For local wiki, include boolean settings if they differ from Meta settings
                 const metaRules = CiteUnseen.getMetaRulesFromGlobals();
@@ -5159,6 +5345,7 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
                 const metaDashboard = metaRules.dashboard !== false; // Meta default logic
                 const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
                 const metaRulesHideSocialMedia = metaRules.hideSocialMediaReliabilityRatings === true; // Meta default logic
+                const metaRulesShowOtherLanguage = metaRules.showOtherLanguageReliabilityRatings === true; // Meta default logic
 
                 if (settings.dashboard !== metaDashboard) {
                     content += `\n\n// Dashboard visibility setting
@@ -5173,6 +5360,11 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
                 if (settings.hideSocialMediaReliabilityRatings !== metaRulesHideSocialMedia) {
                     content += `\n\n// Hide social media reliability ratings setting
 cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
+                }
+
+                if (settings.showOtherLanguageReliabilityRatings !== metaRulesShowOtherLanguage) {
+                    content += `\n\n// Show other language reliability ratings setting
+cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLanguageReliabilityRatings};`;
                 }
             }
 
