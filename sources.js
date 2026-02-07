@@ -12,6 +12,7 @@ var CiteUnseenData = {
         'advocacy/3',
         'advocacy/4',
         'aiGenerated',
+        'aiReferred',
         "blogs",
         "books",
         "community",
@@ -173,6 +174,7 @@ var CiteUnseenData = {
     citeUnseenCategoryTypes: [
         'advocacy',
         'aiGenerated',
+        'aiReferred',
         'blogs',
         'books',
         'community',
@@ -552,6 +554,13 @@ var CiteUnseenData = {
 
         // AI-generated content
         "aiGenerated": {
+            "icon":
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAACXBIWXMAAAyMAAAMjAHam4ZQAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAZZJREFUOI2dlM1LVFEYxn/vmXE0EjSECQ0sN+nYImFctQhaGLhopfMHtClyJ9oq0BmhFv0FtWgvqLhz6yJoVTsHNcEgKAg/aBE017lznhaTNt575w70wFmc33ne97zn0yTRTuuV8Tmw1waLM8vVN+18rm0GAOwh4qqkqTRXapJG6BaAY2fZ56lzSUpt68vj+5081jTeKeF4LNEVWxDcE3yIcaNu3t7NVHY2bLM80R/q7AeQSy05WWeq1fIuoJaPJPDAHhBGAsK/3LewnL+Sux7bWDPmZ8vVAqZnEf50tlwtmGwxGpN0OqcA8pxcxmpy50+iAbZaHrudkdtvYb9kbBt2H6mvhf+U8d7EA6D3HDbMj2YTKuk18QhiN7m/yePKulB1MhzGRsy6kW609L8hBVGbC1W3dm9nbalQNOc+nvfl/WRpZfdTktcksVm5m/e+Me0d3RczwLCkF/8KsZcevl6MewJfD7ZKrw6O7O2TYtfA4O/PgluJJaXJ7Mvp955Rd22odvO/EgBII335YNh5Gh2+gw7Khpk/I1LDpMIsVHEAAAAASUVORK5CYII=",
+            "count": 0,
+        },
+
+        // AI referrer present in the URL
+        "aiReferred": {
             "icon":
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAACXBIWXMAAAyMAAAMjAHam4ZQAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAZZJREFUOI2dlM1LVFEYxn/vmXE0EjSECQ0sN+nYImFctQhaGLhopfMHtClyJ9oq0BmhFv0FtWgvqLhz6yJoVTsHNcEgKAg/aBE017lznhaTNt575w70wFmc33ne97zn0yTRTuuV8Tmw1waLM8vVN+18rm0GAOwh4qqkqTRXapJG6BaAY2fZ56lzSUpt68vj+5081jTeKeF4LNEVWxDcE3yIcaNu3t7NVHY2bLM80R/q7AeQSy05WWeq1fIuoJaPJPDAHhBGAsK/3LewnL+Sux7bWDPmZ8vVAqZnEf50tlwtmGwxGpN0OqcA8pxcxmpy50+iAbZaHrudkdtvYb9kbBt2H6mvhf+U8d7EA6D3HDbMj2YTKuk18QhiN7m/yePKulB1MhzGRsy6kW609L8hBVGbC1W3dm9nbalQNOc+nvfl/WRpZfdTktcksVm5m/e+Me0d3RczwLCkF/8KsZcevl6MewJfD7ZKrw6O7O2TYtfA4O/PgluJJaXJ7Mvp955Rd22odvO/EgBII335YNh5Gh2+gw7Khpk/I1LDpMIsVHEAAAAASUVORK5CYII=",
             "count": 0,
