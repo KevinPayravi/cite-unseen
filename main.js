@@ -572,9 +572,6 @@
                     if (urlStr) {
                         return CiteUnseen.refLinks.some(link => link.includes(urlStr));
                     }
-                    
-                    // If rule has neither url nor url_str, include it (other match criteria may apply)
-                    return true;
                 });
             });
             const typeCategories = CiteUnseen.citeUnseenCategoryTypes;
