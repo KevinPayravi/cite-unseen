@@ -14,7 +14,7 @@
 	"categoriesTabGuidance": "啟用或停用特定引用類別。停用的類別將不會顯示圖示或出現在儀表板中。",
 	"categoryHints.advocacy": "此來源為宣傳機構。",
 	"categoryHints.aiGenerated": "此來源與未經編輯的 AI 生成內容相關，比如發布大量 AI 生成材料且沒有人工編輯監督的網站，或是帶有 AI 引用參數的來源連結。",
-	"categoryHints.aiReferred": "此來源的網址包含表明它是由 AI 推薦的參數，例如來自 AI 助手的搜尋結果。",
+	"categoryHints.aiReferred": "此來源的網址包含跟踪參數（如 utm_source=chatgpt.com），表明它是從 AI 助手複製的。相關文本也可能是 AI 生成的，並且該來源可能不會證實給定的陳述。",
 	"categoryHints.blacklisted": "由於持續濫用（通常以垃圾外部連結的形式），此來源已被列入黑名單。",
 	"categoryHints.blogs": "此來源為部落格文章。",
 	"categoryHints.books": "此來源為出版書籍、期刊或其他出版物。",

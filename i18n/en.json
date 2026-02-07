@@ -7,7 +7,7 @@
   "categoriesTabGuidance": "Enable or disable specific categories of citations. Disabled categories will not show icons or appear in the dashboard.",
   "categoryHints.advocacy": "This source is an advocacy organization.",
   "categoryHints.aiGenerated": "This source is associated with unedited AI-generated content. It may be a website that publishes substantial AI-generated material without human editorial oversight.",
-  "categoryHints.aiReferred": "The URL of this source contains parameters indicating it was referred by an AI, such as a search result from an AI assistant.",
+  "categoryHints.aiReferred": "The URL of this source includes tracking parameters (such as utm_source=chatgpt.com) indicating it was copied from an AI assistant. The associated text may have also been AI-generated, and the source may or may not corroborate the given statements.",
   "categoryHints.blacklisted": "This source has been blacklisted due to persistent abuse, typically in the form of spam external links.",
   "categoryHints.blogs": "This source is a blog post.",
   "categoryHints.books": "This source is a publication such as a book, journal, or other printed material.",
