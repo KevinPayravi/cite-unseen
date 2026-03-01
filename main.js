@@ -1526,8 +1526,9 @@
 
             // Handle plain-link citations in <li> tags that don't have <cite>
             const citationLiElements = document.querySelectorAll('li[id^="cite_note-"]');
+            const notOnFrenchWikipedia = mw.config.get('wgServerName') !== 'fr.wikipedia.org';
             for (const li of citationLiElements) {
-                if (li.querySelector('cite')) {
+                if (li.querySelector('cite') && notOnFrenchWikipedia) {
                     continue;
                 }
 
