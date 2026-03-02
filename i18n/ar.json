@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Meno25"
+			"Meno25",
+			"Mohammed Qays"
 		]
 	},
 	"additionalDomains": "المجالات الإضافية (واحد لكل سطر)",
@@ -11,6 +12,7 @@
 	"cancel": "إلغاء",
 	"categoriesTabGuidance": "تفعيل أو تعطيل فئات محددة من الاستشهادات. لن تظهر الفئات المعطلة في لوحة المعلومات أو أيقوناتها.",
 	"categoryHints.advocacy": "هذا المصدر هو منظمة للدفاع عن حقوق الإنسان.",
+	"categoryHints.aiGenerated": "يرتبط هذا المصدر بمحتوى مُولّد بواسطة الذكاء الصنعي دون تحرير. وقد يكون موقعًا إلكترونيًا ينشر كميات كبيرة من المواد المُولّدة بواسطة الذكاء الصنعي دون إشراف تحريري بشري.",
 	"categoryHints.blacklisted": "لقد تمت إضافة هذا المصدر إلى القائمة السوداء بسبب الإساءة المستمرة، عادةً في شكل روابط خارجية غير مرغوب فيها.",
 	"categoryHints.blogs": "هذا المصدر عبارة عن تدوينة.",
 	"categoryHints.books": "هذا المصدر هو منشور مثل كتاب أو مجلة أو أي مادة مطبوعة أخرى.",
@@ -33,6 +35,8 @@
 	"categoryHints.tvPrograms": "هذا المصدر هو برنامج تلفزيوني أو إذاعي. تعتمد موثوقيته على كل برنامج.",
 	"categoryHints.unknown": "لم يتم تقييم هذا المصدر بعد.",
 	"categoryLabels.advocacy": "المناصرة",
+	"categoryLabels.aiGenerated": "المولد بالذكاء الصنعي",
+	"categoryLabels.aiReferred": "مراجع بالذكاء الصنعي",
 	"categoryLabels.blacklisted": "مُدرج في القائمة السوداء",
 	"categoryLabels.blogs": "تدوينات المدونة",
 	"categoryLabels.books": "كتب",
