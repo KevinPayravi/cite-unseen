@@ -222,8 +222,10 @@
 }
 
 .cite-unseen-filtered-out {
-    opacity: 0;
-    transform: scale(0.95);
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Dashboard category hover effects */
@@ -242,13 +244,8 @@
 
 /* Hidden/visible element states */
 .cite-unseen-hidden,
-.cite-unseen-list-hidden,
 .cite-unseen-finished-loading {
     display: none;
-}
-
-.cite-unseen-list-hidden {
-    display: none !important;
 }
 
 .cite-unseen-visible {
