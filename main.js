@@ -1061,7 +1061,6 @@
                 // No categories selected - show all citations
                 const allListItems = targetReflist.querySelectorAll('li');
                 allListItems.forEach(function (li) {
-                    li.classList.remove('cite-unseen-list-hidden');
                     li.classList.remove('cite-unseen-filtered-out');
                     li.setAttribute('aria-hidden', 'false');
                 });
@@ -1106,11 +1105,9 @@
             const allListItems = targetReflist.querySelectorAll('li');
             allListItems.forEach(function (li) {
                 if (visibleContainers.has(li)) {
-                    li.classList.remove('cite-unseen-list-hidden');
                     li.classList.remove('cite-unseen-filtered-out');
                     li.setAttribute('aria-hidden', 'false');
                 } else {
-                    li.classList.add('cite-unseen-list-hidden');
                     li.classList.add('cite-unseen-filtered-out');
                     li.setAttribute('aria-hidden', 'true');
                 }
