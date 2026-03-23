@@ -20,7 +20,8 @@ var CiteUnseenData = {
         "government",
         "news",
         "opinions",
-        "predatory",
+        "predatoryPublishers",
+        "predatoryStandaloneJournals",
         "press",
         "satire",
         "social",
@@ -39,6 +40,7 @@ var CiteUnseenData = {
         'enFILMR',
         'enNPPSG/1',
         'enNPPSG/2',
+        'enTAMBAYS',
         'frJVS',
         'ruAIKI',
         'enBGS',
@@ -112,6 +114,7 @@ var CiteUnseenData = {
                 ["enFILMR", "enFilmrGenerallyUnreliable"],
                 ["frJVS", "frJvsGenerallyUnreliable"],
                 ["ruAIKI", "ruAikiGenerallyUnreliable"],
+                ["enTAMBAYS", "enTambaysGenerallyUnreliable"],
                 ["enBGS", "enBgsGenerallyUnreliable"],
                 ["enCHARTS", "enChartsGenerallyUnreliable"],
                 ["enVSAFES", "enVsafesGenerallyUnreliable"],
@@ -128,6 +131,7 @@ var CiteUnseenData = {
                 ["zhACGS", "zhAcgsMarginallyReliable"],
                 ["zhVGS", "zhVgsMarginallyReliable"],
                 ["frJVS", "frJvsMarginallyReliable"],
+                ["enTAMBAYS", "enTambaysMarginallyReliable"],
                 ["enBGS", "enBgsMarginallyReliable"],
                 ["enVSAFES", "enVsafesMarginallyReliable"],
                 ["viDSNDTC", "viDsndtcMarginallyReliable"]
@@ -140,6 +144,7 @@ var CiteUnseenData = {
                 ["enVGS", "enVgsMulti"],
                 ["zhACGS", "zhAcgsMulti"],
                 ["zhVGS", "zhVgsMulti"],
+                ["enTAMBAYS", "enTambaysMulti"],
                 ["enVSAFES", "enVsafesMulti"],
                 ["viDSNDTC", "viDsndtcMulti"]
             ],
@@ -158,6 +163,7 @@ var CiteUnseenData = {
                 ["enFILMR", "enFilmrGenerallyReliable"],
                 ["frJVS", "frJvsGenerallyReliable"],
                 ["ruAIKI", "ruAikiGenerallyReliable"],
+                ["enTAMBAYS", "enTambaysGenerallyReliable"],
                 ["enBGS", "enBgsGenerallyReliable"],
                 ["enCHARTS", "enChartsGenerallyReliable"],
                 ["enVSAFES", "enVsafesGenerallyReliable"],
@@ -202,7 +208,9 @@ var CiteUnseenData = {
         'advocacy1': 'advocacy',
         'advocacy2': 'advocacy',
         'advocacy3': 'advocacy',
-        'advocacy4': 'advocacy'
+        'advocacy4': 'advocacy',
+        'predatoryPublishers': 'predatory',
+        'predatoryStandaloneJournals': 'predatory'
     },
 
     /**
@@ -222,6 +230,7 @@ var CiteUnseenData = {
         'enNPPSG/1': 'en:Wikipedia:New pages patrol source guide',
         'enNPPSG/2': 'en:Wikipedia:New pages patrol source guide',
         'enRSP': 'en:Wikipedia:Reliable sources/Perennial sources',
+        'enTAMBAYS': 'en:Wikipedia:Tambayan Philippines/Sources',
         'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
         'enVSAFES': 'en:Wikipedia:Vaccine safety/Perennial sources',
         'frJVS': 'fr:Projet:Jeu vidéo/Sources',
