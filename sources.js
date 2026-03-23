@@ -24,8 +24,8 @@ var CiteUnseenData = {
         "news/Asia",
         "news/Oceania",
         "opinions",
-        "predatoryPublishers",
-        "predatoryStandaloneJournals",
+        "predatory/publishers",
+        "predatory/standaloneJournals",
         "press",
         "satire",
         "social",
@@ -218,8 +218,8 @@ var CiteUnseenData = {
         'news/Africa': 'news',
         'news/Asia': 'news',
         'news/Oceania': 'news',
-        'predatoryPublishers': 'predatory',
-        'predatoryStandaloneJournals': 'predatory'
+        'predatory/publishers': 'predatory',
+        'predatory/standaloneJournals': 'predatory'
     },
 
     /**
