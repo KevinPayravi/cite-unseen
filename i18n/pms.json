@@ -74,6 +74,7 @@
 	"filterToggleTooltip": "Sgnaché për ativé o disativé cost filtr ëd categorìa. A peul selessioné vàire categorìe. Sgnaché su Scapé për dëscancelé tuti ij filtr.",
 	"filtersActive": "filtr ativ",
 	"hideSocialMediaReliabilityRatings": "Stërmé le valutassion ëd fidabilità për le liure a dij mojen sossiaj da editor nen valutà",
+	"showOtherLanguageReliabilityRatings": "Smon-e ij pontegg d'afidament da le Wikipedie an d'àutre lenghe cand ij pontegg locaj a son disponìbij",
 	"ignoreDomainsTabGuidance": "Gionté ij domini da esclude da tute le categorìe. Le sorgiss da costi domini a saran pa marcà con la plancia ëd categorìa corëspondenta. Anserì un domini për linia ant ël formà 'esempi.com'.",
 	"invalidDomainFormatMessage": "Formà ëd domini nen bon trovà. Ij domini a dovrìo esse ant ël formà «nom.tld» (për es., esempi.com):",
 	"loading": "A caria...",
