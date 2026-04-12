@@ -1583,7 +1583,8 @@
                     const parentElement = reflist.parentElement;
                     // Preserve wrapper-level insertion for common reflist containers.
                     if (parentElement &&
-                        (parentElement.classList.contains('refbegin') ||
+                        (parentElement.classList.contains('reflist') ||
+                            parentElement.classList.contains('refbegin') ||
                             (parentElement.tagName === 'DIV' && parentElement.childElementCount === 1))) {
                         return parentElement;
                     }
