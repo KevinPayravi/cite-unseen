@@ -1541,9 +1541,13 @@
          */
         getCitationMarkupContext: function (citeTag) {
             const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
+            const wrappingExternalLink = citeTag.closest('a.external');
             let citationElement = citeTag;
             let coinsTag = null;
-            let externalLink = citeTag.querySelector('a.external');
+            let externalLink =
+                (citeTag.matches('a.external') ? citeTag : null) ||
+                wrappingExternalLink ||
+                citeTag.querySelector('a.external');
 
             if (citeTag.nextElementSibling && citeTag.nextElementSibling.matches('.Z3988[title]')) {
                 coinsTag = citeTag.nextElementSibling;
@@ -1556,6 +1560,13 @@
                 if (renderedCitation) {
                     citationElement = renderedCitation;
                 }
+            }
+
+            if (citationElement === citeTag && wrappingExternalLink) {
+                citationElement =
+                    wrappingExternalLink.closest('.ouvrage') ||
+                    wrappingExternalLink.parentElement ||
+                    citeTag;
             }
 
             if (!coinsTag) {
@@ -1654,11 +1665,15 @@
                 }
             }
 
-            // Handle plain-link citations in <li> tags that don't have <cite>
+            // Handle plain-link citations in <li> tags not already covered by parsed citation markup.
             const citationLiElements = document.querySelectorAll('li[id^="cite_note-"]');
-            const notOnFrenchWikipedia = mw.config.get('wgServerName') !== 'fr.wikipedia.org';
+            const citationListItemsWithRefs = new Set(
+                CiteUnseen.refs
+                    .map(ref => ref.classListSource?.closest('li') || ref.cite.closest('li'))
+                    .filter(Boolean)
+            );
             for (const li of citationLiElements) {
-                if (li.querySelector('cite') && notOnFrenchWikipedia) {
+                if (citationListItemsWithRefs.has(li)) {
                     continue;
                 }
 
