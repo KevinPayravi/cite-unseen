@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-9d904b63
-// Timestamp: 2026-04-12T20:55:32.163Z
+// Release: dev-0cf616ea
+// Timestamp: 2026-04-12T21:03:14.433Z
 
 (function() {
     'use strict';
@@ -4640,6 +4640,7 @@ var CiteUnseenData = {
         getCitationMarkupContext: function (citeTag) {
             const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
             const wrappingExternalLink = citeTag.closest('a.external');
+            const citationWrapper = citeTag.closest('.ouvrage');
             let citationElement = citeTag;
             let coinsTag = null;
             let externalLink =
@@ -4665,6 +4666,15 @@ var CiteUnseenData = {
                     wrappingExternalLink.closest('.ouvrage') ||
                     wrappingExternalLink.parentElement ||
                     citeTag;
+            }
+
+            if (
+                citationElement === citeTag &&
+                citationWrapper &&
+                citationWrapper !== citeTag &&
+                citationWrapper.textContent.trim() !== citeTag.textContent.trim()
+            ) {
+                citationElement = citationWrapper;
             }
 
             if (!coinsTag) {
