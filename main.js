@@ -1542,6 +1542,7 @@
         getCitationMarkupContext: function (citeTag) {
             const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
             const wrappingExternalLink = citeTag.closest('a.external');
+            const citationWrapper = citeTag.closest('.ouvrage');
             let citationElement = citeTag;
             let coinsTag = null;
             let externalLink =
@@ -1567,6 +1568,15 @@
                     wrappingExternalLink.closest('.ouvrage') ||
                     wrappingExternalLink.parentElement ||
                     citeTag;
+            }
+
+            if (
+                citationElement === citeTag &&
+                citationWrapper &&
+                citationWrapper !== citeTag &&
+                citationWrapper.textContent.trim() !== citeTag.textContent.trim()
+            ) {
+                citationElement = citationWrapper;
             }
 
             if (!coinsTag) {
