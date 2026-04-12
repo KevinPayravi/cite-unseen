@@ -44,7 +44,7 @@ build:
 
 .deploy-base:
   stage: deploy
-  image: alpine/git:2.43.0
+  image: alpine/git:latest
   needs:
     - job: build
       artifacts: true
