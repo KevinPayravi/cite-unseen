@@ -101,7 +101,6 @@ console.log('Build completed!');
 console.log(`Bundled file: ${bundledSize} bytes`);
 
 // Create deployment README
-const deployBranch = process.env.DEPLOY_TARGET_BRANCH || 'deploy';
 const deployReadme = `# Cite Unseen - Deploy Branch
 
 This branch contains the bundled version of Cite Unseen.
@@ -112,7 +111,7 @@ The bundled file is called \`cite-unseen-bundled.js\`.
 
 The file can be pulled directly using \`gitlab-content.toolforge.org\`:
 \`\`\`javascript
-await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/${deployBranch}/cite-unseen-bundled.js?mime=text/javascript');
+await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/deploy/cite-unseen-bundled.js?mime=text/javascript');
 \`\`\`
 
 ## Build Info

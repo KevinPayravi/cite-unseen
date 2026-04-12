@@ -65,7 +65,7 @@ build:
         git rm -rf . || true
       fi
     - cp build/cite-unseen-bundled.js .
-    - cp build/README.md .
+    - sed "s|/raw/deploy/cite-unseen-bundled|/raw/${DEPLOY_TARGET_BRANCH}/cite-unseen-bundled|g" build/README.md > README.md
     - git add cite-unseen-bundled.js README.md
     - |
       if git diff --cached --quiet; then
