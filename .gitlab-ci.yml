@@ -18,6 +18,7 @@ build:
   image: node:22-alpine
   script:
     - echo "Building bundled version of Cite Unseen..."
+    - apk add --no-cache git
     - git fetch origin main
     - |
       if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
