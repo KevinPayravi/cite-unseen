@@ -46,10 +46,11 @@ for (const [lang, translations] of Object.entries(i18nData)) {
 const i18nJs = `window.CiteUnseenI18n = ${JSON.stringify(nestedI18n, null, 4)};`;
 
 // Create the bundled content
+const releaseLabel = process.env.CI_COMMIT_TAG || `dev-${process.env.CI_COMMIT_SHORT_SHA || 'local'}`;
 let bundled = `// Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: ${process.env.CI_COMMIT_TAG}
+// Release: ${releaseLabel}
 // Timestamp: ${new Date().toISOString()}
 
 (function() {
@@ -100,6 +101,7 @@ console.log('Build completed!');
 console.log(`Bundled file: ${bundledSize} bytes`);
 
 // Create deployment README
+const deployBranch = process.env.DEPLOY_TARGET_BRANCH || 'deploy';
 const deployReadme = `# Cite Unseen - Deploy Branch
 
 This branch contains the bundled version of Cite Unseen.
@@ -110,12 +112,12 @@ The bundled file is called \`cite-unseen-bundled.js\`.
 
 The file can be pulled directly using \`gitlab-content.toolforge.org\`:
 \`\`\`javascript
-await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/deploy/cite-unseen-bundled.js?mime=text/javascript');
+await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unseen/-/raw/${deployBranch}/cite-unseen-bundled.js?mime=text/javascript');
 \`\`\`
 
 ## Build Info
 
-- Release: ${process.env.CI_COMMIT_TAG}
+- Release: ${releaseLabel}
 - Built from commit: ${process.env.CI_COMMIT_SHA || 'local'}
 - Build timestamp: ${new Date().toISOString()}
 - Bundled size: ${bundledSize} bytes
