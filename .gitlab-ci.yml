@@ -1,5 +1,6 @@
 # Builds a bundled version of Cite Unseen and pushes to the deploy branch.
 stages:
+  - check
   - build
   - deploy
 
@@ -13,20 +14,26 @@ variables:
   GIT_STRATEGY: fetch
   GIT_DEPTH: "50"
 
+check-build-script:
+  stage: check
+  image: alpine/git:2.43.0
+  script:
+    - git fetch origin main
+    - |
+      if ! git diff --quiet origin/main -- build.js; then
+        echo "ERROR: build.js has been modified in this MR. Changes to the build script are not permitted for security reasons."
+        exit 1
+      fi
+      echo "build.js is unchanged. Proceeding."
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
 build:
   stage: build
   image: node:22-alpine
   script:
     - echo "Building bundled version of Cite Unseen..."
     - apk add --no-cache git
-    - git fetch origin main
-    - |
-      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
-        if ! git diff --quiet origin/main -- build.js; then
-          echo "ERROR: build.js differs from the main branch. Pipeline cancelled for security reasons."
-          exit 1
-        fi
-      fi
     - node build.js
   artifacts:
     paths:
@@ -88,6 +95,10 @@ deploy-dev:
 
 deploy-mr:
   extends: .deploy-base
+  needs:
+    - job: build
+      artifacts: true
+    - job: check-build-script
   variables:
     DEPLOY_TARGET_BRANCH: "deploy-mr-$CI_MERGE_REQUEST_IID"
   rules:
