@@ -1500,6 +1500,8 @@
 
         /**
          * Get the sibling elements associated with a citation marker.
+         * eswiki subcitation compatibility: template output may split one logical citation
+         * across sibling nodes after an empty <cite>.
          * Stops before the next citation marker or an explicit line-break separator.
          * @param {Element} citeTag - The citation marker element
          * @returns {Element[]} Associated sibling elements
@@ -1542,6 +1544,7 @@
         getCitationMarkupContext: function (citeTag) {
             const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
             const wrappingExternalLink = citeTag.closest('a.external');
+            // frwiki compatibility: .ouvrage often wraps the full citation while <cite> only wraps the title.
             const citationWrapper = citeTag.closest('.ouvrage');
             let citationElement = citeTag;
             let coinsTag = null;
@@ -1555,6 +1558,7 @@
             }
 
             if (!citeTag.textContent.trim()) {
+                // subcitation compatibility: promote empty template markers to the rendered sibling citation.
                 const renderedCitation =
                     siblingSegment.find(node => node.classList?.contains('citation')) ||
                     siblingSegment.find(node => !node.matches('.Z3988') && node.textContent.trim() !== '');
@@ -1564,6 +1568,7 @@
             }
 
             if (citationElement === citeTag && wrappingExternalLink) {
+                // frwiki compatibility: insert outside wrapped title links to avoid nesting icon links.
                 citationElement =
                     wrappingExternalLink.closest('.ouvrage') ||
                     wrappingExternalLink.parentElement ||
@@ -1576,6 +1581,7 @@
                 citationWrapper !== citeTag &&
                 citationWrapper.textContent.trim() !== citeTag.textContent.trim()
             ) {
+                // frwiki compatibility: move icons to the full citation wrapper, not the title-only <cite>.
                 citationElement = citationWrapper;
             }
 
