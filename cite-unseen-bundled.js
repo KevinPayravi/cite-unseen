@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-1bb13678
-// Timestamp: 2026-04-12T21:15:00.073Z
+// Release: dev-b7aad932
+// Timestamp: 2026-04-12T21:59:15.880Z
 
 (function() {
     'use strict';
@@ -4085,6 +4085,17 @@ var CiteUnseenData = {
         },
 
         /**
+         * Get the top-level footnote list item for a citation.
+         * This avoids treating wrapper text around nested citation lists as a separate source.
+         * @param {Element} citationElement - The citation element
+         * @returns {Element|null} The top-level citation note list item
+         */
+        getReferenceNoteContainer: function (citationElement) {
+            if (!citationElement) return null;
+            return citationElement.closest('li[id^="cite_note-"]');
+        },
+
+        /**
          * Get the reflist container for a citation.
          * Prefer explicit wrapper elements like jawiki's div.reflist when present.
          * @param {Element} citationElement - The citation element
@@ -4783,7 +4794,7 @@ var CiteUnseenData = {
             const citationLiElements = document.querySelectorAll('li[id^="cite_note-"]');
             const citationListItemsWithRefs = new Set(
                 CiteUnseen.refs
-                    .map(ref => ref.classListSource?.closest('li') || ref.cite.closest('li'))
+                    .map(ref => CiteUnseen.getReferenceNoteContainer(ref.classListSource || ref.cite))
                     .filter(Boolean)
             );
             for (const li of citationLiElements) {
