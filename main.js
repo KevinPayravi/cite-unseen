@@ -987,6 +987,33 @@
         },
 
         /**
+         * Get the reflist container for a citation.
+         * Prefer explicit wrapper elements like jawiki's div.reflist when present.
+         * @param {Element} citationElement - The citation element
+         * @returns {Element|null} The reflist container element
+         */
+        getReflistContainer: function (citationElement) {
+            if (!citationElement) return null;
+
+            const wrapper = citationElement.closest('.reflist, .refbegin');
+            if (wrapper) {
+                return wrapper;
+            }
+
+            const reflist = citationElement.closest('ol.references, ol.mw-references, ol[typeof="mw:Extension/references"]');
+            if (!reflist) {
+                return null;
+            }
+
+            const parentElement = reflist.parentElement;
+            if (parentElement && parentElement.tagName === 'DIV' && parentElement.childElementCount === 1) {
+                return parentElement;
+            }
+
+            return reflist;
+        },
+
+        /**
          * Toggle a category filter on/off for a specific reflist
          * @param {Object} reflistData - The reflist data object
          * @param {string} category - Citation category to toggle
@@ -1573,51 +1600,28 @@
                 }
             }
 
-            // Find all reflists and track citations within each
-            const reflistSelector = `#mw-content-text .mw-parser-output ol.references,
-                #mw-content-text .mw-parser-output ol.mw-references,
-                #mw-content-text .mw-parser-output ol[typeof="mw:Extension/references"],
-                #mw-content-text .mw-parser-output div.refbegin>ul`;
-            const reflists = Array.from(new Set(
-                Array.from(document.querySelectorAll(reflistSelector), (reflist) => {
-                    const parentElement = reflist.parentElement;
-                    // Preserve wrapper-level insertion for common reflist containers.
-                    if (parentElement &&
-                        (parentElement.classList.contains('reflist') ||
-                            parentElement.classList.contains('refbegin') ||
-                            (parentElement.tagName === 'DIV' && parentElement.childElementCount === 1))) {
-                        return parentElement;
-                    }
-                    return reflist;
-                })
-            ));
-            CiteUnseen.reflists = [];
+            // Track citations by the reflist container they actually belong to.
+            const reflistMap = new Map();
+            for (const ref of CiteUnseen.refs) {
+                const reflist = CiteUnseen.getReflistContainer(ref.cite);
+                if (!reflist) {
+                    continue;
+                }
 
-            if (reflists.length > 0) {
-                // Create reflist data structure for each reflist
-                for (const reflist of reflists) {
-                    const reflistData = {
+                if (!reflistMap.has(reflist)) {
+                    reflistMap.set(reflist, {
                         element: reflist,
                         refs: [],
                         categories: {},
                         dashboard: null,
                         selectedCategories: new Set(),
                         totalCitations: null // Will be calculated when dashboard is created
-                    };
-
-                    // Find which of our tracked citations belong to this reflist
-                    for (const ref of CiteUnseen.refs) {
-                        if (reflist.contains(ref.cite)) {
-                            reflistData.refs.push(ref);
-                        }
-                    }
-
-                    // Only track reflists that have citations
-                    if (reflistData.refs.length > 0) {
-                        CiteUnseen.reflists.push(reflistData);
-                    }
+                    });
                 }
+
+                reflistMap.get(reflist).refs.push(ref);
             }
+            CiteUnseen.reflists = Array.from(reflistMap.values());
         },
 
         /**
