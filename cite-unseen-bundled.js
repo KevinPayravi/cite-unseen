@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-f723e1aa
-// Timestamp: 2026-04-12T20:25:47.467Z
+// Release: dev-d3a21c32
+// Timestamp: 2026-04-12T20:46:47.175Z
 
 (function() {
     'use strict';
@@ -4597,6 +4597,85 @@ var CiteUnseenData = {
         },
 
         /**
+         * Get the sibling elements associated with a citation marker.
+         * Stops before the next citation marker or an explicit line-break separator.
+         * @param {Element} citeTag - The citation marker element
+         * @returns {Element[]} Associated sibling elements
+         */
+        getCitationSiblingSegment: function (citeTag) {
+            const siblingSegment = [];
+            let sibling = citeTag.nextElementSibling;
+
+            while (sibling) {
+                if (sibling.tagName === 'CITE' || sibling.tagName === 'BR') {
+                    break;
+                }
+                siblingSegment.push(sibling);
+                sibling = sibling.nextElementSibling;
+            }
+
+            return siblingSegment;
+        },
+
+        /**
+         * Return a selector match only when it is unambiguous within the given root.
+         * @param {Element|null} root - The root element to search within
+         * @param {string} selector - CSS selector to search for
+         * @returns {Element|null} The single matching element, or null if none/multiple exist
+         */
+        getSingleScopedMatch: function (root, selector) {
+            if (!root) {
+                return null;
+            }
+
+            const matches = root.querySelectorAll(selector);
+            return matches.length === 1 ? matches[0] : null;
+        },
+
+        /**
+         * Find the rendered citation node, COinS tag, and external link associated with a cite marker.
+         * @param {Element} citeTag - The citation marker element
+         * @returns {{citationElement: Element, coinsTag: Element|null, externalLink: Element|null}}
+         */
+        getCitationMarkupContext: function (citeTag) {
+            const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
+            let citationElement = citeTag;
+            let coinsTag = null;
+            let externalLink = citeTag.querySelector('a.external');
+
+            if (citeTag.nextElementSibling && citeTag.nextElementSibling.matches('.Z3988[title]')) {
+                coinsTag = citeTag.nextElementSibling;
+            }
+
+            if (!citeTag.textContent.trim()) {
+                const renderedCitation =
+                    siblingSegment.find(node => node.classList?.contains('citation')) ||
+                    siblingSegment.find(node => !node.matches('.Z3988') && node.textContent.trim() !== '');
+                if (renderedCitation) {
+                    citationElement = renderedCitation;
+                }
+            }
+
+            if (!coinsTag) {
+                coinsTag = siblingSegment
+                    .map(node => node.matches('.Z3988[title]') ? node : node.querySelector('.Z3988[title]'))
+                    .find(Boolean) || null;
+            }
+
+            if (!externalLink) {
+                externalLink = siblingSegment
+                    .map(node => node.matches('a.external') ? node : node.querySelector('a.external'))
+                    .find(Boolean) || null;
+            }
+
+            return {
+                citationElement,
+                coinsTag,
+                externalLink,
+            };
+        },
+
+        /**
          * Find all <cite> tags and parse them into COinS objects; locate the position of {{reflist}}.
          */
         findCitations: async function () {
@@ -4607,15 +4686,16 @@ var CiteUnseenData = {
             // Filter all <cite> tags
             for (const citeTag of document.querySelectorAll("cite")) {
                 let coinsObject;
-                let citationElement = citeTag;
-                let coinsTag = citeTag.nextElementSibling;
                 const refTextElement = citeTag.closest('.reference-text, .mw-reference-text');
+                const citationMarkup = CiteUnseen.getCitationMarkupContext(citeTag);
+                const onlyCitationInRefText = refTextElement ? refTextElement.querySelectorAll('cite').length === 1 : false;
+                let citationElement = citationMarkup.citationElement;
+                let coinsTag = citationMarkup.coinsTag;
                 if ((!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) && refTextElement) {
-                    const fallbackCoinsTag = refTextElement.querySelector('.Z3988[title]');
+                    const fallbackCoinsTag = CiteUnseen.getSingleScopedMatch(refTextElement, '.Z3988[title]');
                     if (fallbackCoinsTag) {
                         coinsTag = fallbackCoinsTag;
-                        // On eswiki, the visible citation is rendered outside an empty <cite> marker.
-                        if (!citeTag.textContent.trim()) {
+                        if (!citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
                             citationElement = refTextElement;
                         }
                     }
@@ -4623,10 +4703,10 @@ var CiteUnseenData = {
                 if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
                     // No COinS, so get the href attribute of the <a> tag inside the cite
                     // This is a partial solution to parse jawiki {{Cite web}} and {{Cite news}}.
-                    let aTag = citeTag.querySelector('a.external');
+                    let aTag = citationMarkup.externalLink;
                     if (!aTag && refTextElement) {
-                        aTag = refTextElement.querySelector('a.external');
-                        if (aTag && !citeTag.textContent.trim()) {
+                        aTag = CiteUnseen.getSingleScopedMatch(refTextElement, 'a.external');
+                        if (aTag && !citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
                             citationElement = refTextElement;
                         }
                     }
@@ -4650,10 +4730,10 @@ var CiteUnseenData = {
 
                     // As a last resort, try to get the href attribute of the <a> tag inside the cite
                     if (!coinsObject['rft_id']) {
-                        let aTag = citeTag.querySelector('a.external');
+                        let aTag = citationMarkup.externalLink;
                         if (!aTag && refTextElement) {
-                            aTag = refTextElement.querySelector('a.external');
-                            if (aTag && !citeTag.textContent.trim()) {
+                            aTag = CiteUnseen.getSingleScopedMatch(refTextElement, 'a.external');
+                            if (aTag && !citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
                                 citationElement = refTextElement;
                             }
                         }
