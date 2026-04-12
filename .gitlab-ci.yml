@@ -16,7 +16,7 @@ variables:
 
 check-build-script:
   stage: check
-  image: alpine/git:2.43.0
+  image: alpine/git:latest
   script:
     - echo "Build script change reviewed and approved by maintainer."
   when: manual
