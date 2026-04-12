@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-e7b2bf5f
-// Timestamp: 2026-04-12T05:38:59.755Z
+// Release: dev-c2ecdf87
+// Timestamp: 2026-04-12T06:00:27.112Z
 
 (function() {
     'use strict';
