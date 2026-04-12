@@ -1574,19 +1574,22 @@
             }
 
             // Find all reflists and track citations within each
-            const reflists = [
-                ...Array.from(
-                    // div>ol.references captures most standard reference lists inside a containing div
-                    // div.refbegin captures reference lists using Template:Refbegin
-                    document.querySelectorAll(`#mw-content-text .mw-parser-output div>ol.references,
-                        #mw-content-text .mw-parser-output div.refbegin>ul`),
-                    (reflist) => reflist.parentNode // Use parent node as reflist element
-                ),
-                ...Array.from(
-                    // Captures ol.references lists at the "root" level i.e. no containing div
-                    document.querySelectorAll(`#mw-content-text .mw-parser-output > ol.references`)
-                )
-            ];
+            const reflistSelector = `#mw-content-text .mw-parser-output ol.references,
+                #mw-content-text .mw-parser-output ol.mw-references,
+                #mw-content-text .mw-parser-output ol[typeof="mw:Extension/references"],
+                #mw-content-text .mw-parser-output div.refbegin>ul`;
+            const reflists = Array.from(new Set(
+                Array.from(document.querySelectorAll(reflistSelector), (reflist) => {
+                    const parentElement = reflist.parentElement;
+                    // Preserve wrapper-level insertion for common reflist containers.
+                    if (parentElement &&
+                        (parentElement.classList.contains('refbegin') ||
+                            (parentElement.tagName === 'DIV' && parentElement.childElementCount === 1))) {
+                        return parentElement;
+                    }
+                    return reflist;
+                })
+            ));
             CiteUnseen.reflists = [];
 
             if (reflists.length > 0) {
