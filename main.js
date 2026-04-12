@@ -584,7 +584,7 @@
                 const processedCategories = new Set();
 
                 // Determine the source type based on the class name
-                const classList = ref.cite.classList;
+                const classList = (ref.classListSource || ref.cite).classList;
                 const bookClasses = ["book", "journal", "encyclopaedia", "conference", "thesis", "magazine"];
                 const tvClasses = ["episode", "podcast", "media"];
                 const hasNewsClass = classList.contains("news");
@@ -1482,11 +1482,29 @@
             // Filter all <cite> tags
             for (const citeTag of document.querySelectorAll("cite")) {
                 let coinsObject;
+                let citationElement = citeTag;
                 let coinsTag = citeTag.nextElementSibling;
+                const refTextElement = citeTag.closest('.reference-text, .mw-reference-text');
+                if ((!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) && refTextElement) {
+                    const fallbackCoinsTag = refTextElement.querySelector('.Z3988[title]');
+                    if (fallbackCoinsTag) {
+                        coinsTag = fallbackCoinsTag;
+                        // On eswiki, the visible citation is rendered outside an empty <cite> marker.
+                        if (!citeTag.textContent.trim()) {
+                            citationElement = refTextElement;
+                        }
+                    }
+                }
                 if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
                     // No COinS, so get the href attribute of the <a> tag inside the cite
                     // This is a partial solution to parse jawiki {{Cite web}} and {{Cite news}}.
                     let aTag = citeTag.querySelector('a.external');
+                    if (!aTag && refTextElement) {
+                        aTag = refTextElement.querySelector('a.external');
+                        if (aTag && !citeTag.textContent.trim()) {
+                            citationElement = refTextElement;
+                        }
+                    }
                     if (aTag && aTag.hasAttribute('href')) {
                         coinsObject = {
                             'rft_id': aTag.getAttribute('href'),
@@ -1508,13 +1526,21 @@
                     // As a last resort, try to get the href attribute of the <a> tag inside the cite
                     if (!coinsObject['rft_id']) {
                         let aTag = citeTag.querySelector('a.external');
+                        if (!aTag && refTextElement) {
+                            aTag = refTextElement.querySelector('a.external');
+                            if (aTag && !citeTag.textContent.trim()) {
+                                citationElement = refTextElement;
+                            }
+                        }
                         if (aTag) {
                             coinsObject['rft_id'] = aTag.getAttribute('href');
                         }
                     }
                 }
                 CiteUnseen.refs.push({
-                    cite: citeTag, coins: coinsObject,
+                    cite: citationElement,
+                    classListSource: citeTag,
+                    coins: coinsObject,
                 });
                 if (coinsObject['rft_id']) {
                     CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
