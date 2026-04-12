@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-0cf616ea
-// Timestamp: 2026-04-12T21:03:14.433Z
+// Release: dev-1bb13678
+// Timestamp: 2026-04-12T21:15:00.073Z
 
 (function() {
     'use strict';
@@ -4598,6 +4598,8 @@ var CiteUnseenData = {
 
         /**
          * Get the sibling elements associated with a citation marker.
+         * eswiki subcitation compatibility: template output may split one logical citation
+         * across sibling nodes after an empty <cite>.
          * Stops before the next citation marker or an explicit line-break separator.
          * @param {Element} citeTag - The citation marker element
          * @returns {Element[]} Associated sibling elements
@@ -4640,6 +4642,7 @@ var CiteUnseenData = {
         getCitationMarkupContext: function (citeTag) {
             const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
             const wrappingExternalLink = citeTag.closest('a.external');
+            // frwiki compatibility: .ouvrage often wraps the full citation while <cite> only wraps the title.
             const citationWrapper = citeTag.closest('.ouvrage');
             let citationElement = citeTag;
             let coinsTag = null;
@@ -4653,6 +4656,7 @@ var CiteUnseenData = {
             }
 
             if (!citeTag.textContent.trim()) {
+                // subcitation compatibility: promote empty template markers to the rendered sibling citation.
                 const renderedCitation =
                     siblingSegment.find(node => node.classList?.contains('citation')) ||
                     siblingSegment.find(node => !node.matches('.Z3988') && node.textContent.trim() !== '');
@@ -4662,6 +4666,7 @@ var CiteUnseenData = {
             }
 
             if (citationElement === citeTag && wrappingExternalLink) {
+                // frwiki compatibility: insert outside wrapped title links to avoid nesting icon links.
                 citationElement =
                     wrappingExternalLink.closest('.ouvrage') ||
                     wrappingExternalLink.parentElement ||
@@ -4674,6 +4679,7 @@ var CiteUnseenData = {
                 citationWrapper !== citeTag &&
                 citationWrapper.textContent.trim() !== citeTag.textContent.trim()
             ) {
+                // frwiki compatibility: move icons to the full citation wrapper, not the title-only <cite>.
                 citationElement = citationWrapper;
             }
 
