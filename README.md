@@ -22,7 +22,15 @@ See the [on-wiki installation instructions](https://meta.wikimedia.org/wiki/Meta
   - Stores category descriptions and icons.
 - **i18n.js**: Stores translation and localization for international use.
 ### Bundled
-Each [release](https://gitlab.wikimedia.org/kevinpayravi/cite-unseen/-/releases) updates the [`deploy`](https://gitlab.wikimedia.org/kevinpayravi/cite-unseen/-/tree/deploy) branch with a bundled version of the script, called [`cite-unseen-bundled.js`](https://gitlab.wikimedia.org/kevinpayravi/cite-unseen/-/blob/deploy/cite-unseen-bundled.js?ref_type=heads). This single script files includes the contents of `main.js`, `sources.js`, `i18n.js`, and `styles.css`.
+The CI pipeline automatically builds a bundled version of the script (`cite-unseen-bundled.js`) that combines `main.js`, `sources.js`, `i18n.js`, and `styles.css` into a single file. Three deploy branches are maintained:
+
+| Branch | Updated on | Purpose |
+|---|---|---|
+| [`deploy`](https://gitlab.wikimedia.org/kevinpayravi/cite-unseen/-/tree/deploy) | Every [release tag](https://gitlab.wikimedia.org/kevinpayravi/cite-unseen/-/releases) | Stable production bundle |
+| [`deploy-dev`](https://gitlab.wikimedia.org/kevinpayravi/cite-unseen/-/tree/deploy-dev) | Every commit to `main` | Latest development bundle |
+| `deploy-mr-##` | Every commit to a merge request | Per-MR preview bundle (e.g. `deploy-mr-42`) |
+
+> **Note:** `deploy-mr-##` branches contain unreviewed code from merge requests and should be tested/used with caution.
 
 ## License
 This project is licensed under **[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](/LICENSE)**.
