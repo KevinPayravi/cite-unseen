@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-cbe54552
-// Timestamp: 2026-04-13T12:27:23.996Z
+// Release: dev-408220dc
+// Timestamp: 2026-04-16T12:25:56.221Z
 
 (function() {
     'use strict';
@@ -484,7 +484,8 @@ window.CiteUnseenI18n = {
         },
         "tr": {
             "authors": [
-                "Hedda"
+                "Hedda",
+                "Leo"
             ]
         },
         "ur": {
@@ -641,9 +642,22 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е поврзано со неуредувана сметка создадена со ВИ. Може да биде мрежно место со значителен ВИ-материјал без човечки уреднички надзор.",
             "nl": "Deze bron is gekoppeld aan onbewerkte, door AI gegenereerde inhoud. Het kan een website zijn die aanzienlijk veel door AI gegenereerd materiaal publiceert zonder menselijke redactionele controle.",
             "pms": "Sa sorgiss a l'é associà a dël contnù nen controlà generà da n'anteligensa artifissial. A podrìa esse un sit ëd l'aragnà ch'a pùblica dël material generà ëd fasson sostansial da n'anteligensa artifissial sensa na verìfica editoria uman-a.",
+            "tr": "Bu kaynak, düzenlenmemiş yapay zekâ tarafından oluşturulmuş içerikle ilişkilidir. İnsan editör gözetimi olmadan önemli miktarda yapay zekâ tarafından oluşturulmuş materyal yayınlayan bir web sitesi olabilir.",
             "yue-hant": "呢個來源同未經編輯嘅人工智能產生嘅內容有關。佢可能係一個發佈大量人工智能生成嘅材料嘅網站，而唔需要人類嘅編輯監督。",
             "hans": "此来源与未经编辑的 AI 生成内容相关，比如发布大量 AI 生成材料且没有人工编辑监督的网站。",
             "hant": "此來源與未經編輯的 AI 生成內容相關，比如發布大量 AI 生成材料且沒有人工編輯監督的網站，或是帶有 AI 引用參數的來源連結。"
+        },
+        "aiReferred": {
+            "ar": "يتضمن عنوان URL لهذا المصدر معلمات تتبع (مثل utm_source=chatgpt.com) تشير إلى أنه نُسخ من مساعد ذكاء اصطناعي. وقد يكون النص المصاحب له مُولّدًا بواسطة الذكاء الاصطناعي أيضًا، وقد يؤكد المصدر أو لا يؤكد صحة المعلومات الواردة فيه.",
+            "en": "The URL of this source includes tracking parameters (such as utm_source=chatgpt.com) indicating it was copied from an AI assistant. The associated text may have also been AI-generated, and the source may or may not corroborate the given statements.",
+            "ga": "Tá paraiméadair rianaithe (amhail utm_source=chatgpt.com) san áireamh i URL na foinse seo a léiríonn gur cóipeáladh é ó chúntóir AI. Seans gur gineadh an téacs gaolmhar le AI freisin, agus seans go ndéanfadh an fhoinse na ráitis a tugadh a chomhthacú nó nach ndéanfadh.",
+            "mk": "URL-адресата на овој извор вклучуа следечки параметри (како utm_source=chatgpt.com) што укажува на тоа дека е прекопирана од ВИ-помошник. Текстот исто така може да бил создаден од ВИ, а изворот може да ги потврдува дадените изјави или не.",
+            "nl": "De URL van deze bron bevat trackingparameters (zoals utm_source=chatgpt.com) die aangeven dat deze is gekopieerd van een AI-assistent. De bijbehorende tekst kan ook door een AI zijn gegenereerd en de bron kan de gegeven beweringen al dan niet bevestigen.",
+            "pms": "L'URL ëd costa sorgiss a comprend dij paràmeter ëd trassadura (coma utm_source=chatgpt.com), ch'a mostro ch'a l'é stàit copià da n'assistent d'AA. Ël test associà a podrìa ëdcò esse stàit generà da n'AA, e la sorgiss a podrìa confirmé o pa j'afermassion fàite.",
+            "tr": "Bu kaynağın URL'si, yapay zekâ asistanından kopyalandığını gösteren izleme parametreleri (örneğin utm_source=chatgpt.com) içermektedir. İlişkili metin de yapay zekâ tarafından oluşturulmuş olabilir ve kaynak verilen ifadeleri doğrulayabilir veya doğrulamayabilir.",
+            "yue-hant": "呢個來源嘅網址包括追蹤參數（例如utm_source=chatgpt.com），表明佢係由人工智能助理複製嚟嘅。相關嘅文字亦都可能係由人工智能生成，而來源可能會或者唔會證實所給嘅陳述。",
+            "hans": "此来源的网址包含跟踪参数（如 utm_source=chatgpt.com），表明它是从 AI 助手复制的。相关文本也可能是 AI 生成的，并且该来源可能不会证实给定的陈述。",
+            "hant": "此來源的網址包含跟踪參數（如 utm_source=chatgpt.com），表明它是從 AI 助手複製的。相關文本也可能是 AI 生成的，並且該來源可能不會證實給定的陳述。"
         },
         "blacklisted": {
             "ar": "لقد تمت إضافة هذا المصدر إلى القائمة السوداء بسبب الإساءة المستمرة، عادةً في شكل روابط خارجية غير مرغوب فيها.",
@@ -826,7 +840,7 @@ window.CiteUnseenI18n = {
             "hant": "社群對此來源的可靠性沒有共識。其可靠性可能受到一個或多個因素影響（例如主題領域、作者或出版時間）。"
         },
         "news": {
-            "ar": "هذا المصدر عبارة عن مقالة إخبارية من مؤسسة إخبارية مرموقة.",
+            "ar": "هذا المصدر صادر عن جهة إعلامية هدفها الأساسي هو التغطية الصحفية للأحداث الجارية/الحديثة، وذلك من خلال عملية تحريرية.",
             "en": "This source is from an outlet whose primary purpose is journalistic reporting on current/recent events, under an editorial process.",
             "ga": "Tagann an fhoinse seo ó asraon arb é a phríomhchuspóir tuairisciú iriseoireachta ar imeachtaí reatha/le déanaí, faoi phróiseas eagarthóireachta.",
             "id": "Sumber ini adalah artikel berita dari organisasi berita yang bereputasi.",
@@ -837,7 +851,7 @@ window.CiteUnseenI18n = {
             "pl": "To źródło to artykuł informacyjny z renomowanej organizacji prasowej.",
             "pms": "Costa sorgiss a l'ha tanme but prinsipal l'anformassion giornalìstica su d'eveniment an cors o recent, conforma a 'n process editorial.",
             "pt": "Esta fonte é um artigo de notícias de uma organização de notícias respeitável.",
-            "tr": "Bu kaynak, saygın bir haber kuruluşuna ait bir haber makalesidir.",
+            "tr": "Bu kaynak, temel amacı güncel/yakın zamanki olaylar hakkında editoryal bir süreç çerçevesinde gazetecilik haberciliği yapmak olan bir yayın organından alınmıştır.",
             "ur": "یہ ماخذ ایک معروف خبر رساں تنظیم کا ایک نیوز آرٹیکل ہے۔",
             "yue-hant": "呢個來源嚟自以報導時事為主、並有編輯審核流程嘅媒體。",
             "hans": "此来源来自以报道时事为主、并有编辑审核流程的媒体。",
@@ -1002,16 +1016,6 @@ window.CiteUnseenI18n = {
             "yue-hant": "呢個來源仲未評估。",
             "hans": "此来源尚未评估。",
             "hant": "此來源尚未評估。"
-        },
-        "aiReferred": {
-            "en": "The URL of this source includes tracking parameters (such as utm_source=chatgpt.com) indicating it was copied from an AI assistant. The associated text may have also been AI-generated, and the source may or may not corroborate the given statements.",
-            "ga": "Tá paraiméadair rianaithe (amhail utm_source=chatgpt.com) san áireamh i URL na foinse seo a léiríonn gur cóipeáladh é ó chúntóir AI. Seans gur gineadh an téacs gaolmhar le AI freisin, agus seans go ndéanfadh an fhoinse na ráitis a tugadh a chomhthacú nó nach ndéanfadh.",
-            "mk": "URL-адресата на овој извор вклучуа следечки параметри (како utm_source=chatgpt.com) што укажува на тоа дека е прекопирана од ВИ-помошник. Текстот исто така може да бил создаден од ВИ, а изворот може да ги потврдува дадените изјави или не.",
-            "nl": "De URL van deze bron bevat trackingparameters (zoals utm_source=chatgpt.com) die aangeven dat deze is gekopieerd van een AI-assistent. De bijbehorende tekst kan ook door een AI zijn gegenereerd en de bron kan de gegeven beweringen al dan niet bevestigen.",
-            "pms": "L'URL ëd costa sorgiss a comprend dij paràmeter ëd trassadura (coma utm_source=chatgpt.com), ch'a mostro ch'a l'é stàit copià da n'assistent d'AA. Ël test associà a podrìa ëdcò esse stàit generà da n'AA, e la sorgiss a podrìa confirmé o pa j'afermassion fàite.",
-            "yue-hant": "呢個來源嘅網址包括追蹤參數（例如utm_source=chatgpt.com），表明佢係由人工智能助理複製嚟嘅。相關嘅文字亦都可能係由人工智能生成，而來源可能會或者唔會證實所給嘅陳述。",
-            "hans": "此来源的网址包含跟踪参数（如 utm_source=chatgpt.com），表明它是从 AI 助手复制的。相关文本也可能是 AI 生成的，并且该来源可能不会证实给定的陈述。",
-            "hant": "此來源的網址包含跟踪參數（如 utm_source=chatgpt.com），表明它是從 AI 助手複製的。相關文本也可能是 AI 生成的，並且該來源可能不會證實給定的陳述。"
         }
     },
     "categoryLabels": {
@@ -1040,6 +1044,7 @@ window.CiteUnseenI18n = {
             "mk": "Создадено со ВИ",
             "nl": "AI-gegenereerd",
             "pms": "generà da n'anteligensa artifissial",
+            "tr": "Yapay zekâ tarafından oluşturulmuş",
             "yue-hant": "AI生成",
             "hans": "AI生成",
             "hant": "AI生成"
@@ -1051,6 +1056,7 @@ window.CiteUnseenI18n = {
             "mk": "Наведено со ВИ",
             "nl": "AI-verwezen",
             "pms": "Controlà da n'anteligensa artifissial",
+            "tr": "Yapay zekâya atıfta bulunan",
             "yue-hant": "AI搜尋",
             "hans": "AI搜索",
             "hant": "AI搜尋"
@@ -1704,6 +1710,19 @@ window.CiteUnseenI18n = {
         "yue-hant": "對於未評分嘅發佈者嘅社交媒體連結，隱藏佢哋嘅可靠性評級",
         "hans": "对于未识别发布者的社交媒体来源，隐藏可靠性评级",
         "hant": "對於未識別發佈者的社群媒體來源，隱藏可靠性評級"
+    },
+    "showOtherLanguageReliabilityRatings": {
+        "ar": "اعرض تقييمات الموثوقية من ويكيبيديا بلغات أخرى عند توفر التقييمات المحلية.",
+        "en": "Show reliability ratings from other language Wikipedias when local ratings are available",
+        "ga": "Taispeáin rátálacha iontaofachta ó Vicipéidí teangacha eile nuair a bhíonn rátálacha áitiúla ar fáil",
+        "mk": "Прикажувај оценки за меродавност од википедии на други јазици кога нема месни оценки",
+        "nl": "Betrouwbaarheidsbeoordelingen weergeven van Wikipedia's in andere talen wanneer er lokale beoordelingen beschikbaar zijn.",
+        "pms": "Smon-e ij pontegg d'afidament da le Wikipedie an d'àutre lenghe cand ij pontegg locaj a son disponìbij",
+        "ps": "کله چې ځايي ډلبندي شتون ولري، د نورو ژبو ويکي‌پېډياگانو باوري ډلبندي وښایاست",
+        "tr": "Yerel derecelendirmeler mevcut olduğunda, diğer dillerdeki Vikipedilerden gelen güvenilirlik derecelendirmelerini göster.",
+        "yue-hant": "當有本地評級嗰陣，顯示其他語言維基百科嘅可靠性評級",
+        "hans": "本地评级可用时，显示其他语言维基百科的可靠性评级",
+        "hant": "本地評級可用時，顯示其他語言維基百科的可靠性評級"
     },
     "ignoreDomainsTabGuidance": {
         "ar": "أدخل النطاقات التي ترغب في استبعادها من كل فئة. لن تُميّز المصادر من هذه النطاقات بأيقونة الفئة المقابلة. أدخل نطاقًا واحدًا في كل سطر بالتنسيق \"example.com\".",
@@ -2367,17 +2386,6 @@ window.CiteUnseenI18n = {
         "yue-hant": "睇返設定：",
         "hans": "检视设置：",
         "hant": "檢視設定："
-    },
-    "showOtherLanguageReliabilityRatings": {
-        "en": "Show reliability ratings from other language Wikipedias when local ratings are available",
-        "ga": "Taispeáin rátálacha iontaofachta ó Vicipéidí teangacha eile nuair a bhíonn rátálacha áitiúla ar fáil",
-        "mk": "Прикажувај оценки за меродавност од википедии на други јазици кога нема месни оценки",
-        "nl": "Betrouwbaarheidsbeoordelingen weergeven van Wikipedia's in andere talen wanneer er lokale beoordelingen beschikbaar zijn.",
-        "pms": "Smon-e ij pontegg d'afidament da le Wikipedie an d'àutre lenghe cand ij pontegg locaj a son disponìbij",
-        "ps": "کله چې ځايي ډلبندي شتون ولري، د نورو ژبو ويکي‌پېډياگانو باوري ډلبندي وښایاست",
-        "yue-hant": "當有本地評級嗰陣，顯示其他語言維基百科嘅可靠性評級",
-        "hans": "本地评级可用时，显示其他语言维基百科的可靠性评级",
-        "hant": "本地評級可用時，顯示其他語言維基百科的可靠性評級"
     }
 };
 
