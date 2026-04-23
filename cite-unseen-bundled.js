@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-509f6e09
-// Timestamp: 2026-04-23T09:52:19.782Z
+// Release: dev-7dfd0e23
+// Timestamp: 2026-04-23T10:09:53.107Z
 
 (function() {
     'use strict';
@@ -3336,6 +3336,54 @@ var CiteUnseenData = {
         },
 
         /**
+         * Split a rule's whitespace-separated exclude list into individual tokens.
+         * @param {Object} rule - Rule object
+         * @returns {string[]} Exclude tokens
+         */
+        getExcludeTokens: function (rule) {
+            if (typeof rule['exclude'] !== 'string' || rule['exclude'] === '') {
+                return [];
+            }
+
+            if (rule._cachedExcludeSource !== rule['exclude']) {
+                rule._cachedExcludeSource = rule['exclude'];
+                rule._cachedExcludeTokens = rule['exclude'].trim().split(/\s+/).filter(Boolean);
+            }
+
+            return rule._cachedExcludeTokens || [];
+        },
+
+        /**
+         * Check whether a URL is excluded from a broader `url` rule match.
+         * @param {string} rftId - Citation URL
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether the URL is excluded
+         */
+        isExcludedUrlMatch: function (rftId, rule) {
+            const excludeTokens = CiteUnseen.getExcludeTokens(rule);
+            if (excludeTokens.length === 0) {
+                return false;
+            }
+
+            return excludeTokens.some(token => CiteUnseen.urlRegex(token).test(rftId));
+        },
+
+        /**
+         * Check whether a URL is excluded from a broader `url_str` rule match.
+         * @param {string} rftId - Citation URL
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether the URL is excluded
+         */
+        isExcludedUrlStringMatch: function (rftId, rule) {
+            const excludeTokens = CiteUnseen.getExcludeTokens(rule);
+            if (excludeTokens.length === 0) {
+                return false;
+            }
+
+            return excludeTokens.some(token => rftId.includes(token));
+        },
+
+        /**
          * Check if source author matches rule
          * @param {Object} coins - COinS object
          * @param {Object} rule - Rule object
@@ -3425,7 +3473,10 @@ var CiteUnseenData = {
             if (typeof rule['url'] !== 'string' || rule['url'] === '') return false;
             const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
             if (rftIds.length === 0) return false;
-            return rftIds.some(rftId => CiteUnseen.urlRegex(rule['url']).test(rftId));
+            return rftIds.some(rftId =>
+                CiteUnseen.urlRegex(rule['url']).test(rftId) &&
+                !CiteUnseen.isExcludedUrlMatch(rftId, rule)
+            );
         },
 
         /**
@@ -3438,7 +3489,10 @@ var CiteUnseenData = {
             if (typeof rule['url_str'] !== 'string' || rule['url_str'] === '') return false;
             const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
             if (rftIds.length === 0) return false;
-            return rftIds.some(rftId => rftId.includes(rule['url_str']));
+            return rftIds.some(rftId =>
+                rftId.includes(rule['url_str']) &&
+                !CiteUnseen.isExcludedUrlStringMatch(rftId, rule)
+            );
         },
 
         /**
@@ -3631,6 +3685,9 @@ var CiteUnseenData = {
                 'url_str': CiteUnseen.matchUrlString,
             };
             for (const key of Object.keys(rule)) {
+                if (key.startsWith('_') || key === 'exclude') {
+                    continue;
+                }
                 if (!matchFunctions[key]) {
                     console.log("[Cite Unseen] Unknown rule:");
                     console.log(rule);
@@ -3652,6 +3709,7 @@ var CiteUnseenData = {
          */
         addIcons: function () {
             const filteredCategorizedRules = {};
+            const refLinkCoins = { 'rft_id': CiteUnseen.refLinks };
 
             Object.keys(CiteUnseen.categorizedRules).forEach(key => {
                 const domainIgnoreList = CiteUnseen.citeUnseenDomainIgnore[key] || [];
@@ -3663,12 +3721,12 @@ var CiteUnseenData = {
                     // If rule has url field, check if any domains match
                     if (domain) {
                         return !domainIgnoreList.includes(domain) &&
-                            CiteUnseen.refLinks.some(link => link.includes(domain));
+                            CiteUnseen.matchUrl(refLinkCoins, rule);
                     }
                     
                     // If rule has url_str field, check if any links contain the string
                     if (urlStr) {
-                        return CiteUnseen.refLinks.some(link => link.includes(urlStr));
+                        return CiteUnseen.matchUrlString(refLinkCoins, rule);
                     }
                 });
             });
