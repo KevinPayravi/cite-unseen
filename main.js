@@ -1548,9 +1548,42 @@
         },
 
         /**
-         * Find the rendered citation node, COinS tag, and external link associated with a cite marker.
+         * Collect unique external link elements from the given roots.
+         * @param {Element[]} roots - Elements to search within
+         * @returns {Element[]} Unique external link elements
+         */
+        collectExternalLinks: function (roots) {
+            const externalLinks = [];
+            const seen = new Set();
+
+            for (const root of roots) {
+                if (!root) {
+                    continue;
+                }
+
+                const matches = [];
+                if (root.matches?.('a.external')) {
+                    matches.push(root);
+                }
+                if (root.querySelectorAll) {
+                    matches.push(...root.querySelectorAll('a.external'));
+                }
+
+                for (const link of matches) {
+                    if (!seen.has(link)) {
+                        seen.add(link);
+                        externalLinks.push(link);
+                    }
+                }
+            }
+
+            return externalLinks;
+        },
+
+        /**
+         * Find the rendered citation node, COinS tag, and external links associated with a cite marker.
          * @param {Element} citeTag - The citation marker element
-         * @returns {{citationElement: Element, coinsTag: Element|null, externalLink: Element|null}}
+         * @returns {{citationElement: Element, coinsTag: Element|null, externalLinks: Element[]}}
          */
         getCitationMarkupContext: function (citeTag) {
             const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
@@ -1559,10 +1592,6 @@
             const citationWrapper = citeTag.closest('.ouvrage');
             let citationElement = citeTag;
             let coinsTag = null;
-            let externalLink =
-                (citeTag.matches('a.external') ? citeTag : null) ||
-                wrappingExternalLink ||
-                citeTag.querySelector('a.external');
 
             if (citeTag.nextElementSibling && citeTag.nextElementSibling.matches('.Z3988[title]')) {
                 coinsTag = citeTag.nextElementSibling;
@@ -1602,16 +1631,17 @@
                     .find(Boolean) || null;
             }
 
-            if (!externalLink) {
-                externalLink = siblingSegment
-                    .map(node => node.matches('a.external') ? node : node.querySelector('a.external'))
-                    .find(Boolean) || null;
-            }
+            const externalLinks = CiteUnseen.collectExternalLinks([
+                citationElement,
+                citeTag,
+                wrappingExternalLink,
+                ...siblingSegment,
+            ]);
 
             return {
                 citationElement,
                 coinsTag,
-                externalLink,
+                externalLinks,
             };
         },
 
@@ -1631,6 +1661,7 @@
                 const onlyCitationInRefText = refTextElement ? refTextElement.querySelectorAll('cite').length === 1 : false;
                 let citationElement = citationMarkup.citationElement;
                 let coinsTag = citationMarkup.coinsTag;
+                let domLinks = CiteUnseen.ensureArray(citationMarkup.externalLinks.map(link => link.getAttribute('href')));
                 if ((!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) && refTextElement) {
                     const fallbackCoinsTag = CiteUnseen.getSingleScopedMatch(refTextElement, '.Z3988[title]');
                     if (fallbackCoinsTag) {
@@ -1640,24 +1671,26 @@
                         }
                     }
                 }
-                if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
-                    // No COinS, so get the href attribute of the <a> tag inside the cite
-                    // This is a partial solution to parse jawiki {{Cite web}} and {{Cite news}}.
-                    let aTag = citationMarkup.externalLink;
-                    if (!aTag && refTextElement) {
-                        aTag = CiteUnseen.getSingleScopedMatch(refTextElement, 'a.external');
-                        if (aTag && !citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
+                if (domLinks.length === 0 && refTextElement) {
+                    const refTextLinks = CiteUnseen.ensureArray(
+                        Array.from(refTextElement.querySelectorAll('a.external[href]'))
+                            .map(link => link.getAttribute('href'))
+                    );
+                    if (onlyCitationInRefText || refTextLinks.length === 1) {
+                        domLinks = refTextLinks;
+                        if (refTextLinks.length > 0 && !citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
                             citationElement = refTextElement;
                         }
                     }
-                    if (aTag && aTag.hasAttribute('href')) {
-                        coinsObject = {
-                            'rft_id': aTag.getAttribute('href'),
-                        };
-                    } else {
+                }
+                if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
+                    // No COinS, so fall back to the DOM links we found in the rendered citation.
+                    if (domLinks.length === 0) {
                         // No COinS and no <a> tag, so skip
                         continue;
                     }
+                    coinsObject = {};
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                 } else {
                     // Parse COinS string
                     let coinsString = await CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
@@ -1668,19 +1701,7 @@
                         coinsObject['rft_id'] = coinsObject['rfr_id'];
                     }
 
-                    // As a last resort, try to get the href attribute of the <a> tag inside the cite
-                    if (!coinsObject['rft_id']) {
-                        let aTag = citationMarkup.externalLink;
-                        if (!aTag && refTextElement) {
-                            aTag = CiteUnseen.getSingleScopedMatch(refTextElement, 'a.external');
-                            if (aTag && !citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
-                                citationElement = refTextElement;
-                            }
-                        }
-                        if (aTag) {
-                            coinsObject['rft_id'] = aTag.getAttribute('href');
-                        }
-                    }
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                 }
                 CiteUnseen.refs.push({
                     cite: citationElement,
@@ -1709,15 +1730,19 @@
                     continue;
                 }
 
-                const aTag = refTextElement.querySelector('a.external');
-                if (aTag && aTag.hasAttribute('href')) {
-                    const coinsObject = { 'rft_id': aTag.getAttribute('href') };
+                const domLinks = CiteUnseen.ensureArray(
+                    Array.from(refTextElement.querySelectorAll('a.external[href]'))
+                        .map(link => link.getAttribute('href'))
+                );
+                if (domLinks.length > 0) {
+                    const coinsObject = {};
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                     CiteUnseen.refs.push({
                         cite: refTextElement,
                         coins: coinsObject,
                     });
                     if (coinsObject['rft_id']) {
-                        CiteUnseen.refLinks.push(coinsObject['rft_id']);
+                        CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
                     }
                 }
             }
@@ -2679,7 +2704,7 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
                     data() {
                         return {
                             open: true,
-                            sourceUrl: citationRef.coins['rft_id'] || '',
+                            sourceUrl: CiteUnseen.getPrimarySourceUrl(citationRef.coins),
                             selectedCategories: [],
                             comment: '',
                             isSubmitting: false
@@ -3108,6 +3133,34 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
             if (Array.isArray(value)) return value.filter(v => typeof v === 'string' && v !== '');
             if (typeof value === 'string' && value !== '') return [value];
             return [];
+        },
+
+        /**
+         * Merge DOM/COinS URLs into rft_id while preserving existing order.
+         * @param {Object} coins - COinS object
+         * @param {string[]|string} hrefs - DOM hrefs to merge in
+         */
+        mergeRftIds: function (coins, hrefs) {
+            const merged = [...new Set(
+                CiteUnseen.ensureArray(coins['rft_id']).concat(CiteUnseen.ensureArray(hrefs))
+            )];
+
+            if (merged.length === 0) {
+                delete coins['rft_id'];
+                return;
+            }
+
+            coins['rft_id'] = merged.length === 1 ? merged[0] : merged;
+        },
+
+        /**
+         * Pick the primary URL for UI workflows from a citation.
+         * @param {Object} coins - COinS object
+         * @returns {string} Preferred URL
+         */
+        getPrimarySourceUrl: function (coins) {
+            const rftIds = CiteUnseen.ensureArray(coins && coins['rft_id']);
+            return rftIds.find(url => !url.startsWith('info:sid/')) || rftIds[0] || '';
         },
 
         // ===============================
