@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hedda"
+			"Hedda",
+			"Leo"
 		]
 	},
 	"additionalDomains": "Ek Alan Adları (her satıra bir tane)",
@@ -11,6 +12,8 @@
 	"cancel": "İptal",
 	"categoriesTabGuidance": "Belirli alıntı kategorilerini etkinleştirin veya devre dışı bırakın. Devre dışı bırakılan kategoriler simge göstermeyecek ve panoda görünmeyecektir.",
 	"categoryHints.advocacy": "Bu kaynak, bir savunma/çıkar grubu kuruluşudur.",
+	"categoryHints.aiGenerated": "Bu kaynak, düzenlenmemiş yapay zekâ tarafından oluşturulmuş içerikle ilişkilidir. İnsan editör gözetimi olmadan önemli miktarda yapay zekâ tarafından oluşturulmuş materyal yayınlayan bir web sitesi olabilir.",
+	"categoryHints.aiReferred": "Bu kaynağın URL'si, yapay zekâ asistanından kopyalandığını gösteren izleme parametreleri (örneğin utm_source=chatgpt.com) içermektedir. İlişkili metin de yapay zekâ tarafından oluşturulmuş olabilir ve kaynak verilen ifadeleri doğrulayabilir veya doğrulamayabilir.",
 	"categoryHints.blacklisted": "Bu kaynak, sürekli kötüye kullanım nedeniyle kara listeye alınmıştır; bu genellikle spam dış bağlantılar şeklinde gerçekleşir.",
 	"categoryHints.blogs": "Bu kaynak bir blog yazısıdır.",
 	"categoryHints.books": "Bu kaynak bir kitap, dergi ya da başka tür basılı yayın gibi bir yayındır.",
@@ -22,7 +25,7 @@
 	"categoryHints.government": "Bu kaynak, devlet tarafından sahip olunan veya devletçe işletilen bir medya kuruluşu ya da bir devlet kaynağıdır.",
 	"categoryHints.marginallyReliable": "Bu kaynak, sınırlı düzeyde güvenilirdir. Her bağlamda güvenilirliğini belirlemek için duruma göre ayrı ayrı incelenmesi gerekebilir.",
 	"categoryHints.multi": "Topluluk içinde bu kaynağın güvenilirliği konusunda bir görüş birliği yoktur. Güvenilirliği; konu alanı, yazar veya yayımlanma zamanı gibi bir ya da birden fazla faktörden etkilenebilir.",
-	"categoryHints.news": "Bu kaynak, saygın bir haber kuruluşuna ait bir haber makalesidir.",
+	"categoryHints.news": "Bu kaynak, temel amacı güncel/yakın zamanki olaylar hakkında editoryal bir süreç çerçevesinde gazetecilik haberciliği yapmak olan bir yayın organından alınmıştır.",
 	"categoryHints.opinions": "Bu kaynak bir görüş yazısıdır.",
 	"categoryHints.predatory": "Bu kaynak, yırtıcı (predatory) bir dergiden alınmıştır.",
 	"categoryHints.press": "Bu kaynak bir basın bültenidir.",
@@ -33,6 +36,8 @@
 	"categoryHints.tvPrograms": "Bu kaynak, bir TV ya da radyo programıdır. Güvenilirliği, ilgili programa bağlıdır.",
 	"categoryHints.unknown": "Bu kaynak henüz değerlendirilmemiştir.",
 	"categoryLabels.advocacy": "savunma",
+	"categoryLabels.aiGenerated": "Yapay zekâ tarafından oluşturulmuş",
+	"categoryLabels.aiReferred": "Yapay zekâya atıfta bulunan",
 	"categoryLabels.blacklisted": "kara listeye alınmış",
 	"categoryLabels.blogs": "blog yazıları",
 	"categoryLabels.books": "kitaplar",
@@ -70,6 +75,7 @@
 	"filterToggleTooltip": "Bu kategori filtresini açıp kapatmak için tıklayın. Birden fazla kategori seçebilirsiniz. Tüm filtreleri temizlemek için Escape tuşuna basın.",
 	"filtersActive": "filtreler aktif",
 	"hideSocialMediaReliabilityRatings": "Derecelendirilmemiş yayıncılardan gelen sosyal medya bağlantıları için güvenilirlik derecelendirmelerini gizle",
+	"showOtherLanguageReliabilityRatings": "Yerel derecelendirmeler mevcut olduğunda, diğer dillerdeki Vikipedilerden gelen güvenilirlik derecelendirmelerini göster.",
 	"ignoreDomainsTabGuidance": "Her kategori için hariç tutulacak alan adlarını girin. Bu alan adlarından gelen kaynaklar ilgili kategori simgesiyle işaretlenmeyecektir. Her satıra bir alan adı olacak şekilde 'example.com' biçiminde girin.",
 	"invalidDomainFormatMessage": "Geçersiz alan adı biçimi algılandı. Alan adları \"name.tld\" biçiminde olmalıdır (örneğin, example.com):",
 	"loading": "Yükleniyor...",
