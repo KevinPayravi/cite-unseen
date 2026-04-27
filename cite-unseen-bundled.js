@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-1f4bf23a
-// Timestamp: 2026-04-23T10:31:27.113Z
+// Release: dev-37891421
+// Timestamp: 2026-04-27T06:38:56.519Z
 
 (function() {
     'use strict';
@@ -3346,6 +3346,54 @@ var CiteUnseenData = {
         },
 
         /**
+         * Split a rule's whitespace-separated exclude list into individual tokens.
+         * @param {Object} rule - Rule object
+         * @returns {string[]} Exclude tokens
+         */
+        getExcludeTokens: function (rule) {
+            if (typeof rule['exclude'] !== 'string' || rule['exclude'] === '') {
+                return [];
+            }
+
+            if (rule._cachedExcludeSource !== rule['exclude']) {
+                rule._cachedExcludeSource = rule['exclude'];
+                rule._cachedExcludeTokens = rule['exclude'].trim().split(/\s+/).filter(Boolean);
+            }
+
+            return rule._cachedExcludeTokens || [];
+        },
+
+        /**
+         * Check whether a URL is excluded from a broader `url` rule match.
+         * @param {string} rftId - Citation URL
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether the URL is excluded
+         */
+        isExcludedUrlMatch: function (rftId, rule) {
+            const excludeTokens = CiteUnseen.getExcludeTokens(rule);
+            if (excludeTokens.length === 0) {
+                return false;
+            }
+
+            return excludeTokens.some(token => CiteUnseen.urlRegex(token).test(rftId));
+        },
+
+        /**
+         * Check whether a URL is excluded from a broader `url_str` rule match.
+         * @param {string} rftId - Citation URL
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether the URL is excluded
+         */
+        isExcludedUrlStringMatch: function (rftId, rule) {
+            const excludeTokens = CiteUnseen.getExcludeTokens(rule);
+            if (excludeTokens.length === 0) {
+                return false;
+            }
+
+            return excludeTokens.some(token => rftId.includes(token));
+        },
+
+        /**
          * Check if source author matches rule
          * @param {Object} coins - COinS object
          * @param {Object} rule - Rule object
@@ -3435,7 +3483,10 @@ var CiteUnseenData = {
             if (typeof rule['url'] !== 'string' || rule['url'] === '') return false;
             const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
             if (rftIds.length === 0) return false;
-            return rftIds.some(rftId => CiteUnseen.urlRegex(rule['url']).test(rftId));
+            return rftIds.some(rftId =>
+                CiteUnseen.urlRegex(rule['url']).test(rftId) &&
+                !CiteUnseen.isExcludedUrlMatch(rftId, rule)
+            );
         },
 
         /**
@@ -3448,7 +3499,10 @@ var CiteUnseenData = {
             if (typeof rule['url_str'] !== 'string' || rule['url_str'] === '') return false;
             const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
             if (rftIds.length === 0) return false;
-            return rftIds.some(rftId => rftId.includes(rule['url_str']));
+            return rftIds.some(rftId =>
+                rftId.includes(rule['url_str']) &&
+                !CiteUnseen.isExcludedUrlStringMatch(rftId, rule)
+            );
         },
 
         /**
@@ -3641,6 +3695,9 @@ var CiteUnseenData = {
                 'url_str': CiteUnseen.matchUrlString,
             };
             for (const key of Object.keys(rule)) {
+                if (key.startsWith('_') || key === 'exclude') {
+                    continue;
+                }
                 if (!matchFunctions[key]) {
                     console.log("[Cite Unseen] Unknown rule:");
                     console.log(rule);
@@ -3662,6 +3719,7 @@ var CiteUnseenData = {
          */
         addIcons: function () {
             const filteredCategorizedRules = {};
+            const refLinkCoins = { 'rft_id': CiteUnseen.refLinks };
 
             Object.keys(CiteUnseen.categorizedRules).forEach(key => {
                 const domainIgnoreList = CiteUnseen.citeUnseenDomainIgnore[key] || [];
@@ -3673,12 +3731,12 @@ var CiteUnseenData = {
                     // If rule has url field, check if any domains match
                     if (domain) {
                         return !domainIgnoreList.includes(domain) &&
-                            CiteUnseen.refLinks.some(link => link.includes(domain));
+                            CiteUnseen.matchUrl(refLinkCoins, rule);
                     }
                     
                     // If rule has url_str field, check if any links contain the string
                     if (urlStr) {
-                        return CiteUnseen.refLinks.some(link => link.includes(urlStr));
+                        return CiteUnseen.matchUrlString(refLinkCoins, rule);
                     }
                 });
             });
@@ -3692,7 +3750,7 @@ var CiteUnseenData = {
                 const processedCategories = new Set();
 
                 // Determine the source type based on the class name
-                const classList = ref.cite.classList;
+                const classList = (ref.classListSource || ref.cite).classList;
                 const bookClasses = ["book", "journal", "encyclopaedia", "conference", "thesis", "magazine"];
                 const tvClasses = ["episode", "podcast", "media"];
                 const hasNewsClass = classList.contains("news");
@@ -4092,6 +4150,44 @@ var CiteUnseenData = {
 
             // Return the list item if found, otherwise use the citation element itself
             return listItem || citationElement;
+        },
+
+        /**
+         * Get the top-level footnote list item for a citation.
+         * This avoids treating wrapper text around nested citation lists as a separate source.
+         * @param {Element} citationElement - The citation element
+         * @returns {Element|null} The top-level citation note list item
+         */
+        getReferenceNoteContainer: function (citationElement) {
+            if (!citationElement) return null;
+            return citationElement.closest('li[id^="cite_note-"]');
+        },
+
+        /**
+         * Get the reflist container for a citation.
+         * Prefer explicit wrapper elements like jawiki's div.reflist when present.
+         * @param {Element} citationElement - The citation element
+         * @returns {Element|null} The reflist container element
+         */
+        getReflistContainer: function (citationElement) {
+            if (!citationElement) return null;
+
+            const wrapper = citationElement.closest('.reflist, .refbegin');
+            if (wrapper) {
+                return wrapper;
+            }
+
+            const reflist = citationElement.closest('ol.references, ol.mw-references, ol[typeof="mw:Extension/references"]');
+            if (!reflist) {
+                return null;
+            }
+
+            const parentElement = reflist.parentElement;
+            if (parentElement && parentElement.tagName === 'DIV' && parentElement.childElementCount === 1) {
+                return parentElement;
+            }
+
+            return reflist;
         },
 
         /**
@@ -4580,6 +4676,142 @@ var CiteUnseenData = {
         },
 
         /**
+         * Get the sibling elements associated with a citation marker.
+         * eswiki subcitation compatibility: template output may split one logical citation
+         * across sibling nodes after an empty <cite>.
+         * Stops before the next citation marker or an explicit line-break separator.
+         * @param {Element} citeTag - The citation marker element
+         * @returns {Element[]} Associated sibling elements
+         */
+        getCitationSiblingSegment: function (citeTag) {
+            const siblingSegment = [];
+            let sibling = citeTag.nextElementSibling;
+
+            while (sibling) {
+                if (sibling.tagName === 'CITE' || sibling.tagName === 'BR') {
+                    break;
+                }
+                siblingSegment.push(sibling);
+                sibling = sibling.nextElementSibling;
+            }
+
+            return siblingSegment;
+        },
+
+        /**
+         * Return a selector match only when it is unambiguous within the given root.
+         * @param {Element|null} root - The root element to search within
+         * @param {string} selector - CSS selector to search for
+         * @returns {Element|null} The single matching element, or null if none/multiple exist
+         */
+        getSingleScopedMatch: function (root, selector) {
+            if (!root) {
+                return null;
+            }
+
+            const matches = root.querySelectorAll(selector);
+            return matches.length === 1 ? matches[0] : null;
+        },
+
+        /**
+         * Collect unique external link elements from the given roots.
+         * @param {Element[]} roots - Elements to search within
+         * @returns {Element[]} Unique external link elements
+         */
+        collectExternalLinks: function (roots) {
+            const externalLinks = [];
+            const seen = new Set();
+
+            for (const root of roots) {
+                if (!root) {
+                    continue;
+                }
+
+                const matches = [];
+                if (root.matches?.('a.external')) {
+                    matches.push(root);
+                }
+                if (root.querySelectorAll) {
+                    matches.push(...root.querySelectorAll('a.external'));
+                }
+
+                for (const link of matches) {
+                    if (!seen.has(link)) {
+                        seen.add(link);
+                        externalLinks.push(link);
+                    }
+                }
+            }
+
+            return externalLinks;
+        },
+
+        /**
+         * Find the rendered citation node, COinS tag, and external links associated with a cite marker.
+         * @param {Element} citeTag - The citation marker element
+         * @returns {{citationElement: Element, coinsTag: Element|null, externalLinks: Element[]}}
+         */
+        getCitationMarkupContext: function (citeTag) {
+            const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
+            const wrappingExternalLink = citeTag.closest('a.external');
+            // frwiki compatibility: .ouvrage often wraps the full citation while <cite> only wraps the title.
+            const citationWrapper = citeTag.closest('.ouvrage');
+            let citationElement = citeTag;
+            let coinsTag = null;
+
+            if (citeTag.nextElementSibling && citeTag.nextElementSibling.matches('.Z3988[title]')) {
+                coinsTag = citeTag.nextElementSibling;
+            }
+
+            if (!citeTag.textContent.trim()) {
+                // subcitation compatibility: promote empty template markers to the rendered sibling citation.
+                const renderedCitation =
+                    siblingSegment.find(node => node.classList?.contains('citation')) ||
+                    siblingSegment.find(node => !node.matches('.Z3988') && node.textContent.trim() !== '');
+                if (renderedCitation) {
+                    citationElement = renderedCitation;
+                }
+            }
+
+            if (citationElement === citeTag && wrappingExternalLink) {
+                // frwiki compatibility: insert outside wrapped title links to avoid nesting icon links.
+                citationElement =
+                    wrappingExternalLink.closest('.ouvrage') ||
+                    wrappingExternalLink.parentElement ||
+                    citeTag;
+            }
+
+            if (
+                citationElement === citeTag &&
+                citationWrapper &&
+                citationWrapper !== citeTag &&
+                citationWrapper.textContent.trim() !== citeTag.textContent.trim()
+            ) {
+                // frwiki compatibility: move icons to the full citation wrapper, not the title-only <cite>.
+                citationElement = citationWrapper;
+            }
+
+            if (!coinsTag) {
+                coinsTag = siblingSegment
+                    .map(node => node.matches('.Z3988[title]') ? node : node.querySelector('.Z3988[title]'))
+                    .find(Boolean) || null;
+            }
+
+            const externalLinks = CiteUnseen.collectExternalLinks([
+                citationElement,
+                citeTag,
+                wrappingExternalLink,
+                ...siblingSegment,
+            ]);
+
+            return {
+                citationElement,
+                coinsTag,
+                externalLinks,
+            };
+        },
+
+        /**
          * Find all <cite> tags and parse them into COinS objects; locate the position of {{reflist}}.
          */
         findCitations: async function () {
@@ -4590,19 +4822,41 @@ var CiteUnseenData = {
             // Filter all <cite> tags
             for (const citeTag of document.querySelectorAll("cite")) {
                 let coinsObject;
-                let coinsTag = citeTag.nextElementSibling;
+                const refTextElement = citeTag.closest('.reference-text, .mw-reference-text');
+                const citationMarkup = CiteUnseen.getCitationMarkupContext(citeTag);
+                const onlyCitationInRefText = refTextElement ? refTextElement.querySelectorAll('cite').length === 1 : false;
+                let citationElement = citationMarkup.citationElement;
+                let coinsTag = citationMarkup.coinsTag;
+                let domLinks = CiteUnseen.ensureArray(citationMarkup.externalLinks.map(link => link.getAttribute('href')));
+                if ((!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) && refTextElement) {
+                    const fallbackCoinsTag = CiteUnseen.getSingleScopedMatch(refTextElement, '.Z3988[title]');
+                    if (fallbackCoinsTag) {
+                        coinsTag = fallbackCoinsTag;
+                        if (!citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
+                            citationElement = refTextElement;
+                        }
+                    }
+                }
+                if (domLinks.length === 0 && refTextElement) {
+                    const refTextLinks = CiteUnseen.ensureArray(
+                        Array.from(refTextElement.querySelectorAll('a.external[href]'))
+                            .map(link => link.getAttribute('href'))
+                    );
+                    if (onlyCitationInRefText || refTextLinks.length === 1) {
+                        domLinks = refTextLinks;
+                        if (refTextLinks.length > 0 && !citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
+                            citationElement = refTextElement;
+                        }
+                    }
+                }
                 if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
-                    // No COinS, so get the href attribute of the <a> tag inside the cite
-                    // This is a partial solution to parse jawiki {{Cite web}} and {{Cite news}}.
-                    let aTag = citeTag.querySelector('a.external');
-                    if (aTag && aTag.hasAttribute('href')) {
-                        coinsObject = {
-                            'rft_id': aTag.getAttribute('href'),
-                        };
-                    } else {
+                    // No COinS, so fall back to the DOM links we found in the rendered citation.
+                    if (domLinks.length === 0) {
                         // No COinS and no <a> tag, so skip
                         continue;
                     }
+                    coinsObject = {};
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                 } else {
                     // Parse COinS string
                     let coinsString = await CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
@@ -4613,27 +4867,27 @@ var CiteUnseenData = {
                         coinsObject['rft_id'] = coinsObject['rfr_id'];
                     }
 
-                    // As a last resort, try to get the href attribute of the <a> tag inside the cite
-                    if (!coinsObject['rft_id']) {
-                        let aTag = citeTag.querySelector('a.external');
-                        if (aTag) {
-                            coinsObject['rft_id'] = aTag.getAttribute('href');
-                        }
-                    }
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                 }
                 CiteUnseen.refs.push({
-                    cite: citeTag, coins: coinsObject,
+                    cite: citationElement,
+                    classListSource: citeTag,
+                    coins: coinsObject,
                 });
                 if (coinsObject['rft_id']) {
                     CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
                 }
             }
 
-            // Handle plain-link citations in <li> tags that don't have <cite>
+            // Handle plain-link citations in <li> tags not already covered by parsed citation markup.
             const citationLiElements = document.querySelectorAll('li[id^="cite_note-"]');
-            const notOnFrenchWikipedia = mw.config.get('wgServerName') !== 'fr.wikipedia.org';
+            const citationListItemsWithRefs = new Set(
+                CiteUnseen.refs
+                    .map(ref => CiteUnseen.getReferenceNoteContainer(ref.classListSource || ref.cite))
+                    .filter(Boolean)
+            );
             for (const li of citationLiElements) {
-                if (li.querySelector('cite') && notOnFrenchWikipedia) {
+                if (citationListItemsWithRefs.has(li)) {
                     continue;
                 }
 
@@ -4642,60 +4896,45 @@ var CiteUnseenData = {
                     continue;
                 }
 
-                const aTag = refTextElement.querySelector('a.external');
-                if (aTag && aTag.hasAttribute('href')) {
-                    const coinsObject = { 'rft_id': aTag.getAttribute('href') };
+                const domLinks = CiteUnseen.ensureArray(
+                    Array.from(refTextElement.querySelectorAll('a.external[href]'))
+                        .map(link => link.getAttribute('href'))
+                );
+                if (domLinks.length > 0) {
+                    const coinsObject = {};
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                     CiteUnseen.refs.push({
                         cite: refTextElement,
                         coins: coinsObject,
                     });
                     if (coinsObject['rft_id']) {
-                        CiteUnseen.refLinks.push(coinsObject['rft_id']);
+                        CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
                     }
                 }
             }
 
-            // Find all reflists and track citations within each
-            const reflists = [
-                ...Array.from(
-                    // div>ol.references captures most standard reference lists inside a containing div
-                    // div.refbegin captures reference lists using Template:Refbegin
-                    document.querySelectorAll(`#mw-content-text .mw-parser-output div>ol.references,
-                        #mw-content-text .mw-parser-output div.refbegin>ul`),
-                    (reflist) => reflist.parentNode // Use parent node as reflist element
-                ),
-                ...Array.from(
-                    // Captures ol.references lists at the "root" level i.e. no containing div
-                    document.querySelectorAll(`#mw-content-text .mw-parser-output > ol.references`)
-                )
-            ];
-            CiteUnseen.reflists = [];
+            // Track citations by the reflist container they actually belong to.
+            const reflistMap = new Map();
+            for (const ref of CiteUnseen.refs) {
+                const reflist = CiteUnseen.getReflistContainer(ref.cite);
+                if (!reflist) {
+                    continue;
+                }
 
-            if (reflists.length > 0) {
-                // Create reflist data structure for each reflist
-                for (const reflist of reflists) {
-                    const reflistData = {
+                if (!reflistMap.has(reflist)) {
+                    reflistMap.set(reflist, {
                         element: reflist,
                         refs: [],
                         categories: {},
                         dashboard: null,
                         selectedCategories: new Set(),
                         totalCitations: null // Will be calculated when dashboard is created
-                    };
-
-                    // Find which of our tracked citations belong to this reflist
-                    for (const ref of CiteUnseen.refs) {
-                        if (reflist.contains(ref.cite)) {
-                            reflistData.refs.push(ref);
-                        }
-                    }
-
-                    // Only track reflists that have citations
-                    if (reflistData.refs.length > 0) {
-                        CiteUnseen.reflists.push(reflistData);
-                    }
+                    });
                 }
+
+                reflistMap.get(reflist).refs.push(ref);
             }
+            CiteUnseen.reflists = Array.from(reflistMap.values());
         },
 
         /**
@@ -5631,7 +5870,7 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
                     data() {
                         return {
                             open: true,
-                            sourceUrl: citationRef.coins['rft_id'] || '',
+                            sourceUrl: CiteUnseen.getPrimarySourceUrl(citationRef.coins),
                             selectedCategories: [],
                             comment: '',
                             isSubmitting: false
@@ -6060,6 +6299,34 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
             if (Array.isArray(value)) return value.filter(v => typeof v === 'string' && v !== '');
             if (typeof value === 'string' && value !== '') return [value];
             return [];
+        },
+
+        /**
+         * Merge DOM/COinS URLs into rft_id while preserving existing order.
+         * @param {Object} coins - COinS object
+         * @param {string[]|string} hrefs - DOM hrefs to merge in
+         */
+        mergeRftIds: function (coins, hrefs) {
+            const merged = [...new Set(
+                CiteUnseen.ensureArray(coins['rft_id']).concat(CiteUnseen.ensureArray(hrefs))
+            )];
+
+            if (merged.length === 0) {
+                delete coins['rft_id'];
+                return;
+            }
+
+            coins['rft_id'] = merged.length === 1 ? merged[0] : merged;
+        },
+
+        /**
+         * Pick the primary URL for UI workflows from a citation.
+         * @param {Object} coins - COinS object
+         * @returns {string} Preferred URL
+         */
+        getPrimarySourceUrl: function (coins) {
+            const rftIds = CiteUnseen.ensureArray(coins && coins['rft_id']);
+            return rftIds.find(url => !url.startsWith('info:sid/')) || rftIds[0] || '';
         },
 
         // ===============================
