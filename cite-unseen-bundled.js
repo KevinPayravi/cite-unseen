@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.2.2
-// Timestamp: 2026-03-30T07:20:53.469Z
+// Release: 2.2.3
+// Timestamp: 2026-04-28T19:33:05.161Z
 
 (function() {
     'use strict';
@@ -484,7 +484,8 @@ window.CiteUnseenI18n = {
         },
         "tr": {
             "authors": [
-                "Hedda"
+                "Hedda",
+                "Leo"
             ]
         },
         "ur": {
@@ -641,9 +642,22 @@ window.CiteUnseenI18n = {
             "mk": "Овој извор е поврзано со неуредувана сметка создадена со ВИ. Може да биде мрежно место со значителен ВИ-материјал без човечки уреднички надзор.",
             "nl": "Deze bron is gekoppeld aan onbewerkte, door AI gegenereerde inhoud. Het kan een website zijn die aanzienlijk veel door AI gegenereerd materiaal publiceert zonder menselijke redactionele controle.",
             "pms": "Sa sorgiss a l'é associà a dël contnù nen controlà generà da n'anteligensa artifissial. A podrìa esse un sit ëd l'aragnà ch'a pùblica dël material generà ëd fasson sostansial da n'anteligensa artifissial sensa na verìfica editoria uman-a.",
+            "tr": "Bu kaynak, düzenlenmemiş yapay zekâ tarafından oluşturulmuş içerikle ilişkilidir. İnsan editör gözetimi olmadan önemli miktarda yapay zekâ tarafından oluşturulmuş materyal yayınlayan bir web sitesi olabilir.",
             "yue-hant": "呢個來源同未經編輯嘅人工智能產生嘅內容有關。佢可能係一個發佈大量人工智能生成嘅材料嘅網站，而唔需要人類嘅編輯監督。",
             "hans": "此来源与未经编辑的 AI 生成内容相关，比如发布大量 AI 生成材料且没有人工编辑监督的网站。",
             "hant": "此來源與未經編輯的 AI 生成內容相關，比如發布大量 AI 生成材料且沒有人工編輯監督的網站，或是帶有 AI 引用參數的來源連結。"
+        },
+        "aiReferred": {
+            "ar": "يتضمن عنوان URL لهذا المصدر معلمات تتبع (مثل utm_source=chatgpt.com) تشير إلى أنه نُسخ من مساعد ذكاء اصطناعي. وقد يكون النص المصاحب له مُولّدًا بواسطة الذكاء الاصطناعي أيضًا، وقد يؤكد المصدر أو لا يؤكد صحة المعلومات الواردة فيه.",
+            "en": "The URL of this source includes tracking parameters (such as utm_source=chatgpt.com) indicating it was copied from an AI assistant. The associated text may have also been AI-generated, and the source may or may not corroborate the given statements.",
+            "ga": "Tá paraiméadair rianaithe (amhail utm_source=chatgpt.com) san áireamh i URL na foinse seo a léiríonn gur cóipeáladh é ó chúntóir AI. Seans gur gineadh an téacs gaolmhar le AI freisin, agus seans go ndéanfadh an fhoinse na ráitis a tugadh a chomhthacú nó nach ndéanfadh.",
+            "mk": "URL-адресата на овој извор вклучуа следечки параметри (како utm_source=chatgpt.com) што укажува на тоа дека е прекопирана од ВИ-помошник. Текстот исто така може да бил создаден од ВИ, а изворот може да ги потврдува дадените изјави или не.",
+            "nl": "De URL van deze bron bevat trackingparameters (zoals utm_source=chatgpt.com) die aangeven dat deze is gekopieerd van een AI-assistent. De bijbehorende tekst kan ook door een AI zijn gegenereerd en de bron kan de gegeven beweringen al dan niet bevestigen.",
+            "pms": "L'URL ëd costa sorgiss a comprend dij paràmeter ëd trassadura (coma utm_source=chatgpt.com), ch'a mostro ch'a l'é stàit copià da n'assistent d'AA. Ël test associà a podrìa ëdcò esse stàit generà da n'AA, e la sorgiss a podrìa confirmé o pa j'afermassion fàite.",
+            "tr": "Bu kaynağın URL'si, yapay zekâ asistanından kopyalandığını gösteren izleme parametreleri (örneğin utm_source=chatgpt.com) içermektedir. İlişkili metin de yapay zekâ tarafından oluşturulmuş olabilir ve kaynak verilen ifadeleri doğrulayabilir veya doğrulamayabilir.",
+            "yue-hant": "呢個來源嘅網址包括追蹤參數（例如utm_source=chatgpt.com），表明佢係由人工智能助理複製嚟嘅。相關嘅文字亦都可能係由人工智能生成，而來源可能會或者唔會證實所給嘅陳述。",
+            "hans": "此来源的网址包含跟踪参数（如 utm_source=chatgpt.com），表明它是从 AI 助手复制的。相关文本也可能是 AI 生成的，并且该来源可能不会证实给定的陈述。",
+            "hant": "此來源的網址包含跟踪參數（如 utm_source=chatgpt.com），表明它是從 AI 助手複製的。相關文本也可能是 AI 生成的，並且該來源可能不會證實給定的陳述。"
         },
         "blacklisted": {
             "ar": "لقد تمت إضافة هذا المصدر إلى القائمة السوداء بسبب الإساءة المستمرة، عادةً في شكل روابط خارجية غير مرغوب فيها.",
@@ -826,7 +840,7 @@ window.CiteUnseenI18n = {
             "hant": "社群對此來源的可靠性沒有共識。其可靠性可能受到一個或多個因素影響（例如主題領域、作者或出版時間）。"
         },
         "news": {
-            "ar": "هذا المصدر عبارة عن مقالة إخبارية من مؤسسة إخبارية مرموقة.",
+            "ar": "هذا المصدر صادر عن جهة إعلامية هدفها الأساسي هو التغطية الصحفية للأحداث الجارية/الحديثة، وذلك من خلال عملية تحريرية.",
             "en": "This source is from an outlet whose primary purpose is journalistic reporting on current/recent events, under an editorial process.",
             "ga": "Tagann an fhoinse seo ó asraon arb é a phríomhchuspóir tuairisciú iriseoireachta ar imeachtaí reatha/le déanaí, faoi phróiseas eagarthóireachta.",
             "id": "Sumber ini adalah artikel berita dari organisasi berita yang bereputasi.",
@@ -837,7 +851,7 @@ window.CiteUnseenI18n = {
             "pl": "To źródło to artykuł informacyjny z renomowanej organizacji prasowej.",
             "pms": "Costa sorgiss a l'ha tanme but prinsipal l'anformassion giornalìstica su d'eveniment an cors o recent, conforma a 'n process editorial.",
             "pt": "Esta fonte é um artigo de notícias de uma organização de notícias respeitável.",
-            "tr": "Bu kaynak, saygın bir haber kuruluşuna ait bir haber makalesidir.",
+            "tr": "Bu kaynak, temel amacı güncel/yakın zamanki olaylar hakkında editoryal bir süreç çerçevesinde gazetecilik haberciliği yapmak olan bir yayın organından alınmıştır.",
             "ur": "یہ ماخذ ایک معروف خبر رساں تنظیم کا ایک نیوز آرٹیکل ہے۔",
             "yue-hant": "呢個來源嚟自以報導時事為主、並有編輯審核流程嘅媒體。",
             "hans": "此来源来自以报道时事为主、并有编辑审核流程的媒体。",
@@ -1002,16 +1016,6 @@ window.CiteUnseenI18n = {
             "yue-hant": "呢個來源仲未評估。",
             "hans": "此来源尚未评估。",
             "hant": "此來源尚未評估。"
-        },
-        "aiReferred": {
-            "en": "The URL of this source includes tracking parameters (such as utm_source=chatgpt.com) indicating it was copied from an AI assistant. The associated text may have also been AI-generated, and the source may or may not corroborate the given statements.",
-            "ga": "Tá paraiméadair rianaithe (amhail utm_source=chatgpt.com) san áireamh i URL na foinse seo a léiríonn gur cóipeáladh é ó chúntóir AI. Seans gur gineadh an téacs gaolmhar le AI freisin, agus seans go ndéanfadh an fhoinse na ráitis a tugadh a chomhthacú nó nach ndéanfadh.",
-            "mk": "URL-адресата на овој извор вклучуа следечки параметри (како utm_source=chatgpt.com) што укажува на тоа дека е прекопирана од ВИ-помошник. Текстот исто така може да бил создаден од ВИ, а изворот може да ги потврдува дадените изјави или не.",
-            "nl": "De URL van deze bron bevat trackingparameters (zoals utm_source=chatgpt.com) die aangeven dat deze is gekopieerd van een AI-assistent. De bijbehorende tekst kan ook door een AI zijn gegenereerd en de bron kan de gegeven beweringen al dan niet bevestigen.",
-            "pms": "L'URL ëd costa sorgiss a comprend dij paràmeter ëd trassadura (coma utm_source=chatgpt.com), ch'a mostro ch'a l'é stàit copià da n'assistent d'AA. Ël test associà a podrìa ëdcò esse stàit generà da n'AA, e la sorgiss a podrìa confirmé o pa j'afermassion fàite.",
-            "yue-hant": "呢個來源嘅網址包括追蹤參數（例如utm_source=chatgpt.com），表明佢係由人工智能助理複製嚟嘅。相關嘅文字亦都可能係由人工智能生成，而來源可能會或者唔會證實所給嘅陳述。",
-            "hans": "此来源的网址包含跟踪参数（如 utm_source=chatgpt.com），表明它是从 AI 助手复制的。相关文本也可能是 AI 生成的，并且该来源可能不会证实给定的陈述。",
-            "hant": "此來源的網址包含跟踪參數（如 utm_source=chatgpt.com），表明它是從 AI 助手複製的。相關文本也可能是 AI 生成的，並且該來源可能不會證實給定的陳述。"
         }
     },
     "categoryLabels": {
@@ -1040,6 +1044,7 @@ window.CiteUnseenI18n = {
             "mk": "Создадено со ВИ",
             "nl": "AI-gegenereerd",
             "pms": "generà da n'anteligensa artifissial",
+            "tr": "Yapay zekâ tarafından oluşturulmuş",
             "yue-hant": "AI生成",
             "hans": "AI生成",
             "hant": "AI生成"
@@ -1051,6 +1056,7 @@ window.CiteUnseenI18n = {
             "mk": "Наведено со ВИ",
             "nl": "AI-verwezen",
             "pms": "Controlà da n'anteligensa artifissial",
+            "tr": "Yapay zekâya atıfta bulunan",
             "yue-hant": "AI搜尋",
             "hans": "AI搜索",
             "hant": "AI搜尋"
@@ -1705,6 +1711,19 @@ window.CiteUnseenI18n = {
         "hans": "对于未识别发布者的社交媒体来源，隐藏可靠性评级",
         "hant": "對於未識別發佈者的社群媒體來源，隱藏可靠性評級"
     },
+    "showOtherLanguageReliabilityRatings": {
+        "ar": "اعرض تقييمات الموثوقية من ويكيبيديا بلغات أخرى عند توفر التقييمات المحلية.",
+        "en": "Show reliability ratings from other language Wikipedias when local ratings are available",
+        "ga": "Taispeáin rátálacha iontaofachta ó Vicipéidí teangacha eile nuair a bhíonn rátálacha áitiúla ar fáil",
+        "mk": "Прикажувај оценки за меродавност од википедии на други јазици кога нема месни оценки",
+        "nl": "Betrouwbaarheidsbeoordelingen weergeven van Wikipedia's in andere talen wanneer er lokale beoordelingen beschikbaar zijn.",
+        "pms": "Smon-e ij pontegg d'afidament da le Wikipedie an d'àutre lenghe cand ij pontegg locaj a son disponìbij",
+        "ps": "کله چې ځايي ډلبندي شتون ولري، د نورو ژبو ويکي‌پېډياگانو باوري ډلبندي وښایاست",
+        "tr": "Yerel derecelendirmeler mevcut olduğunda, diğer dillerdeki Vikipedilerden gelen güvenilirlik derecelendirmelerini göster.",
+        "yue-hant": "當有本地評級嗰陣，顯示其他語言維基百科嘅可靠性評級",
+        "hans": "本地评级可用时，显示其他语言维基百科的可靠性评级",
+        "hant": "本地評級可用時，顯示其他語言維基百科的可靠性評級"
+    },
     "ignoreDomainsTabGuidance": {
         "ar": "أدخل النطاقات التي ترغب في استبعادها من كل فئة. لن تُميّز المصادر من هذه النطاقات بأيقونة الفئة المقابلة. أدخل نطاقًا واحدًا في كل سطر بالتنسيق \"example.com\".",
         "en": "Enter domains to exclude from each category. Sources from these domains will not be marked with the corresponding category icon. Enter one domain per line in the format 'example.com'.",
@@ -1780,6 +1799,7 @@ window.CiteUnseenI18n = {
         "nl": "Lokale wiki-instellingen hebben voorrang op globale instellingen.",
         "pl": "Lokalne ustawienia wiki zastępują ustawienia globalne.",
         "pms": "Ij paràmeter wiki locaj a l'ha la precedensa an sij paràmeter globaj.",
+        "ps": "د ويکي ځايي اوڼنې نړۍ‌والې اوڼنې له پامه غورځوي.",
         "pt": "As definições locais da wiki substituem as definições globais.",
         "tr": "Yerel wiki ayarları, küresel ayarları geçersiz kılar.",
         "yue-hant": "本地維基設定會覆寫全域設定。",
@@ -2366,15 +2386,6 @@ window.CiteUnseenI18n = {
         "yue-hant": "睇返設定：",
         "hans": "检视设置：",
         "hant": "檢視設定："
-    },
-    "showOtherLanguageReliabilityRatings": {
-        "en": "Show reliability ratings from other language Wikipedias when local ratings are available",
-        "ga": "Taispeáin rátálacha iontaofachta ó Vicipéidí teangacha eile nuair a bhíonn rátálacha áitiúla ar fáil",
-        "mk": "Прикажувај оценки за меродавност од википедии на други јазици кога нема месни оценки",
-        "nl": "Betrouwbaarheidsbeoordelingen weergeven van Wikipedia's in andere talen wanneer er lokale beoordelingen beschikbaar zijn.",
-        "yue-hant": "當有本地評級嗰陣，顯示其他語言維基百科嘅可靠性評級",
-        "hans": "本地评级可用时，显示其他语言维基百科的可靠性评级",
-        "hant": "本地評級可用時，顯示其他語言維基百科的可靠性評級"
     }
 };
 
@@ -3335,6 +3346,54 @@ var CiteUnseenData = {
         },
 
         /**
+         * Split a rule's whitespace-separated exclude list into individual tokens.
+         * @param {Object} rule - Rule object
+         * @returns {string[]} Exclude tokens
+         */
+        getExcludeTokens: function (rule) {
+            if (typeof rule['exclude'] !== 'string' || rule['exclude'] === '') {
+                return [];
+            }
+
+            if (rule._cachedExcludeSource !== rule['exclude']) {
+                rule._cachedExcludeSource = rule['exclude'];
+                rule._cachedExcludeTokens = rule['exclude'].trim().split(/\s+/).filter(Boolean);
+            }
+
+            return rule._cachedExcludeTokens || [];
+        },
+
+        /**
+         * Check whether a URL is excluded from a broader `url` rule match.
+         * @param {string} rftId - Citation URL
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether the URL is excluded
+         */
+        isExcludedUrlMatch: function (rftId, rule) {
+            const excludeTokens = CiteUnseen.getExcludeTokens(rule);
+            if (excludeTokens.length === 0) {
+                return false;
+            }
+
+            return excludeTokens.some(token => CiteUnseen.urlRegex(token).test(rftId));
+        },
+
+        /**
+         * Check whether a URL is excluded from a broader `url_str` rule match.
+         * @param {string} rftId - Citation URL
+         * @param {Object} rule - Rule object
+         * @returns {boolean} Whether the URL is excluded
+         */
+        isExcludedUrlStringMatch: function (rftId, rule) {
+            const excludeTokens = CiteUnseen.getExcludeTokens(rule);
+            if (excludeTokens.length === 0) {
+                return false;
+            }
+
+            return excludeTokens.some(token => rftId.includes(token));
+        },
+
+        /**
          * Check if source author matches rule
          * @param {Object} coins - COinS object
          * @param {Object} rule - Rule object
@@ -3424,7 +3483,10 @@ var CiteUnseenData = {
             if (typeof rule['url'] !== 'string' || rule['url'] === '') return false;
             const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
             if (rftIds.length === 0) return false;
-            return rftIds.some(rftId => CiteUnseen.urlRegex(rule['url']).test(rftId));
+            return rftIds.some(rftId =>
+                CiteUnseen.urlRegex(rule['url']).test(rftId) &&
+                !CiteUnseen.isExcludedUrlMatch(rftId, rule)
+            );
         },
 
         /**
@@ -3437,7 +3499,10 @@ var CiteUnseenData = {
             if (typeof rule['url_str'] !== 'string' || rule['url_str'] === '') return false;
             const rftIds = CiteUnseen.ensureArray(coins['rft_id']);
             if (rftIds.length === 0) return false;
-            return rftIds.some(rftId => rftId.includes(rule['url_str']));
+            return rftIds.some(rftId =>
+                rftId.includes(rule['url_str']) &&
+                !CiteUnseen.isExcludedUrlStringMatch(rftId, rule)
+            );
         },
 
         /**
@@ -3630,6 +3695,9 @@ var CiteUnseenData = {
                 'url_str': CiteUnseen.matchUrlString,
             };
             for (const key of Object.keys(rule)) {
+                if (key.startsWith('_') || key === 'exclude') {
+                    continue;
+                }
                 if (!matchFunctions[key]) {
                     console.log("[Cite Unseen] Unknown rule:");
                     console.log(rule);
@@ -3651,6 +3719,7 @@ var CiteUnseenData = {
          */
         addIcons: function () {
             const filteredCategorizedRules = {};
+            const refLinkCoins = { 'rft_id': CiteUnseen.refLinks };
 
             Object.keys(CiteUnseen.categorizedRules).forEach(key => {
                 const domainIgnoreList = CiteUnseen.citeUnseenDomainIgnore[key] || [];
@@ -3662,12 +3731,12 @@ var CiteUnseenData = {
                     // If rule has url field, check if any domains match
                     if (domain) {
                         return !domainIgnoreList.includes(domain) &&
-                            CiteUnseen.refLinks.some(link => link.includes(domain));
+                            CiteUnseen.matchUrl(refLinkCoins, rule);
                     }
                     
                     // If rule has url_str field, check if any links contain the string
                     if (urlStr) {
-                        return CiteUnseen.refLinks.some(link => link.includes(urlStr));
+                        return CiteUnseen.matchUrlString(refLinkCoins, rule);
                     }
                 });
             });
@@ -3681,7 +3750,7 @@ var CiteUnseenData = {
                 const processedCategories = new Set();
 
                 // Determine the source type based on the class name
-                const classList = ref.cite.classList;
+                const classList = (ref.classListSource || ref.cite).classList;
                 const bookClasses = ["book", "journal", "encyclopaedia", "conference", "thesis", "magazine"];
                 const tvClasses = ["episode", "podcast", "media"];
                 const hasNewsClass = classList.contains("news");
@@ -4081,6 +4150,44 @@ var CiteUnseenData = {
 
             // Return the list item if found, otherwise use the citation element itself
             return listItem || citationElement;
+        },
+
+        /**
+         * Get the top-level footnote list item for a citation.
+         * This avoids treating wrapper text around nested citation lists as a separate source.
+         * @param {Element} citationElement - The citation element
+         * @returns {Element|null} The top-level citation note list item
+         */
+        getReferenceNoteContainer: function (citationElement) {
+            if (!citationElement) return null;
+            return citationElement.closest('li[id^="cite_note-"]');
+        },
+
+        /**
+         * Get the reflist container for a citation.
+         * Prefer explicit wrapper elements like jawiki's div.reflist when present.
+         * @param {Element} citationElement - The citation element
+         * @returns {Element|null} The reflist container element
+         */
+        getReflistContainer: function (citationElement) {
+            if (!citationElement) return null;
+
+            const wrapper = citationElement.closest('.reflist, .refbegin');
+            if (wrapper) {
+                return wrapper;
+            }
+
+            const reflist = citationElement.closest('ol.references, ol.mw-references, ol[typeof="mw:Extension/references"]');
+            if (!reflist) {
+                return null;
+            }
+
+            const parentElement = reflist.parentElement;
+            if (parentElement && parentElement.tagName === 'DIV' && parentElement.childElementCount === 1) {
+                return parentElement;
+            }
+
+            return reflist;
         },
 
         /**
@@ -4569,6 +4676,142 @@ var CiteUnseenData = {
         },
 
         /**
+         * Get the sibling elements associated with a citation marker.
+         * eswiki subcitation compatibility: template output may split one logical citation
+         * across sibling nodes after an empty <cite>.
+         * Stops before the next citation marker or an explicit line-break separator.
+         * @param {Element} citeTag - The citation marker element
+         * @returns {Element[]} Associated sibling elements
+         */
+        getCitationSiblingSegment: function (citeTag) {
+            const siblingSegment = [];
+            let sibling = citeTag.nextElementSibling;
+
+            while (sibling) {
+                if (sibling.tagName === 'CITE' || sibling.tagName === 'BR') {
+                    break;
+                }
+                siblingSegment.push(sibling);
+                sibling = sibling.nextElementSibling;
+            }
+
+            return siblingSegment;
+        },
+
+        /**
+         * Return a selector match only when it is unambiguous within the given root.
+         * @param {Element|null} root - The root element to search within
+         * @param {string} selector - CSS selector to search for
+         * @returns {Element|null} The single matching element, or null if none/multiple exist
+         */
+        getSingleScopedMatch: function (root, selector) {
+            if (!root) {
+                return null;
+            }
+
+            const matches = root.querySelectorAll(selector);
+            return matches.length === 1 ? matches[0] : null;
+        },
+
+        /**
+         * Collect unique external link elements from the given roots.
+         * @param {Element[]} roots - Elements to search within
+         * @returns {Element[]} Unique external link elements
+         */
+        collectExternalLinks: function (roots) {
+            const externalLinks = [];
+            const seen = new Set();
+
+            for (const root of roots) {
+                if (!root) {
+                    continue;
+                }
+
+                const matches = [];
+                if (root.matches?.('a.external')) {
+                    matches.push(root);
+                }
+                if (root.querySelectorAll) {
+                    matches.push(...root.querySelectorAll('a.external'));
+                }
+
+                for (const link of matches) {
+                    if (!seen.has(link)) {
+                        seen.add(link);
+                        externalLinks.push(link);
+                    }
+                }
+            }
+
+            return externalLinks;
+        },
+
+        /**
+         * Find the rendered citation node, COinS tag, and external links associated with a cite marker.
+         * @param {Element} citeTag - The citation marker element
+         * @returns {{citationElement: Element, coinsTag: Element|null, externalLinks: Element[]}}
+         */
+        getCitationMarkupContext: function (citeTag) {
+            const siblingSegment = CiteUnseen.getCitationSiblingSegment(citeTag);
+            const wrappingExternalLink = citeTag.closest('a.external');
+            // frwiki compatibility: .ouvrage often wraps the full citation while <cite> only wraps the title.
+            const citationWrapper = citeTag.closest('.ouvrage');
+            let citationElement = citeTag;
+            let coinsTag = null;
+
+            if (citeTag.nextElementSibling && citeTag.nextElementSibling.matches('.Z3988[title]')) {
+                coinsTag = citeTag.nextElementSibling;
+            }
+
+            if (!citeTag.textContent.trim()) {
+                // subcitation compatibility: promote empty template markers to the rendered sibling citation.
+                const renderedCitation =
+                    siblingSegment.find(node => node.classList?.contains('citation')) ||
+                    siblingSegment.find(node => !node.matches('.Z3988') && node.textContent.trim() !== '');
+                if (renderedCitation) {
+                    citationElement = renderedCitation;
+                }
+            }
+
+            if (citationElement === citeTag && wrappingExternalLink) {
+                // frwiki compatibility: insert outside wrapped title links to avoid nesting icon links.
+                citationElement =
+                    wrappingExternalLink.closest('.ouvrage') ||
+                    wrappingExternalLink.parentElement ||
+                    citeTag;
+            }
+
+            if (
+                citationElement === citeTag &&
+                citationWrapper &&
+                citationWrapper !== citeTag &&
+                citationWrapper.textContent.trim() !== citeTag.textContent.trim()
+            ) {
+                // frwiki compatibility: move icons to the full citation wrapper, not the title-only <cite>.
+                citationElement = citationWrapper;
+            }
+
+            if (!coinsTag) {
+                coinsTag = siblingSegment
+                    .map(node => node.matches('.Z3988[title]') ? node : node.querySelector('.Z3988[title]'))
+                    .find(Boolean) || null;
+            }
+
+            const externalLinks = CiteUnseen.collectExternalLinks([
+                citationElement,
+                citeTag,
+                wrappingExternalLink,
+                ...siblingSegment,
+            ]);
+
+            return {
+                citationElement,
+                coinsTag,
+                externalLinks,
+            };
+        },
+
+        /**
          * Find all <cite> tags and parse them into COinS objects; locate the position of {{reflist}}.
          */
         findCitations: async function () {
@@ -4579,19 +4822,41 @@ var CiteUnseenData = {
             // Filter all <cite> tags
             for (const citeTag of document.querySelectorAll("cite")) {
                 let coinsObject;
-                let coinsTag = citeTag.nextElementSibling;
+                const refTextElement = citeTag.closest('.reference-text, .mw-reference-text');
+                const citationMarkup = CiteUnseen.getCitationMarkupContext(citeTag);
+                const onlyCitationInRefText = refTextElement ? refTextElement.querySelectorAll('cite').length === 1 : false;
+                let citationElement = citationMarkup.citationElement;
+                let coinsTag = citationMarkup.coinsTag;
+                let domLinks = CiteUnseen.ensureArray(citationMarkup.externalLinks.map(link => link.getAttribute('href')));
+                if ((!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) && refTextElement) {
+                    const fallbackCoinsTag = CiteUnseen.getSingleScopedMatch(refTextElement, '.Z3988[title]');
+                    if (fallbackCoinsTag) {
+                        coinsTag = fallbackCoinsTag;
+                        if (!citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
+                            citationElement = refTextElement;
+                        }
+                    }
+                }
+                if (domLinks.length === 0 && refTextElement) {
+                    const refTextLinks = CiteUnseen.ensureArray(
+                        Array.from(refTextElement.querySelectorAll('a.external[href]'))
+                            .map(link => link.getAttribute('href'))
+                    );
+                    if (onlyCitationInRefText || refTextLinks.length === 1) {
+                        domLinks = refTextLinks;
+                        if (refTextLinks.length > 0 && !citeTag.textContent.trim() && citationElement === citeTag && onlyCitationInRefText) {
+                            citationElement = refTextElement;
+                        }
+                    }
+                }
                 if (!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) {
-                    // No COinS, so get the href attribute of the <a> tag inside the cite
-                    // This is a partial solution to parse jawiki {{Cite web}} and {{Cite news}}.
-                    let aTag = citeTag.querySelector('a.external');
-                    if (aTag && aTag.hasAttribute('href')) {
-                        coinsObject = {
-                            'rft_id': aTag.getAttribute('href'),
-                        };
-                    } else {
+                    // No COinS, so fall back to the DOM links we found in the rendered citation.
+                    if (domLinks.length === 0) {
                         // No COinS and no <a> tag, so skip
                         continue;
                     }
+                    coinsObject = {};
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                 } else {
                     // Parse COinS string
                     let coinsString = await CiteUnseen.decodeURIComponent(coinsTag.getAttribute('title'));
@@ -4602,27 +4867,27 @@ var CiteUnseenData = {
                         coinsObject['rft_id'] = coinsObject['rfr_id'];
                     }
 
-                    // As a last resort, try to get the href attribute of the <a> tag inside the cite
-                    if (!coinsObject['rft_id']) {
-                        let aTag = citeTag.querySelector('a.external');
-                        if (aTag) {
-                            coinsObject['rft_id'] = aTag.getAttribute('href');
-                        }
-                    }
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                 }
                 CiteUnseen.refs.push({
-                    cite: citeTag, coins: coinsObject,
+                    cite: citationElement,
+                    classListSource: citeTag,
+                    coins: coinsObject,
                 });
                 if (coinsObject['rft_id']) {
                     CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
                 }
             }
 
-            // Handle plain-link citations in <li> tags that don't have <cite>
+            // Handle plain-link citations in <li> tags not already covered by parsed citation markup.
             const citationLiElements = document.querySelectorAll('li[id^="cite_note-"]');
-            const notOnFrenchWikipedia = mw.config.get('wgServerName') !== 'fr.wikipedia.org';
+            const citationListItemsWithRefs = new Set(
+                CiteUnseen.refs
+                    .map(ref => CiteUnseen.getReferenceNoteContainer(ref.classListSource || ref.cite))
+                    .filter(Boolean)
+            );
             for (const li of citationLiElements) {
-                if (li.querySelector('cite') && notOnFrenchWikipedia) {
+                if (citationListItemsWithRefs.has(li)) {
                     continue;
                 }
 
@@ -4631,60 +4896,45 @@ var CiteUnseenData = {
                     continue;
                 }
 
-                const aTag = refTextElement.querySelector('a.external');
-                if (aTag && aTag.hasAttribute('href')) {
-                    const coinsObject = { 'rft_id': aTag.getAttribute('href') };
+                const domLinks = CiteUnseen.ensureArray(
+                    Array.from(refTextElement.querySelectorAll('a.external[href]'))
+                        .map(link => link.getAttribute('href'))
+                );
+                if (domLinks.length > 0) {
+                    const coinsObject = {};
+                    CiteUnseen.mergeRftIds(coinsObject, domLinks);
                     CiteUnseen.refs.push({
                         cite: refTextElement,
                         coins: coinsObject,
                     });
                     if (coinsObject['rft_id']) {
-                        CiteUnseen.refLinks.push(coinsObject['rft_id']);
+                        CiteUnseen.refLinks.push(...CiteUnseen.ensureArray(coinsObject['rft_id']));
                     }
                 }
             }
 
-            // Find all reflists and track citations within each
-            const reflists = [
-                ...Array.from(
-                    // div>ol.references captures most standard reference lists inside a containing div
-                    // div.refbegin captures reference lists using Template:Refbegin
-                    document.querySelectorAll(`#mw-content-text .mw-parser-output div>ol.references,
-                        #mw-content-text .mw-parser-output div.refbegin>ul`),
-                    (reflist) => reflist.parentNode // Use parent node as reflist element
-                ),
-                ...Array.from(
-                    // Captures ol.references lists at the "root" level i.e. no containing div
-                    document.querySelectorAll(`#mw-content-text .mw-parser-output > ol.references`)
-                )
-            ];
-            CiteUnseen.reflists = [];
+            // Track citations by the reflist container they actually belong to.
+            const reflistMap = new Map();
+            for (const ref of CiteUnseen.refs) {
+                const reflist = CiteUnseen.getReflistContainer(ref.cite);
+                if (!reflist) {
+                    continue;
+                }
 
-            if (reflists.length > 0) {
-                // Create reflist data structure for each reflist
-                for (const reflist of reflists) {
-                    const reflistData = {
+                if (!reflistMap.has(reflist)) {
+                    reflistMap.set(reflist, {
                         element: reflist,
                         refs: [],
                         categories: {},
                         dashboard: null,
                         selectedCategories: new Set(),
                         totalCitations: null // Will be calculated when dashboard is created
-                    };
-
-                    // Find which of our tracked citations belong to this reflist
-                    for (const ref of CiteUnseen.refs) {
-                        if (reflist.contains(ref.cite)) {
-                            reflistData.refs.push(ref);
-                        }
-                    }
-
-                    // Only track reflists that have citations
-                    if (reflistData.refs.length > 0) {
-                        CiteUnseen.reflists.push(reflistData);
-                    }
+                    });
                 }
+
+                reflistMap.get(reflist).refs.push(ref);
             }
+            CiteUnseen.reflists = Array.from(reflistMap.values());
         },
 
         /**
@@ -5620,7 +5870,7 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
                     data() {
                         return {
                             open: true,
-                            sourceUrl: citationRef.coins['rft_id'] || '',
+                            sourceUrl: CiteUnseen.getPrimarySourceUrl(citationRef.coins),
                             selectedCategories: [],
                             comment: '',
                             isSubmitting: false
@@ -6049,6 +6299,34 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
             if (Array.isArray(value)) return value.filter(v => typeof v === 'string' && v !== '');
             if (typeof value === 'string' && value !== '') return [value];
             return [];
+        },
+
+        /**
+         * Merge DOM/COinS URLs into rft_id while preserving existing order.
+         * @param {Object} coins - COinS object
+         * @param {string[]|string} hrefs - DOM hrefs to merge in
+         */
+        mergeRftIds: function (coins, hrefs) {
+            const merged = [...new Set(
+                CiteUnseen.ensureArray(coins['rft_id']).concat(CiteUnseen.ensureArray(hrefs))
+            )];
+
+            if (merged.length === 0) {
+                delete coins['rft_id'];
+                return;
+            }
+
+            coins['rft_id'] = merged.length === 1 ? merged[0] : merged;
+        },
+
+        /**
+         * Pick the primary URL for UI workflows from a citation.
+         * @param {Object} coins - COinS object
+         * @returns {string} Preferred URL
+         */
+        getPrimarySourceUrl: function (coins) {
+            const rftIds = CiteUnseen.ensureArray(coins && coins['rft_id']);
+            return rftIds.find(url => !url.startsWith('info:sid/')) || rftIds[0] || '';
         },
 
         // ===============================
