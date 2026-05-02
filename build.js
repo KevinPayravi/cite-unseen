@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const esbuild = require("esbuild");
+const { minify: minifyHtml } = require("html-minifier-terser");
 
 const buildDir = path.join(__dirname, "build");
 const bundledPath = path.join(buildDir, "cite-unseen-bundled.js");
@@ -13,6 +14,8 @@ const releaseLabel =
 const buildTimestamp = new Date().toISOString();
 const i18nModuleName = "cite-unseen-i18n-files";
 const i18nNamespace = "cite-unseen-i18n";
+const cssFilter = /\.css$/;
+const vueTemplateFilter = /\.template\.vue$/;
 
 function createBanner() {
     return `// Cite Unseen - Bundled Version
@@ -63,16 +66,67 @@ function createI18nPlugin() {
     };
 }
 
+async function minifyVueTemplate(template) {
+    return minifyHtml(template, {
+        caseSensitive: true,
+        collapseWhitespace: true,
+        conservativeCollapse: true,
+        ignoreCustomFragments: [/\{\{[\s\S]*?\}\}/],
+        keepClosingSlash: true,
+        minifyCSS: false,
+        minifyJS: false,
+        removeAttributeQuotes: false,
+        removeComments: true,
+        removeOptionalTags: false,
+    });
+}
+
+function createVueTemplatePlugin() {
+    return {
+        name: "cite-unseen-vue-templates",
+        setup(build) {
+            build.onLoad({ filter: vueTemplateFilter }, async (args) => {
+                const template = fs.readFileSync(args.path, "utf8");
+                const minifiedTemplate = await minifyVueTemplate(template);
+                return {
+                    contents: `export default ${JSON.stringify(minifiedTemplate)};`,
+                    loader: "js",
+                    watchFiles: [args.path],
+                };
+            });
+        },
+    };
+}
+
+function minifyCss(css) {
+    return esbuild.transformSync(css, {
+        loader: "css",
+        minify: true,
+    }).code;
+}
+
+function createCssTextPlugin() {
+    return {
+        name: "cite-unseen-css-text",
+        setup(build) {
+            build.onLoad({ filter: cssFilter }, (args) => {
+                const css = fs.readFileSync(args.path, "utf8");
+                return {
+                    contents: `export default ${JSON.stringify(minifyCss(css))};`,
+                    loader: "js",
+                    watchFiles: [args.path],
+                };
+            });
+        },
+    };
+}
+
 async function buildBundle() {
     await esbuild.build({
         entryPoints: [path.join(__dirname, "src", "main.js")],
         bundle: true,
         charset: "utf8",
         format: "iife",
-        legalComments: "none",
-        loader: {
-            ".css": "text",
-        },
         outfile: bundledPath,
         platform: "browser",
         target: ["es2019"],
@@ -82,7 +136,7 @@ async function buildBundle() {
         footer: {
             js: createFooter(),
         },
-        plugins: [createI18nPlugin()],
+        plugins: [createI18nPlugin(), createVueTemplatePlugin(), createCssTextPlugin()],
         minify: true,
     });
 }

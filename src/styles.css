@@ -22,9 +22,7 @@
 
 /* Bold styling */
 .cite-unseen-dashboard-total,
-.cite-unseen-category-label,
-.cite-unseen-input-label,
-.cite-unseen-checkbox-label {
+.cite-unseen-category-label {
     font-weight: bold;
 }
 
@@ -278,128 +276,6 @@
 /* Category text spacing */
 .cite-unseen-category-text {
     padding-left: 5px;
-}
-
-/* Codex tabs content padding */
-.cite-unseen-dialog .cdx-tabs__content {
-    padding-top: 16px;
-}
-
-/* ==========================================================================
-   SETTINGS DIALOG STYLES
-   ========================================================================== */
-
-/* Dialog header layout */
-.cite-unseen-dialog-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.cite-unseen-dialog-header > span {
-    font-size: 1.2em;
-    font-weight: 600;
-}
-
-/* Documentation link */
-.cite-unseen-dialog-docs-link {
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-}
-
-/* Tab guidance boxes */
-.cite-unseen-tab-guidance {
-    margin-bottom: 20px;
-    padding: 12px !important;
-    border: 1px solid #eaecf0;
-    border-radius: 4px;
-    font-size: 0.9em;
-    color: #54595d;
-    background: #f8f9fa;
-}
-
-/* Category item containers */
-.cite-unseen-category-container {
-    margin: 10px 0;
-}
-
-.cite-unseen-domain-category-container {
-    margin: 15px 0;
-}
-
-/* Category labels */
-.cite-unseen-category-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-/* Target selection section */
-.cite-unseen-target-section {
-    margin-top: 20px;
-    padding-top: 16px;
-}
-
-.cite-unseen-target-controls {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    font-size: 14px;
-}
-
-.cite-unseen-target-label {
-    font-weight: 600;
-    color: #54595d;
-}
-
-.cite-unseen-radio-option {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-}
-
-.cite-unseen-radio-option input[type="radio"] {
-    margin: 0;
-}
-
-/* Loading text styling */
-.cite-unseen-loading-text {
-    font-weight: normal;
-    color: #72777d;
-}
-
-/* ==========================================================================
-   SUGGESTION DIALOG STYLES
-   ========================================================================== */
-
-/* Form sections */
-.cite-unseen-form-section {
-    margin-bottom: 20px;
-}
-
-/* Input labels */
-.cite-unseen-input-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.cite-unseen-checkbox-label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-/* Full width input */
-.cite-unseen-full-width-input {
-    width: 100%;
-}
-
-/* Category grid */
-.cite-unseen-category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 8px;
 }
 
 /* Custom edit section divider for Cite Unseen buttons */
