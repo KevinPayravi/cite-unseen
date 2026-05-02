@@ -1,7 +1,19 @@
 import { detect as detectEncoding } from 'jschardet';
 import citeUnseenStyles from './styles.css';
 import CiteUnseenI18n from './i18n.js';
-import * as citeUnseenData from './sources.js';
+import {
+    citeUnseenCategories as defaultCiteUnseenCategories,
+    citeUnseenCategoryData as defaultCiteUnseenCategoryData,
+    citeUnseenCategoryTypes as defaultCiteUnseenCategoryTypes
+} from './citations/categoryData.js';
+import {
+    citeUnseenChecklists as defaultCiteUnseenChecklists,
+    citeUnseenSourceToPageMapping
+} from './citations/sourceData.js';
+import {
+    getCategorizedRules,
+    resolveSourceToPageLink
+} from './citations/sources.js';
 import dialogStyles from './ui/dialog.css';
 import { openSettingsDialog } from './ui/settingsDialog.js';
 import settingsDialogStyles from './ui/settingsDialog.css';
@@ -750,7 +762,7 @@ function processIcon(node, type, checklist = null, language = null) {
     iconNode.setAttribute("src", citeUnseenCategoryData[type].icon);
     let message = convByVar(CiteUnseenI18n.categoryHints[type]);
     if (checklist) {
-        const pageLink = citeUnseenData.resolveSourceToPageLink(checklist);
+        const pageLink = resolveSourceToPageLink(checklist);
         const displayName = pageLink || checklist;
         message = convByVar(CiteUnseenI18n.citationTooltipPrefix) + ' ' + displayName +
             convByVar(CiteUnseenI18n.citationTooltipSuffix) + ' ' + message + ' ' +
@@ -763,7 +775,7 @@ function processIcon(node, type, checklist = null, language = null) {
     if (checklist) {
         // If there is a checklist, wrap the icon in a link.
         const iconNodeLink = document.createElement("a");
-        const pageLink = citeUnseenData.resolveSourceToPageLink(checklist);
+        const pageLink = resolveSourceToPageLink(checklist);
         if (pageLink) {
             const [lang, ...pageParts] = pageLink.split(':');
             const fullPagePath = pageParts.join(':');
@@ -1555,7 +1567,7 @@ async function importDependencies() {
             return i18nDict[lang] || i18nDict['en'] || 'Language undefined!';
         };
     }
-    return await citeUnseenData.getCategorizedRules();
+    return await getCategorizedRules();
 }
 
 /**
@@ -2018,7 +2030,7 @@ function toggleSuggestionPlusSigns(suggestionsMode, reflistData) {
                         getSettingCategories,
                         getCategoryDisplayName,
                         getPrimarySourceUrl,
-                        sourceToPageMapping: citeUnseenData.citeUnseenSourceToPageMapping
+                        sourceToPageMapping: citeUnseenSourceToPageMapping
                     });
                 };
 
@@ -2222,10 +2234,10 @@ function init() {
     // Import source categorization data
     importDependencies().then(function (categorizedRulesData) {
         categorizedRules = categorizedRulesData;
-        citeUnseenCategories = citeUnseenData.citeUnseenCategories;
-        citeUnseenCategoryTypes = citeUnseenData.citeUnseenCategoryTypes;
-        citeUnseenChecklists = citeUnseenData.citeUnseenChecklists;
-        citeUnseenCategoryData = citeUnseenData.citeUnseenCategoryData;
+        citeUnseenCategories = defaultCiteUnseenCategories;
+        citeUnseenCategoryTypes = defaultCiteUnseenCategoryTypes;
+        citeUnseenChecklists = defaultCiteUnseenChecklists;
+        citeUnseenCategoryData = defaultCiteUnseenCategoryData;
 
         // Fill in missing parameters
         for (const key of Object.keys(categorizedRules)) {
