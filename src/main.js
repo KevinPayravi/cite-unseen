@@ -1,4 +1,3 @@
-import citeUnseenStyles from './styles.css';
 import { initializeConvByVar } from './i18n.js';
 import {
     importCustomRules,
@@ -6,7 +5,10 @@ import {
 } from './config.js';
 import { loadCategorizedRules } from './citations/sources.js';
 import { findCitations, getRefs, getReflists } from './citations/parser.js';
+import dashboardStyles from './ui/dashboard.css';
 import dialogStyles from './ui/dialog.css';
+import iconsStyles from './ui/icons.css';
+import reflistButtonsStyles from './ui/reflistButtons.css';
 import settingsDialogStyles from './ui/settingsDialog.css';
 import suggestionDialogStyles from './ui/suggestionDialog.css';
 import { addIcons } from './ui/icons.js';
@@ -29,8 +31,10 @@ function injectStyles() {
     style.id = 'cite-unseen-bundled-styles';
     style.type = 'text/css';
     style.textContent = [
-        citeUnseenStyles,
+        dashboardStyles,
         dialogStyles,
+        iconsStyles,
+        reflistButtonsStyles,
         settingsDialogStyles,
         suggestionDialogStyles
     ].join('\n');

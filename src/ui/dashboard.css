@@ -1,0 +1,144 @@
+/* Dashboard container */
+.cite-unseen-dashboard {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.8em;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Dashboard header */
+.cite-unseen-dashboard-header {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1em;
+}
+
+/* Dashboard total counter */
+.cite-unseen-dashboard-total {
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Dashboard categories container */
+.cite-unseen-dashboard-cats {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 0.5em;
+    text-align: center;
+}
+
+/* Dashboard category item */
+.cite-unseen-category-item {
+    padding: 2px 4px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cite-unseen-category-item:hover:not(.cite-unseen-filter-selected) {
+    border-color: rgba(0, 123, 255, 0.2);
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Dashboard filter selection styling */
+.cite-unseen-filter-selected {
+    position: relative;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: rgba(0, 123, 255, 0.15);
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.cite-unseen-filter-selected img,
+.cite-unseen-filter-selected span {
+    font-weight: bold;
+}
+
+.cite-unseen-filter-selected:hover {
+    border-color: #0056b3;
+    background-color: rgba(0, 123, 255, 0.2);
+}
+
+/* Clear all button styling */
+.cite-unseen-clear-all {
+    margin-left: 10px;
+    padding: 3px 8px;
+    border: 1px solid #dc3545;
+    border-radius: 3px;
+    font-size: 0.75em;
+    color: white;
+    background: #dc3545;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cite-unseen-clear-all:hover {
+    border-color: #bd2130;
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Clear all button in header styling */
+.cite-unseen-clear-all-header {
+    margin: 0 1em;
+    font-size: 0.9em;
+    color: #dc3545;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cite-unseen-clear-all-header:hover {
+    text-decoration: underline;
+}
+
+/* Category icon styling */
+.cite-unseen-category-icon {
+    max-height: 18px;
+}
+
+/* Category text spacing */
+.cite-unseen-category-text {
+    padding-left: 5px;
+}
+
+/* Citation container transitions */
+.references li,
+.reflist li {
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.cite-unseen-filtered-out {
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Dashboard category hover effects */
+[data-category] {
+    transition: all 0.2s ease-in-out;
+}
+
+[data-category]:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Hidden/visible element states */
+.cite-unseen-hidden {
+    display: none;
+}
+
+.cite-unseen-visible {
+    display: inline-block;
+}
+
+.cite-unseen-clear-all-header.cite-unseen-visible {
+    display: inline;
+}

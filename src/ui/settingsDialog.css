@@ -36,6 +36,7 @@
 .cite-unseen-category-label {
     display: block;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
 /* Target selection section */
