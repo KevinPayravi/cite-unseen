@@ -1,20 +1,20 @@
 import suggestionDialogTemplate from './suggestionDialog.template.vue';
 import {
+    getCategoryDisplayName,
+    getSettingCategories
+} from '../config.js';
+import {
+    getConvByVar,
+    getI18n
+} from '../i18n.js';
+import { getPrimarySourceUrl } from '../citations/parser.js';
+import { citeUnseenSourceToPageMapping } from '../citations/sourceData.js';
+import {
     closeCurrentDialog,
     closeDialogAfterAnimation,
     ensureDialogMount,
     setCurrentDialog
 } from './dialogMount.js';
-
-/**
- * @typedef {Object} SuggestionDialogOptions
- * @property {Function} convByVar - MediaWiki message conversion helper
- * @property {Object} i18n - Cite Unseen i18n message map
- * @property {Function} getSettingCategories - Returns available setting category IDs
- * @property {Function} getCategoryDisplayName - Returns the localized category label
- * @property {Function} getPrimarySourceUrl - Extracts the primary URL from parsed citation metadata
- * @property {Object} sourceToPageMapping - Reliability-source page mapping
- */
 
 // ===============================
 // SUGGESTIONS
@@ -23,27 +23,19 @@ import {
 /**
  * Open suggestion dialog for a specific citation
  * @param {Object} citationRef - Citation reference data
- * @param {SuggestionDialogOptions} options - Dialog dependencies
  */
-export function openSuggestionDialog(citationRef, options) {
+export function openSuggestionDialog(citationRef) {
     closeCurrentDialog();
-    createSuggestionDialog(citationRef, options);
+    createSuggestionDialog(citationRef);
 }
 
 /**
  * Create and show the Codex suggestion dialog
  * @param {Object} citationRef - Citation reference data
- * @param {SuggestionDialogOptions} options - Dialog dependencies
  */
-function createSuggestionDialog(citationRef, options) {
-    const {
-        convByVar,
-        i18n,
-        getSettingCategories,
-        getCategoryDisplayName,
-        getPrimarySourceUrl,
-        sourceToPageMapping
-    } = options;
+function createSuggestionDialog(citationRef) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
 
     // Load Codex and Vue dependencies
     mw.loader.using('@wikimedia/codex').then(function (require) {
@@ -78,10 +70,10 @@ function createSuggestionDialog(citationRef, options) {
             },
             computed: {
                 availableCategories() {
-                    return getAvailableCategories(getSettingCategories, getCategoryDisplayName);
+                    return getAvailableCategories();
                 },
                 reliabilityProjects() {
-                    const pageLinks = Object.values(sourceToPageMapping);
+                    const pageLinks = Object.values(citeUnseenSourceToPageMapping);
                     const projects = [];
                     for (const pageLink of pageLinks) {
                         const [lang, ...pageParts] = pageLink.split(':');
@@ -129,7 +121,7 @@ function createSuggestionDialog(citationRef, options) {
                     }
 
                     this.isSubmitting = true;
-                    submitSuggestionToMeta(this.sourceUrl, this.selectedCategories, this.comment, citationRef, getCategoryDisplayName)
+                    submitSuggestionToMeta(this.sourceUrl, this.selectedCategories, this.comment, citationRef)
                         .then(() => {
                             this.closeDialog();
                             mw.notify(convByVar(i18n.suggestionSubmitted), {
@@ -167,11 +159,9 @@ function createSuggestionDialog(citationRef, options) {
 
 /**
  * Get available categories for suggestions
- * @param {Function} getSettingCategories - Returns available setting category IDs
- * @param {Function} getCategoryDisplayName - Returns the localized category label
  * @returns {Object[]} Category options for the dialog
  */
-function getAvailableCategories(getSettingCategories, getCategoryDisplayName) {
+function getAvailableCategories() {
     const categories = getSettingCategories(false);
     return categories.map(categoryId => ({
         id: categoryId,
@@ -207,10 +197,9 @@ function extractDomain(url) {
  * @param {string[]} selectedCategories - Category IDs selected by the user
  * @param {string} comment - Optional user comment
  * @param {Object} citationRef - Citation reference data
- * @param {Function} getCategoryDisplayName - Returns the localized category label
  * @returns {Promise<void>} Resolves after opening the edit form
  */
-function submitSuggestionToMeta(sourceUrl, selectedCategories, comment, citationRef, getCategoryDisplayName) {
+function submitSuggestionToMeta(sourceUrl, selectedCategories, comment, citationRef) {
     return new Promise((resolve, reject) => {
         try {
             const domain = extractDomain(sourceUrl);

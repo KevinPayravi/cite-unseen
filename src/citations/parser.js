@@ -1,5 +1,9 @@
 import { detect as detectEncoding } from 'jschardet';
 
+let refs = [];
+let refLinks = [];
+let reflists = [];
+
 /**
  * Parse a COinS string into an object
  * @param {string} query - COinS string
@@ -281,13 +285,37 @@ export function getPrimarySourceUrl(coins) {
 }
 
 /**
+ * Get parsed citation references.
+ * @returns {Object[]} Parsed citation references
+ */
+export function getRefs() {
+    return refs;
+}
+
+/**
+ * Get external links found across parsed citations.
+ * @returns {string[]} Parsed citation URLs
+ */
+export function getRefLinks() {
+    return refLinks;
+}
+
+/**
+ * Get parsed reflist containers and their citation references.
+ * @returns {Object[]} Parsed reflist state
+ */
+export function getReflists() {
+    return reflists;
+}
+
+/**
  * Find all <cite> tags and parse them into COinS objects; locate the position of {{reflist}}.
  * @returns {Promise<{refs: Object[], refLinks: string[], reflists: Object[]}>} Parsed citation state
  */
 export async function findCitations() {
-    const refs = [];
-    const refLinks = [];
-    let reflists = [];
+    refs = [];
+    refLinks = [];
+    reflists = [];
 
     // Structure where COinS strings are located:
     //   <cite class="citation book">...</cite>

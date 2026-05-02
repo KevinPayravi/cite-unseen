@@ -1,5 +1,17 @@
+import {
+    citeUnseenCategories,
+    citeUnseenCategoryTypes
+} from './citations/categoryData.js';
+import { citeUnseenChecklists } from './citations/sourceData.js';
+import { getCategorizedRules } from './citations/sources.js';
+import {
+    getConvByVar,
+    getI18n
+} from './i18n.js';
+
 let _metaRules = null; // Stores rules loaded from meta.wikimedia.org
 let _localRules = null; // Stores rules loaded from local language wiki
+let citeUnseenDomainIgnore = {};
 
 let ruleConfig = {
     globalVars: [
@@ -26,6 +38,80 @@ let ruleConfig = {
         showOtherLanguageReliabilityRatings: 'cite_unseen_show_other_language_reliability_ratings'
     }
 };
+
+/**
+ * Get category-specific domain ignore lists.
+ * @returns {Object.<string, string[]>} Category-specific ignored domains
+ */
+export function getCiteUnseenDomainIgnore() {
+    return citeUnseenDomainIgnore;
+}
+
+/**
+ * Ensure source categories discovered from source pages are enabled by default.
+ */
+export function initializeCategoryDefaults() {
+    const categorizedRules = getCategorizedRules();
+    if (!categorizedRules) {
+        return;
+    }
+
+    for (const key of Object.keys(categorizedRules)) {
+        if (citeUnseenCategories[key] === undefined) {
+            citeUnseenCategories[key] = true;
+        }
+    }
+}
+
+/**
+ * Returns an array of all setting categories.
+ * @param {boolean} includeReliability - Whether reliability categories should be included
+ * @returns {string[]}
+ */
+export function getSettingCategories(includeReliability = true) {
+    // Get all type categories from citeUnseenCategoryTypes
+    const typeCategories = citeUnseenCategoryTypes;
+
+    if (!includeReliability) {
+        return [...typeCategories, 'unknown'];
+    }
+
+    // Get all reliability categories from citeUnseenChecklists
+    const reliabilityCategories = citeUnseenChecklists ?
+        citeUnseenChecklists.map(x => x[0]) :
+        ['generallyReliable', 'marginallyReliable', 'generallyUnreliable', 'deprecated', 'blacklisted', 'multi'];
+
+    // Combine all categories + unknown
+    return [...typeCategories, ...reliabilityCategories, 'unknown'];
+}
+
+/**
+ * Returns the localized display name for a category.
+ * @param {string} categoryId - The category identifier
+ * @returns {string} The localized display name
+ */
+export function getCategoryDisplayName(categoryId) {
+    // Map some category IDs to their proper display names in i18n
+    const categoryMappings = {
+        'rspDeprecated': 'deprecated',
+        'rspBlacklisted': 'blacklisted',
+        'rspGenerallyUnreliable': 'generallyUnreliable',
+        'rspMarginallyReliable': 'marginallyReliable',
+        'rspGenerallyReliable': 'generallyReliable',
+        'rspMulti': 'multi'
+    };
+
+    const displayKey = categoryMappings[categoryId] || categoryId;
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
+
+    if (i18n.categoryLabels[displayKey]) {
+        return convByVar(i18n.categoryLabels[displayKey]);
+    }
+
+    // Fallback to the category ID with proper capitalization
+    return categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
+}
 
 /**
  * Capture current state of global rule variables
@@ -158,16 +244,10 @@ function applyRulesToGlobals(rules) {
 }
 
 /**
- * Apply user configurations to internal CiteUnseen objects
- * @param {Object} context - Mutable citation configuration context
+ * Apply user configurations to internal CiteUnseen objects.
  */
-function applyUserConfigurations(context) {
-    const {
-        categorizedRules,
-        citeUnseenCategories,
-        citeUnseenChecklists,
-        citeUnseenDomainIgnore
-    } = context;
+function applyUserConfigurations() {
+    const categorizedRules = getCategorizedRules() || {};
 
     // Apply category configurations
     if (window.cite_unseen_categories && typeof window.cite_unseen_categories === 'object') {
@@ -193,7 +273,7 @@ function applyUserConfigurations(context) {
     // Apply domain ignore lists
     if (window.cite_unseen_domain_ignore && typeof window.cite_unseen_domain_ignore === 'object') {
         for (const key in window.cite_unseen_domain_ignore) {
-            if (window.cite_unseen_domain_ignore[key]?.length && key in citeUnseenDomainIgnore) {
+            if (window.cite_unseen_domain_ignore[key]?.length && key in categorizedRules) {
                 citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
             }
         }
@@ -217,10 +297,9 @@ function applyUserConfigurations(context) {
 }
 
 /**
- * Load and merge custom rules from meta and local wikis
- * @param {Object} context - Mutable citation configuration context
+ * Load and merge custom rules from meta and local wikis.
  */
-export async function importCustomRules(context) {
+export async function importCustomRules() {
     try {
         // Check if logged in
         const userName = mw.config.get('wgUserName');
@@ -264,7 +343,7 @@ export async function importCustomRules(context) {
         const mergedRules = mergeRules(metaRules, localRules);
         applyRulesToGlobals(mergedRules);
 
-        applyUserConfigurations(context);
+        applyUserConfigurations();
 
     } catch (err) {
         console.log('[Cite Unseen] Error during custom rules import:', err);

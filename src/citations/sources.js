@@ -5,6 +5,7 @@ import {
 } from './sourceData.js';
 
 let _sourceRevisions = null; // Stores revision IDs fetched from cite-unseen-revids
+let _categorizedRules = null; // Stores source rules loaded from source definition pages
 
 /**
  * Revision IDs for source pages. When specified, these revision IDs will be used
@@ -266,11 +267,11 @@ function isValidData(data) {
 };
 
 /**
- * Get categorized rules.
+ * Load categorized rules.
  * Uses specified revision IDs when available, otherwise fetches latest revisions.
  * @returns {Promise<Object.<string, Object[]>>} An object containing categories and their corresponding rules.
  */
-export async function getCategorizedRules() {
+export async function loadCategorizedRules() {
     const CACHE_KEY = 'CiteUnseenSourcesCache';
     const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -281,7 +282,8 @@ export async function getCategorizedRules() {
         if (raw) {
             cached = JSON.parse(raw);
             if (cached && cached.timestamp && (Date.now() - cached.timestamp) < CACHE_TTL_MS && cached.data && isValidData(cached.data)) {
-                return cached.data;
+                _categorizedRules = cached.data;
+                return _categorizedRules;
             }
         }
     } catch (e) {
@@ -306,7 +308,8 @@ export async function getCategorizedRules() {
 
         // On failure but we may still have stale cache
         if (cached && cached.data && isValidData(cached.data)) {
-            return cached.data;
+            _categorizedRules = cached.data;
+            return _categorizedRules;
         }
         throw e; // rethrow original error
     }
@@ -318,6 +321,14 @@ export async function getCategorizedRules() {
         console.warn('[Cite Unseen][sources] Cache write failed', e);
     }
 
-    return data;
+    _categorizedRules = data;
+    return _categorizedRules;
 };
 
+/**
+ * Get the loaded categorized rules.
+ * @returns {Object.<string, Object[]>|null} Loaded category rules, or null before loading completes.
+ */
+export function getCategorizedRules() {
+    return _categorizedRules;
+};

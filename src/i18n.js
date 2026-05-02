@@ -4,6 +4,7 @@ import i18nFiles from 'cite-unseen-i18n-files';
 // The build script auto-includes every i18n/*.json file in this module.
 
 const FOLDER = 'i18n';
+let _convByVar = null; // Stores the current language variant conversion function
 
 /**
  * Validate the structure of the i18n data
@@ -103,4 +104,49 @@ function load() {
     return data;
 }
 
-export default load();
+const CiteUnseenI18n = load();
+
+/**
+ * Initialize the current language variant conversion function.
+ * On Chinese Wikipedia, HanAssist is preferred so MediaWiki language variants
+ * match local gadget behavior.
+ * @returns {Promise<void>} Resolves after i18n runtime state is ready
+ */
+export async function initializeConvByVar() {
+    if (mw.config.get('wgServer') === "//zh.wikipedia.org") {
+        // On Chinese Wikipedia, prioritize using the ext.gadget.HanAssist module.
+        await mw.loader.using('ext.gadget.HanAssist', function (require) {
+            const hanAssist = require('ext.gadget.HanAssist');
+            _convByVar = hanAssist.convByVar;
+        });
+    } else {
+        const lang = mw.config.get('wgContentLanguage');
+        _convByVar = function (i18nDict) {
+            const locale = new Intl.Locale(lang);
+            if (locale.language === 'zh') {
+                if (locale.script === 'Hans') {
+                    return i18nDict['hans'] || i18nDict['hant'] || i18nDict['en'] || 'Language undefined!';
+                } else {
+                    return i18nDict['hant'] || i18nDict['hans'] || i18nDict['en'] || 'Language undefined!';
+                }
+            }
+            return i18nDict[lang] || i18nDict['en'] || 'Language undefined!';
+        };
+    }
+}
+
+/**
+ * Get the current language variant conversion function.
+ * @returns {Function|null} Language variant conversion function
+ */
+export function getConvByVar() {
+    return _convByVar;
+}
+
+/**
+ * Get the bundled i18n dictionary.
+ * @returns {Object} Bundled i18n dictionary
+ */
+export function getI18n() {
+    return CiteUnseenI18n;
+}

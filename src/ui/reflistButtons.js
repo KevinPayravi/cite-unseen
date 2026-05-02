@@ -1,3 +1,7 @@
+import {
+    getConvByVar,
+    getI18n
+} from '../i18n.js';
 import { getCitationContainer } from './dashboard.js';
 import { openSettingsDialog } from './settingsDialog.js';
 import { openSuggestionDialog } from './suggestionDialog.js';
@@ -5,21 +9,11 @@ import { openSuggestionDialog } from './suggestionDialog.js';
 /**
  * Show the settings button for Cite Unseen configuration.
  * @param {boolean} minerva - Whether the Minerva skin is used
- * @param {Object} options - Reflist button dependencies
  * @returns {Element} The settings button element
  */
-function createSettingsButton(minerva, options) {
-    const {
-        convByVar,
-        i18n,
-        getSettingCategories,
-        getCategoryDisplayName,
-        loadCustomRulesFromWiki,
-        getMetaRules,
-        getLocalRules,
-        setMetaRules,
-        setLocalRules
-    } = options;
+function createSettingsButton(minerva) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
     const settingsButton = document.createElement('a');
 
     if (minerva) {
@@ -41,17 +35,7 @@ function createSettingsButton(minerva, options) {
 
     settingsButton.onclick = function (e) {
         e.preventDefault();
-        openSettingsDialog({
-            convByVar,
-            i18n,
-            getSettingCategories,
-            getCategoryDisplayName,
-            loadCustomRulesFromWiki,
-            getMetaRules,
-            getLocalRules,
-            setMetaRules,
-            setLocalRules
-        });
+        openSettingsDialog();
     };
 
     settingsButton.setAttribute('title', convByVar(i18n.settingsButtonTooltip));
@@ -63,11 +47,11 @@ function createSettingsButton(minerva, options) {
  * Add suggestions toggle button.
  * @param {boolean} minerva - Whether Minerva skin is active
  * @param {Object} reflistData - Reference list data
- * @param {Object} options - Reflist button dependencies
  * @return {HTMLElement} The suggestions toggle button element
  */
-function createSuggestionsToggleButton(minerva, reflistData, options) {
-    const { convByVar, i18n } = options;
+function createSuggestionsToggleButton(minerva, reflistData) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
     const suggestionsToggleButton = document.createElement('a');
     suggestionsToggleButton.className = 'cite-unseen-suggestions-default';
 
@@ -95,7 +79,7 @@ function createSuggestionsToggleButton(minerva, reflistData, options) {
         suggestionsToggleButton.classList.toggle('cite-unseen-suggestions-default');
 
         const suggestionsMode = suggestionsToggleButton.classList.contains('cite-unseen-suggestions-active');
-        toggleSuggestionPlusSigns(suggestionsMode, reflistData, options);
+        toggleSuggestionPlusSigns(suggestionsMode, reflistData);
     };
 
     suggestionsToggleButton.setAttribute('title', convByVar(i18n.suggestionsToggleTooltip));
@@ -107,17 +91,10 @@ function createSuggestionsToggleButton(minerva, reflistData, options) {
  * Show or hide plus signs next to citations for suggestions
  * @param {boolean} suggestionsMode - Whether suggestions mode is active
  * @param {Object} reflistData - Reference list data
- * @param {Object} options - Reflist button dependencies
  */
-function toggleSuggestionPlusSigns(suggestionsMode, reflistData, options) {
-    const {
-        convByVar,
-        i18n,
-        getSettingCategories,
-        getCategoryDisplayName,
-        getPrimarySourceUrl,
-        sourceToPageMapping
-    } = options;
+function toggleSuggestionPlusSigns(suggestionsMode, reflistData) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
 
     reflistData.refs.forEach(ref => {
         // Get the citation container (usually the <li> element)
@@ -136,14 +113,7 @@ function toggleSuggestionPlusSigns(suggestionsMode, reflistData, options) {
                 plusSign.onclick = function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    openSuggestionDialog(ref, {
-                        convByVar,
-                        i18n,
-                        getSettingCategories,
-                        getCategoryDisplayName,
-                        getPrimarySourceUrl,
-                        sourceToPageMapping
-                    });
+                    openSuggestionDialog(ref);
                 };
 
                 citationContainer.prepend(plusSign);
@@ -203,10 +173,9 @@ function findHeaderBeforeReflist(reflistElement) {
  * Create a button section with Cite Unseen buttons
  * @param {string} sectionClass - CSS class for the section
  * @param {Object} reflistData - The reflist data object
- * @param {Object} options - Reflist button dependencies
  * @returns {Element} The created button section element
  */
-function createButtonSection(sectionClass, reflistData, options) {
+function createButtonSection(sectionClass, reflistData) {
     const section = document.createElement('span');
     section.className = `mw-editsection cite-unseen-section ${sectionClass}`;
     const minerva = mw.config.get('skin') === 'minerva';
@@ -223,7 +192,7 @@ function createButtonSection(sectionClass, reflistData, options) {
     }
 
     // Add settings button
-    section.appendChild(createSettingsButton(minerva, options));
+    section.appendChild(createSettingsButton(minerva));
 
     // Add suggestions button
     if (window.cite_unseen_show_suggestions !== false) {
@@ -236,7 +205,7 @@ function createButtonSection(sectionClass, reflistData, options) {
         }
 
         // Add suggestions button
-        section.appendChild(createSuggestionsToggleButton(minerva, reflistData, options));
+        section.appendChild(createSuggestionsToggleButton(minerva, reflistData));
     }
 
     // Create closing bracket
@@ -253,10 +222,9 @@ function createButtonSection(sectionClass, reflistData, options) {
 /**
  * Create buttons in the header before a specific reflist
  * @param {Object} reflistData - The reflist data object
- * @param {Object} options - Reflist button dependencies
  * @returns {boolean} Success status
  */
-export function createButtons(reflistData, options) {
+export function createButtons(reflistData) {
     const header = findHeaderBeforeReflist(reflistData.element);
     if (!header) return false;
 
@@ -265,7 +233,7 @@ export function createButtons(reflistData, options) {
 
     const editSection = header.querySelector('.mw-editsection');
     const sectionClass = editSection ? 'cite-unseen-edit-section' : 'cite-unseen-fallback-section';
-    const buttonSection = createButtonSection(sectionClass, reflistData, options);
+    const buttonSection = createButtonSection(sectionClass, reflistData);
 
     if (editSection) {
         // Insert after existing edit section

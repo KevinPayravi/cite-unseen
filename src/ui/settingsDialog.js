@@ -1,23 +1,23 @@
 import settingsDialogTemplate from './settingsDialog.template.vue';
 import {
+    getCategoryDisplayName,
+    getLocalRulesFromGlobals,
+    getMetaRulesFromGlobals,
+    getSettingCategories,
+    loadCustomRulesFromWiki,
+    setLocalRules,
+    setMetaRules
+} from '../config.js';
+import {
+    getConvByVar,
+    getI18n
+} from '../i18n.js';
+import {
     closeCurrentDialog,
     closeDialogAfterAnimation,
     ensureDialogMount,
     setCurrentDialog
 } from './dialogMount.js';
-
-/**
- * @typedef {Object} SettingsDialogOptions
- * @property {Function} convByVar - MediaWiki message conversion helper
- * @property {Object} i18n - Cite Unseen i18n message map
- * @property {Function} getSettingCategories - Returns available setting category IDs
- * @property {Function} getCategoryDisplayName - Returns the localized category label
- * @property {Function} loadCustomRulesFromWiki - Loads user rules from a wiki host
- * @property {Function} getMetaRules - Returns the cached Meta-wiki rules
- * @property {Function} getLocalRules - Returns the cached local-wiki rules
- * @property {Function} setMetaRules - Updates the cached Meta-wiki rules
- * @property {Function} setLocalRules - Updates the cached local-wiki rules
- */
 
 /**
  * Get the default complete settings object used by Meta-wiki rules.
@@ -51,11 +51,12 @@ function getEmptyLocalRules() {
 
 /**
  * Build the localized strings exposed to the settings dialog component.
- * @param {Function} convByVar - MediaWiki message conversion helper
- * @param {Object} i18n - Cite Unseen i18n message map
  * @returns {Object} Localized dialog strings
  */
-function getDialogI18n(convByVar, i18n) {
+function getDialogI18n() {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
+
     return {
         documentationLink: convByVar(i18n.documentationLink),
         viewSettingsFrom: convByVar(i18n.viewSettingsFrom),
@@ -89,9 +90,8 @@ function getDialogI18n(convByVar, i18n) {
  * @param {String} target - Target wiki ('meta' or 'local')
  * @param {Function} onSuccess - Success callback
  * @param {Function} onError - Error callback
- * @param {SettingsDialogOptions} options - Dialog dependencies
  */
-function saveSettingsToWiki(settings, target, onSuccess, onError, options) {
+function saveSettingsToWiki(settings, target, onSuccess, onError) {
     const pageTitle = 'User:' + mw.config.get('wgUserName') + '/CiteUnseen-Rules.js';
     const targetApi = target === 'meta' ?
         new mw.ForeignApi('//meta.wikimedia.org/w/api.php') :
@@ -100,7 +100,7 @@ function saveSettingsToWiki(settings, target, onSuccess, onError, options) {
     targetApi.postWithToken('csrf', {
         action: 'edit',
         title: pageTitle,
-        text: generateSettingsContent(settings, target, options),
+        text: generateSettingsContent(settings, target),
         summary: `[Cite Unseen] Updating settings via settings menu`,
     }).done(function (result) {
         if (result.edit && result.edit.result === 'Success') {
@@ -121,20 +121,10 @@ function saveSettingsToWiki(settings, target, onSuccess, onError, options) {
 
 /**
  * Create and show the Codex settings dialog
- * @param {SettingsDialogOptions} options - Dialog dependencies
  */
-function createSettingsDialog(options) {
-    const {
-        convByVar,
-        i18n,
-        getSettingCategories,
-        getCategoryDisplayName,
-        loadCustomRulesFromWiki,
-        getMetaRules,
-        getLocalRules,
-        setMetaRules,
-        setLocalRules
-    } = options;
+function createSettingsDialog() {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
 
     mw.loader.using('@wikimedia/codex').then(function (require) {
         const Vue = require('vue');
@@ -143,7 +133,7 @@ function createSettingsDialog(options) {
         let app = null;
 
         app = Vue.createMwApp({
-            i18n: getDialogI18n(convByVar, i18n),
+            i18n: getDialogI18n(),
             data() {
                 return {
                     open: true,
@@ -340,8 +330,8 @@ function createSettingsDialog(options) {
                 loadCurrentSettings() {
                     // Load settings based on current target
                     const targetRules = this.target === 'meta' ?
-                        getMetaRules() :
-                        getLocalRules();
+                        getMetaRulesFromGlobals() :
+                        getLocalRulesFromGlobals();
 
                     if (this.target === 'meta') {
                         // Load category settings
@@ -356,7 +346,7 @@ function createSettingsDialog(options) {
                         this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings === true;
                     } else {
                         // For local rules, inherit from Meta if undefined, otherwise use local value
-                        const metaRules = getMetaRules();
+                        const metaRules = getMetaRulesFromGlobals();
 
                         // Load category settings
                         this.categories.forEach(category => {
@@ -493,8 +483,7 @@ function createSettingsDialog(options) {
                                 type: 'error',
                                 title: '[Cite Unseen]'
                             });
-                        },
-                        options
+                        }
                     );
 
                     this.isSaving = false;
@@ -525,10 +514,9 @@ function createSettingsDialog(options) {
  * Generate JavaScript content for the settings file
  * @param {Object} settings - Settings object to save
  * @param {String} target - Target wiki ('meta' or 'local')
- * @param {SettingsDialogOptions} options - Dialog dependencies
  * @returns {String} JavaScript settings page content
  */
-function generateSettingsContent(settings, target = 'meta', options) {
+function generateSettingsContent(settings, target = 'meta') {
     const formatObject = (obj) => {
         const entries = Object.entries(obj).map(([key, value]) => {
             if (Array.isArray(value)) {
@@ -569,7 +557,7 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
         }
     } else {
         // For local wiki, include boolean settings if they differ from Meta settings
-        const metaRules = options.getMetaRules();
+        const metaRules = getMetaRulesFromGlobals();
 
         const metaDashboard = metaRules.dashboard !== false; // Meta default logic
         const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
@@ -602,9 +590,8 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
 
 /**
  * Open the settings dialog
- * @param {SettingsDialogOptions} options - Dialog dependencies
  */
-export function openSettingsDialog(options) {
+export function openSettingsDialog() {
     closeCurrentDialog();
-    createSettingsDialog(options);
+    createSettingsDialog();
 }

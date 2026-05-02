@@ -1,3 +1,14 @@
+import {
+    citeUnseenCategoryData,
+    citeUnseenCategoryTypes
+} from '../citations/categoryData.js';
+import { citeUnseenChecklists } from '../citations/sourceData.js';
+import {
+    getConvByVar,
+    getI18n
+} from '../i18n.js';
+import { getRefCategories } from './icons.js';
+
 /**
  * Parse a string containing the plural marker "(s)"
  * @param {string} string - The string to parse
@@ -11,11 +22,9 @@ function parseI18nPlural(string, value) {
 /**
  * Get all category types used in the system.
  * The order only matters when displaying in the dashboard.
- * @param {Object} options - Dashboard rendering options
  * @returns {Array} Array of all category type strings
  */
-function getAllCategoryTypes(options) {
-    const { citeUnseenChecklists, citeUnseenCategoryTypes } = options;
+function getAllCategoryTypes() {
     return [...citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...citeUnseenCategoryTypes, 'unknown'];
 }
 
@@ -35,15 +44,14 @@ export function getCitationContainer(citationElement) {
 /**
  * Calculate category counts for a specific reflist
  * @param {Object} reflistData - The reflist data object
- * @param {Object} options - Dashboard rendering options
  * @returns {Object} Category counts for this reflist
  */
-function calculateCategoryCountsForReflist(reflistData, options) {
-    const { refCategories } = options;
+function calculateCategoryCountsForReflist(reflistData) {
+    const refCategories = getRefCategories();
     const counts = {};
 
     // Get all category types
-    const categoryTypes = getAllCategoryTypes(options); // Order doesn't matter here
+    const categoryTypes = getAllCategoryTypes(); // Order doesn't matter here
 
     // Initialize all category counts to 0
     for (const category of categoryTypes) {
@@ -74,16 +82,16 @@ function calculateCategoryCountsForReflist(reflistData, options) {
  * Update dashboard categories display for a specific dashboard
  * @param {Object} dashboard - The dashboard object
  * @param {Object} categoryCounts - Category counts for this reflist
- * @param {Object} options - Dashboard rendering options
  */
-function updateDashboardCategories(dashboard, categoryCounts, options) {
-    const { citeUnseenCategoryData, convByVar, i18n } = options;
+function updateDashboardCategories(dashboard, categoryCounts) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
 
     // Clear existing categories
     dashboard.cats.innerHTML = '';
 
     // List each type of source in order
-    const categoryTypes = getAllCategoryTypes(options); // Order matters here
+    const categoryTypes = getAllCategoryTypes(); // Order matters here
     for (const category of categoryTypes) {
         const count = categoryCounts[category] || 0;
         if (count > 0) {
@@ -108,7 +116,7 @@ function updateDashboardCategories(dashboard, categoryCounts, options) {
             countText.classList.add('cite-unseen-category-text');
 
             countNode.onclick = function () {
-                toggleCategoryFilterForReflist(dashboard.reflistData, category, options);
+                toggleCategoryFilterForReflist(dashboard.reflistData, category);
             };
 
             countNode.setAttribute('role', 'button');
@@ -134,9 +142,8 @@ function updateDashboardCategories(dashboard, categoryCounts, options) {
  * Toggle a category filter on/off for a specific reflist
  * @param {Object} reflistData - The reflist data object
  * @param {string} category - Citation category to toggle
- * @param {Object} options - Dashboard rendering options
  */
-function toggleCategoryFilterForReflist(reflistData, category, options) {
+function toggleCategoryFilterForReflist(reflistData, category) {
     if (!reflistData || !reflistData.selectedCategories || !category) {
         console.warn('[Cite Unseen] Invalid parameters provided to toggleCategoryFilterForReflist');
         return;
@@ -148,32 +155,28 @@ function toggleCategoryFilterForReflist(reflistData, category, options) {
         reflistData.selectedCategories.add(category);
     }
 
-    applyMultiCategoryFilterForReflist(reflistData, options);
+    applyMultiCategoryFilterForReflist(reflistData);
 }
 
 /**
  * Clear all category filters for a specific reflist
  * @param {Object} reflistData - The reflist data object
- * @param {Object} options - Dashboard rendering options
  */
-function clearAllFiltersForReflist(reflistData, options) {
+function clearAllFiltersForReflist(reflistData) {
     if (!reflistData || !reflistData.selectedCategories) {
         console.warn('[Cite Unseen] Invalid reflist data provided to clearAllFiltersForReflist');
         return;
     }
 
     reflistData.selectedCategories.clear();
-    applyMultiCategoryFilterForReflist(reflistData, options);
+    applyMultiCategoryFilterForReflist(reflistData);
 }
 
 /**
  * Apply filtering based on currently selected categories for a specific reflist.
  * @param {Object} reflistData - The reflist data object
- * @param {Object} options - Dashboard rendering options
  */
-function applyMultiCategoryFilterForReflist(reflistData, options) {
-    const { refCategories } = options;
-
+function applyMultiCategoryFilterForReflist(reflistData) {
     if (!reflistData || !reflistData.element || !reflistData.dashboard) {
         console.warn('[Cite Unseen] Invalid reflist data provided to applyMultiCategoryFilterForReflist');
         return;
@@ -218,7 +221,7 @@ function applyMultiCategoryFilterForReflist(reflistData, options) {
         targetReflist.removeAttribute('data-cite-unseen-filter');
 
         // Reset count display
-        updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations, options);
+        updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations);
         return;
     }
 
@@ -267,7 +270,7 @@ function applyMultiCategoryFilterForReflist(reflistData, options) {
     targetReflist.setAttribute('data-cite-unseen-filter', selectedCategoriesArray.join(','));
 
     // Update count display
-    updateFilteredCountForReflist(dashboard, visibleContainers.size, reflistData.totalCitations, options);
+    updateFilteredCountForReflist(dashboard, visibleContainers.size, reflistData.totalCitations);
 }
 
 /**
@@ -275,10 +278,10 @@ function applyMultiCategoryFilterForReflist(reflistData, options) {
  * @param {Object} dashboard - The dashboard object
  * @param {number} visibleCount - Number of visible citations
  * @param {number} totalCount - Total number of citations
- * @param {Object} options - Dashboard rendering options
  */
-function updateFilteredCountForReflist(dashboard, visibleCount, totalCount, options) {
-    const { convByVar, i18n } = options;
+function updateFilteredCountForReflist(dashboard, visibleCount, totalCount) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
     if (!dashboard || !dashboard.total) return;
 
     const totalElement = dashboard.total;
@@ -304,13 +307,13 @@ function updateFilteredCountForReflist(dashboard, visibleCount, totalCount, opti
 /**
  * Create a dashboard for a specific reflist
  * @param {Object} reflistData - The reflist data object
- * @param {Object} options - Dashboard rendering options
  */
-export function createDashboardForReflist(reflistData, options) {
-    const { convByVar, i18n } = options;
+export function createDashboardForReflist(reflistData) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
 
     // Calculate category counts
-    const reflistCategoryCounts = calculateCategoryCountsForReflist(reflistData, options);
+    const reflistCategoryCounts = calculateCategoryCountsForReflist(reflistData);
 
     const hasCategorizations = Object.values(reflistCategoryCounts).some(count => count > 0);
     if (!hasCategorizations) {
@@ -339,7 +342,7 @@ export function createDashboardForReflist(reflistData, options) {
     clearAllButton.setAttribute('role', 'button');
     clearAllButton.setAttribute('tabindex', '0');
     clearAllButton.onclick = function () {
-        clearAllFiltersForReflist(dashboard.reflistData, options);
+        clearAllFiltersForReflist(dashboard.reflistData);
     };
     clearAllButton.onkeydown = function (e) {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -353,7 +356,7 @@ export function createDashboardForReflist(reflistData, options) {
     reflistData.totalCitations = reflistData.element.querySelectorAll('li').length;
 
     // Show citation count
-    updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations, options);
+    updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations);
     dashboard.total.classList.add('cite-unseen-dashboard-total');
 
     // Add total and clear all button to header
@@ -377,5 +380,5 @@ export function createDashboardForReflist(reflistData, options) {
         }
         parentElement.insertBefore(dashboard.div, insertPosition);
     }
-    updateDashboardCategories(dashboard, reflistCategoryCounts, options);
+    updateDashboardCategories(dashboard, reflistCategoryCounts);
 }

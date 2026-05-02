@@ -1,10 +1,33 @@
-import { ensureArray } from '../citations/parser.js';
+import {
+    ensureArray,
+    getRefLinks,
+    getRefs
+} from '../citations/parser.js';
+import {
+    citeUnseenCategories,
+    citeUnseenCategoryData,
+    citeUnseenCategoryTypes
+} from '../citations/categoryData.js';
+import { citeUnseenChecklists } from '../citations/sourceData.js';
+import {
+    getCategorizedRules,
+    resolveSourceToPageLink
+} from '../citations/sources.js';
 import {
     findReliabilityMatch,
     findTypeMatches,
     matchUrl,
     matchUrlString
 } from '../citations/ruleMatch.js';
+import {
+    getCiteUnseenDomainIgnore,
+} from '../config.js';
+import {
+    getConvByVar,
+    getI18n
+} from '../i18n.js';
+
+let refCategories = {};
 
 /**
  * Create an icons div for a citation
@@ -19,10 +42,9 @@ function createIconsDiv() {
 /**
  * Add to count. Currently, it records regardless of whether it is in the reflist.
  * @param {String} type - The type
- * @param {Object} context - Icon rendering context
  */
-function addToCount(type, context) {
-    context.citeUnseenCategoryData[type].count++;
+function addToCount(type) {
+    citeUnseenCategoryData[type].count++;
 }
 
 /**
@@ -31,17 +53,11 @@ function addToCount(type, context) {
  * @param {String} type - The type
  * @param {String|null} checklist - The checklist
  * @param {String|null} language - Language code for reliability icons
- * @param {Object} context - Icon rendering context
  * @returns {Element} The iconNode element
  */
-function processIcon(node, type, checklist = null, language = null, context) {
-    const {
-        citeUnseenCategoryData,
-        refCategories,
-        convByVar,
-        i18n,
-        resolveSourceToPageLink
-    } = context;
+function processIcon(node, type, checklist = null, language = null) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
     const iconContainer = document.createElement("span");
     iconContainer.classList.add("cite-unseen-icon-container");
 
@@ -61,7 +77,7 @@ function processIcon(node, type, checklist = null, language = null, context) {
     iconNode.setAttribute("alt", message);
     iconNode.setAttribute("title", "[Cite Unseen] " + message);
 
-    addToCount(type, context);
+    addToCount(type);
     if (checklist) {
         // If there is a checklist, wrap the icon in a link.
         const iconNodeLink = document.createElement("a");
@@ -99,12 +115,10 @@ function processIcon(node, type, checklist = null, language = null, context) {
 /**
  * Track a citation as unknown.
  * @param {Element} node - The iconsDiv node (parent of the citation)
- * @param {Object} context - Icon rendering context
  */
-function trackUnknownCitation(node, context) {
-    const { refCategories } = context;
+function trackUnknownCitation(node) {
     const type = "unknown";
-    addToCount(type, context);
+    addToCount(type);
 
     if (!refCategories[type]) {
         refCategories[type] = [];
@@ -113,24 +127,25 @@ function trackUnknownCitation(node, context) {
 }
 
 /**
+ * Get citation nodes grouped by rendered category.
+ * @returns {Object.<string, Element[]>} Citation nodes grouped by category
+ */
+export function getRefCategories() {
+    return refCategories;
+}
+
+/**
  * Add icons to citation sources. Only executed once on page load.
- * @param {Object} options - Icon rendering options
  * @returns {Object} Citation nodes grouped by category
  */
-export function addIcons(options) {
-    const {
-        categorizedRules,
-        citeUnseenCategories,
-        citeUnseenCategoryTypes,
-        citeUnseenChecklists,
-        citeUnseenDomainIgnore,
-        refs,
-        refLinks
-    } = options;
-    const refCategories = {};
-    const context = { ...options, refCategories };
+export function addIcons() {
+    const categorizedRules = getCategorizedRules() || {};
+    const citeUnseenDomainIgnore = getCiteUnseenDomainIgnore();
+    const refs = getRefs();
+    const refLinks = getRefLinks();
     const filteredCategorizedRules = {};
     const refLinkCoins = { 'rft_id': refLinks };
+    refCategories = {};
 
     Object.keys(categorizedRules).forEach(key => {
         const domainIgnoreList = citeUnseenDomainIgnore[key] || [];
@@ -169,21 +184,21 @@ export function addIcons(options) {
         // Check CSS-based classifications first
         if (bookClasses.some(cls => classList.contains(cls))) {
             if (citeUnseenCategories.books && !processedCategories.has("books")) {
-                processIcon(iconsDiv, "books", null, null, context);
+                processIcon(iconsDiv, "books");
                 processedCategories.add("books");
             }
         }
 
         if (classList.contains("pressrelease")) {
             if (citeUnseenCategories.press && !processedCategories.has("press")) {
-                processIcon(iconsDiv, "press", null, null, context);
+                processIcon(iconsDiv, "press");
                 processedCategories.add("press");
             }
         }
 
         if (tvClasses.some(cls => classList.contains(cls))) {
             if (citeUnseenCategories.tvPrograms && !processedCategories.has("tvPrograms")) {
-                processIcon(iconsDiv, "tvPrograms", null, null, context);
+                processIcon(iconsDiv, "tvPrograms");
                 processedCategories.add("tvPrograms");
             }
         }
@@ -216,7 +231,7 @@ export function addIcons(options) {
                 // if current language wiki has none.
                 const reliabilityKey = `${reliabilityMatch.type}_${reliabilityMatch.language}`;
                 if (!processedCategories.has(reliabilityKey)) {
-                    processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name, reliabilityMatch.language, context);
+                    processIcon(iconsDiv, reliabilityMatch.type, reliabilityMatch.name, reliabilityMatch.language);
                     processedCategories.add(reliabilityKey);
                     processedCategories.add(reliabilityMatch.type);
                 }
@@ -225,7 +240,7 @@ export function addIcons(options) {
             // Process type categories
             for (const typeMatch of typeMatches) {
                 if (!processedCategories.has(typeMatch)) {
-                    processIcon(iconsDiv, typeMatch, null, null, context);
+                    processIcon(iconsDiv, typeMatch);
                     processedCategories.add(typeMatch);
                 }
             }
@@ -235,13 +250,13 @@ export function addIcons(options) {
             // If a template is already categorized as news via CSS but links are missing,
             // treat it as news instead of falling back to unknown.
             if (processedCategories.size === 0 && hasNewsClass && citeUnseenCategories.news) {
-                processIcon(iconsDiv, "news", null, null, context);
+                processIcon(iconsDiv, "news");
                 processedCategories.add("news");
             }
         }
 
         if (citeUnseenCategories.unknown && processedCategories.size === 0) {
-            trackUnknownCitation(iconsDiv, context);
+            trackUnknownCitation(iconsDiv);
         }
     });
 
