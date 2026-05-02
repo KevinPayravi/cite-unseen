@@ -45,22 +45,7 @@ async function citeUnseenSourceRevisions() {
  */
 function resolveSourceToCategory(sourcePageName) {
     return citeUnseenSourceToCategoryMapping[sourcePageName] || sourcePageName;
-};
-
-/**
- * Get all source pages that map to a specific category.
- * @param {string} categoryName - The category name to find source pages for.
- * @returns {Array.<string>} Array of source page names that map to the category.
- */
-function getSourcePagesForCategory(categoryName) {
-    const sourcePages = [];
-    for (const [sourcePage, category] of Object.entries(citeUnseenSourceToCategoryMapping)) {
-        if (category === categoryName) {
-            sourcePages.push(sourcePage);
-        }
-    }
-    return sourcePages;
-};
+}
 
 /**
  * Create API instance based on current wiki context.
@@ -72,7 +57,7 @@ function createApiInstance() {
     } else {
         return new mw.ForeignApi("//meta.wikimedia.org/w/api.php", { userAgent: 'CiteUnseen' });
     }
-};
+}
 
 /**
  * Process API response pages into fulltext string.
@@ -80,20 +65,18 @@ function createApiInstance() {
  * @returns {string} Combined fulltext from all pages.
  */
 function processApiResponse(response) {
-    let pageids = response.query.pageids;
     let fulltext = '';
-    for (let i = 0; i < pageids.length; i++) {
-        let pageid = pageids[i];
+    for (const pageid of response.query.pageids) {
         if (pageid === '-1') {
             continue;
         }
-        let page = response.query.pages[pageid];
+        const page = response.query.pages[pageid];
         if (page.revisions && page.revisions.length > 0) {
             fulltext += page.revisions[0].slots.main['*'] + '\n\n';
         }
     }
     return fulltext;
-};
+}
 
 /**
  * Process fulltext into categorized rules.
@@ -101,8 +84,8 @@ function processApiResponse(response) {
  * @returns {Object.<string, Object[]>} Categorized rules object.
  */
 function processCategorizedRules(fulltext) {
-    let sections = getSections(fulltext);
-    let categorizedRules = {};
+    const sections = getSections(fulltext);
+    const categorizedRules = {};
     for (const [cat, section] of Object.entries(sections)) {
         const entries = Array.from(section.matchAll(/{{\s*CULink\s*\|\s*([^}]+?)\s*}}/g), match => match[1]);
         const resolvedCat = resolveSourceToCategory(cat);
@@ -130,10 +113,10 @@ export function resolveSourceToPageLink(sourceName) {
  */
 async function getFullText() {
     // Add 'Cite_Unseen/sources/' to the beginning each of the source names, then join them with '|'.
-    let source_titles = citeUnseenSources.map(source => `Cite_Unseen/sources/${source}`).join('|');
+    const source_titles = citeUnseenSources.map(source => `Cite_Unseen/sources/${source}`).join('|');
 
-    var api = createApiInstance();
-    var response = await api.get({
+    const api = createApiInstance();
+    const response = await api.get({
         action: 'query', titles: source_titles, prop: 'revisions', rvslots: '*', rvprop: 'content', indexpageids: 1,
     });
 
@@ -146,9 +129,9 @@ async function getFullText() {
  * @returns {Promise<string>} A Promise containing the full wikitext.
  */
 async function getFullTextFromRevisions(revisionIds) {
-    var api = createApiInstance();
+    const api = createApiInstance();
 
-    var response = await api.get({
+    const response = await api.get({
         action: 'query',
         revids: revisionIds.join('|'),
         prop: 'revisions',
@@ -176,7 +159,7 @@ async function getCategorizedRulesFromRevisions(revisionIds) {
  * @returns {Object.<string, string>} An object containing headings and their corresponding content.
  */
 function getSections(fulltext) {
-    let sections = {};
+    const sections = {};
     // Only parse the 3rd level headers (=== ... ===).
     const headerRegex = /^(={3})([^=]+)\1$/gm;
     let match;
@@ -193,7 +176,7 @@ function getSections(fulltext) {
         sections[lastHeader] = fulltext.substring(lastIndex).trim();
     }
     return sections;
-};
+}
 
 /**
  * Parse the {{CULink}} template.
@@ -217,7 +200,7 @@ function parseRuleTemplates(text) {
         }
     });
     return Object.keys(rule).length ? rule : null;  // Empty object should be falsy
-};
+}
 
 /**
  * Get revision IDs for sources that have them specified.
@@ -241,14 +224,6 @@ async function getSpecifiedRevisionIds() {
         return [];
     }
     return revisionIds;
-};
-
-/**
- * Check if any sources have revision IDs specified.
- * @returns {Promise<boolean>} True if any sources have revision IDs, false otherwise.
- */
-async function hasSpecifiedRevisions() {
-    return (await getSpecifiedRevisionIds()).length > 0;
 };
 
 /**
