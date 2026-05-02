@@ -48,6 +48,9 @@ function injectStyles() {
  */
 async function importDependencies() {
     injectStyles();
+    if (!window.jschardet) {
+        await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
+    }
     await initializeConvByVar();
     return await loadCategorizedRules();
 }
