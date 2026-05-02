@@ -1,5 +1,3 @@
-import { detect as detectEncoding } from 'jschardet';
-
 let refs = [];
 let refLinks = [];
 let reflists = [];
@@ -65,7 +63,7 @@ export async function decodeURI(str) {
     }
 
     const binStr = percentDecodeToBinStr(str);
-    const detected = detectEncoding(binStr);
+    const detected = window.jschardet.detect(binStr);
     const encoding = canonicalLabel(detected?.encoding);
     const decoder = new TextDecoder(encoding);
     return decoder.decode(new TextEncoder().encode(binStr));
