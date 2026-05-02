@@ -6,11 +6,12 @@ import {
 /**
  * This module reduces the rule set before exact citation matching.
  *
- * The lookup has four explicit steps:
+ * The lookup has five explicit steps:
  * 1. Build a URL key set from every citation URL on the page.
- * 2. Use those page URL keys to filter all rules down to page-relevant rules.
- * 3. Build a rule key map from only those page-relevant rules.
- * 4. For each citation, build URL keys from that citation's URLs and look up only the matching rules in the smaller page rule map.
+ * 2. Use those page URL keys to collect page-level candidate rules without URL matching.
+ * 3. Build a rule key map from those page-level candidate rules.
+ * 4. For each citation, build URL keys from that citation's URLs and look up citation-level candidate rules in the smaller page rule map.
+ * 5. Exact-check only the citation-level candidate rules against that citation's URLs.
  *
  * URL keys are typed because rules like "gov" and "gov." have different meaning.
  * "gov" matches hostnames whose final label is gov, such as nih.gov.
@@ -44,6 +45,12 @@ import {
  * @typedef {Object} RuleFilterResult
  * @property {Object.<string, Object[]>} categorizedRules - URL-matching rules grouped by category.
  * @property {number} candidateRuleCount - Candidate rule count before exact URL verification.
+ */
+
+/**
+ * @typedef {Object} RuleCandidateResult
+ * @property {Object.<string, Object[]>} categorizedRules - Candidate rules grouped by category, selected by URL keys only.
+ * @property {number} candidateRuleCount - Candidate rule count selected by URL keys.
  */
 
 /**
@@ -370,6 +377,24 @@ function createEmptyCategorizedRules(categories) {
 }
 
 /**
+ * Convert candidate entries into categorized rules without URL matching.
+ * @param {RuleKeyMap} ruleKeyMap - Rule key map that supplied the candidates.
+ * @param {Map<string, Map<Object, RuleKeyEntry>>} candidateRules - Candidate entries grouped by category.
+ * @returns {Object.<string, Object[]>} Candidate rules grouped by category.
+ */
+function buildCategorizedRulesFromCandidateEntries(ruleKeyMap, candidateRules) {
+    const categorizedRules = createEmptyCategorizedRules(ruleKeyMap.categories);
+
+    for (const [category, ruleMap] of candidateRules) {
+        categorizedRules[category] = Array.from(ruleMap.values())
+            .sort((a, b) => a.order - b.order)
+            .map(entry => entry.rule);
+    }
+
+    return categorizedRules;
+}
+
+/**
  * Convert candidate entries into exact URL-matching categorized rules.
  * @param {RuleKeyMap} ruleKeyMap - Rule key map that supplied the candidates.
  * @param {Map<string, Map<Object, RuleKeyEntry>>} candidateRules - Candidate entries grouped by category.
@@ -391,6 +416,24 @@ function buildCategorizedRulesFromCandidates(ruleKeyMap, candidateRules, urls) {
 }
 
 /**
+ * Look up candidate rules for a URL key set without exact URL matching.
+ * Use this for the page-level pass, where URL keys are meant to reduce the full
+ * ruleset before the per-citation exact match.
+ *
+ * @param {RuleKeyMap} ruleKeyMap - Rule key map.
+ * @param {UrlKeySet} urlKeySet - URL keys to look up.
+ * @returns {RuleCandidateResult} Candidate rules and candidate count.
+ */
+export function getCandidateRulesForUrlKeys(ruleKeyMap, urlKeySet) {
+    const candidateRules = collectCandidateRules(ruleKeyMap, urlKeySet);
+
+    return {
+        categorizedRules: buildCategorizedRulesFromCandidateEntries(ruleKeyMap, candidateRules),
+        candidateRuleCount: countCandidateRules(candidateRules)
+    };
+}
+
+/**
  * Look up exact URL-matching rules for a URL key set.
  * @param {RuleKeyMap} ruleKeyMap - Rule key map.
  * @param {UrlKeySet} urlKeySet - URL keys to look up.
@@ -404,17 +447,4 @@ export function getRulesForUrlKeys(ruleKeyMap, urlKeySet, urls) {
         categorizedRules: buildCategorizedRulesFromCandidates(ruleKeyMap, candidateRules, urls),
         candidateRuleCount: countCandidateRules(candidateRules)
     };
-}
-
-/**
- * Filter categorized rules down to rules that match the supplied URL keys and URLs.
- * @param {Object.<string, Object[]>} categorizedRules - Rules grouped by category.
- * @param {Object.<string, string[]>} domainIgnore - Ignored domain lists grouped by category.
- * @param {UrlKeySet} urlKeySet - URL keys to look up.
- * @param {string[]} urls - URLs to verify against.
- * @returns {RuleFilterResult} Filtered rules and candidate count.
- */
-export function filterRulesByUrlKeys(categorizedRules, domainIgnore, urlKeySet, urls) {
-    const ruleKeyMap = buildRuleKeyMap(categorizedRules, domainIgnore);
-    return getRulesForUrlKeys(ruleKeyMap, urlKeySet, urls);
 }

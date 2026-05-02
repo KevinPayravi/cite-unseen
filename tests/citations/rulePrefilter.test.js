@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {
     buildRuleKeyMap,
     buildUrlKeySet,
-    filterRulesByUrlKeys,
+    getCandidateRulesForUrlKeys,
     getRulesForUrlKeys
 } from '../../src/citations/rulePrefilter.js';
 
@@ -55,10 +55,10 @@ test('buildUrlKeySet creates separate keys for host suffixes, final labels, and 
     ]);
 });
 
-test('filterRulesByUrlKeys keeps only normal domain rules that exact URL matching confirms', () => {
+test('getRulesForUrlKeys keeps only normal domain rules that exact URL matching confirms', () => {
     /**
-     * The key lookup is only a prefilter. A rule still has to pass the exact
-     * URL matcher before it appears in the filtered categorized rules.
+     * Citation-level filtering uses URL keys first, then exact URL matching.
+     * Hostname suffix tricks should not survive the exact match.
      */
     const categorizedRules = {
         source: [
@@ -68,18 +68,18 @@ test('filterRulesByUrlKeys keeps only normal domain rules that exact URL matchin
         ]
     };
     const urls = ['https://www.example.com/article'];
-    const result = filterRulesByUrlKeys(categorizedRules, {}, buildUrlKeySet(urls), urls);
+    const ruleKeyMap = buildRuleKeyMap(categorizedRules);
+    const result = getRulesForUrlKeys(ruleKeyMap, buildUrlKeySet(urls), urls);
 
     assert.deepEqual(labelsForCategory(result.categorizedRules, 'source'), [
         'matching-domain'
     ]);
 });
 
-test('filterRulesByUrlKeys preserves gov and gov. as different matching concepts', () => {
+test('getRulesForUrlKeys preserves gov and gov. as different matching concepts', () => {
     /**
-     * This is the main correctness risk in the prefilter. "gov" must survive
-     * for nih.gov and not for gov.uk. "gov." must survive for gov.uk and not
-     * for nih.gov.
+     * This is the main correctness risk in the prefilter. "gov" must match
+     * nih.gov and not gov.uk. "gov." must match gov.uk and not nih.gov.
      */
     const categorizedRules = {
         source: [
@@ -87,24 +87,25 @@ test('filterRulesByUrlKeys preserves gov and gov. as different matching concepts
             { 'url': 'gov.', label: 'interior-gov' }
         ]
     };
+    const ruleKeyMap = buildRuleKeyMap(categorizedRules);
 
     const nihUrls = ['https://nih.gov/report'];
-    const nihResult = filterRulesByUrlKeys(categorizedRules, {}, buildUrlKeySet(nihUrls), nihUrls);
+    const nihResult = getRulesForUrlKeys(ruleKeyMap, buildUrlKeySet(nihUrls), nihUrls);
     assert.deepEqual(labelsForCategory(nihResult.categorizedRules, 'source'), [
         'final-gov'
     ]);
 
     const ukGovUrls = ['https://www.gov.uk/guidance'];
-    const ukGovResult = filterRulesByUrlKeys(categorizedRules, {}, buildUrlKeySet(ukGovUrls), ukGovUrls);
+    const ukGovResult = getRulesForUrlKeys(ruleKeyMap, buildUrlKeySet(ukGovUrls), ukGovUrls);
     assert.deepEqual(labelsForCategory(ukGovResult.categorizedRules, 'source'), [
         'interior-gov'
     ]);
 });
 
-test('filterRulesByUrlKeys removes ignored domains before candidate rules are exact-checked', () => {
+test('buildRuleKeyMap removes ignored domains before candidate rules are collected', () => {
     /**
      * Ignored domains are user/category configuration. They should not be
-     * indexed as candidates even when the page contains URLs that would match.
+     * indexed as candidates even when the page contains URLs with their keys.
      */
     const categorizedRules = {
         source: [
@@ -119,17 +120,19 @@ test('filterRulesByUrlKeys removes ignored domains before candidate rules are ex
         'https://example.com/article',
         'https://ignored.example.com/article'
     ];
-    const result = filterRulesByUrlKeys(categorizedRules, domainIgnore, buildUrlKeySet(urls), urls);
+    const ruleKeyMap = buildRuleKeyMap(categorizedRules, domainIgnore);
+    const result = getCandidateRulesForUrlKeys(ruleKeyMap, buildUrlKeySet(urls));
 
     assert.deepEqual(labelsForCategory(result.categorizedRules, 'source'), [
         'allowed-domain'
     ]);
 });
 
-test('filterRulesByUrlKeys carries url_str rules through the miscellaneous candidate bucket', () => {
+test('getCandidateRulesForUrlKeys carries url_str rules through the miscellaneous candidate bucket', () => {
     /**
      * url_str rules do not have a domain key. They are kept in a miscellaneous
-     * bucket and then filtered by exact raw substring matching.
+     * bucket during page-level candidate collection and are not URL-matched
+     * until the citation-level filtering step.
      */
     const categorizedRules = {
         source: [
@@ -138,22 +141,25 @@ test('filterRulesByUrlKeys carries url_str rules through the miscellaneous candi
         ]
     };
     const urls = ['https://example.test/articles/final'];
-    const result = filterRulesByUrlKeys(categorizedRules, {}, buildUrlKeySet(urls), urls);
+    const ruleKeyMap = buildRuleKeyMap(categorizedRules);
+    const result = getCandidateRulesForUrlKeys(ruleKeyMap, buildUrlKeySet(urls));
 
     assert.deepEqual(labelsForCategory(result.categorizedRules, 'source'), [
-        'matching-substring'
+        'matching-substring',
+        'missing-substring'
     ]);
 });
 
 test('getRulesForUrlKeys narrows a page rule map down to one citation URL', () => {
     /**
-     * The optimized render path filters rules once for the whole page, builds a
-     * smaller page rule map, and then looks up only the rules relevant to each
-     * individual citation URL. This test mirrors that full flow.
+     * The optimized render path collects page-level key candidates, builds a
+     * smaller page rule map from those candidates, and then exact-filters rules
+     * only against each individual citation URL. This test mirrors that flow.
      */
     const categorizedRules = {
         source: [
             { 'url': 'example.com', label: 'example-domain' },
+            { 'url': 'example.com/private', label: 'example-private-path' },
             { 'url': 'gov', label: 'final-gov' },
             { 'url': 'gov.', label: 'interior-gov' },
             { 'url_str': '/tracked/', label: 'tracked-substring' }
@@ -165,8 +171,23 @@ test('getRulesForUrlKeys narrows a page rule map down to one citation URL', () =
         'https://www.gov.uk/guidance',
         'https://other.test/tracked/item'
     ];
-    const pageFilter = filterRulesByUrlKeys(categorizedRules, {}, buildUrlKeySet(pageUrls), pageUrls);
-    const pageRuleKeyMap = buildRuleKeyMap(pageFilter.categorizedRules);
+    const fullRuleKeyMap = buildRuleKeyMap(categorizedRules);
+    const pageCandidates = getCandidateRulesForUrlKeys(fullRuleKeyMap, buildUrlKeySet(pageUrls));
+    const pageRuleKeyMap = buildRuleKeyMap(pageCandidates.categorizedRules);
+
+    assert.deepEqual(labelsForCategory(pageCandidates.categorizedRules, 'source'), [
+        'example-domain',
+        'example-private-path',
+        'final-gov',
+        'interior-gov',
+        'tracked-substring'
+    ]);
+
+    const exampleUrls = ['https://example.com/article'];
+    const exampleResult = getRulesForUrlKeys(pageRuleKeyMap, buildUrlKeySet(exampleUrls), exampleUrls);
+    assert.deepEqual(labelsForCategory(exampleResult.categorizedRules, 'source'), [
+        'example-domain'
+    ]);
 
     const nihUrls = ['https://nih.gov/report'];
     const nihResult = getRulesForUrlKeys(pageRuleKeyMap, buildUrlKeySet(nihUrls), nihUrls);

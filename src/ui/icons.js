@@ -20,7 +20,7 @@ import {
 import {
     buildRuleKeyMap,
     buildUrlKeySet,
-    filterRulesByUrlKeys,
+    getCandidateRulesForUrlKeys,
     getRulesForUrlKeys
 } from '../citations/rulePrefilter.js';
 import {
@@ -150,10 +150,11 @@ export function addIcons() {
     refCategories = {};
 
     const pageUrlKeySet = buildUrlKeySet(refLinks);
+    const fullRuleKeyMap = buildRuleKeyMap(categorizedRules, citeUnseenDomainIgnore);
     const {
-        categorizedRules: pageFilteredCategorizedRules
-    } = filterRulesByUrlKeys(categorizedRules, citeUnseenDomainIgnore, pageUrlKeySet, refLinks);
-    const pageRuleKeyMap = buildRuleKeyMap(pageFilteredCategorizedRules);
+        categorizedRules: pageCandidateCategorizedRules
+    } = getCandidateRulesForUrlKeys(fullRuleKeyMap, pageUrlKeySet);
+    const pageRuleKeyMap = buildRuleKeyMap(pageCandidateCategorizedRules);
     const typeCategories = citeUnseenCategoryTypes;
 
     refs.forEach(ref => {
