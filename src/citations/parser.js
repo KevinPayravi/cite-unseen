@@ -1,5 +1,31 @@
 import { detect as detectEncoding } from 'jschardet';
 
+const HEX_PAIR_RE = /^[0-9A-Fa-f]{2}$/;
+
+function percentDecodeToBinStr(str) {
+    let out = '';
+    for (let i = 0; i < str.length; i++) {
+        const ch = str[i];
+        if (ch === '%' && i + 2 < str.length && HEX_PAIR_RE.test(str.slice(i + 1, i + 3))) {
+            out += String.fromCharCode(parseInt(str.slice(i + 1, i + 3), 16));
+            i += 2;
+        } else if (ch === '+') {
+            out += ' ';
+        } else {
+            out += String.fromCharCode(str.charCodeAt(i) & 0xFF);
+        }
+    }
+    return out;
+}
+
+function canonicalEncodingLabel(label) {
+    if (!label) return null;
+    label = String(label).toLowerCase();
+    if (label === 'ansi_x3.4-1968' || label === 'us-ascii' || label === 'ascii') return 'utf-8';
+    if (label === 'latin1' || label === 'iso-8859-1' || label === 'cp1252') return 'windows-1252';
+    return label;
+}
+
 let refs = [];
 let refLinks = [];
 let reflists = [];
@@ -40,33 +66,9 @@ export function decodeURI(str) {
         return decodeURIComponent(str);
     } catch (e) { }  // Fallback to detection and decoding
 
-    function percentDecodeToBinStr(str) {
-        let out = '';
-        for (let i = 0; i < str.length; i++) {
-            const ch = str[i];
-            if (ch === '%' && i + 2 < str.length && /^[0-9A-Fa-f]{2}$/.test(str.slice(i + 1, i + 3))) {
-                out += String.fromCharCode(parseInt(str.slice(i + 1, i + 3), 16));
-                i += 2;
-            } else if (ch === '+') {
-                out += ' ';
-            } else {
-                out += String.fromCharCode(str.charCodeAt(i) & 0xFF);
-            }
-        }
-        return out;
-    }
-
-    function canonicalLabel(label) {
-        if (!label) return null;
-        label = String(label).toLowerCase();
-        if (label === 'ansi_x3.4-1968' || label === 'us-ascii' || label === 'ascii') return 'utf-8';
-        if (label === 'latin1' || label === 'iso-8859-1' || label === 'cp1252') return 'windows-1252';
-        return label;
-    }
-
     const binStr = percentDecodeToBinStr(str);
     const detected = detectEncoding(binStr);
-    const encoding = canonicalLabel(detected?.encoding);
+    const encoding = canonicalEncodingLabel(detected?.encoding);
     const decoder = new TextDecoder(encoding);
     return decoder.decode(new TextEncoder().encode(binStr));
 }
@@ -357,7 +359,7 @@ export async function findCitations() {
             mergeRftIds(coinsObject, domLinks);
         } else {
             // Parse COinS string
-            let coinsString = decodeURI(coinsTag.getAttribute('title'));
+            const coinsString = decodeURI(coinsTag.getAttribute('title'));
             coinsObject = parseCoinsString(coinsString);
 
             // Fallback to rfr_id if rft_id is missing
