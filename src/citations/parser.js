@@ -124,12 +124,10 @@ function collectExternalLinks(roots) {
         }
 
         const matches = [];
-        if (root.matches?.('a.external')) {
+        if (root.matches('a.external')) {
             matches.push(root);
         }
-        if (root.querySelectorAll) {
-            matches.push(...root.querySelectorAll('a.external'));
-        }
+        matches.push(...root.querySelectorAll('a.external'));
 
         for (const link of matches) {
             if (!seen.has(link)) {
