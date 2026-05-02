@@ -54,6 +54,9 @@
             <cdx-checkbox v-model="settings.showOtherLanguageReliabilityRatings">
                 {{ $options.i18n.showOtherLanguageReliabilityRatings }}
             </cdx-checkbox>
+            <cdx-checkbox v-model="settings.showUnknownLinksIcon">
+                {{ $options.i18n.showUnknownLinksIcon }}
+            </cdx-checkbox>
         </cdx-tab>
 
         <cdx-tab name="categories" :label="$options.i18n.tabCategories">

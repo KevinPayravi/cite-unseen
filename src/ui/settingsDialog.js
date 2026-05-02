@@ -32,7 +32,8 @@ function getDefaultSettings() {
         dashboard: true,
         showSuggestions: true,
         hideSocialMediaReliabilityRatings: false,
-        showOtherLanguageReliabilityRatings: false
+        showOtherLanguageReliabilityRatings: false,
+        showUnknownLinksIcon: false
     };
 }
 
@@ -78,6 +79,7 @@ function getDialogI18n() {
         showSuggestionsButton: convByVar(i18n.showSuggestionsButton),
         hideSocialMediaReliabilityRatings: convByVar(i18n.hideSocialMediaReliabilityRatings),
         showOtherLanguageReliabilityRatings: convByVar(i18n.showOtherLanguageReliabilityRatings),
+        showUnknownLinksIcon: convByVar(i18n.showUnknownLinksIcon),
         domainsToIgnore: convByVar(i18n.domainsToIgnore),
         additionalDomains: convByVar(i18n.additionalDomains),
         additionalUrlStrings: convByVar(i18n.additionalUrlStrings)
@@ -287,7 +289,8 @@ function createSettingsDialog() {
                         'cite_unseen_dashboard',
                         'cite_unseen_show_suggestions',
                         'cite_unseen_hide_social_media_reliability_ratings',
-                        'cite_unseen_show_other_language_reliability_ratings'
+                        'cite_unseen_show_other_language_reliability_ratings',
+                        'cite_unseen_show_unknown_links_icon'
                     ];
                     globalVars.forEach(varName => {
                         delete window[varName];
@@ -344,6 +347,7 @@ function createSettingsDialog() {
                         this.settings.showSuggestions = targetRules.showSuggestions !== false;
                         this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings === true;
                         this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings === true;
+                        this.settings.showUnknownLinksIcon = targetRules.showUnknownLinksIcon === true;
                     } else {
                         // For local rules, inherit from Meta if undefined, otherwise use local value
                         const metaRules = getMetaRulesFromGlobals();
@@ -371,6 +375,10 @@ function createSettingsDialog() {
                         this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings !== undefined ?
                             targetRules.showOtherLanguageReliabilityRatings :
                             (metaRules.showOtherLanguageReliabilityRatings === true);
+
+                        this.settings.showUnknownLinksIcon = targetRules.showUnknownLinksIcon !== undefined ?
+                            targetRules.showUnknownLinksIcon :
+                            (metaRules.showUnknownLinksIcon === true);
                     }
 
                     // Load list settings
@@ -391,7 +399,8 @@ function createSettingsDialog() {
                         dashboard: this.settings.dashboard,
                         showSuggestions: this.settings.showSuggestions,
                         hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings,
-                        showOtherLanguageReliabilityRatings: this.settings.showOtherLanguageReliabilityRatings
+                        showOtherLanguageReliabilityRatings: this.settings.showOtherLanguageReliabilityRatings,
+                        showUnknownLinksIcon: this.settings.showUnknownLinksIcon
                     };
 
                     const validationErrors = [];
@@ -555,6 +564,11 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
             content += `\n// Show other language reliability ratings setting
 cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLanguageReliabilityRatings};`;
         }
+
+        if (settings.showUnknownLinksIcon === true) {
+            content += `\n// Unknown links icon visibility setting
+cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
+        }
     } else {
         // For local wiki, include boolean settings if they differ from Meta settings
         const metaRules = getMetaRulesFromGlobals();
@@ -563,6 +577,7 @@ cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLangua
         const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
         const metaRulesHideSocialMedia = metaRules.hideSocialMediaReliabilityRatings === true; // Meta default logic
         const metaRulesShowOtherLanguage = metaRules.showOtherLanguageReliabilityRatings === true; // Meta default logic
+        const metaRulesShowUnknownLinksIcon = metaRules.showUnknownLinksIcon === true; // Meta default logic
 
         if (settings.dashboard !== metaDashboard) {
             content += `\n\n// Dashboard visibility setting
@@ -582,6 +597,11 @@ cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaRe
         if (settings.showOtherLanguageReliabilityRatings !== metaRulesShowOtherLanguage) {
             content += `\n\n// Show other language reliability ratings setting
 cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLanguageReliabilityRatings};`;
+        }
+
+        if (settings.showUnknownLinksIcon !== metaRulesShowUnknownLinksIcon) {
+            content += `\n\n// Unknown links icon visibility setting
+cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
         }
     }
 
