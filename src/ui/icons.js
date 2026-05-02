@@ -15,10 +15,14 @@ import {
 } from '../citations/sources.js';
 import {
     findReliabilityMatch,
-    findTypeMatches,
-    matchUrl,
-    matchUrlString
+    findTypeMatches
 } from '../citations/ruleMatch.js';
+import {
+    buildRuleKeyMap,
+    buildUrlKeySet,
+    getCandidateRulesForUrlKeys,
+    getRulesForUrlKeys
+} from '../citations/rulePrefilter.js';
 import {
     getCiteUnseenDomainIgnore,
 } from '../config.js';
@@ -143,29 +147,14 @@ export function addIcons() {
     const citeUnseenDomainIgnore = getCiteUnseenDomainIgnore();
     const refs = getRefs();
     const refLinks = getRefLinks();
-    const filteredCategorizedRules = {};
-    const refLinkCoins = { 'rft_id': refLinks };
     refCategories = {};
 
-    Object.keys(categorizedRules).forEach(key => {
-        const domainIgnoreList = citeUnseenDomainIgnore[key] || [];
-
-        filteredCategorizedRules[key] = categorizedRules[key].filter(rule => {
-            const domain = rule['url'];
-            const urlStr = rule['url_str'];
-
-            // If rule has url field, check if any domains match
-            if (domain) {
-                return !domainIgnoreList.includes(domain) &&
-                    matchUrl(refLinkCoins, rule);
-            }
-
-            // If rule has url_str field, check if any links contain the string
-            if (urlStr) {
-                return matchUrlString(refLinkCoins, rule);
-            }
-        });
-    });
+    const pageUrlKeySet = buildUrlKeySet(refLinks);
+    const fullRuleKeyMap = buildRuleKeyMap(categorizedRules, citeUnseenDomainIgnore);
+    const {
+        categorizedRules: pageCandidateCategorizedRules
+    } = getCandidateRulesForUrlKeys(fullRuleKeyMap, pageUrlKeySet);
+    const pageRuleKeyMap = buildRuleKeyMap(pageCandidateCategorizedRules);
     const typeCategories = citeUnseenCategoryTypes;
 
     refs.forEach(ref => {
@@ -206,14 +195,17 @@ export function addIcons() {
         // If rft_id, check URL-based classifications
         const rftIds = ensureArray(ref.coins['rft_id']);
         if (rftIds.length > 0) {
+            const refUrlKeySet = buildUrlKeySet(rftIds);
+            const refCategorizedRules = getRulesForUrlKeys(pageRuleKeyMap, refUrlKeySet, rftIds).categorizedRules;
+
             // Find reliability and type matches
-            const reliabilityMatches = findReliabilityMatch(ref.coins, filteredCategorizedRules, {
+            const reliabilityMatches = findReliabilityMatch(ref.coins, refCategorizedRules, {
                 citeUnseenChecklists,
                 citeUnseenCategories,
                 currentLanguage: mw.config.get('wgContentLanguage'),
                 showOtherLanguageReliabilityRatings: window.cite_unseen_show_other_language_reliability_ratings
             });
-            const typeMatches = findTypeMatches(ref.coins, filteredCategorizedRules, typeCategories, {
+            const typeMatches = findTypeMatches(ref.coins, refCategorizedRules, typeCategories, {
                 citeUnseenCategories,
                 additionalDomains: window.cite_unseen_additional_domains,
                 additionalStrings: window.cite_unseen_additional_strings
