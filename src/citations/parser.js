@@ -35,7 +35,7 @@ export function parseCoinsString(query) {
  * @param str - The URI component string to decode
  * @returns {string} Decoded string
  */
-export async function decodeURI(str) {
+export function decodeURI(str) {
     try {  // First try the built-in function
         return decodeURIComponent(str);
     } catch (e) { }  // Fallback to detection and decoding
@@ -361,7 +361,7 @@ export async function findCitations() {
             mergeRftIds(coinsObject, domLinks);
         } else {
             // Parse COinS string
-            let coinsString = await decodeURI(coinsTag.getAttribute('title'));
+            let coinsString = decodeURI(coinsTag.getAttribute('title'));
             coinsObject = parseCoinsString(coinsString);
 
             // Fallback to rfr_id if rft_id is missing
