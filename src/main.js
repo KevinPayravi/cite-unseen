@@ -186,9 +186,10 @@ function init() {
 
             // Run on every wikipage.content hook. This is to support gadgets like QuickEdit.
             mw.hook('wikipage.content').add(function () {
-                if (document.querySelector('#cite-unseen-finished-loading')) {
+                if (window.citeUnseenLoaded) {
                     return;
                 }
+                window.citeUnseenLoaded = true;
                 console.time('[Cite Unseen] Render runtime');
 
                 findCitations().then(function (citationState) {
@@ -247,10 +248,6 @@ function init() {
                     }
 
                     console.timeEnd('[Cite Unseen] Render runtime');
-                    let finishedLoading = document.createElement('div');
-                    finishedLoading.id = 'cite-unseen-finished-loading';
-                    finishedLoading.classList.add('cite-unseen-finished-loading');
-                    document.querySelector('#mw-content-text .mw-parser-output').appendChild(finishedLoading);
                 });
             });
         });

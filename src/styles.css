@@ -241,8 +241,7 @@
    ========================================================================== */
 
 /* Hidden/visible element states */
-.cite-unseen-hidden,
-.cite-unseen-finished-loading {
+.cite-unseen-hidden {
     display: none;
 }
 
