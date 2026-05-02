@@ -104,11 +104,9 @@ function parseDateRule(ruleString) {
         const andConditions = orGroup.split(',').map(s => s.trim()).filter(Boolean);
         const andPredicates = [];
 
-        for (let cond of andConditions) {
+        for (const rawCond of andConditions) {
             // Handle case where no operator is provided (default to '=')
-            if (!cond.match(/^(>=|<=|>|<|=)/)) {
-                cond = '=' + cond;
-            }
+            const cond = rawCond.match(/^(>=|<=|>|<|=)/) ? rawCond : '=' + rawCond;
 
             try {
                 const predicate = ruleToPredicate(cond);
@@ -298,7 +296,7 @@ function matchPublisher(coins, rule) {
     if (!rule._cachedPublisherRegex) {
         rule._cachedPublisherRegex = new RegExp(rule['pub'], 'i');
     }
-    return ensureArray(coinsPubCombined).some(publisher =>
+    return coinsPubCombined.some(publisher =>
         rule._cachedPublisherRegex.test(publisher)
     );
 }
@@ -547,6 +545,14 @@ export function findTypeMatches(coins, filteredCategorizedRules, typeCategories,
     return matches;
 }
 
+const MATCH_FUNCTIONS = {
+    'author': matchAuthor,
+    'pub': matchPublisher,
+    'date': matchDate,
+    'url': matchUrl,
+    'url_str': matchUrlString,
+};
+
 /**
  * Check if the source matches the rule.
  * @param {Object} coins - COinS object
@@ -558,23 +564,16 @@ export function match(coins, rule) {
         console.log("[Cite Unseen] There are empty rules in the ruleset.");
         return false;
     }
-    const matchFunctions = {
-        'author': matchAuthor,
-        'pub': matchPublisher,
-        'date': matchDate,
-        'url': matchUrl,
-        'url_str': matchUrlString,
-    };
     for (const key of Object.keys(rule)) {
         if (key.startsWith('_') || key === 'exclude') {
             continue;
         }
-        if (!matchFunctions[key]) {
+        if (!MATCH_FUNCTIONS[key]) {
             console.log("[Cite Unseen] Unknown rule:");
             console.log(rule);
             continue;
         }
-        if (!matchFunctions[key](coins, rule)) {
+        if (!MATCH_FUNCTIONS[key](coins, rule)) {
             return false;
         }
     }
