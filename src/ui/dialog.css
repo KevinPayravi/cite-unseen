@@ -1,0 +1,10 @@
+/* Tab guidance boxes */
+.cite-unseen-tab-guidance {
+    margin-bottom: 20px;
+    padding: 12px !important;
+    border: 1px solid #eaecf0;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #54595d;
+    background: #f8f9fa;
+}

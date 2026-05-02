@@ -1,6 +1,8 @@
 # IDEs and editors
 .idea
 .vscode
+node_modules
+build
 
 # System Files
 .DS_Store

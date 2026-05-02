@@ -1,107 +1,148 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
+const esbuild = require("esbuild");
+const { minify: minifyHtml } = require("html-minifier-terser");
 
-console.log('Building Cite Unseen bundled version...');
+const buildDir = path.join(__dirname, "build");
+const bundledPath = path.join(buildDir, "cite-unseen-bundled.js");
+const buildReadmePath = path.join(buildDir, "README.md");
+const releaseLabel =
+    process.env.CI_COMMIT_TAG ||
+    `dev-${process.env.CI_COMMIT_SHORT_SHA || "local"}`;
+const buildTimestamp = new Date().toISOString();
+const i18nModuleName = "cite-unseen-i18n-files";
+const i18nNamespace = "cite-unseen-i18n";
+const cssFilter = /\.css$/;
+const vueTemplateFilter = /\.template\.vue$/;
 
-// Read all source files
-const styles = fs.readFileSync('styles.css', 'utf8');
-const sources = fs.readFileSync('sources.js', 'utf8');
-const main = fs.readFileSync('main.js', 'utf8');
-
-// Read i18n JSON files and create i18n object
-const i18nDir = 'i18n';
-const i18nFiles = fs.readdirSync(i18nDir).filter(file => file.endsWith('.json'));
-const i18nData = {};
-for (const file of i18nFiles) {
-    const lang = path.basename(file, '.json');
-    const content = fs.readFileSync(path.join(i18nDir, file), 'utf8');
-    const langKey = lang.startsWith('zh-') ? lang.substring(3) : lang;  // 'zh-hans' -> 'hans', 'zh-hant' -> 'hant'
-    i18nData[langKey] = JSON.parse(content);
-}
-
-// Convert flat i18n structure back to nested structure
-const nestedI18n = {};
-for (const [lang, translations] of Object.entries(i18nData)) {
-    for (const [key, value] of Object.entries(translations)) {
-        const keyParts = key.split('.');
-        let current = nestedI18n;
-        
-        for (let i = 0; i < keyParts.length - 1; i++) {
-            const part = keyParts[i];
-            if (!current[part]) {
-                current[part] = {};
-            }
-            current = current[part];
-        }
-        
-        const finalKey = keyParts[keyParts.length - 1];
-        if (!current[finalKey]) {
-            current[finalKey] = {};
-        }
-        current[finalKey][lang] = value;
-    }
-}
-const i18nJs = `window.CiteUnseenI18n = ${JSON.stringify(nestedI18n, null, 4)};`;
-
-// Create the bundled content
-const releaseLabel = process.env.CI_COMMIT_TAG || `dev-${process.env.CI_COMMIT_SHORT_SHA || 'local'}`;
-let bundled = `// Cite Unseen - Bundled Version
+function createBanner() {
+    return `// Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
 // Release: ${releaseLabel}
-// Timestamp: ${new Date().toISOString()}
-
-(function() {
-    'use strict';
-    
-    // Inject CSS styles
-    const css = \`${styles.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`;
-    const style = document.createElement('style');
-    style.type = 'text/css';
-    style.innerHTML = css;
-    document.head.appendChild(style);
-    
-    // Load i18n data
-${i18nJs}
-
-    // Load sources data  
-${sources}
-
-    // Main script with modified importDependencies function
-`;
-
-// Modify the main.js content to remove external dependencies
-const modifiedMain = main.replace(
-    /await mw\.loader\.load\('\/\/gitlab-content\.toolforge\.org\/kevinpayravi\/cite-unseen\/-\/raw\/main\/styles\.css[^']*',\s*'text\/css'\);?\s*/g,
-    '// CSS already injected above\n            '
-).replace(
-    /await mw\.loader\.getScript\('\/\/gitlab-content\.toolforge\.org\/kevinpayravi\/cite-unseen\/-\/raw\/main\/i18n\.js[^']*'\);?\s*/g,
-    '// i18n.js already loaded above\n            '
-).replace(
-    /await mw\.loader\.getScript\('\/\/gitlab-content\.toolforge\.org\/kevinpayravi\/cite-unseen\/-\/raw\/main\/sources\.js[^']*'\);?\s*/g,
-    '// sources.js already loaded above\n            '
-);
-
-bundled += modifiedMain;
-bundled += '\n})();';
-
-// Create build directory
-if (!fs.existsSync('build')) {
-    fs.mkdirSync('build');
+// Timestamp: ${buildTimestamp}
+// <nowiki>`;
 }
 
-// Write bundled file
-fs.writeFileSync('build/cite-unseen-bundled.js', bundled);
+function createFooter() {
+    return "// </nowiki>";
+}
 
-const bundledSize = fs.statSync('build/cite-unseen-bundled.js').size;
+function createI18nPlugin() {
+    return {
+        name: "cite-unseen-i18n",
+        setup(build) {
+            build.onResolve({ filter: new RegExp(`^${i18nModuleName}$`) }, () => ({
+                path: i18nModuleName,
+                namespace: i18nNamespace,
+            }));
 
-console.log('Build completed!');
-console.log(`Bundled file: ${bundledSize} bytes`);
+            build.onLoad({ filter: /.*/, namespace: i18nNamespace }, () => {
+                const i18nDir = path.join(__dirname, "i18n");
+                const files = fs
+                    .readdirSync(i18nDir)
+                    .filter((file) => file.endsWith(".json"))
+                    .sort();
 
-// Create deployment README
-const deployReadme = `# Cite Unseen - Deploy Branch
+                const bundledFiles = files.map((file) => {
+                    const filePath = path.join(i18nDir, file);
+                    return {
+                        name: file,
+                        path: `i18n/${file}`,
+                        type: "blob",
+                        content: JSON.parse(fs.readFileSync(filePath, "utf8")),
+                    };
+                });
+
+                return {
+                    contents: `export default ${JSON.stringify(bundledFiles)};`,
+                    loader: "js",
+                    watchFiles: files.map((file) => path.join(i18nDir, file)),
+                };
+            });
+        },
+    };
+}
+
+async function minifyVueTemplate(template) {
+    return minifyHtml(template, {
+        caseSensitive: true,
+        collapseWhitespace: true,
+        conservativeCollapse: true,
+        ignoreCustomFragments: [/\{\{[\s\S]*?\}\}/],
+        keepClosingSlash: true,
+        minifyCSS: false,
+        minifyJS: false,
+        removeAttributeQuotes: false,
+        removeComments: true,
+        removeOptionalTags: false,
+    });
+}
+
+function createVueTemplatePlugin() {
+    return {
+        name: "cite-unseen-vue-templates",
+        setup(build) {
+            build.onLoad({ filter: vueTemplateFilter }, async (args) => {
+                const template = fs.readFileSync(args.path, "utf8");
+                const minifiedTemplate = await minifyVueTemplate(template);
+                return {
+                    contents: `export default ${JSON.stringify(minifiedTemplate)};`,
+                    loader: "js",
+                    watchFiles: [args.path],
+                };
+            });
+        },
+    };
+}
+
+function minifyCss(css) {
+    return esbuild.transformSync(css, {
+        loader: "css",
+        minify: true,
+    }).code;
+}
+
+function createCssTextPlugin() {
+    return {
+        name: "cite-unseen-css-text",
+        setup(build) {
+            build.onLoad({ filter: cssFilter }, (args) => {
+                const css = fs.readFileSync(args.path, "utf8");
+                return {
+                    contents: `export default ${JSON.stringify(minifyCss(css))};`,
+                    loader: "js",
+                    watchFiles: [args.path],
+                };
+            });
+        },
+    };
+}
+
+async function buildBundle() {
+    await esbuild.build({
+        entryPoints: [path.join(__dirname, "src", "main.js")],
+        bundle: true,
+        charset: "utf8",
+        format: "iife",
+        outfile: bundledPath,
+        platform: "browser",
+        target: ["es2019"],
+        banner: {
+            js: createBanner(),
+        },
+        footer: {
+            js: createFooter(),
+        },
+        plugins: [createI18nPlugin(), createVueTemplatePlugin(), createCssTextPlugin()],
+        minify: true,
+    });
+}
+
+function writeDeployReadme(bundledSize) {
+    const deployReadme = `# Cite Unseen - Deploy Branch
 
 This branch contains the bundled version of Cite Unseen.
 
@@ -117,13 +158,32 @@ await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unse
 ## Build Info
 
 - Release: ${releaseLabel}
-- Built from commit: ${process.env.CI_COMMIT_SHA || 'local'}
-- Build timestamp: ${new Date().toISOString()}
+- Built from commit: ${process.env.CI_COMMIT_SHA || "local"}
+- Build timestamp: ${buildTimestamp}
 - Bundled size: ${bundledSize} bytes
 `;
 
-fs.writeFileSync('build/README.md', deployReadme);
+    fs.writeFileSync(buildReadmePath, deployReadme);
+}
 
-console.log('Files created:');
-console.log('- build/cite-unseen-bundled.js');
-console.log('- build/README.md');
+async function main() {
+    console.log("Building Cite Unseen bundled version...");
+
+    fs.mkdirSync(buildDir, { recursive: true });
+    await buildBundle();
+
+    const bundledSize = fs.statSync(bundledPath).size;
+    writeDeployReadme(bundledSize);
+
+    console.log("Build completed!");
+    console.log(`Bundled file: ${bundledSize} bytes`);
+    console.log("Files created:");
+    console.log("- build/cite-unseen-bundled.js");
+    console.log("- build/README.md");
+}
+
+main().catch((error) => {
+    console.error("Build failed.");
+    console.error(error);
+    process.exitCode = 1;
+});
