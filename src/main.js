@@ -48,7 +48,7 @@ function injectStyles() {
  */
 async function importDependencies() {
     injectStyles();
-    if (!window.jschardet) {
+    if (!window.jschardet) { // Used for encoding detection in the parser when decodeURIComponent fails
         await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
     }
     await initializeConvByVar();

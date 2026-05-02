@@ -1,5 +1,11 @@
-const HEX_PAIR_RE = /^[0-9A-Fa-f]{2}$/;
+const HEX_PAIR_RE = /^[0-9A-Fa-f]{2}$/; // Matches two hexadecimal digits for percent-encoding decoding
 
+/**
+ * Decode a percent-encoded string into a binary string (8-bit bytes).
+ * This is used as a fallback when decodeURIComponent fails due to encoding issues.
+ * @param {string} str - The percent-encoded string to decode
+ * @returns {string} The decoded binary string
+ */
 function percentDecodeToBinStr(str) {
     let out = '';
     for (let i = 0; i < str.length; i++) {
@@ -16,6 +22,11 @@ function percentDecodeToBinStr(str) {
     return out;
 }
 
+/**
+ * Convert a canonical encoding label to its standard form.
+ * @param {string} label - The encoding label to convert
+ * @returns {string} The standard encoding label
+ */
 function canonicalEncodingLabel(label) {
     if (!label) return null;
     label = String(label).toLowerCase();
