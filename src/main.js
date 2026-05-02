@@ -77,10 +77,15 @@ function init() {
 
             // Run on every wikipage.content hook. This is to support gadgets like QuickEdit.
             mw.hook('wikipage.content').add(function () {
-                if (window.citeUnseenLoaded) {
+                // Guard against multiple runs on the same page. This can happen with gadgets like QuickEdit that re-run wikipage.content without a full page reload.
+                const parserOutput = document.querySelector('.mw-parser-output');
+                if (!parserOutput || parserOutput.querySelector('#cite-unseen-loaded')) {
                     return;
                 }
-                window.citeUnseenLoaded = true;
+                const loadedSentinel = document.createElement('span');
+                loadedSentinel.id = 'cite-unseen-loaded';
+                loadedSentinel.setAttribute('style', 'display: none;');
+                parserOutput.prepend(loadedSentinel);
                 console.time('[Cite Unseen] Render runtime');
 
                 findCitations().then(function () {
