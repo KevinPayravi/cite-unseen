@@ -21,11 +21,12 @@ let ruleConfig = {
         'cite_unseen_additional_strings',
         'cite_unseen_dashboard',
         'cite_unseen_show_suggestions',
-        'cite_unseen_hide_social_media_reliability_ratings'
+        'cite_unseen_hide_social_media_reliability_ratings',
+        'cite_unseen_show_unknown_links_icon'
     ],
 
     mergeableProps: ['categories', 'domainIgnore', 'additionalDomains', 'additionalStrings'],
-    booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings', 'showOtherLanguageReliabilityRatings'],
+    booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings', 'showOtherLanguageReliabilityRatings', 'showUnknownLinksIcon'],
 
     globalMapping: {
         categories: 'cite_unseen_categories',
@@ -35,7 +36,8 @@ let ruleConfig = {
         dashboard: 'cite_unseen_dashboard',
         showSuggestions: 'cite_unseen_show_suggestions',
         hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings',
-        showOtherLanguageReliabilityRatings: 'cite_unseen_show_other_language_reliability_ratings'
+        showOtherLanguageReliabilityRatings: 'cite_unseen_show_other_language_reliability_ratings',
+        showUnknownLinksIcon: 'cite_unseen_show_unknown_links_icon'
     }
 };
 
@@ -319,7 +321,8 @@ export async function importCustomRules() {
             dashboard: metaState.dashboard !== undefined ? metaState.dashboard : true,
             showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true,
             hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false,
-            showOtherLanguageReliabilityRatings: metaState.showOtherLanguageReliabilityRatings === true || false
+            showOtherLanguageReliabilityRatings: metaState.showOtherLanguageReliabilityRatings === true || false,
+            showUnknownLinksIcon: metaState.showUnknownLinksIcon === true || false
         };
 
         // Load local rules
@@ -336,7 +339,8 @@ export async function importCustomRules() {
             dashboard: localRules?.dashboard !== undefined ? localRules.dashboard : true,
             showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true,
             hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false,
-            showOtherLanguageReliabilityRatings: localRules?.showOtherLanguageReliabilityRatings === true || false
+            showOtherLanguageReliabilityRatings: localRules?.showOtherLanguageReliabilityRatings === true || false,
+            showUnknownLinksIcon: localRules?.showUnknownLinksIcon === true || false
         };
 
         // Merge and apply all rules
@@ -364,7 +368,8 @@ export function getMetaRulesFromGlobals() {
         dashboard: true,
         showSuggestions: true,
         hideSocialMediaReliabilityRatings: false,
-        showOtherLanguageReliabilityRatings: false
+        showOtherLanguageReliabilityRatings: false,
+        showUnknownLinksIcon: false
     };
 }
 
@@ -381,7 +386,8 @@ export function getLocalRulesFromGlobals() {
         dashboard: true,
         showSuggestions: true,
         hideSocialMediaReliabilityRatings: false,
-        showOtherLanguageReliabilityRatings: false
+        showOtherLanguageReliabilityRatings: false,
+        showUnknownLinksIcon: false
     };
 }
 

@@ -248,7 +248,11 @@ export function addIcons() {
         }
 
         if (citeUnseenCategories.unknown && processedCategories.size === 0) {
-            trackUnknownCitation(iconsDiv);
+            if (window.cite_unseen_show_unknown_links_icon === true) {
+                processIcon(iconsDiv, "unknown");
+            } else {
+                trackUnknownCitation(iconsDiv);
+            }
         }
     });
 
