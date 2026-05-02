@@ -167,6 +167,19 @@ function urlRegex(string) {
 }
 
 /**
+ * Get the cached URL regex for a rule.
+ * @param {Object} rule - Rule object
+ * @returns {RegExp} URL matching regex
+ */
+function getRuleUrlRegex(rule) {
+    if (rule._cachedUrlRegexSource !== rule['url']) {
+        rule._cachedUrlRegexSource = rule['url'];
+        rule._cachedUrlRegex = urlRegex(rule['url']);
+    }
+    return rule._cachedUrlRegex;
+}
+
+/**
  * Split a rule's whitespace-separated exclude list into individual tokens.
  * @param {Object} rule - Rule object
  * @returns {string[]} Exclude tokens
@@ -185,18 +198,37 @@ function getExcludeTokens(rule) {
 }
 
 /**
+ * Get cached URL regexes for a rule's exclude list.
+ * @param {Object} rule - Rule object
+ * @returns {RegExp[]} Exclude URL regexes
+ */
+function getExcludeUrlRegexes(rule) {
+    const excludeTokens = getExcludeTokens(rule);
+    if (excludeTokens.length === 0) {
+        return [];
+    }
+
+    if (rule._cachedExcludeRegexSource !== rule['exclude']) {
+        rule._cachedExcludeRegexSource = rule['exclude'];
+        rule._cachedExcludeUrlRegexes = excludeTokens.map(urlRegex);
+    }
+
+    return rule._cachedExcludeUrlRegexes || [];
+}
+
+/**
  * Check whether a URL is excluded from a broader `url` rule match.
  * @param {string} rftId - Citation URL
  * @param {Object} rule - Rule object
  * @returns {boolean} Whether the URL is excluded
  */
 function isExcludedUrlMatch(rftId, rule) {
-    const excludeTokens = getExcludeTokens(rule);
-    if (excludeTokens.length === 0) {
+    const excludeUrlRegexes = getExcludeUrlRegexes(rule);
+    if (excludeUrlRegexes.length === 0) {
         return false;
     }
 
-    return excludeTokens.some(token => urlRegex(token).test(rftId));
+    return excludeUrlRegexes.some(regex => regex.test(rftId));
 }
 
 /**
@@ -282,7 +314,12 @@ function matchDate(coins, rule) {
         return true;
     }
 
-    const predicate = parseDateRule(rule['date']);
+    if (rule._cachedDateRuleSource !== rule['date']) {
+        rule._cachedDateRuleSource = rule['date'];
+        rule._cachedDatePredicate = parseDateRule(rule['date']);
+    }
+
+    const predicate = rule._cachedDatePredicate;
     if (!predicate) {
         return false;
     }
@@ -304,8 +341,9 @@ export function matchUrl(coins, rule) {
     if (typeof rule['url'] !== 'string' || rule['url'] === '') return false;
     const rftIds = ensureArray(coins['rft_id']);
     if (rftIds.length === 0) return false;
+    const regex = getRuleUrlRegex(rule);
     return rftIds.some(rftId =>
-        urlRegex(rule['url']).test(rftId) &&
+        regex.test(rftId) &&
         !isExcludedUrlMatch(rftId, rule)
     );
 }

@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
-const esbuild = require("esbuild");
-const { minify: minifyHtml } = require("html-minifier-terser");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import esbuild from "esbuild";
+import { minify as minifyHtml } from "html-minifier-terser";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const buildDir = path.join(__dirname, "build");
 const bundledPath = path.join(buildDir, "cite-unseen-bundled.js");
