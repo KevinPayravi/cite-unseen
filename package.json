@@ -1,0 +1,17 @@
+{
+    "name": "cite-unseen",
+    "private": true,
+    "scripts": {
+        "build": "node build.js"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "devDependencies": {
+        "esbuild": "0.28.0",
+        "html-minifier-terser": "^7.2.0"
+    },
+    "dependencies": {
+        "jschardet": "^3.1.4"
+    }
+}

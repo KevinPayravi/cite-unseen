@@ -1,0 +1,29 @@
+/* Form sections */
+.cite-unseen-form-section {
+    margin-bottom: 20px;
+}
+
+/* Input labels */
+.cite-unseen-input-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.cite-unseen-checkbox-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Full width input */
+.cite-unseen-full-width-input {
+    width: 100%;
+}
+
+/* Category grid */
+.cite-unseen-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+}

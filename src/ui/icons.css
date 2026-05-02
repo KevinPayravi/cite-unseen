@@ -1,0 +1,44 @@
+/* Citation icon styling */
+.cite-unseen-icon {
+    width: 17px;
+    height: 17px;
+    max-width: 17px;
+    object-fit: contain;
+}
+
+.cite-unseen-icon-link {
+    display: contents;
+}
+
+/* Icons container */
+.cite-unseen-icons {
+    display: inline-flex;
+    gap: 0 5px;
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+.cite-unseen-icons:empty {
+    padding-right: 0px;
+}
+
+/* Icon container for language indicators */
+.cite-unseen-icon-container {
+    position: relative;
+    display: flex;
+}
+
+.cite-unseen-lang-indicator {
+    position: absolute;
+    bottom: -4px;
+    right: -3px;
+    font-size: 8px;
+    font-weight: bold;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0 1px;
+    line-height: 1;
+    z-index: 10;
+}
