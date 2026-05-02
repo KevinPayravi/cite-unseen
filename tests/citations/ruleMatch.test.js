@@ -2,10 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+    findReliabilityMatch,
     match,
     matchUrl,
     matchUrlString
 } from '../../src/citations/ruleMatch.js';
+import { citeUnseenChecklists } from '../../src/citations/sourceData.js';
 
 /**
  * Create the smallest COinS-like object needed by the URL matchers.
@@ -21,6 +23,47 @@ function createCoins(urls, extraFields = {}) {
         'rft_id': urls,
         ...extraFields
     };
+}
+
+/**
+ * Create a reliability test fixture that mirrors the real checklist IDs.
+ * Every checklist ID starts with an empty rule array, so a test can fill only
+ * the categories it cares about without producing "not in the ruleset" logs.
+ *
+ * @returns {Object} Reliability fixture with categorized rules and enabled categories.
+ */
+function createReliabilityFixture() {
+    const categorizedRules = {};
+    const citeUnseenCategories = {};
+
+    for (const [, checklists] of citeUnseenChecklists) {
+        for (const [, checklistID] of checklists) {
+            categorizedRules[checklistID] = [];
+            citeUnseenCategories[checklistID] = true;
+        }
+    }
+
+    return {
+        categorizedRules,
+        citeUnseenCategories
+    };
+}
+
+/**
+ * Find reliability matches using the real sourceData.js checklist order.
+ *
+ * @param {Object} coins - COinS-like citation object.
+ * @param {Object} categorizedRules - Rules grouped by checklist category.
+ * @param {Object} citeUnseenCategories - Enabled category map.
+ * @returns {Object[]} Reliability match results.
+ */
+function findReliabilityMatches(coins, categorizedRules, citeUnseenCategories) {
+    return findReliabilityMatch(coins, categorizedRules, {
+        citeUnseenChecklists,
+        citeUnseenCategories,
+        currentLanguage: 'en',
+        showOtherLanguageReliabilityRatings: false
+    });
 }
 
 test('matchUrl accepts a host and its subdomains but rejects unrelated suffix tricks', () => {
@@ -104,4 +147,54 @@ test('match ignores its own cached fields when the same constrained rule is reus
     assert.equal(match(matchingCoins, rule), true);
     assert.equal(match(matchingCoins, rule), true);
     assert.equal(match(staleCoins, rule), false);
+});
+
+test('findReliabilityMatch keeps earlier reliability categories when equal-specificity rules match', () => {
+    /**
+     * sourceData.js lists generallyUnreliable before generallyReliable. When
+     * both categories match the same citation with the same specificity, the
+     * earlier checklist order should still decide the visible reliability icon.
+     */
+    const coins = createCoins('https://www.example.com/article');
+    const {
+        categorizedRules,
+        citeUnseenCategories
+    } = createReliabilityFixture();
+
+    categorizedRules.enRspGenerallyUnreliable = [{ 'url': 'example.com' }];
+    categorizedRules.enRspGenerallyReliable = [{ 'url': 'example.com' }];
+
+    assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
+        {
+            type: 'generallyUnreliable',
+            name: 'enRSP',
+            language: 'en',
+            spec: 0
+        }
+    ]);
+});
+
+test('findReliabilityMatch keeps earlier checklist names within the same reliability category', () => {
+    /**
+     * sourceData.js lists enRSP before enVGS inside generallyReliable. If both
+     * checklists contain an equal-specificity rule for the same URL, enRSP must
+     * remain the selected match because it appears first.
+     */
+    const coins = createCoins('https://www.example.com/article');
+    const {
+        categorizedRules,
+        citeUnseenCategories
+    } = createReliabilityFixture();
+
+    categorizedRules.enRspGenerallyReliable = [{ 'url': 'example.com' }];
+    categorizedRules.enVgsGenerallyReliable = [{ 'url': 'example.com' }];
+
+    assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
+        {
+            type: 'generallyReliable',
+            name: 'enRSP',
+            language: 'en',
+            spec: 0
+        }
+    ]);
 });
