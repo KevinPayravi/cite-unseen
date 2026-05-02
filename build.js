@@ -141,7 +141,7 @@ async function buildBundle() {
             js: createFooter(),
         },
         plugins: [createI18nPlugin(), createVueTemplatePlugin(), createCssTextPlugin()],
-        minify: true,
+        minify: false,
     });
 }
 
