@@ -1,5 +1,3 @@
-import { detect as detectEncoding } from 'jschardet';
-
 const HEX_PAIR_RE = /^[0-9A-Fa-f]{2}$/;
 
 function percentDecodeToBinStr(str) {
@@ -67,7 +65,7 @@ export function decodeURI(str) {
     } catch (e) { }  // Fallback to detection and decoding
 
     const binStr = percentDecodeToBinStr(str);
-    const detected = detectEncoding(binStr);
+    const detected = window.jschardet.detect(binStr);
     const encoding = canonicalEncodingLabel(detected?.encoding);
     const decoder = new TextDecoder(encoding);
     return decoder.decode(new TextEncoder().encode(binStr));
