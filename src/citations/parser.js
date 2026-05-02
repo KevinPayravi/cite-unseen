@@ -325,11 +325,9 @@ export async function findCitations() {
     for (const citeTag of document.querySelectorAll("cite")) {
         let coinsObject;
         const refTextElement = citeTag.closest('.reference-text, .mw-reference-text');
-        const citationMarkup = getCitationMarkupContext(citeTag);
         const onlyCitationInRefText = refTextElement ? refTextElement.querySelectorAll('cite').length === 1 : false;
-        let citationElement = citationMarkup.citationElement;
-        let coinsTag = citationMarkup.coinsTag;
-        let domLinks = ensureArray(citationMarkup.externalLinks.map(link => link.getAttribute('href')));
+        let { citationElement, coinsTag, externalLinks } = getCitationMarkupContext(citeTag);
+        let domLinks = ensureArray(externalLinks.map(link => link.getAttribute('href')));
         if ((!coinsTag || coinsTag.tagName !== 'SPAN' || !coinsTag.hasAttribute('title')) && refTextElement) {
             const fallbackCoinsTag = getSingleScopedMatch(refTextElement, '.Z3988[title]');
             if (fallbackCoinsTag) {
