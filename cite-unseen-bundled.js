@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-467e4767
-// Timestamp: 2026-05-02T18:45:42.956Z
+// Release: dev-1ab62f57
+// Timestamp: 2026-05-02T19:16:24.380Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -456,14 +456,12 @@
     }
   }
   function processApiResponse(response) {
-    let pageids = response.query.pageids;
     let fulltext = "";
-    for (let i = 0; i < pageids.length; i++) {
-      let pageid = pageids[i];
+    for (const pageid of response.query.pageids) {
       if (pageid === "-1") {
         continue;
       }
-      let page = response.query.pages[pageid];
+      const page = response.query.pages[pageid];
       if (page.revisions && page.revisions.length > 0) {
         fulltext += page.revisions[0].slots.main["*"] + "\n\n";
       }
@@ -471,8 +469,8 @@
     return fulltext;
   }
   function processCategorizedRules(fulltext) {
-    let sections = getSections(fulltext);
-    let categorizedRules = {};
+    const sections = getSections(fulltext);
+    const categorizedRules = {};
     for (const [cat, section] of Object.entries(sections)) {
       const entries = Array.from(section.matchAll(/{{\s*CULink\s*\|\s*([^}]+?)\s*}}/g), (match2) => match2[1]);
       const resolvedCat = resolveSourceToCategory(cat);
@@ -487,9 +485,9 @@
     return citeUnseenSourceToPageMapping[sourceName] || null;
   }
   async function getFullText() {
-    let source_titles = citeUnseenSources.map((source) => `Cite_Unseen/sources/${source}`).join("|");
-    var api = createApiInstance();
-    var response = await api.get({
+    const source_titles = citeUnseenSources.map((source) => `Cite_Unseen/sources/${source}`).join("|");
+    const api = createApiInstance();
+    const response = await api.get({
       action: "query",
       titles: source_titles,
       prop: "revisions",
@@ -500,8 +498,8 @@
     return processApiResponse(response);
   }
   async function getFullTextFromRevisions(revisionIds) {
-    var api = createApiInstance();
-    var response = await api.get({
+    const api = createApiInstance();
+    const response = await api.get({
       action: "query",
       revids: revisionIds.join("|"),
       prop: "revisions",
@@ -516,7 +514,7 @@
     return processCategorizedRules(fulltext);
   }
   function getSections(fulltext) {
-    let sections = {};
+    const sections = {};
     const headerRegex = /^(={3})([^=]+)\1$/gm;
     let match2;
     let lastHeader = null;
@@ -880,6 +878,29 @@
   }
 
   // src/citations/parser.js
+  var HEX_PAIR_RE = /^[0-9A-Fa-f]{2}$/;
+  function percentDecodeToBinStr(str) {
+    let out = "";
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i];
+      if (ch === "%" && i + 2 < str.length && HEX_PAIR_RE.test(str.slice(i + 1, i + 3))) {
+        out += String.fromCharCode(parseInt(str.slice(i + 1, i + 3), 16));
+        i += 2;
+      } else if (ch === "+") {
+        out += " ";
+      } else {
+        out += String.fromCharCode(str.charCodeAt(i) & 255);
+      }
+    }
+    return out;
+  }
+  function canonicalEncodingLabel(label) {
+    if (!label) return null;
+    label = String(label).toLowerCase();
+    if (label === "ansi_x3.4-1968" || label === "us-ascii" || label === "ascii") return "utf-8";
+    if (label === "latin1" || label === "iso-8859-1" || label === "cp1252") return "windows-1252";
+    return label;
+  }
   var refs = [];
   var refLinks = [];
   var reflists = [];
@@ -901,36 +922,14 @@
     });
     return result;
   }
-  async function decodeURI(str) {
+  function decodeURI(str) {
     try {
       return decodeURIComponent(str);
     } catch (e) {
     }
-    function percentDecodeToBinStr(str2) {
-      let out = "";
-      for (let i = 0; i < str2.length; i++) {
-        const ch = str2[i];
-        if (ch === "%" && i + 2 < str2.length && /^[0-9A-Fa-f]{2}$/.test(str2.slice(i + 1, i + 3))) {
-          out += String.fromCharCode(parseInt(str2.slice(i + 1, i + 3), 16));
-          i += 2;
-        } else if (ch === "+") {
-          out += " ";
-        } else {
-          out += String.fromCharCode(str2.charCodeAt(i) & 255);
-        }
-      }
-      return out;
-    }
-    function canonicalLabel(label) {
-      if (!label) return null;
-      label = String(label).toLowerCase();
-      if (label === "ansi_x3.4-1968" || label === "us-ascii" || label === "ascii") return "utf-8";
-      if (label === "latin1" || label === "iso-8859-1" || label === "cp1252") return "windows-1252";
-      return label;
-    }
     const binStr = percentDecodeToBinStr(str);
     const detected = window.jschardet.detect(binStr);
-    const encoding = canonicalLabel(detected == null ? void 0 : detected.encoding);
+    const encoding = canonicalEncodingLabel(detected == null ? void 0 : detected.encoding);
     const decoder = new TextDecoder(encoding);
     return decoder.decode(new TextEncoder().encode(binStr));
   }
@@ -954,7 +953,6 @@
     return matches.length === 1 ? matches[0] : null;
   }
   function collectExternalLinks(roots) {
-    var _a;
     const externalLinks = [];
     const seen = /* @__PURE__ */ new Set();
     for (const root of roots) {
@@ -962,12 +960,10 @@
         continue;
       }
       const matches = [];
-      if ((_a = root.matches) == null ? void 0 : _a.call(root, "a.external")) {
+      if (root.matches("a.external")) {
         matches.push(root);
       }
-      if (root.querySelectorAll) {
-        matches.push(...root.querySelectorAll("a.external"));
-      }
+      matches.push(...root.querySelectorAll("a.external"));
       for (const link of matches) {
         if (!seen.has(link)) {
           seen.add(link);
@@ -1071,11 +1067,9 @@
     for (const citeTag of document.querySelectorAll("cite")) {
       let coinsObject;
       const refTextElement = citeTag.closest(".reference-text, .mw-reference-text");
-      const citationMarkup = getCitationMarkupContext(citeTag);
       const onlyCitationInRefText = refTextElement ? refTextElement.querySelectorAll("cite").length === 1 : false;
-      let citationElement = citationMarkup.citationElement;
-      let coinsTag = citationMarkup.coinsTag;
-      let domLinks = ensureArray(citationMarkup.externalLinks.map((link) => link.getAttribute("href")));
+      let { citationElement, coinsTag, externalLinks } = getCitationMarkupContext(citeTag);
+      let domLinks = ensureArray(externalLinks.map((link) => link.getAttribute("href")));
       if ((!coinsTag || coinsTag.tagName !== "SPAN" || !coinsTag.hasAttribute("title")) && refTextElement) {
         const fallbackCoinsTag = getSingleScopedMatch(refTextElement, ".Z3988[title]");
         if (fallbackCoinsTag) {
@@ -1103,7 +1097,7 @@
         coinsObject = {};
         mergeRftIds(coinsObject, domLinks);
       } else {
-        let coinsString = await decodeURI(coinsTag.getAttribute("title"));
+        const coinsString = decodeURI(coinsTag.getAttribute("title"));
         coinsObject = parseCoinsString(coinsString);
         if (!coinsObject["rft_id"] && coinsObject["rfr_id"]) {
           coinsObject["rft_id"] = coinsObject["rfr_id"];
@@ -1262,10 +1256,8 @@
     for (const orGroup of orGroups) {
       const andConditions = orGroup.split(",").map((s) => s.trim()).filter(Boolean);
       const andPredicates = [];
-      for (let cond of andConditions) {
-        if (!cond.match(/^(>=|<=|>|<|=)/)) {
-          cond = "=" + cond;
-        }
+      for (const rawCond of andConditions) {
+        const cond = rawCond.match(/^(>=|<=|>|<|=)/) ? rawCond : "=" + rawCond;
         try {
           const predicate = ruleToPredicate(cond);
           andPredicates.push(predicate);
@@ -1373,7 +1365,7 @@
     if (!rule._cachedPublisherRegex) {
       rule._cachedPublisherRegex = new RegExp(rule["pub"], "i");
     }
-    return ensureArray2(coinsPubCombined).some(
+    return coinsPubCombined.some(
       (publisher) => rule._cachedPublisherRegex.test(publisher)
     );
   }
@@ -1536,28 +1528,28 @@
     }
     return matches;
   }
+  var MATCH_FUNCTIONS = {
+    "author": matchAuthor,
+    "pub": matchPublisher,
+    "date": matchDate,
+    "url": matchUrl,
+    "url_str": matchUrlString
+  };
   function match(coins, rule) {
     if (!rule) {
       console.log("[Cite Unseen] There are empty rules in the ruleset.");
       return false;
     }
-    const matchFunctions = {
-      "author": matchAuthor,
-      "pub": matchPublisher,
-      "date": matchDate,
-      "url": matchUrl,
-      "url_str": matchUrlString
-    };
     for (const key of Object.keys(rule)) {
       if (key.startsWith("_") || key === "exclude") {
         continue;
       }
-      if (!matchFunctions[key]) {
+      if (!MATCH_FUNCTIONS[key]) {
         console.log("[Cite Unseen] Unknown rule:");
         console.log(rule);
         continue;
       }
-      if (!matchFunctions[key](coins, rule)) {
+      if (!MATCH_FUNCTIONS[key](coins, rule)) {
         return false;
       }
     }
