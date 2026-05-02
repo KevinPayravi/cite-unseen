@@ -13,7 +13,7 @@ await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/cite-unse
 
 ## Build Info
 
-- Release: dev-b2d097fc
-- Built from commit: b2d097fc6b3241b3fb78eb2ab51e585875e2c657
-- Build timestamp: 2026-05-02T13:04:39.577Z
-- Bundled size: 547383 bytes
+- Release: dev-b1b79f11
+- Built from commit: b1b79f1164a4dfdfa8464f8a5623af01a277e0ac
+- Build timestamp: 2026-05-02T13:23:34.901Z
+- Bundled size: 550561 bytes
