@@ -42,21 +42,28 @@ export function getCitationContainer(citationElement) {
 }
 
 /**
+ * Create a count object initialized for every dashboard category.
+ * @returns {Object.<string, number>} Category counts initialized to zero
+ */
+function createEmptyCategoryCounts() {
+    const counts = {};
+
+    for (const category of getAllCategoryTypes()) {
+        counts[category] = 0;
+    }
+
+    return counts;
+}
+
+/**
  * Calculate category counts for a specific reflist
  * @param {Object} reflistData - The reflist data object
  * @returns {Object} Category counts for this reflist
  */
 function calculateCategoryCountsForReflist(reflistData) {
     const refCategories = getRefCategories();
-    const counts = {};
-
-    // Get all category types
-    const categoryTypes = getAllCategoryTypes(); // Order doesn't matter here
-
-    // Initialize all category counts to 0
-    for (const category of categoryTypes) {
-        counts[category] = 0;
-    }
+    const counts = createEmptyCategoryCounts();
+    reflistData.categories = {};
 
     // Count citations in this reflist by category
     for (const ref of reflistData.refs) {
@@ -79,6 +86,146 @@ function calculateCategoryCountsForReflist(reflistData) {
 }
 
 /**
+ * Get unique citation containers in a reflist that belong to a category.
+ * @param {Object} reflistData - The reflist data object
+ * @param {string} category - Citation category to read
+ * @returns {Set.<Element>} Citation containers that belong to the category
+ */
+function getCategoryContainersForReflist(reflistData, category) {
+    const containers = new Set();
+    const nodes = reflistData.categories[category] || [];
+
+    for (const citeElement of nodes) {
+        const container = getCitationContainer(citeElement);
+        if (container && reflistData.element.contains(container)) {
+            containers.add(container);
+        }
+    }
+
+    return containers;
+}
+
+/**
+ * Get citation containers that match every selected category.
+ * @param {Object} reflistData - The reflist data object
+ * @param {Iterable.<string>} selectedCategories - Categories currently selected
+ * @returns {Set.<Element>} Citation containers matching all selected categories
+ */
+function getContainersMatchingCategories(reflistData, selectedCategories) {
+    const selectedCategoriesArray = Array.from(selectedCategories);
+
+    if (selectedCategoriesArray.length === 0) {
+        return new Set(reflistData.element.querySelectorAll('li'));
+    }
+
+    let matchingContainers = null;
+
+    for (const category of selectedCategoriesArray) {
+        const categoryContainers = getCategoryContainersForReflist(reflistData, category);
+
+        if (matchingContainers === null) {
+            matchingContainers = categoryContainers;
+            continue;
+        }
+
+        for (const container of matchingContainers) {
+            if (!categoryContainers.has(container)) {
+                matchingContainers.delete(container);
+            }
+        }
+
+        if (matchingContainers.size === 0) {
+            break;
+        }
+    }
+
+    return matchingContainers || new Set();
+}
+
+/**
+ * Count category memberships inside currently visible citation containers.
+ * @param {Object} reflistData - The reflist data object
+ * @param {Set.<Element>} visibleContainers - Citation containers visible under the active filter
+ * @returns {Object.<string, number>} Category counts for the visible citations
+ */
+function calculateCategoryCountsForContainers(reflistData, visibleContainers) {
+    const counts = createEmptyCategoryCounts();
+
+    for (const category of getAllCategoryTypes()) {
+        const nodes = reflistData.categories[category] || [];
+
+        for (const citeElement of nodes) {
+            const container = getCitationContainer(citeElement);
+            if (visibleContainers.has(container)) {
+                counts[category]++;
+            }
+        }
+    }
+
+    return counts;
+}
+
+/**
+ * Calculate dashboard counts using the currently selected categories as facets.
+ * @param {Object} reflistData - The reflist data object
+ * @returns {Object.<string, number>} Faceted category counts for this reflist
+ */
+function calculateFacetedCategoryCountsForReflist(reflistData) {
+    if (reflistData.selectedCategories.size === 0) {
+        return reflistData.categoryCounts || createEmptyCategoryCounts();
+    }
+
+    const visibleContainers = getContainersMatchingCategories(reflistData, reflistData.selectedCategories);
+    return calculateCategoryCountsForContainers(reflistData, visibleContainers);
+}
+
+/**
+ * Format the localized dashboard label for a category count.
+ * @param {string} category - Citation category
+ * @param {number} count - Count to display
+ * @returns {string} Localized category count label
+ */
+function formatCategoryCountText(category, count) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
+    const categoryLabel = convByVar(i18n.categoryLabels[category]);
+    // Handle plural for English
+    const labelText = mw.config.get('wgContentLanguage') === 'en' ?
+        parseI18nPlural(categoryLabel, count) :
+        categoryLabel;
+
+    return count + ' ' + labelText;
+}
+
+/**
+ * Refresh the displayed count, selected state, and disabled state for category toggles.
+ * @param {Object} dashboard - The dashboard object
+ * @param {Object.<string, number>} categoryCounts - Counts to display for each category
+ */
+function refreshDashboardCategoryCounts(dashboard, categoryCounts) {
+    const selectedCategories = dashboard.reflistData.selectedCategories;
+    const categoryElements = dashboard.cats.querySelectorAll('[data-category]');
+
+    categoryElements.forEach(function (element) {
+        const category = element.getAttribute('data-category');
+        const count = categoryCounts[category] || 0;
+        const selected = selectedCategories.has(category);
+        const disabled = count === 0 && !selected;
+        const countText = element.querySelector('.cite-unseen-category-text');
+
+        if (countText) {
+            countText.innerText = formatCategoryCountText(category, count);
+        }
+
+        element.classList.toggle('cite-unseen-filter-selected', selected);
+        element.classList.toggle('cite-unseen-filter-disabled', disabled);
+        element.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        element.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+        element.setAttribute('tabindex', disabled ? '-1' : '0');
+    });
+}
+
+/**
  * Update dashboard categories display for a specific dashboard
  * @param {Object} dashboard - The dashboard object
  * @param {Object} categoryCounts - Category counts for this reflist
@@ -92,9 +239,11 @@ function updateDashboardCategories(dashboard, categoryCounts) {
 
     // List each type of source in order
     const categoryTypes = getAllCategoryTypes(); // Order matters here
+    const initialCategoryCounts = dashboard.reflistData.categoryCounts || categoryCounts;
     for (const category of categoryTypes) {
+        const initialCount = initialCategoryCounts[category] || 0;
         const count = categoryCounts[category] || 0;
-        if (count > 0) {
+        if (initialCount > 0) {
             const countNode = document.createElement('div');
             countNode.setAttribute('data-category', category);
             countNode.classList.add('cite-unseen-category-item');
@@ -107,15 +256,13 @@ function updateDashboardCategories(dashboard, categoryCounts) {
             countIcon.classList.add('cite-unseen-category-icon');
 
             const countText = document.createElement('span');
-            const categoryLabel = convByVar(i18n.categoryLabels[category]);
-            // Handle plural for English
-            const labelText = mw.config.get('wgContentLanguage') === 'en' ?
-                parseI18nPlural(categoryLabel, count) :
-                categoryLabel;
-            countText.innerText = count + ' ' + labelText;
+            countText.innerText = formatCategoryCountText(category, count);
             countText.classList.add('cite-unseen-category-text');
 
             countNode.onclick = function () {
+                if (countNode.classList.contains('cite-unseen-filter-disabled')) {
+                    return;
+                }
                 toggleCategoryFilterForReflist(dashboard.reflistData, category);
             };
 
@@ -136,6 +283,8 @@ function updateDashboardCategories(dashboard, categoryCounts) {
             dashboard.cats.appendChild(countNode);
         }
     }
+
+    refreshDashboardCategoryCounts(dashboard, categoryCounts);
 }
 
 /**
@@ -185,19 +334,6 @@ function applyMultiCategoryFilterForReflist(reflistData) {
     const dashboard = reflistData.dashboard;
     const targetReflist = reflistData.element;
 
-    // Update dashboard visual indications for all categories
-    const allCategoryElements = dashboard.cats.querySelectorAll('[data-category]');
-    allCategoryElements.forEach(function (element) {
-        const category = element.getAttribute('data-category');
-        if (reflistData.selectedCategories.has(category)) {
-            element.classList.add('cite-unseen-filter-selected');
-            element.setAttribute('aria-pressed', 'true');
-        } else {
-            element.classList.remove('cite-unseen-filter-selected');
-            element.setAttribute('aria-pressed', 'false');
-        }
-    });
-
     // Show/hide "Clear All" button based on active filters
     if (dashboard.clearAll) {
         if (reflistData.selectedCategories.size > 1) {
@@ -222,36 +358,12 @@ function applyMultiCategoryFilterForReflist(reflistData) {
 
         // Reset count display
         updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations);
+        refreshDashboardCategoryCounts(dashboard, calculateFacetedCategoryCountsForReflist(reflistData));
         return;
     }
 
-    // Collect all citations that match all of the selected categories
-    let visibleContainers = new Set();
     const selectedCategoriesArray = Array.from(reflistData.selectedCategories);
-    const containerToCategoriesMap = new Map();
-
-    // Populate the map for all selected categories
-    selectedCategoriesArray.forEach(function (category) {
-        const nodes = reflistData.categories[category];
-        if (nodes) {
-            nodes.forEach(function (citeElement) {
-                const container = getCitationContainer(citeElement);
-                if (container && targetReflist.contains(container)) {
-                    if (!containerToCategoriesMap.has(container)) {
-                        containerToCategoriesMap.set(container, new Set());
-                    }
-                    containerToCategoriesMap.get(container).add(category);
-                }
-            });
-        }
-    });
-
-    // Find containers that belong to all selected categories
-    containerToCategoriesMap.forEach(function (categoriesSet, container) {
-        if (categoriesSet.size === selectedCategoriesArray.length) {
-            visibleContainers.add(container);
-        }
-    });
+    const visibleContainers = getContainersMatchingCategories(reflistData, selectedCategoriesArray);
 
     // Hide all list items in the target reflist, then show only the visible ones
     const allListItems = targetReflist.querySelectorAll('li');
@@ -271,6 +383,7 @@ function applyMultiCategoryFilterForReflist(reflistData) {
 
     // Update count display
     updateFilteredCountForReflist(dashboard, visibleContainers.size, reflistData.totalCitations);
+    refreshDashboardCategoryCounts(dashboard, calculateCategoryCountsForContainers(reflistData, visibleContainers));
 }
 
 /**
@@ -314,6 +427,7 @@ export function createDashboardForReflist(reflistData) {
 
     // Calculate category counts
     const reflistCategoryCounts = calculateCategoryCountsForReflist(reflistData);
+    reflistData.categoryCounts = reflistCategoryCounts;
 
     const hasCategorizations = Object.values(reflistCategoryCounts).some(count => count > 0);
     if (!hasCategorizations) {
