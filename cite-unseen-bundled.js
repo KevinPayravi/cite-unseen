@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-b2d002b8
-// Timestamp: 2026-05-02T23:20:37.314Z
+// Release: dev-b334de5e
+// Timestamp: 2026-05-09T18:58:53.570Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -1170,7 +1170,7 @@
   }
 
   // src/ui/dashboard.css
-  var dashboard_default = ".cite-unseen-dashboard{padding:5px;border:1px solid #ccc;border-radius:5px;font-size:.8em;text-align:center;overflow:hidden}.cite-unseen-dashboard-header{display:inline-flex;justify-content:center;align-items:center;margin-right:1em}.cite-unseen-dashboard-total{font-weight:700;text-align:left}.cite-unseen-dashboard-cats{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:0 .5em;text-align:center}.cite-unseen-category-item{padding:2px 4px;border:1px solid transparent;border-radius:4px;cursor:pointer;transition:all .2s ease}.cite-unseen-category-item:hover:not(.cite-unseen-filter-selected){border-color:#007bff33;background-color:#007bff0d}.cite-unseen-filter-selected{position:relative;border:1px solid #007bff;border-radius:4px;background-color:#007bff26;box-shadow:0 0 4px #007bff4d}.cite-unseen-filter-selected img,.cite-unseen-filter-selected span{font-weight:700}.cite-unseen-filter-selected:hover{border-color:#0056b3;background-color:#007bff33}.cite-unseen-clear-all{margin-left:10px;padding:3px 8px;border:1px solid #dc3545;border-radius:3px;font-size:.75em;color:#fff;background:#dc3545;cursor:pointer;transition:all .2s ease}.cite-unseen-clear-all:hover{border-color:#bd2130;background:#c82333;transform:translateY(-1px)}.cite-unseen-clear-all-header{margin:0 1em;font-size:.9em;color:#dc3545;text-decoration:none;cursor:pointer;transition:all .2s ease}.cite-unseen-clear-all-header:hover{text-decoration:underline}.cite-unseen-category-icon{max-height:18px}.cite-unseen-category-text{padding-left:5px}.references li,.reflist li{transition:opacity .2s ease-in-out,transform .2s ease-in-out}.cite-unseen-filtered-out{visibility:hidden!important;height:0!important;margin:0!important;padding:0!important}[data-category]{transition:all .2s ease-in-out}[data-category]:hover{box-shadow:0 2px 4px #0000001a;transform:translateY(-1px)}.cite-unseen-hidden{display:none}.cite-unseen-visible{display:inline-block}.cite-unseen-clear-all-header.cite-unseen-visible{display:inline}\n";
+  var dashboard_default = ".cite-unseen-dashboard{padding:5px;border:1px solid #ccc;border-radius:5px;font-size:.8em;text-align:center;overflow:hidden}.cite-unseen-dashboard-header{display:inline-flex;justify-content:center;align-items:center;margin-right:1em}.cite-unseen-dashboard-total{font-weight:700;text-align:left}.cite-unseen-dashboard-cats{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:0 .5em;text-align:center}.cite-unseen-category-item{padding:2px 4px;border:1px solid transparent;border-radius:4px;cursor:pointer;transition:all .2s ease}.cite-unseen-category-item:hover:not(.cite-unseen-filter-selected):not(.cite-unseen-filter-disabled){border-color:#007bff33;background-color:#007bff0d}.cite-unseen-filter-selected{position:relative;border:1px solid #007bff;border-radius:4px;background-color:#007bff26;box-shadow:0 0 4px #007bff4d}.cite-unseen-filter-selected img,.cite-unseen-filter-selected span{font-weight:700}.cite-unseen-filter-selected:hover{border-color:#0056b3;background-color:#007bff33}.cite-unseen-filter-disabled{cursor:not-allowed;opacity:.45}.cite-unseen-filter-disabled:hover{border-color:transparent;background-color:transparent}.cite-unseen-clear-all{margin-left:10px;padding:3px 8px;border:1px solid #dc3545;border-radius:3px;font-size:.75em;color:#fff;background:#dc3545;cursor:pointer;transition:all .2s ease}.cite-unseen-clear-all:hover{border-color:#bd2130;background:#c82333;transform:translateY(-1px)}.cite-unseen-clear-all-header{margin:0 1em;font-size:.9em;color:#dc3545;text-decoration:none;cursor:pointer;transition:all .2s ease}.cite-unseen-clear-all-header:hover{text-decoration:underline}.cite-unseen-category-icon{max-height:18px}.cite-unseen-category-text{padding-left:5px}.references li,.reflist li{transition:opacity .2s ease-in-out,transform .2s ease-in-out}.cite-unseen-filtered-out{visibility:hidden!important;height:0!important;margin:0!important;padding:0!important}[data-category]{transition:all .2s ease-in-out}[data-category]:hover{box-shadow:0 2px 4px #0000001a;transform:translateY(-1px)}[data-category].cite-unseen-filter-disabled:hover{box-shadow:none;transform:none}.cite-unseen-hidden{display:none}.cite-unseen-visible{display:inline-block}.cite-unseen-clear-all-header.cite-unseen-visible{display:inline}\n";
 
   // src/ui/dialog.css
   var dialog_default = ".cite-unseen-tab-guidance{margin-bottom:20px;padding:12px!important;border:1px solid #eaecf0;border-radius:4px;font-size:.9em;color:#54595d;background:#f8f9fa}\n";
@@ -1940,13 +1940,17 @@
     const listItem = citationElement.closest("li");
     return listItem || citationElement;
   }
-  function calculateCategoryCountsForReflist(reflistData) {
-    const refCategories2 = getRefCategories();
+  function createEmptyCategoryCounts() {
     const counts = {};
-    const categoryTypes = getAllCategoryTypes();
-    for (const category of categoryTypes) {
+    for (const category of getAllCategoryTypes()) {
       counts[category] = 0;
     }
+    return counts;
+  }
+  function calculateCategoryCountsForReflist(reflistData) {
+    const refCategories2 = getRefCategories();
+    const counts = createEmptyCategoryCounts();
+    reflistData.categories = {};
     for (const ref of reflistData.refs) {
       for (const category in refCategories2) {
         const categoryNodes = refCategories2[category];
@@ -1961,14 +1965,96 @@
     }
     return counts;
   }
+  function getCategoryContainersForReflist(reflistData, category) {
+    const containers = /* @__PURE__ */ new Set();
+    const nodes = reflistData.categories[category] || [];
+    for (const citeElement of nodes) {
+      const container = getCitationContainer(citeElement);
+      if (container && reflistData.element.contains(container)) {
+        containers.add(container);
+      }
+    }
+    return containers;
+  }
+  function getContainersMatchingCategories(reflistData, selectedCategories) {
+    const selectedCategoriesArray = Array.from(selectedCategories);
+    if (selectedCategoriesArray.length === 0) {
+      return new Set(reflistData.element.querySelectorAll("li"));
+    }
+    let matchingContainers = null;
+    for (const category of selectedCategoriesArray) {
+      const categoryContainers = getCategoryContainersForReflist(reflistData, category);
+      if (matchingContainers === null) {
+        matchingContainers = categoryContainers;
+        continue;
+      }
+      for (const container of matchingContainers) {
+        if (!categoryContainers.has(container)) {
+          matchingContainers.delete(container);
+        }
+      }
+      if (matchingContainers.size === 0) {
+        break;
+      }
+    }
+    return matchingContainers || /* @__PURE__ */ new Set();
+  }
+  function calculateCategoryCountsForContainers(reflistData, visibleContainers) {
+    const counts = createEmptyCategoryCounts();
+    for (const category of getAllCategoryTypes()) {
+      const nodes = reflistData.categories[category] || [];
+      for (const citeElement of nodes) {
+        const container = getCitationContainer(citeElement);
+        if (visibleContainers.has(container)) {
+          counts[category]++;
+        }
+      }
+    }
+    return counts;
+  }
+  function calculateFacetedCategoryCountsForReflist(reflistData) {
+    if (reflistData.selectedCategories.size === 0) {
+      return reflistData.categoryCounts || createEmptyCategoryCounts();
+    }
+    const visibleContainers = getContainersMatchingCategories(reflistData, reflistData.selectedCategories);
+    return calculateCategoryCountsForContainers(reflistData, visibleContainers);
+  }
+  function formatCategoryCountText(category, count) {
+    const convByVar = getConvByVar();
+    const i18n = getI18n();
+    const categoryLabel = convByVar(i18n.categoryLabels[category]);
+    const labelText = mw.config.get("wgContentLanguage") === "en" ? parseI18nPlural(categoryLabel, count) : categoryLabel;
+    return count + " " + labelText;
+  }
+  function refreshDashboardCategoryCounts(dashboard, categoryCounts) {
+    const selectedCategories = dashboard.reflistData.selectedCategories;
+    const categoryElements = dashboard.cats.querySelectorAll("[data-category]");
+    categoryElements.forEach(function(element) {
+      const category = element.getAttribute("data-category");
+      const count = categoryCounts[category] || 0;
+      const selected = selectedCategories.has(category);
+      const disabled = count === 0 && !selected;
+      const countText = element.querySelector(".cite-unseen-category-text");
+      if (countText) {
+        countText.innerText = formatCategoryCountText(category, count);
+      }
+      element.classList.toggle("cite-unseen-filter-selected", selected);
+      element.classList.toggle("cite-unseen-filter-disabled", disabled);
+      element.setAttribute("aria-pressed", selected ? "true" : "false");
+      element.setAttribute("aria-disabled", disabled ? "true" : "false");
+      element.setAttribute("tabindex", disabled ? "-1" : "0");
+    });
+  }
   function updateDashboardCategories(dashboard, categoryCounts) {
     const convByVar = getConvByVar();
     const i18n = getI18n();
     dashboard.cats.innerHTML = "";
     const categoryTypes = getAllCategoryTypes();
+    const initialCategoryCounts = dashboard.reflistData.categoryCounts || categoryCounts;
     for (const category of categoryTypes) {
+      const initialCount = initialCategoryCounts[category] || 0;
       const count = categoryCounts[category] || 0;
-      if (count > 0) {
+      if (initialCount > 0) {
         const countNode = document.createElement("div");
         countNode.setAttribute("data-category", category);
         countNode.classList.add("cite-unseen-category-item");
@@ -1979,11 +2065,12 @@
         countIcon.classList.add("skin-invert");
         countIcon.classList.add("cite-unseen-category-icon");
         const countText = document.createElement("span");
-        const categoryLabel = convByVar(i18n.categoryLabels[category]);
-        const labelText = mw.config.get("wgContentLanguage") === "en" ? parseI18nPlural(categoryLabel, count) : categoryLabel;
-        countText.innerText = count + " " + labelText;
+        countText.innerText = formatCategoryCountText(category, count);
         countText.classList.add("cite-unseen-category-text");
         countNode.onclick = function() {
+          if (countNode.classList.contains("cite-unseen-filter-disabled")) {
+            return;
+          }
           toggleCategoryFilterForReflist(dashboard.reflistData, category);
         };
         countNode.setAttribute("role", "button");
@@ -2001,6 +2088,7 @@
         dashboard.cats.appendChild(countNode);
       }
     }
+    refreshDashboardCategoryCounts(dashboard, categoryCounts);
   }
   function toggleCategoryFilterForReflist(reflistData, category) {
     if (!reflistData || !reflistData.selectedCategories || !category) {
@@ -2029,17 +2117,6 @@
     }
     const dashboard = reflistData.dashboard;
     const targetReflist = reflistData.element;
-    const allCategoryElements = dashboard.cats.querySelectorAll("[data-category]");
-    allCategoryElements.forEach(function(element) {
-      const category = element.getAttribute("data-category");
-      if (reflistData.selectedCategories.has(category)) {
-        element.classList.add("cite-unseen-filter-selected");
-        element.setAttribute("aria-pressed", "true");
-      } else {
-        element.classList.remove("cite-unseen-filter-selected");
-        element.setAttribute("aria-pressed", "false");
-      }
-    });
     if (dashboard.clearAll) {
       if (reflistData.selectedCategories.size > 1) {
         dashboard.clearAll.classList.remove("cite-unseen-hidden");
@@ -2058,30 +2135,11 @@
       targetReflist.classList.remove("cite-unseen-filtering-active");
       targetReflist.removeAttribute("data-cite-unseen-filter");
       updateFilteredCountForReflist(dashboard, reflistData.totalCitations, reflistData.totalCitations);
+      refreshDashboardCategoryCounts(dashboard, calculateFacetedCategoryCountsForReflist(reflistData));
       return;
     }
-    let visibleContainers = /* @__PURE__ */ new Set();
     const selectedCategoriesArray = Array.from(reflistData.selectedCategories);
-    const containerToCategoriesMap = /* @__PURE__ */ new Map();
-    selectedCategoriesArray.forEach(function(category) {
-      const nodes = reflistData.categories[category];
-      if (nodes) {
-        nodes.forEach(function(citeElement) {
-          const container = getCitationContainer(citeElement);
-          if (container && targetReflist.contains(container)) {
-            if (!containerToCategoriesMap.has(container)) {
-              containerToCategoriesMap.set(container, /* @__PURE__ */ new Set());
-            }
-            containerToCategoriesMap.get(container).add(category);
-          }
-        });
-      }
-    });
-    containerToCategoriesMap.forEach(function(categoriesSet, container) {
-      if (categoriesSet.size === selectedCategoriesArray.length) {
-        visibleContainers.add(container);
-      }
-    });
+    const visibleContainers = getContainersMatchingCategories(reflistData, selectedCategoriesArray);
     const allListItems = targetReflist.querySelectorAll("li");
     allListItems.forEach(function(li) {
       if (visibleContainers.has(li)) {
@@ -2095,6 +2153,7 @@
     targetReflist.classList.add("cite-unseen-filtering-active");
     targetReflist.setAttribute("data-cite-unseen-filter", selectedCategoriesArray.join(","));
     updateFilteredCountForReflist(dashboard, visibleContainers.size, reflistData.totalCitations);
+    refreshDashboardCategoryCounts(dashboard, calculateCategoryCountsForContainers(reflistData, visibleContainers));
   }
   function updateFilteredCountForReflist(dashboard, visibleCount, totalCount) {
     const convByVar = getConvByVar();
@@ -2114,6 +2173,7 @@
     const convByVar = getConvByVar();
     const i18n = getI18n();
     const reflistCategoryCounts = calculateCategoryCountsForReflist(reflistData);
+    reflistData.categoryCounts = reflistCategoryCounts;
     const hasCategorizations = Object.values(reflistCategoryCounts).some((count) => count > 0);
     if (!hasCategorizations) {
       return;
