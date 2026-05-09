@@ -40,7 +40,7 @@
     transition: all 0.2s ease;
 }
 
-.cite-unseen-category-item:hover:not(.cite-unseen-filter-selected) {
+.cite-unseen-category-item:hover:not(.cite-unseen-filter-selected):not(.cite-unseen-filter-disabled) {
     border-color: rgba(0, 123, 255, 0.2);
     background-color: rgba(0, 123, 255, 0.05);
 }
@@ -62,6 +62,17 @@
 .cite-unseen-filter-selected:hover {
     border-color: #0056b3;
     background-color: rgba(0, 123, 255, 0.2);
+}
+
+/* Dashboard filter disabled styling */
+.cite-unseen-filter-disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.cite-unseen-filter-disabled:hover {
+    border-color: transparent;
+    background-color: transparent;
 }
 
 /* Clear all button styling */
@@ -128,6 +139,11 @@
 [data-category]:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(-1px);
+}
+
+[data-category].cite-unseen-filter-disabled:hover {
+    box-shadow: none;
+    transform: none;
 }
 
 /* Hidden/visible element states */
