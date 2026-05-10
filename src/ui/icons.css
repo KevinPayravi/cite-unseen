@@ -26,6 +26,7 @@
 .cite-unseen-icon-container {
     position: relative;
     display: flex;
+    text-indent: 0;
 }
 
 .cite-unseen-lang-indicator {
