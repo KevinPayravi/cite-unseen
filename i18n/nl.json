@@ -75,6 +75,7 @@
 	"filtersActive": "actieve filters",
 	"hideSocialMediaReliabilityRatings": "Betrouwbaarheidsbeoordelingen verbergen voor koppelingen naar sociale media van uitgevers zonder beoordeling",
 	"showOtherLanguageReliabilityRatings": "Betrouwbaarheidsbeoordelingen weergeven van Wikipedia's in andere talen wanneer er lokale beoordelingen beschikbaar zijn.",
+	"showUnknownLinksIcon": "Het pictogram \"onbekende koppelingen\" weergeven in de reflist (de categorie moet eerst ingeschakeld zijn).",
 	"ignoreDomainsTabGuidance": "Voer de domeinen in die u van elke categorie wilt uitsluiten. Bronnen van deze domeinen worden niet gemarkeerd met het bijbehorende categorie-icoon. Voer één domein per regel in, in het formaat 'example.com'.",
 	"invalidDomainFormatMessage": "Ongeldig domeinformaat gedetecteerd. Domeinen moeten de volgende indeling hebben: \"naam.tld\" (bijv. example.com):",
 	"loading": "Bezig met laden…",
