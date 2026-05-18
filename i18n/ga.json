@@ -75,6 +75,7 @@
 	"filtersActive": "scagairí gníomhacha",
 	"hideSocialMediaReliabilityRatings": "Folaigh rátálacha iontaofachta do naisc sna meáin shóisialta ó fhoilsitheoirí gan rátáil",
 	"showOtherLanguageReliabilityRatings": "Taispeáin rátálacha iontaofachta ó Vicipéidí teangacha eile nuair a bhíonn rátálacha áitiúla ar fáil",
+	"showUnknownLinksIcon": "Taispeáin deilbhín \"naisc anaithnid\" sa liosta athfhillte (caithfear an chatagóir a chumasú ar dtús)",
 	"ignoreDomainsTabGuidance": "Cuir isteach fearainn le heisiamh ó gach catagóir. Ní bheidh foinsí ó na fearainn seo marcáilte leis an deilbhín catagóire comhfhreagrach. Cuir isteach fearann ​​amháin in aghaidh an líne san fhormáid 'sampla.com'.",
 	"invalidDomainFormatMessage": "Formáid fearainn neamhbhailí braite. Ba chóir go mbeadh fearainn i bhformáid \"ainm.tld\" (m.sh., example.com):",
 	"loading": "Ag lódáil...",
