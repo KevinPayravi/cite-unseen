@@ -58,7 +58,9 @@ function mergeLanguageData(target, lang, flatObj) {
     for (const [fullKey, value] of Object.entries(flatObj)) {
         if (fullKey === '@metadata') continue;
         if (fullKey.includes('.')) {
-            const [root, child] = fullKey.split('.', 2); // first dot only — "a.b.c" stores as child "b.c", enabling plural sub-key lookup (e.g. "categoryLabels.blogs.one")
+            const dot = fullKey.indexOf('.');
+            const root = fullKey.substring(0, dot);
+            const child = fullKey.substring(dot + 1); 
             if (!target[root]) target[root] = {};
             if (!target[root][child]) target[root][child] = {};
             target[root][child][lang] = value;
