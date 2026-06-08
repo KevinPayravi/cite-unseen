@@ -395,11 +395,25 @@ function updateFilteredCountForReflist(dashboard, visibleCount, totalCount) {
     const i18n = getI18n();
     if (!dashboard || !dashboard.total) return;
 
+    const lang = mw.config.get('wgContentLanguage');
+    const langKey = lang.startsWith('zh-') ? lang.substring(3) : lang;
+    const pluralForm = new Intl.PluralRules(lang).select(totalCount);
+    let citationText;
+    for (const form of [pluralForm, 'other']) {
+        const entry = i18n.citation && i18n.citation[form];
+        if (entry && (entry[langKey] || entry[lang])) {
+            citationText = convByVar(entry);
+            break;
+        }
+    }
+    if (!citationText) {
+        citationText = totalCount === 1 ?
+            convByVar(i18n.citationSingular) :
+            convByVar(i18n.citationPlural);
+    }
+
     const totalElement = dashboard.total;
     const baseText = "[Cite Unseen] ";
-    const citationText = totalCount === 1 ?
-        convByVar(i18n.citationSingular) :
-        convByVar(i18n.citationPlural);
 
     if (visibleCount === totalCount) {
         totalElement.innerText = baseText + convByVar(i18n.totalCitations) + ' ' + totalCount + ' ' + citationText;
