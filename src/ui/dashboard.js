@@ -9,15 +9,6 @@ import {
 } from '../i18n.js';
 import { getRefCategories } from './icons.js';
 
-/**
- * Parse a string containing the plural marker "(s)"
- * @param {string} string - The string to parse
- * @param {number} value - The value used to determine plural form
- * @return {string} - The parsed string
- */
-function parseI18nPlural(string, value) {
-    return string.replace(/\(s\)/g, value === 1 ? '' : 's');
-}
 
 /**
  * Get all category types used in the system.
@@ -188,13 +179,20 @@ function calculateFacetedCategoryCountsForReflist(reflistData) {
 function formatCategoryCountText(category, count) {
     const convByVar = getConvByVar();
     const i18n = getI18n();
-    const categoryLabel = convByVar(i18n.categoryLabels[category]);
-    // Handle plural for English
-    const labelText = mw.config.get('wgContentLanguage') === 'en' ?
-        parseI18nPlural(categoryLabel, count) :
-        categoryLabel;
+    const lang = mw.config.get('wgContentLanguage');
+    // mergeLanguageData strips the 'zh-' prefix (zh-hans → hans),
+    // so normalize here too
+    const langKey = lang.startsWith('zh-') ? lang.substring(3) : lang;
 
-    return count + ' ' + labelText;
+    const pluralForm = new Intl.PluralRules(lang).select(count);
+    for (const form of [pluralForm, 'other']) {
+        const entry = i18n.categoryLabels[`${category}.${form}`];
+        if (entry && (entry[langKey] || entry[lang])) {
+            return `${count} ${convByVar(entry)}`;
+        }
+    }
+
+    return `${count} ${convByVar(i18n.categoryLabels[category])}`;
 }
 
 /**
