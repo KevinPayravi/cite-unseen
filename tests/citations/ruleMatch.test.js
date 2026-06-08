@@ -7,7 +7,7 @@ import {
     matchUrl,
     matchUrlString
 } from '../../src/citations/ruleMatch.js';
-import { citeUnseenChecklists } from '../../src/citations/sourceData.js';
+import { citeUnseenChecklists, citeUnseenChecklistPriorities } from '../../src/citations/sourceData.js';
 
 /**
  * Create the smallest COinS-like object needed by the URL matchers.
@@ -61,6 +61,7 @@ function findReliabilityMatches(coins, categorizedRules, citeUnseenCategories) {
     return findReliabilityMatch(coins, categorizedRules, {
         citeUnseenChecklists,
         citeUnseenCategories,
+        citeUnseenChecklistPriorities,
         currentLanguage: 'en',
         showOtherLanguageReliabilityRatings: false
     });

@@ -1,8 +1,4 @@
-import {
-    citeUnseenSources,
-    citeUnseenSourceToCategoryMapping,
-    citeUnseenSourceToPageMapping
-} from './sourceData.js';
+import { categorySourceData, checklistSourceData } from './sourceData.js';
 
 let _sourceRevisions = null; // Stores revision IDs fetched from cite-unseen-revids
 let _categorizedRules = null; // Stores source rules loaded from source definition pages
@@ -43,8 +39,23 @@ async function citeUnseenSourceRevisions() {
  * @param {string} sourcePageName - The source page name to resolve.
  * @returns {string} The resolved category name.
  */
+const expandedSourceIds = [
+    ...categorySourceData.flatMap(s => s.subPages ? s.subPages.map(p => `${s.id}/${p}`) : [s.id]),
+    ...checklistSourceData.map(s => s.id),
+];
+
+const sourcePageMap = new Map(checklistSourceData.filter(s => s.page).map(s => [s.id, s.page]));
+
+const sourceCategoryMap = new Map(
+    categorySourceData.flatMap(s =>
+        s.subPages
+            ? s.subPages.map(p => [`${s.id}/${p}`, s.category])
+            : s.category ? [[s.id, s.category]] : []
+    )
+);
+
 function resolveSourceToCategory(sourcePageName) {
-    return citeUnseenSourceToCategoryMapping[sourcePageName] || sourcePageName;
+    return sourceCategoryMap.get(sourcePageName) ?? sourcePageName;
 }
 
 /**
@@ -104,7 +115,7 @@ function processCategorizedRules(fulltext) {
  * @returns {string|null} The resolved wiki page link or null if no mapping exists.
  */
 export function resolveSourceToPageLink(sourceName) {
-    return citeUnseenSourceToPageMapping[sourceName] || null;
+    return sourcePageMap.get(sourceName) ?? null;
 };
 
 /**
@@ -113,7 +124,7 @@ export function resolveSourceToPageLink(sourceName) {
  */
 async function getFullText() {
     // Add 'Cite_Unseen/sources/' to the beginning each of the source names, then join them with '|'.
-    const source_titles = citeUnseenSources.map(source => `Cite_Unseen/sources/${source}`).join('|');
+    const source_titles = expandedSourceIds.map(id => `Cite_Unseen/sources/${id}`).join('|');
 
     const api = createApiInstance();
     const response = await api.get({
@@ -212,7 +223,7 @@ async function getSpecifiedRevisionIds() {
         if (_sourceRevisions === null) {
             _sourceRevisions = await citeUnseenSourceRevisions();
         }
-        for (const source of citeUnseenSources) {
+        for (const source of expandedSourceIds) {
             const revisionId = _sourceRevisions[source];
             if (revisionId !== null && revisionId !== undefined) {
                 revisionIds.push(revisionId);

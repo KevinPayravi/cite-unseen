@@ -1,194 +1,235 @@
-/**
- * Definition page names for source lists. Prefixed with "Cite Unseen/sources/".
- * @type {Array.<string>}
- * @constant
- */
-export let citeUnseenSources = [
-    'advocacy/1',
-    'advocacy/2',
-    'advocacy/3',
-    'advocacy/4',
-    'aiGenerated',
-    'aiReferred',
-    "blogs",
-    "books",
-    "community",
-    "editable",
-    "government",
-    "news/Americas",
-    "news/Europe",
-    "news/Africa",
-    "news/Asia",
-    "news/Oceania",
-    "opinions",
-    "predatory/publishers",
-    "predatory/standaloneJournals",
-    "press",
-    "satire",
-    "social",
-    "sponsored",
-    "tabloids",
-    "tvPrograms",
-    'zhRSP',
-    'zhVGS',
-    'zhACGS',
-    'enRSP',
-    'enVGS',
-    'enAMS',
-    'enJAPANS',
-    'enKOREAS',
-    'enAS',
-    'enFILMR',
-    'enNPPSG/1',
-    'enNPPSG/2',
-    'enTAMBAYS',
-    'frJVS',
-    'ruAIKI',
-    'enBGS',
-    'enCHARTS',
-    'enVSAFES',
-    'viDSNDTC'
+// Sources used for icon classification (blogs, news, advocacy, etc.).
+// Entries with subPages expand to multiple source pages that share a category.
+export const categorySourceData = [
+  { id: "advocacy", category: "advocacy", subPages: ["1", "2", "3", "4"] },
+  { id: "aiGenerated" },
+  { id: "aiReferred" },
+  { id: "blogs" },
+  { id: "books" },
+  { id: "community" },
+  { id: "editable" },
+  { id: "government" },
+  {
+    id: "news",
+    category: "news",
+    subPages: ["Americas", "Europe", "Africa", "Asia", "Oceania"],
+  },
+  { id: "opinions" },
+  {
+    id: "predatory",
+    category: "predatory",
+    subPages: ["publishers", "standaloneJournals"],
+  },
+  { id: "press" },
+  { id: "satire" },
+  { id: "social" },
+  { id: "sponsored" },
+  { id: "tabloids" },
+  { id: "tvPrograms" },
 ];
 
-/**
- * Source lists grouped by reliability category.
- * @type {Array.<Array.<string, Array.<Array.<string, string>>>>}
- * @constant
- */
-export let citeUnseenChecklists = [
-    [
-        "blacklisted", [
-            ["enRSP", "enRspBlacklisted"],
-            ["zhRSP", "zhRspBlacklisted"],
-            ["enKOREAS", "enKoreasBlacklisted"],
-            ["enVSAFES", "enVsafesBlacklisted"],
-            ["viDSNDTC", "viDsndtcBlacklisted"]
-        ],
-    ], [
-        "deprecated", [
-            ["enRSP", "enRspDeprecated"],
-            ["zhRSP", "zhRspDeprecated"],
-            ["enCHARTS", "enChartsDeprecated"]
-        ],
-    ], [
-        "generallyUnreliable", [
-            ["enRSP", "enRspGenerallyUnreliable"],
-            ["zhRSP", "zhRspGenerallyUnreliable"],
-            ["enAMS", "enAmsGenerallyUnreliable"],
-            ["enAS", "enAsGenerallyUnreliable"],
-            ["enJAPANS", "enJapansGenerallyUnreliable"],
-            ["enKOREAS", "enKoreasGenerallyUnreliable"],
-            ["enNPPSG/1", "enNppsgGenerallyUnreliable"],
-            ["enVGS", "enVgsGenerallyUnreliable"],
-            ["zhACGS", "zhAcgsGenerallyUnreliable"],
-            ["zhVGS", "zhVgsGenerallyUnreliable"],
-            ["enFILMR", "enFilmrGenerallyUnreliable"],
-            ["frJVS", "frJvsGenerallyUnreliable"],
-            ["ruAIKI", "ruAikiGenerallyUnreliable"],
-            ["enTAMBAYS", "enTambaysGenerallyUnreliable"],
-            ["enBGS", "enBgsGenerallyUnreliable"],
-            ["enCHARTS", "enChartsGenerallyUnreliable"],
-            ["enVSAFES", "enVsafesGenerallyUnreliable"],
-            ["viDSNDTC", "viDsndtcGenerallyUnreliable"]
-        ],
-    ], [
-        "marginallyReliable", [
-            ["enRSP", "enRspMarginallyReliable"],
-            ["zhRSP", "zhRspMarginallyReliable"],
-            ["enAMS", "enAmsMarginallyReliable"],
-            ["enJAPANS", "enJapansMarginallyReliable"],
-            ["enKOREAS", "enKoreasMarginallyReliable"],
-            ["enVGS", "enVgsMarginallyReliable"],
-            ["zhACGS", "zhAcgsMarginallyReliable"],
-            ["zhVGS", "zhVgsMarginallyReliable"],
-            ["frJVS", "frJvsMarginallyReliable"],
-            ["enTAMBAYS", "enTambaysMarginallyReliable"],
-            ["enBGS", "enBgsMarginallyReliable"],
-            ["enVSAFES", "enVsafesMarginallyReliable"],
-            ["viDSNDTC", "viDsndtcMarginallyReliable"]
-        ],
-    ], [
-        "multi", [
-            ["enRSP", "enRspMulti"],
-            ["zhRSP", "zhRspMulti"],
-            ["enNPPSG/2", "enNppsgMulti"],
-            ["enVGS", "enVgsMulti"],
-            ["zhACGS", "zhAcgsMulti"],
-            ["zhVGS", "zhVgsMulti"],
-            ["enTAMBAYS", "enTambaysMulti"],
-            ["enVSAFES", "enVsafesMulti"],
-            ["viDSNDTC", "viDsndtcMulti"]
-        ],
-    ], [
-        "generallyReliable", [
-            ["enRSP", "enRspGenerallyReliable"],
-            ["zhRSP", "zhRspGenerallyReliable"],
-            ["enAMS", "enAmsGenerallyReliable"],
-            ["enAS", "enAsGenerallyReliable"],
-            ["enJAPANS", "enJapansGenerallyReliable"],
-            ["enKOREAS", "enKoreasGenerallyReliable"],
-            ["enNPPSG/2", "enNppsgGenerallyReliable"],
-            ["enVGS", "enVgsGenerallyReliable"],
-            ["zhACGS", "zhAcgsGenerallyReliable"],
-            ["zhVGS", "zhVgsGenerallyReliable"],
-            ["enFILMR", "enFilmrGenerallyReliable"],
-            ["frJVS", "frJvsGenerallyReliable"],
-            ["ruAIKI", "ruAikiGenerallyReliable"],
-            ["enTAMBAYS", "enTambaysGenerallyReliable"],
-            ["enBGS", "enBgsGenerallyReliable"],
-            ["enCHARTS", "enChartsGenerallyReliable"],
-            ["enVSAFES", "enVsafesGenerallyReliable"],
-            ["viDSNDTC", "viDsndtcGenerallyReliable"]
-        ],
-    ],
+// Wikipedia project pages that classify domains into reliability tiers.
+// Priority breaks ties when two sources match at equal specificity (higher wins, default 0).
+export const checklistSourceData = [
+  {
+    id: "enRSP",
+    page: "en:Wikipedia:Reliable sources/Perennial sources",
+    priority: 10,
+    checklists: {
+      blacklisted: "enRspBlacklisted",
+      deprecated: "enRspDeprecated",
+      generallyUnreliable: "enRspGenerallyUnreliable",
+      marginallyReliable: "enRspMarginallyReliable",
+      multi: "enRspMulti",
+      generallyReliable: "enRspGenerallyReliable",
+    },
+  },
+  {
+    id: "enVGS",
+    page: "en:Wikipedia:WikiProject Video games/Sources",
+    checklists: {
+      generallyUnreliable: "enVgsGenerallyUnreliable",
+      marginallyReliable: "enVgsMarginallyReliable",
+      multi: "enVgsMulti",
+      generallyReliable: "enVgsGenerallyReliable",
+    },
+  },
+  {
+    id: "enAMS",
+    page: "en:Wikipedia:WikiProject Anime and manga/Online reliable sources",
+    checklists: {
+      generallyUnreliable: "enAmsGenerallyUnreliable",
+      marginallyReliable: "enAmsMarginallyReliable",
+      generallyReliable: "enAmsGenerallyReliable",
+    },
+  },
+  {
+    id: "enJAPANS",
+    page: "en:Wikipedia:WikiProject Japan/Reliable sources",
+    checklists: {
+      generallyUnreliable: "enJapansGenerallyUnreliable",
+      marginallyReliable: "enJapansMarginallyReliable",
+      generallyReliable: "enJapansGenerallyReliable",
+    },
+  },
+  {
+    id: "enKOREAS",
+    page: "en:Wikipedia:WikiProject Korea/Reliable sources",
+    checklists: {
+      blacklisted: "enKoreasBlacklisted",
+      generallyUnreliable: "enKoreasGenerallyUnreliable",
+      marginallyReliable: "enKoreasMarginallyReliable",
+      generallyReliable: "enKoreasGenerallyReliable",
+    },
+  },
+  {
+    id: "enAS",
+    page: "en:Wikipedia:WikiProject Albums/Sources",
+    checklists: {
+      generallyUnreliable: "enAsGenerallyUnreliable",
+      generallyReliable: "enAsGenerallyReliable",
+    },
+  },
+  {
+    id: "enFILMR",
+    page: "en:Wikipedia:WikiProject Film/Resources",
+    checklists: {
+      generallyUnreliable: "enFilmrGenerallyUnreliable",
+      generallyReliable: "enFilmrGenerallyReliable",
+    },
+  },
+  {
+    id: "enNPPSG/1",
+    page: "en:Wikipedia:New pages patrol source guide",
+    checklists: {
+      generallyUnreliable: "enNppsgGenerallyUnreliable",
+    },
+  },
+  {
+    id: "enNPPSG/2",
+    page: "en:Wikipedia:New pages patrol source guide",
+    checklists: {
+      multi: "enNppsgMulti",
+      generallyReliable: "enNppsgGenerallyReliable",
+    },
+  },
+  {
+    id: "enTAMBAYS",
+    page: "en:Wikipedia:Tambayan Philippines/Sources",
+    checklists: {
+      generallyUnreliable: "enTambaysGenerallyUnreliable",
+      marginallyReliable: "enTambaysMarginallyReliable",
+      multi: "enTambaysMulti",
+      generallyReliable: "enTambaysGenerallyReliable",
+    },
+  },
+  {
+    id: "enBGS",
+    page: "en:Wikipedia:WikiProject Board and table games/Sources",
+    checklists: {
+      generallyUnreliable: "enBgsGenerallyUnreliable",
+      marginallyReliable: "enBgsMarginallyReliable",
+      generallyReliable: "enBgsGenerallyReliable",
+    },
+  },
+  {
+    id: "enCHARTS",
+    page: "en:Wikipedia:Record charts",
+    checklists: {
+      deprecated: "enChartsDeprecated",
+      generallyUnreliable: "enChartsGenerallyUnreliable",
+      generallyReliable: "enChartsGenerallyReliable",
+    },
+  },
+  {
+    id: "enVSAFES",
+    page: "en:Wikipedia:Vaccine safety/Perennial sources",
+    checklists: {
+      blacklisted: "enVsafesBlacklisted",
+      generallyUnreliable: "enVsafesGenerallyUnreliable",
+      marginallyReliable: "enVsafesMarginallyReliable",
+      multi: "enVsafesMulti",
+      generallyReliable: "enVsafesGenerallyReliable",
+    },
+  },
+  {
+    id: "frJVS",
+    page: "fr:Projet:Jeu vidéo/Sources",
+    checklists: {
+      generallyUnreliable: "frJvsGenerallyUnreliable",
+      marginallyReliable: "frJvsMarginallyReliable",
+      generallyReliable: "frJvsGenerallyReliable",
+    },
+  },
+  {
+    id: "ruAIKI",
+    page: "ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр",
+    checklists: {
+      generallyUnreliable: "ruAikiGenerallyUnreliable",
+      generallyReliable: "ruAikiGenerallyReliable",
+    },
+  },
+  {
+    id: "zhRSP",
+    page: "zh:维基百科:可靠来源/常见有争议来源列表",
+    priority: 10,
+    checklists: {
+      blacklisted: "zhRspBlacklisted",
+      deprecated: "zhRspDeprecated",
+      generallyUnreliable: "zhRspGenerallyUnreliable",
+      marginallyReliable: "zhRspMarginallyReliable",
+      multi: "zhRspMulti",
+      generallyReliable: "zhRspGenerallyReliable",
+    },
+  },
+  {
+    id: "zhVGS",
+    page: "zh:维基专题:电子游戏/来源考量",
+    checklists: {
+      generallyUnreliable: "zhVgsGenerallyUnreliable",
+      marginallyReliable: "zhVgsMarginallyReliable",
+      multi: "zhVgsMulti",
+      generallyReliable: "zhVgsGenerallyReliable",
+    },
+  },
+  {
+    id: "zhACGS",
+    page: "zh:维基专题:ACG/來源考量",
+    checklists: {
+      generallyUnreliable: "zhAcgsGenerallyUnreliable",
+      marginallyReliable: "zhAcgsMarginallyReliable",
+      multi: "zhAcgsMulti",
+      generallyReliable: "zhAcgsGenerallyReliable",
+    },
+  },
+  {
+    id: "viDSNDTC",
+    page: "vi:Wikipedia:Danh sách nguồn đáng tin cậy",
+    checklists: {
+      blacklisted: "viDsndtcBlacklisted",
+      generallyUnreliable: "viDsndtcGenerallyUnreliable",
+      marginallyReliable: "viDsndtcMarginallyReliable",
+      multi: "viDsndtcMulti",
+      generallyReliable: "viDsndtcGenerallyReliable",
+    },
+  },
 ];
 
-/**
- * Mapping from source page names to their corresponding categories.
- * This allows multiple source pages to map to a single category.
- *
- * @type {Object.<string, string>}
- * @constant
- */
-export let citeUnseenSourceToCategoryMapping = {
-    'advocacy1': 'advocacy',
-    'advocacy2': 'advocacy',
-    'advocacy3': 'advocacy',
-    'advocacy4': 'advocacy',
-    'news/Americas': 'news',
-    'news/Europe': 'news',
-    'news/Africa': 'news',
-    'news/Asia': 'news',
-    'news/Oceania': 'news',
-    'predatory/publishers': 'predatory',
-    'predatory/standaloneJournals': 'predatory'
-};
+/* Derived: [checklistType, [[sourceId, checklistKey], ...]] */
+export const citeUnseenChecklists = (() => {
+  const typeMap = new Map();
+  for (const source of checklistSourceData) {
+    for (const [type, key] of Object.entries(source.checklists)) {
+      (typeMap.get(type) ?? typeMap.set(type, []).get(type)).push([
+        source.id,
+        key,
+      ]);
+    }
+  }
+  return [...typeMap.entries()];
+})();
 
-/**
- * Mapping from source names to their corresponding wiki page links.
- *
- * @type {Object.<string, string>}
- * @constant
- */
-export let citeUnseenSourceToPageMapping = {
-    'enAMS': 'en:Wikipedia:WikiProject Anime and manga/Online reliable sources',
-    'enAS': 'en:Wikipedia:WikiProject Albums/Sources',
-    'enBGS': 'en:Wikipedia:WikiProject Board and table games/Sources',
-    'enCHARTS': 'en:Wikipedia:Record charts',
-    'enFILMR': 'en:Wikipedia:WikiProject Film/Resources',
-    'enJAPANS': 'en:Wikipedia:WikiProject Japan/Reliable sources',
-    'enKOREAS': 'en:Wikipedia:WikiProject Korea/Reliable sources',
-    'enNPPSG/1': 'en:Wikipedia:New pages patrol source guide',
-    'enNPPSG/2': 'en:Wikipedia:New pages patrol source guide',
-    'enRSP': 'en:Wikipedia:Reliable sources/Perennial sources',
-    'enTAMBAYS': 'en:Wikipedia:Tambayan Philippines/Sources',
-    'enVGS': 'en:Wikipedia:WikiProject Video games/Sources',
-    'enVSAFES': 'en:Wikipedia:Vaccine safety/Perennial sources',
-    'frJVS': 'fr:Projet:Jeu vidéo/Sources',
-    'ruAIKI': 'ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр',
-    'viDSNDTC': 'vi:Wikipedia:Danh sách nguồn đáng tin cậy',
-    'zhACGS': 'zh:维基专题:ACG/來源考量',
-    'zhRSP': 'zh:维基百科:可靠来源/常见有争议来源列表',
-    'zhVGS': 'zh:维基专题:电子游戏/来源考量'
-};
-
+/* Derived: { sourceId → priority } for sources that declare a priority */
+export const citeUnseenChecklistPriorities = Object.fromEntries(
+  checklistSourceData.filter((s) => s.priority).map((s) => [s.id, s.priority]),
+);
