@@ -406,12 +406,6 @@ function updateFilteredCountForReflist(dashboard, visibleCount, totalCount) {
             break;
         }
     }
-    if (!citationText) {
-        citationText = totalCount === 1 ?
-            convByVar(i18n.citationSingular) :
-            convByVar(i18n.citationPlural);
-    }
-
     const totalElement = dashboard.total;
     const baseText = "[Cite Unseen] ";
 
