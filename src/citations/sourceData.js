@@ -47,6 +47,7 @@ export const checklistSourceData = [
   {
     id: "enVGS",
     page: "en:Wikipedia:WikiProject Video games/Sources",
+    priority: 8,
     checklists: {
       generallyUnreliable: "enVgsGenerallyUnreliable",
       marginallyReliable: "enVgsMarginallyReliable",
@@ -101,6 +102,7 @@ export const checklistSourceData = [
   {
     id: "enNPPSG/1",
     page: "en:Wikipedia:New pages patrol source guide",
+    priority: 6,
     checklists: {
       generallyUnreliable: "enNppsgGenerallyUnreliable",
     },
@@ -108,6 +110,7 @@ export const checklistSourceData = [
   {
     id: "enNPPSG/2",
     page: "en:Wikipedia:New pages patrol source guide",
+    priority: 6,
     checklists: {
       multi: "enNppsgMulti",
       generallyReliable: "enNppsgGenerallyReliable",
@@ -185,6 +188,7 @@ export const checklistSourceData = [
   {
     id: "zhVGS",
     page: "zh:维基专题:电子游戏/来源考量",
+    priority: 8,
     checklists: {
       generallyUnreliable: "zhVgsGenerallyUnreliable",
       marginallyReliable: "zhVgsMarginallyReliable",
@@ -195,6 +199,7 @@ export const checklistSourceData = [
   {
     id: "zhACGS",
     page: "zh:维基专题:ACG/來源考量",
+    priority: 8,
     checklists: {
       generallyUnreliable: "zhAcgsGenerallyUnreliable",
       marginallyReliable: "zhAcgsMarginallyReliable",
