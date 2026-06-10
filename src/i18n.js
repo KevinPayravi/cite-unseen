@@ -58,7 +58,9 @@ function mergeLanguageData(target, lang, flatObj) {
     for (const [fullKey, value] of Object.entries(flatObj)) {
         if (fullKey === '@metadata') continue;
         if (fullKey.includes('.')) {
-            const [root, child] = fullKey.split('.', 2); // only first dot (current data shape)
+            const dot = fullKey.indexOf('.');
+            const root = fullKey.substring(0, dot);
+            const child = fullKey.substring(dot + 1); 
             if (!target[root]) target[root] = {};
             if (!target[root][child]) target[root][child] = {};
             target[root][child][lang] = value;
