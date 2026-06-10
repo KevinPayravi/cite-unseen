@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-24d3706c
-// Timestamp: 2026-06-08T21:55:02.766Z
+// Release: dev-53900d51
+// Timestamp: 2026-06-10T21:32:38.308Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -286,6 +286,7 @@
     {
       id: "enVGS",
       page: "en:Wikipedia:WikiProject Video games/Sources",
+      priority: 8,
       checklists: {
         generallyUnreliable: "enVgsGenerallyUnreliable",
         marginallyReliable: "enVgsMarginallyReliable",
@@ -340,6 +341,7 @@
     {
       id: "enNPPSG/1",
       page: "en:Wikipedia:New pages patrol source guide",
+      priority: 6,
       checklists: {
         generallyUnreliable: "enNppsgGenerallyUnreliable"
       }
@@ -347,6 +349,7 @@
     {
       id: "enNPPSG/2",
       page: "en:Wikipedia:New pages patrol source guide",
+      priority: 6,
       checklists: {
         multi: "enNppsgMulti",
         generallyReliable: "enNppsgGenerallyReliable"
@@ -424,6 +427,7 @@
     {
       id: "zhVGS",
       page: "zh:维基专题:电子游戏/来源考量",
+      priority: 8,
       checklists: {
         generallyUnreliable: "zhVgsGenerallyUnreliable",
         marginallyReliable: "zhVgsMarginallyReliable",
@@ -434,6 +438,7 @@
     {
       id: "zhACGS",
       page: "zh:维基专题:ACG/來源考量",
+      priority: 8,
       checklists: {
         generallyUnreliable: "zhAcgsGenerallyUnreliable",
         marginallyReliable: "zhAcgsMarginallyReliable",
