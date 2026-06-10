@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-53900d51
-// Timestamp: 2026-06-10T21:32:38.308Z
+// Release: dev-1221c80b
+// Timestamp: 2026-06-10T21:49:12.515Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -1532,6 +1532,8 @@
     }
     const selectBestMatch = (matches) => {
       return matches.length === 1 ? matches[0] : matches.reduce((best, current) => {
+        if (best.type === "multi" && current.type !== "multi") return current;
+        if (current.type === "multi" && best.type !== "multi") return best;
         if (current.priority !== best.priority) return current.priority > best.priority ? current : best;
         return current.spec > best.spec ? current : best;
       });
