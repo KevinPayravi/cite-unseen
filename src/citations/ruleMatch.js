@@ -443,6 +443,11 @@ export function findReliabilityMatch(coins, filteredCategorizedRules, options) {
     const selectBestMatch = (matches) => {
         return matches.length === 1 ? matches[0] :
             matches.reduce((best, current) => {
+                // Pin 'multi' matches to the end
+                if (best.type === 'multi' && current.type !== 'multi') return current;
+                if (current.type === 'multi' && best.type !== 'multi') return best;
+
+                // Compare by priority first, then by specificity
                 if (current.priority !== best.priority) return current.priority > best.priority ? current : best;
                 return current.spec > best.spec ? current : best;
             });
