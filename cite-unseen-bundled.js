@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-73f1c753
-// Timestamp: 2026-06-10T21:25:45.770Z
+// Release: dev-48b6abdc
+// Timestamp: 2026-06-12T06:06:43.451Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -244,184 +244,238 @@
   };
 
   // src/citations/sourceData.js
-  var citeUnseenSources = [
-    "advocacy/1",
-    "advocacy/2",
-    "advocacy/3",
-    "advocacy/4",
-    "aiGenerated",
-    "aiReferred",
-    "blogs",
-    "books",
-    "community",
-    "editable",
-    "government",
-    "news/Americas",
-    "news/Europe",
-    "news/Africa",
-    "news/Asia",
-    "news/Oceania",
-    "opinions",
-    "predatory/publishers",
-    "predatory/standaloneJournals",
-    "press",
-    "satire",
-    "social",
-    "sponsored",
-    "tabloids",
-    "tvPrograms",
-    "zhRSP",
-    "zhVGS",
-    "zhACGS",
-    "enRSP",
-    "enVGS",
-    "enAMS",
-    "enJAPANS",
-    "enKOREAS",
-    "enAS",
-    "enFILMR",
-    "enNPPSG/1",
-    "enNPPSG/2",
-    "enTAMBAYS",
-    "frJVS",
-    "ruAIKI",
-    "enBGS",
-    "enCHARTS",
-    "enVSAFES",
-    "viDSNDTC"
+  var categorySourceData = [
+    { id: "advocacy", category: "advocacy", subPages: ["1", "2", "3", "4"] },
+    { id: "aiGenerated" },
+    { id: "aiReferred" },
+    { id: "blogs" },
+    { id: "books" },
+    { id: "community" },
+    { id: "editable" },
+    { id: "government" },
+    {
+      id: "news",
+      category: "news",
+      subPages: ["Americas", "Europe", "Africa", "Asia", "Oceania"]
+    },
+    { id: "opinions" },
+    {
+      id: "predatory",
+      category: "predatory",
+      subPages: ["publishers", "standaloneJournals"]
+    },
+    { id: "press" },
+    { id: "satire" },
+    { id: "social" },
+    { id: "sponsored" },
+    { id: "tabloids" },
+    { id: "tvPrograms" }
   ];
-  var citeUnseenChecklists = [
-    [
-      "blacklisted",
-      [
-        ["enRSP", "enRspBlacklisted"],
-        ["zhRSP", "zhRspBlacklisted"],
-        ["enKOREAS", "enKoreasBlacklisted"],
-        ["enVSAFES", "enVsafesBlacklisted"],
-        ["viDSNDTC", "viDsndtcBlacklisted"]
-      ]
-    ],
-    [
-      "deprecated",
-      [
-        ["enRSP", "enRspDeprecated"],
-        ["zhRSP", "zhRspDeprecated"],
-        ["enCHARTS", "enChartsDeprecated"]
-      ]
-    ],
-    [
-      "generallyUnreliable",
-      [
-        ["enRSP", "enRspGenerallyUnreliable"],
-        ["zhRSP", "zhRspGenerallyUnreliable"],
-        ["enAMS", "enAmsGenerallyUnreliable"],
-        ["enAS", "enAsGenerallyUnreliable"],
-        ["enJAPANS", "enJapansGenerallyUnreliable"],
-        ["enKOREAS", "enKoreasGenerallyUnreliable"],
-        ["enNPPSG/1", "enNppsgGenerallyUnreliable"],
-        ["enVGS", "enVgsGenerallyUnreliable"],
-        ["zhACGS", "zhAcgsGenerallyUnreliable"],
-        ["zhVGS", "zhVgsGenerallyUnreliable"],
-        ["enFILMR", "enFilmrGenerallyUnreliable"],
-        ["frJVS", "frJvsGenerallyUnreliable"],
-        ["ruAIKI", "ruAikiGenerallyUnreliable"],
-        ["enTAMBAYS", "enTambaysGenerallyUnreliable"],
-        ["enBGS", "enBgsGenerallyUnreliable"],
-        ["enCHARTS", "enChartsGenerallyUnreliable"],
-        ["enVSAFES", "enVsafesGenerallyUnreliable"],
-        ["viDSNDTC", "viDsndtcGenerallyUnreliable"]
-      ]
-    ],
-    [
-      "marginallyReliable",
-      [
-        ["enRSP", "enRspMarginallyReliable"],
-        ["zhRSP", "zhRspMarginallyReliable"],
-        ["enAMS", "enAmsMarginallyReliable"],
-        ["enJAPANS", "enJapansMarginallyReliable"],
-        ["enKOREAS", "enKoreasMarginallyReliable"],
-        ["enVGS", "enVgsMarginallyReliable"],
-        ["zhACGS", "zhAcgsMarginallyReliable"],
-        ["zhVGS", "zhVgsMarginallyReliable"],
-        ["frJVS", "frJvsMarginallyReliable"],
-        ["enTAMBAYS", "enTambaysMarginallyReliable"],
-        ["enBGS", "enBgsMarginallyReliable"],
-        ["enVSAFES", "enVsafesMarginallyReliable"],
-        ["viDSNDTC", "viDsndtcMarginallyReliable"]
-      ]
-    ],
-    [
-      "multi",
-      [
-        ["enRSP", "enRspMulti"],
-        ["zhRSP", "zhRspMulti"],
-        ["enNPPSG/2", "enNppsgMulti"],
-        ["enVGS", "enVgsMulti"],
-        ["zhACGS", "zhAcgsMulti"],
-        ["zhVGS", "zhVgsMulti"],
-        ["enTAMBAYS", "enTambaysMulti"],
-        ["enVSAFES", "enVsafesMulti"],
-        ["viDSNDTC", "viDsndtcMulti"]
-      ]
-    ],
-    [
-      "generallyReliable",
-      [
-        ["enRSP", "enRspGenerallyReliable"],
-        ["zhRSP", "zhRspGenerallyReliable"],
-        ["enAMS", "enAmsGenerallyReliable"],
-        ["enAS", "enAsGenerallyReliable"],
-        ["enJAPANS", "enJapansGenerallyReliable"],
-        ["enKOREAS", "enKoreasGenerallyReliable"],
-        ["enNPPSG/2", "enNppsgGenerallyReliable"],
-        ["enVGS", "enVgsGenerallyReliable"],
-        ["zhACGS", "zhAcgsGenerallyReliable"],
-        ["zhVGS", "zhVgsGenerallyReliable"],
-        ["enFILMR", "enFilmrGenerallyReliable"],
-        ["frJVS", "frJvsGenerallyReliable"],
-        ["ruAIKI", "ruAikiGenerallyReliable"],
-        ["enTAMBAYS", "enTambaysGenerallyReliable"],
-        ["enBGS", "enBgsGenerallyReliable"],
-        ["enCHARTS", "enChartsGenerallyReliable"],
-        ["enVSAFES", "enVsafesGenerallyReliable"],
-        ["viDSNDTC", "viDsndtcGenerallyReliable"]
-      ]
-    ]
+  var checklistSourceData = [
+    {
+      id: "enRSP",
+      page: "en:Wikipedia:Reliable sources/Perennial sources",
+      priority: 10,
+      checklists: {
+        blacklisted: "enRspBlacklisted",
+        deprecated: "enRspDeprecated",
+        generallyUnreliable: "enRspGenerallyUnreliable",
+        marginallyReliable: "enRspMarginallyReliable",
+        multi: "enRspMulti",
+        generallyReliable: "enRspGenerallyReliable"
+      }
+    },
+    {
+      id: "enVGS",
+      page: "en:Wikipedia:WikiProject Video games/Sources",
+      priority: 8,
+      checklists: {
+        generallyUnreliable: "enVgsGenerallyUnreliable",
+        marginallyReliable: "enVgsMarginallyReliable",
+        multi: "enVgsMulti",
+        generallyReliable: "enVgsGenerallyReliable"
+      }
+    },
+    {
+      id: "enAMS",
+      page: "en:Wikipedia:WikiProject Anime and manga/Online reliable sources",
+      checklists: {
+        generallyUnreliable: "enAmsGenerallyUnreliable",
+        marginallyReliable: "enAmsMarginallyReliable",
+        generallyReliable: "enAmsGenerallyReliable"
+      }
+    },
+    {
+      id: "enJAPANS",
+      page: "en:Wikipedia:WikiProject Japan/Reliable sources",
+      checklists: {
+        generallyUnreliable: "enJapansGenerallyUnreliable",
+        marginallyReliable: "enJapansMarginallyReliable",
+        generallyReliable: "enJapansGenerallyReliable"
+      }
+    },
+    {
+      id: "enKOREAS",
+      page: "en:Wikipedia:WikiProject Korea/Reliable sources",
+      checklists: {
+        blacklisted: "enKoreasBlacklisted",
+        generallyUnreliable: "enKoreasGenerallyUnreliable",
+        marginallyReliable: "enKoreasMarginallyReliable",
+        generallyReliable: "enKoreasGenerallyReliable"
+      }
+    },
+    {
+      id: "enAS",
+      page: "en:Wikipedia:WikiProject Albums/Sources",
+      checklists: {
+        generallyUnreliable: "enAsGenerallyUnreliable",
+        generallyReliable: "enAsGenerallyReliable"
+      }
+    },
+    {
+      id: "enFILMR",
+      page: "en:Wikipedia:WikiProject Film/Resources",
+      checklists: {
+        generallyUnreliable: "enFilmrGenerallyUnreliable",
+        generallyReliable: "enFilmrGenerallyReliable"
+      }
+    },
+    {
+      id: "enNPPSG/1",
+      page: "en:Wikipedia:New pages patrol source guide",
+      priority: 6,
+      checklists: {
+        generallyUnreliable: "enNppsgGenerallyUnreliable"
+      }
+    },
+    {
+      id: "enNPPSG/2",
+      page: "en:Wikipedia:New pages patrol source guide",
+      priority: 6,
+      checklists: {
+        multi: "enNppsgMulti",
+        generallyReliable: "enNppsgGenerallyReliable"
+      }
+    },
+    {
+      id: "enTAMBAYS",
+      page: "en:Wikipedia:Tambayan Philippines/Sources",
+      checklists: {
+        generallyUnreliable: "enTambaysGenerallyUnreliable",
+        marginallyReliable: "enTambaysMarginallyReliable",
+        multi: "enTambaysMulti",
+        generallyReliable: "enTambaysGenerallyReliable"
+      }
+    },
+    {
+      id: "enBGS",
+      page: "en:Wikipedia:WikiProject Board and table games/Sources",
+      checklists: {
+        generallyUnreliable: "enBgsGenerallyUnreliable",
+        marginallyReliable: "enBgsMarginallyReliable",
+        generallyReliable: "enBgsGenerallyReliable"
+      }
+    },
+    {
+      id: "enCHARTS",
+      page: "en:Wikipedia:Record charts",
+      checklists: {
+        deprecated: "enChartsDeprecated",
+        generallyUnreliable: "enChartsGenerallyUnreliable",
+        generallyReliable: "enChartsGenerallyReliable"
+      }
+    },
+    {
+      id: "enVSAFES",
+      page: "en:Wikipedia:Vaccine safety/Perennial sources",
+      checklists: {
+        blacklisted: "enVsafesBlacklisted",
+        generallyUnreliable: "enVsafesGenerallyUnreliable",
+        marginallyReliable: "enVsafesMarginallyReliable",
+        multi: "enVsafesMulti",
+        generallyReliable: "enVsafesGenerallyReliable"
+      }
+    },
+    {
+      id: "frJVS",
+      page: "fr:Projet:Jeu vidéo/Sources",
+      checklists: {
+        generallyUnreliable: "frJvsGenerallyUnreliable",
+        marginallyReliable: "frJvsMarginallyReliable",
+        generallyReliable: "frJvsGenerallyReliable"
+      }
+    },
+    {
+      id: "ruAIKI",
+      page: "ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр",
+      checklists: {
+        generallyUnreliable: "ruAikiGenerallyUnreliable",
+        generallyReliable: "ruAikiGenerallyReliable"
+      }
+    },
+    {
+      id: "zhRSP",
+      page: "zh:维基百科:可靠来源/常见有争议来源列表",
+      priority: 10,
+      checklists: {
+        blacklisted: "zhRspBlacklisted",
+        deprecated: "zhRspDeprecated",
+        generallyUnreliable: "zhRspGenerallyUnreliable",
+        marginallyReliable: "zhRspMarginallyReliable",
+        multi: "zhRspMulti",
+        generallyReliable: "zhRspGenerallyReliable"
+      }
+    },
+    {
+      id: "zhVGS",
+      page: "zh:维基专题:电子游戏/来源考量",
+      priority: 8,
+      checklists: {
+        generallyUnreliable: "zhVgsGenerallyUnreliable",
+        marginallyReliable: "zhVgsMarginallyReliable",
+        multi: "zhVgsMulti",
+        generallyReliable: "zhVgsGenerallyReliable"
+      }
+    },
+    {
+      id: "zhACGS",
+      page: "zh:维基专题:ACG/來源考量",
+      priority: 8,
+      checklists: {
+        generallyUnreliable: "zhAcgsGenerallyUnreliable",
+        marginallyReliable: "zhAcgsMarginallyReliable",
+        multi: "zhAcgsMulti",
+        generallyReliable: "zhAcgsGenerallyReliable"
+      }
+    },
+    {
+      id: "viDSNDTC",
+      page: "vi:Wikipedia:Danh sách nguồn đáng tin cậy",
+      checklists: {
+        blacklisted: "viDsndtcBlacklisted",
+        generallyUnreliable: "viDsndtcGenerallyUnreliable",
+        marginallyReliable: "viDsndtcMarginallyReliable",
+        multi: "viDsndtcMulti",
+        generallyReliable: "viDsndtcGenerallyReliable"
+      }
+    }
   ];
-  var citeUnseenSourceToCategoryMapping = {
-    "advocacy1": "advocacy",
-    "advocacy2": "advocacy",
-    "advocacy3": "advocacy",
-    "advocacy4": "advocacy",
-    "news/Americas": "news",
-    "news/Europe": "news",
-    "news/Africa": "news",
-    "news/Asia": "news",
-    "news/Oceania": "news",
-    "predatory/publishers": "predatory",
-    "predatory/standaloneJournals": "predatory"
-  };
-  var citeUnseenSourceToPageMapping = {
-    "enAMS": "en:Wikipedia:WikiProject Anime and manga/Online reliable sources",
-    "enAS": "en:Wikipedia:WikiProject Albums/Sources",
-    "enBGS": "en:Wikipedia:WikiProject Board and table games/Sources",
-    "enCHARTS": "en:Wikipedia:Record charts",
-    "enFILMR": "en:Wikipedia:WikiProject Film/Resources",
-    "enJAPANS": "en:Wikipedia:WikiProject Japan/Reliable sources",
-    "enKOREAS": "en:Wikipedia:WikiProject Korea/Reliable sources",
-    "enNPPSG/1": "en:Wikipedia:New pages patrol source guide",
-    "enNPPSG/2": "en:Wikipedia:New pages patrol source guide",
-    "enRSP": "en:Wikipedia:Reliable sources/Perennial sources",
-    "enTAMBAYS": "en:Wikipedia:Tambayan Philippines/Sources",
-    "enVGS": "en:Wikipedia:WikiProject Video games/Sources",
-    "enVSAFES": "en:Wikipedia:Vaccine safety/Perennial sources",
-    "frJVS": "fr:Projet:Jeu vidéo/Sources",
-    "ruAIKI": "ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр",
-    "viDSNDTC": "vi:Wikipedia:Danh sách nguồn đáng tin cậy",
-    "zhACGS": "zh:维基专题:ACG/來源考量",
-    "zhRSP": "zh:维基百科:可靠来源/常见有争议来源列表",
-    "zhVGS": "zh:维基专题:电子游戏/来源考量"
-  };
+  var citeUnseenChecklists = (() => {
+    var _a;
+    const typeMap = /* @__PURE__ */ new Map();
+    for (const source of checklistSourceData) {
+      for (const [type, key] of Object.entries(source.checklists)) {
+        ((_a = typeMap.get(type)) != null ? _a : typeMap.set(type, []).get(type)).push([
+          source.id,
+          key
+        ]);
+      }
+    }
+    return [...typeMap.entries()];
+  })();
+  var citeUnseenChecklistPriorities = Object.fromEntries(
+    checklistSourceData.filter((s) => s.priority).map((s) => [s.id, s.priority])
+  );
 
   // src/citations/sources.js
   var _sourceRevisions = null;
@@ -447,8 +501,19 @@
       throw error;
     }
   }
+  var expandedSourceIds = [
+    ...categorySourceData.flatMap((s) => s.subPages ? s.subPages.map((p) => `${s.id}/${p}`) : [s.id]),
+    ...checklistSourceData.map((s) => s.id)
+  ];
+  var sourcePageMap = new Map(checklistSourceData.filter((s) => s.page).map((s) => [s.id, s.page]));
+  var sourceCategoryMap = new Map(
+    categorySourceData.flatMap(
+      (s) => s.subPages ? s.subPages.map((p) => [`${s.id}/${p}`, s.category]) : s.category ? [[s.id, s.category]] : []
+    )
+  );
   function resolveSourceToCategory(sourcePageName) {
-    return citeUnseenSourceToCategoryMapping[sourcePageName] || sourcePageName;
+    var _a;
+    return (_a = sourceCategoryMap.get(sourcePageName)) != null ? _a : sourcePageName;
   }
   function createApiInstance() {
     if (mw.config.get("wgServer") === "//meta.wikimedia.org") {
@@ -484,10 +549,11 @@
     return categorizedRules;
   }
   function resolveSourceToPageLink(sourceName) {
-    return citeUnseenSourceToPageMapping[sourceName] || null;
+    var _a;
+    return (_a = sourcePageMap.get(sourceName)) != null ? _a : null;
   }
   async function getFullText() {
-    const source_titles = citeUnseenSources.map((source) => `Cite_Unseen/sources/${source}`).join("|");
+    const source_titles = expandedSourceIds.map((id) => `Cite_Unseen/sources/${id}`).join("|");
     const api = createApiInstance();
     const response = await api.get({
       action: "query",
@@ -554,7 +620,7 @@
       if (_sourceRevisions === null) {
         _sourceRevisions = await citeUnseenSourceRevisions();
       }
-      for (const source of citeUnseenSources) {
+      for (const source of expandedSourceIds) {
         const revisionId = _sourceRevisions[source];
         if (revisionId !== null && revisionId !== void 0) {
           revisionIds.push(revisionId);
@@ -661,12 +727,12 @@
       }
     }
   }
+  var reliabilityCategories = citeUnseenChecklists.map(([type]) => type);
   function getSettingCategories(includeReliability = true) {
     const typeCategories = citeUnseenCategoryTypes;
     if (!includeReliability) {
       return [...typeCategories, "unknown"];
     }
-    const reliabilityCategories = citeUnseenChecklists ? citeUnseenChecklists.map((x) => x[0]) : ["generallyReliable", "marginallyReliable", "generallyUnreliable", "deprecated", "blacklisted", "multi"];
     return [...typeCategories, ...reliabilityCategories, "unknown"];
   }
   function getCategoryDisplayName(categoryId) {
@@ -768,7 +834,7 @@
     });
   }
   function applyUserConfigurations() {
-    var _a;
+    var _a, _b;
     const categorizedRules = getCategorizedRules() || {};
     if (window.cite_unseen_categories && typeof window.cite_unseen_categories === "object") {
       for (const key in window.cite_unseen_categories) {
@@ -777,11 +843,9 @@
         } else {
           const groupKeys = ["blacklisted", "deprecated", "generallyUnreliable", "marginallyReliable", "generallyReliable", "multi"];
           if (groupKeys.includes(key)) {
-            for (const checklistTypeData of citeUnseenChecklists) {
-              if (checklistTypeData[0] === key) {
-                for (const checklist of checklistTypeData[1]) {
-                  citeUnseenCategories[checklist] = window.cite_unseen_categories[key];
-                }
+            for (const source of checklistSourceData) {
+              if (((_a = source.checklists) == null ? void 0 : _a[key]) !== void 0) {
+                citeUnseenCategories[source.checklists[key]] = window.cite_unseen_categories[key];
               }
             }
           }
@@ -790,7 +854,7 @@
     }
     if (window.cite_unseen_domain_ignore && typeof window.cite_unseen_domain_ignore === "object") {
       for (const key in window.cite_unseen_domain_ignore) {
-        if (((_a = window.cite_unseen_domain_ignore[key]) == null ? void 0 : _a.length) && key in categorizedRules) {
+        if (((_b = window.cite_unseen_domain_ignore[key]) == null ? void 0 : _b.length) && key in categorizedRules) {
           citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
         }
       }
@@ -1412,9 +1476,11 @@
     );
   }
   function findReliabilityMatch(coins, filteredCategorizedRules, options) {
+    var _a;
     const {
       citeUnseenChecklists: citeUnseenChecklists2,
       citeUnseenCategories: citeUnseenCategories2,
+      citeUnseenChecklistPriorities: citeUnseenChecklistPriorities2 = {},
       currentLanguage,
       showOtherLanguageReliabilityRatings
     } = options;
@@ -1447,7 +1513,8 @@
               type: checklistType,
               name: checklistName,
               language,
-              spec: specificity
+              spec: specificity,
+              priority: (_a = citeUnseenChecklistPriorities2[checklistName]) != null ? _a : 0
             });
             if (specificity === 0) break;
           } else if (specificity > 0 && (matchUrl(coins, rule) || matchUrlString(coins, rule))) {
@@ -1466,7 +1533,12 @@
       }
     }
     const selectBestMatch = (matches) => {
-      return matches.length === 1 ? matches[0] : matches.reduce((best, current) => current.spec > best.spec ? current : best);
+      return matches.length === 1 ? matches[0] : matches.reduce((best, current) => {
+        if (best.type === "multi" && current.type !== "multi") return current;
+        if (current.type === "multi" && best.type !== "multi") return best;
+        if (current.priority !== best.priority) return current.priority > best.priority ? current : best;
+        return current.spec > best.spec ? current : best;
+      });
     };
     const createCleanMatch = (match2) => ({
       type: match2.type,
@@ -1887,6 +1959,7 @@
         const reliabilityMatches = findReliabilityMatch(ref.coins, refCategorizedRules, {
           citeUnseenChecklists,
           citeUnseenCategories,
+          citeUnseenChecklistPriorities,
           currentLanguage: mw.config.get("wgContentLanguage"),
           showOtherLanguageReliabilityRatings: window.cite_unseen_show_other_language_reliability_ratings
         });
@@ -1932,8 +2005,13 @@
   }
 
   // src/ui/dashboard.js
+  var allCategoryTypes = [
+    ...citeUnseenChecklists.map(([type]) => type).toReversed(),
+    ...citeUnseenCategoryTypes,
+    "unknown"
+  ];
   function getAllCategoryTypes() {
-    return [...citeUnseenChecklists.flatMap((x) => x[0]).toReversed(), ...citeUnseenCategoryTypes, "unknown"];
+    return allCategoryTypes;
   }
   function getCitationContainer(citationElement) {
     const listItem = citationElement.closest("li");
@@ -2786,7 +2864,7 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
             return getAvailableCategories();
           },
           reliabilityProjects() {
-            const pageLinks = Object.values(citeUnseenSourceToPageMapping);
+            const pageLinks = checklistSourceData.filter((s) => s.page).map((s) => s.page);
             const projects = [];
             for (const pageLink of pageLinks) {
               const [lang, ...pageParts] = pageLink.split(":");
