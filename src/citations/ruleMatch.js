@@ -375,6 +375,7 @@ export function findReliabilityMatch(coins, filteredCategorizedRules, options) {
     const {
         citeUnseenChecklists,
         citeUnseenCategories,
+        citeUnseenChecklistPriorities = {},
         currentLanguage,
         showOtherLanguageReliabilityRatings
     } = options;
@@ -416,7 +417,8 @@ export function findReliabilityMatch(coins, filteredCategorizedRules, options) {
                         type: checklistType,
                         name: checklistName,
                         language: language,
-                        spec: specificity
+                        spec: specificity,
+                        priority: citeUnseenChecklistPriorities[checklistName] ?? 0
                     });
                     if (specificity === 0.0) break;  // No need to check further if matched with no conditions
                 } else if (specificity > 0.0 && (matchUrl(coins, rule) || matchUrlString(coins, rule))) {
@@ -437,9 +439,18 @@ export function findReliabilityMatch(coins, filteredCategorizedRules, options) {
     }
 
     // Function to select best match from multiple candidates
+    // Priority followed by specificity
     const selectBestMatch = (matches) => {
         return matches.length === 1 ? matches[0] :
-            matches.reduce((best, current) => (current.spec > best.spec ? current : best));
+            matches.reduce((best, current) => {
+                // Pin 'multi' matches to the end
+                if (best.type === 'multi' && current.type !== 'multi') return current;
+                if (current.type === 'multi' && best.type !== 'multi') return best;
+
+                // Compare by priority first, then by specificity
+                if (current.priority !== best.priority) return current.priority > best.priority ? current : best;
+                return current.spec > best.spec ? current : best;
+            });
     };
 
     // Function to create clean match object

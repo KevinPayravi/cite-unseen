@@ -8,7 +8,7 @@ import {
     getI18n
 } from '../i18n.js';
 import { getPrimarySourceUrl } from '../citations/parser.js';
-import { citeUnseenSourceToPageMapping } from '../citations/sourceData.js';
+import { checklistSourceData } from '../citations/sourceData.js';
 import {
     closeCurrentDialog,
     closeDialogAfterAnimation,
@@ -73,7 +73,7 @@ function createSuggestionDialog(citationRef) {
                     return getAvailableCategories();
                 },
                 reliabilityProjects() {
-                    const pageLinks = Object.values(citeUnseenSourceToPageMapping);
+                    const pageLinks = checklistSourceData.filter(s => s.page).map(s => s.page);
                     const projects = [];
                     for (const pageLink of pageLinks) {
                         const [lang, ...pageParts] = pageLink.split(':');

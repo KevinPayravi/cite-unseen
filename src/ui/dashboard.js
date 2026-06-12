@@ -15,8 +15,14 @@ import { getRefCategories } from './icons.js';
  * The order only matters when displaying in the dashboard.
  * @returns {Array} Array of all category type strings
  */
+const allCategoryTypes = [
+    ...citeUnseenChecklists.map(([type]) => type).toReversed(),
+    ...citeUnseenCategoryTypes,
+    'unknown'
+];
+
 function getAllCategoryTypes() {
-    return [...citeUnseenChecklists.flatMap(x => x[0]).toReversed(), ...citeUnseenCategoryTypes, 'unknown'];
+    return allCategoryTypes;
 }
 
 /**

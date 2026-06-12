@@ -2,7 +2,7 @@ import {
     citeUnseenCategories,
     citeUnseenCategoryTypes
 } from './citations/categoryData.js';
-import { citeUnseenChecklists } from './citations/sourceData.js';
+import { checklistSourceData, citeUnseenChecklists } from './citations/sourceData.js';
 import { getCategorizedRules } from './citations/sources.js';
 import {
     getConvByVar,
@@ -70,6 +70,8 @@ export function initializeCategoryDefaults() {
  * @param {boolean} includeReliability - Whether reliability categories should be included
  * @returns {string[]}
  */
+const reliabilityCategories = citeUnseenChecklists.map(([type]) => type);
+
 export function getSettingCategories(includeReliability = true) {
     // Get all type categories from citeUnseenCategoryTypes
     const typeCategories = citeUnseenCategoryTypes;
@@ -77,11 +79,6 @@ export function getSettingCategories(includeReliability = true) {
     if (!includeReliability) {
         return [...typeCategories, 'unknown'];
     }
-
-    // Get all reliability categories from citeUnseenChecklists
-    const reliabilityCategories = citeUnseenChecklists ?
-        citeUnseenChecklists.map(x => x[0]) :
-        ['generallyReliable', 'marginallyReliable', 'generallyUnreliable', 'deprecated', 'blacklisted', 'multi'];
 
     // Combine all categories + unknown
     return [...typeCategories, ...reliabilityCategories, 'unknown'];
@@ -260,11 +257,9 @@ function applyUserConfigurations() {
                 // Handle grouped categories (blacklisted, deprecated, etc.)
                 const groupKeys = ["blacklisted", "deprecated", "generallyUnreliable", "marginallyReliable", "generallyReliable", "multi"];
                 if (groupKeys.includes(key)) {
-                    for (const checklistTypeData of citeUnseenChecklists) {
-                        if (checklistTypeData[0] === key) {
-                            for (const checklist of checklistTypeData[1]) {
-                                citeUnseenCategories[checklist] = window.cite_unseen_categories[key];
-                            }
+                    for (const source of checklistSourceData) {
+                        if (source.checklists?.[key] !== undefined) {
+                            citeUnseenCategories[source.checklists[key]] = window.cite_unseen_categories[key];
                         }
                     }
                 }
