@@ -8,7 +8,7 @@ import {
     citeUnseenCategoryData,
     citeUnseenCategoryTypes
 } from '../citations/categoryData.js';
-import { citeUnseenChecklists } from '../citations/sourceData.js';
+import { citeUnseenChecklists, citeUnseenChecklistPriorities } from '../citations/sourceData.js';
 import {
     getCategorizedRules,
     resolveSourceToPageLink
@@ -202,6 +202,7 @@ export function addIcons() {
             const reliabilityMatches = findReliabilityMatch(ref.coins, refCategorizedRules, {
                 citeUnseenChecklists,
                 citeUnseenCategories,
+                citeUnseenChecklistPriorities,
                 currentLanguage: mw.config.get('wgContentLanguage'),
                 showOtherLanguageReliabilityRatings: window.cite_unseen_show_other_language_reliability_ratings
             });

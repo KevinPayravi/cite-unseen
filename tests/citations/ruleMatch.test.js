@@ -7,7 +7,7 @@ import {
     matchUrl,
     matchUrlString
 } from '../../src/citations/ruleMatch.js';
-import { citeUnseenChecklists } from '../../src/citations/sourceData.js';
+import { citeUnseenChecklists, citeUnseenChecklistPriorities } from '../../src/citations/sourceData.js';
 
 /**
  * Create the smallest COinS-like object needed by the URL matchers.
@@ -61,6 +61,7 @@ function findReliabilityMatches(coins, categorizedRules, citeUnseenCategories) {
     return findReliabilityMatch(coins, categorizedRules, {
         citeUnseenChecklists,
         citeUnseenCategories,
+        citeUnseenChecklistPriorities,
         currentLanguage: 'en',
         showOtherLanguageReliabilityRatings: false
     });
@@ -193,6 +194,30 @@ test('findReliabilityMatch keeps earlier checklist names within the same reliabi
         {
             type: 'generallyReliable',
             name: 'enRSP',
+            language: 'en',
+            spec: 0
+        }
+    ]);
+});
+
+test('findReliabilityMatch pins multi below direct non-multi reliability matches', () => {
+    /**
+     * enNPPSG has a higher source priority than enAMS, but "no consensus"
+     * should not override a direct concrete reliability tier.
+     */
+    const coins = createCoins('https://www.example.com/article');
+    const {
+        categorizedRules,
+        citeUnseenCategories
+    } = createReliabilityFixture();
+
+    categorizedRules.enNppsgMulti = [{ 'url': 'example.com' }];
+    categorizedRules.enAmsGenerallyReliable = [{ 'url': 'example.com' }];
+
+    assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
+        {
+            type: 'generallyReliable',
+            name: 'enAMS',
             language: 'en',
             spec: 0
         }
