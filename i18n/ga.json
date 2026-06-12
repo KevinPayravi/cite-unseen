@@ -38,8 +38,12 @@
 	"categoryLabels.aiGenerated": "Gineadh ag AI",
 	"categoryLabels.aiReferred": "Tagartha ag AI",
 	"categoryLabels.blacklisted": "ar an liosta dubh",
-	"categoryLabels.blogs": "post(anna) bhlag",
-	"categoryLabels.books": "leabhair",
+	"categoryLabels.blogs": {
+		"other": "post(anna) bhlag"
+	},
+	"categoryLabels.books": {
+		"other": "leabhair"
+	},
 	"categoryLabels.community": "pobal",
 	"categoryLabels.deprecated": "as feidhm",
 	"categoryLabels.editable": "in-eagarthóireacht",
@@ -49,17 +53,31 @@
 	"categoryLabels.marginallyReliable": "iontaofa go pointe áirithe",
 	"categoryLabels.multi": "gan aon chomhdhearcadh",
 	"categoryLabels.news": "nuacht",
-	"categoryLabels.opinions": "píosa(í) tuairime",
-	"categoryLabels.predatory": "iris(í) chreiche",
-	"categoryLabels.press": "preasráiteas(anna)",
+	"categoryLabels.opinions": {
+		"other": "píosa(í) tuairime"
+	},
+	"categoryLabels.predatory": {
+		"other": "iris(í) chreiche"
+	},
+	"categoryLabels.press": {
+		"other": "preasráiteas(anna)"
+	},
 	"categoryLabels.satire": "aorach",
 	"categoryLabels.social": "meáin shóisialta",
 	"categoryLabels.sponsored": "urraithe",
-	"categoryLabels.tabloids": "táblóidigh",
-	"categoryLabels.tvPrograms": "Clár(anna) teilifíse",
-	"categoryLabels.unknown": "naisc anaithnide",
-	"citation.one": "lua",
-	"citation.other": "luanna",
+	"categoryLabels.tabloids": {
+		"other": "táblóidigh"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "Clár(anna) teilifíse"
+	},
+	"categoryLabels.unknown": {
+		"other": "naisc anaithnide"
+	},
+	"citation": {
+		"one": "lua",
+		"other": "luanna"
+	},
 	"citationTooltipAction": "Cliceáil an deilbhín chun leathanach an tseicliosta a oscailt chun sonraí a fheiceáil.",
 	"citationTooltipPrefix": "Ó",
 	"citationTooltipSuffix": ":",

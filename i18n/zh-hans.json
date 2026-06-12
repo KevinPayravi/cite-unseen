@@ -39,8 +39,12 @@
 	"categoryLabels.aiGenerated": "AI生成",
 	"categoryLabels.aiReferred": "AI搜索",
 	"categoryLabels.blacklisted": "列入黑名单",
-	"categoryLabels.blogs": "博客",
-	"categoryLabels.books": "出版物",
+	"categoryLabels.blogs": {
+		"other": "博客"
+	},
+	"categoryLabels.books": {
+		"other": "出版物"
+	},
 	"categoryLabels.community": "社群新闻",
 	"categoryLabels.deprecated": "应停用",
 	"categoryLabels.editable": "可编辑",
@@ -50,16 +54,30 @@
 	"categoryLabels.marginallyReliable": "半可靠",
 	"categoryLabels.multi": "无共识",
 	"categoryLabels.news": "新闻",
-	"categoryLabels.opinions": "观点",
-	"categoryLabels.predatory": "掠夺性期刊",
-	"categoryLabels.press": "新闻稿",
+	"categoryLabels.opinions": {
+		"other": "观点"
+	},
+	"categoryLabels.predatory": {
+		"other": "掠夺性期刊"
+	},
+	"categoryLabels.press": {
+		"other": "新闻稿"
+	},
 	"categoryLabels.satire": "幽默",
 	"categoryLabels.social": "社交媒体",
 	"categoryLabels.sponsored": "宣传稿",
-	"categoryLabels.tabloids": "小报",
-	"categoryLabels.tvPrograms": "电视节目",
-	"categoryLabels.unknown": "未知链接",
-	"citation.other": "个来源",
+	"categoryLabels.tabloids": {
+		"other": "小报"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "电视节目"
+	},
+	"categoryLabels.unknown": {
+		"other": "未知链接"
+	},
+	"citation": {
+		"other": "个来源"
+	},
 	"citationTooltipAction": "点击图标可打开检查表页面以查看详情。",
 	"citationTooltipPrefix": "来自",
 	"citationTooltipSuffix": "：",

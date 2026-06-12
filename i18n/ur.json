@@ -18,8 +18,12 @@
 	"categoryHints.satire": "یہ ماخذ طنزیہ یا پیروڈی مواد شائع کرتا ہے۔",
 	"categoryHints.social": "یہ ماخذ ایک سوشل میڈیا ویب سائٹ ہے، ممکنہ طور پر ایک سوشل میڈیا پوسٹ۔",
 	"categoryHints.sponsored": "یہ ماخذ ایک اسپانسر شدہ مواد یا تشہیری مواد ہے۔",
-	"categoryLabels.blogs": "بلاگ پوسٹ",
-	"categoryLabels.books": "کتابیں",
+	"categoryLabels.blogs": {
+		"other": "بلاگ پوسٹ"
+	},
+	"categoryLabels.books": {
+		"other": "کتابیں"
+	},
 	"categoryLabels.deprecated": "مسترد شدہ",
 	"categoryLabels.editable": "قابل ترمیم",
 	"categoryLabels.generallyReliable": "عام طور پر قابل اعتماد",
@@ -27,7 +31,9 @@
 	"categoryLabels.government": "حکومت",
 	"categoryLabels.multi": "کوئی اتفاق نہیں",
 	"categoryLabels.news": "خبریں",
-	"categoryLabels.press": "پریس ریلیز",
+	"categoryLabels.press": {
+		"other": "پریس ریلیز"
+	},
 	"categoryLabels.satire": "طنزیہ",
 	"categoryLabels.social": "سوشل میڈیا",
 	"categoryLabels.sponsored": "سپانسر شدہ"

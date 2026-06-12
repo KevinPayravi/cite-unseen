@@ -38,10 +38,14 @@
 	"categoryLabels.aiGenerated": "AI-gegenereerd",
 	"categoryLabels.aiReferred": "AI-verwezen",
 	"categoryLabels.blacklisted": "op de blokkeerlijst geplaatst",
-	"categoryLabels.blogs.one": "blogbericht",
-	"categoryLabels.blogs.other": "blogberichten",
-	"categoryLabels.books.one": "boek",
-	"categoryLabels.books.other": "boeken",
+	"categoryLabels.blogs": {
+		"one": "blogbericht",
+		"other": "blogberichten"
+	},
+	"categoryLabels.books": {
+		"one": "boek",
+		"other": "boeken"
+	},
 	"categoryLabels.community": "gemeenschap",
 	"categoryLabels.deprecated": "verouderd",
 	"categoryLabels.editable": "bewerkbaar",
@@ -51,23 +55,37 @@
 	"categoryLabels.marginallyReliable": "marginaal betrouwbaar",
 	"categoryLabels.multi": "geen consensus",
 	"categoryLabels.news": "nieuws",
-	"categoryLabels.opinions.one": "opiniestuk",
-	"categoryLabels.opinions.other": "opiniestukken",
-	"categoryLabels.predatory.one": "rooftijdschrift",
-	"categoryLabels.predatory.other": "rooftijdschriften",
-	"categoryLabels.press.one": "persbericht",
-	"categoryLabels.press.other": "persberichten",
+	"categoryLabels.opinions": {
+		"one": "opiniestuk",
+		"other": "opiniestukken"
+	},
+	"categoryLabels.predatory": {
+		"one": "rooftijdschrift",
+		"other": "rooftijdschriften"
+	},
+	"categoryLabels.press": {
+		"one": "persbericht",
+		"other": "persberichten"
+	},
 	"categoryLabels.satire": "satirisch",
 	"categoryLabels.social": "sociale media",
 	"categoryLabels.sponsored": "gesponsord",
-	"categoryLabels.tabloids.one": "tabloid",
-	"categoryLabels.tabloids.other": "tabloids",
-	"categoryLabels.tvPrograms.one": "Televisieprogramma",
-	"categoryLabels.tvPrograms.other": "Televisieprogramma's",
-	"categoryLabels.unknown.one": "onbekende koppeling",
-	"categoryLabels.unknown.other": "onbekende koppelingen",
-	"citation.one": "referentie",
-	"citation.other": "referenties",
+	"categoryLabels.tabloids": {
+		"one": "tabloid",
+		"other": "tabloids"
+	},
+	"categoryLabels.tvPrograms": {
+		"one": "Televisieprogramma",
+		"other": "Televisieprogramma's"
+	},
+	"categoryLabels.unknown": {
+		"one": "onbekende koppeling",
+		"other": "onbekende koppelingen"
+	},
+	"citation": {
+		"one": "referentie",
+		"other": "referenties"
+	},
 	"citationTooltipAction": "Klik op het pictogram om de checklistpagina te openen en de details te bekijken.",
 	"citationTooltipPrefix": "Van",
 	"citationTooltipSuffix": ":",

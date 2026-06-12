@@ -38,8 +38,12 @@
 	"categoryLabels.aiGenerated": "Создадено со ВИ",
 	"categoryLabels.aiReferred": "Наведено со ВИ",
 	"categoryLabels.blacklisted": "на црн список",
-	"categoryLabels.blogs": "блоговска објава",
-	"categoryLabels.books": "книги",
+	"categoryLabels.blogs": {
+		"other": "блоговска објава"
+	},
+	"categoryLabels.books": {
+		"other": "книги"
+	},
 	"categoryLabels.community": "заедница",
 	"categoryLabels.deprecated": "застарено",
 	"categoryLabels.editable": "уредливо",
@@ -49,17 +53,31 @@
 	"categoryLabels.marginallyReliable": "маргинално веродостоен",
 	"categoryLabels.multi": "нема консензус",
 	"categoryLabels.news": "вести",
-	"categoryLabels.opinions": "колумна/ни",
-	"categoryLabels.predatory": "предаторски часопис(и)",
-	"categoryLabels.press": "соопштение за печат",
+	"categoryLabels.opinions": {
+		"other": "колумна/ни"
+	},
+	"categoryLabels.predatory": {
+		"other": "предаторски часопис(и)"
+	},
+	"categoryLabels.press": {
+		"other": "соопштение за печат"
+	},
 	"categoryLabels.satire": "сатирично",
 	"categoryLabels.social": "друштвен медиум",
 	"categoryLabels.sponsored": "спонзорирано",
-	"categoryLabels.tabloids": "таблоид(и)",
-	"categoryLabels.tvPrograms": "ТВ-емисија",
-	"categoryLabels.unknown": "непознати врски",
-	"citation.one": "навод",
-	"citation.other": "наводи",
+	"categoryLabels.tabloids": {
+		"other": "таблоид(и)"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "ТВ-емисија"
+	},
+	"categoryLabels.unknown": {
+		"other": "непознати врски"
+	},
+	"citation": {
+		"one": "навод",
+		"other": "наводи"
+	},
 	"citationTooltipAction": "Стиснете на иконата за да отворите страница со контролен список за да ги видите подробностите.",
 	"citationTooltipPrefix": "Од",
 	"citationTooltipSuffix": ":",

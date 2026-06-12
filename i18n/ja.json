@@ -34,8 +34,12 @@
 	"categoryHints.unknown": "この情報源はまだ評価されていません。",
 	"categoryLabels.advocacy": "アドボカシー",
 	"categoryLabels.blacklisted": "ブラックリスト入り",
-	"categoryLabels.blogs": "ブログ",
-	"categoryLabels.books": "出版物",
+	"categoryLabels.blogs": {
+		"other": "ブログ"
+	},
+	"categoryLabels.books": {
+		"other": "出版物"
+	},
 	"categoryLabels.community": "コミュニティ",
 	"categoryLabels.deprecated": "非推奨",
 	"categoryLabels.editable": "編集可能",
@@ -45,16 +49,30 @@
 	"categoryLabels.marginallyReliable": "限られた信頼性",
 	"categoryLabels.multi": "コンセンサスなし",
 	"categoryLabels.news": "ニュース",
-	"categoryLabels.opinions": "意見",
-	"categoryLabels.predatory": "ハゲタカジャーナル",
-	"categoryLabels.press": "プレスリリース",
+	"categoryLabels.opinions": {
+		"other": "意見"
+	},
+	"categoryLabels.predatory": {
+		"other": "ハゲタカジャーナル"
+	},
+	"categoryLabels.press": {
+		"other": "プレスリリース"
+	},
 	"categoryLabels.satire": "風刺",
 	"categoryLabels.social": "ソーシャルメディア",
 	"categoryLabels.sponsored": "スポンサー付き",
-	"categoryLabels.tabloids": "タブロイド",
-	"categoryLabels.tvPrograms": "テレビ番組",
-	"categoryLabels.unknown": "不明なリンク",
-	"citation.other": "件の引用",
+	"categoryLabels.tabloids": {
+		"other": "タブロイド"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "テレビ番組"
+	},
+	"categoryLabels.unknown": {
+		"other": "不明なリンク"
+	},
+	"citation": {
+		"other": "件の引用"
+	},
 	"citationTooltipAction": "アイコンをクリックすると、チェックリストページを開いて詳細を確認できます。",
 	"citationTooltipPrefix": "出典",
 	"citationTooltipSuffix": "：",
