@@ -40,8 +40,12 @@
 	"categoryLabels.aiGenerated": "AI生成",
 	"categoryLabels.aiReferred": "AI搜尋",
 	"categoryLabels.blacklisted": "列入黑名單",
-	"categoryLabels.blogs": "部落格",
-	"categoryLabels.books": "出版物",
+	"categoryLabels.blogs": {
+		"other": "部落格"
+	},
+	"categoryLabels.books": {
+		"other": "出版物"
+	},
 	"categoryLabels.community": "社群新聞",
 	"categoryLabels.deprecated": "應停用",
 	"categoryLabels.editable": "可編輯",
@@ -51,16 +55,30 @@
 	"categoryLabels.marginallyReliable": "半可靠",
 	"categoryLabels.multi": "無共識",
 	"categoryLabels.news": "新聞",
-	"categoryLabels.opinions": "觀點",
-	"categoryLabels.predatory": "掠奪性期刊",
-	"categoryLabels.press": "新聞稿",
+	"categoryLabels.opinions": {
+		"other": "觀點"
+	},
+	"categoryLabels.predatory": {
+		"other": "掠奪性期刊"
+	},
+	"categoryLabels.press": {
+		"other": "新聞稿"
+	},
 	"categoryLabels.satire": "幽默",
 	"categoryLabels.social": "社群媒體",
 	"categoryLabels.sponsored": "宣傳稿",
-	"categoryLabels.tabloids": "小報",
-	"categoryLabels.tvPrograms": "電視節目",
-	"categoryLabels.unknown": "未知連結",
-	"citation.other": "個來源",
+	"categoryLabels.tabloids": {
+		"other": "小報"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "電視節目"
+	},
+	"categoryLabels.unknown": {
+		"other": "未知連結"
+	},
+	"citation": {
+		"other": "個來源"
+	},
 	"citationTooltipAction": "點擊圖示可打開檢查表頁面以查看詳情。",
 	"citationTooltipPrefix": "來自",
 	"citationTooltipSuffix": "：",

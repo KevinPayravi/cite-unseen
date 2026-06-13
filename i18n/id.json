@@ -34,8 +34,12 @@
 	"categoryHints.unknown": "Sumber ini belum dievaluasi.",
 	"categoryLabels.advocacy": "advokasi",
 	"categoryLabels.blacklisted": "didaftarhitamkan",
-	"categoryLabels.blogs": "postingan blog",
-	"categoryLabels.books": "buku",
+	"categoryLabels.blogs": {
+		"other": "postingan blog"
+	},
+	"categoryLabels.books": {
+		"other": "buku"
+	},
 	"categoryLabels.community": "komunitas",
 	"categoryLabels.deprecated": "usang",
 	"categoryLabels.editable": "dapat disunting",
@@ -45,16 +49,30 @@
 	"categoryLabels.marginallyReliable": "lumayan terandalkan sedikit",
 	"categoryLabels.multi": "tiada konsensus",
 	"categoryLabels.news": "berita",
-	"categoryLabels.opinions": "artikel pendapat",
-	"categoryLabels.predatory": "jurnal memangsa",
-	"categoryLabels.press": "siaran pers",
+	"categoryLabels.opinions": {
+		"other": "artikel pendapat"
+	},
+	"categoryLabels.predatory": {
+		"other": "jurnal memangsa"
+	},
+	"categoryLabels.press": {
+		"other": "siaran pers"
+	},
 	"categoryLabels.satire": "satire",
 	"categoryLabels.social": "media sosial",
 	"categoryLabels.sponsored": "disponsori",
-	"categoryLabels.tabloids": "tabloid",
-	"categoryLabels.tvPrograms": "Program televisi",
-	"categoryLabels.unknown": "tautan tak dikenal",
-	"citation.other": "rujukan",
+	"categoryLabels.tabloids": {
+		"other": "tabloid"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "Program televisi"
+	},
+	"categoryLabels.unknown": {
+		"other": "tautan tak dikenal"
+	},
+	"citation": {
+		"other": "rujukan"
+	},
 	"citationTooltipAction": "Klik ikon untuk membuka halaman daftar periksa dan melihat rincian.",
 	"citationTooltipPrefix": "Dari",
 	"citationTooltipSuffix": ":",

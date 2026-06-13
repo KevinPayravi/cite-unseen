@@ -39,10 +39,14 @@
 	"categoryLabels.aiGenerated": "xerado por IA",
 	"categoryLabels.aiReferred": "referido por IA",
 	"categoryLabels.blacklisted": "na lista negra",
-	"categoryLabels.blogs.one": "entrada de blog",
-	"categoryLabels.blogs.other": "entradas de blog",
-	"categoryLabels.books.one": "libro",
-	"categoryLabels.books.other": "libros",
+	"categoryLabels.blogs": {
+		"one": "entrada de blog",
+		"other": "entradas de blog"
+	},
+	"categoryLabels.books": {
+		"one": "libro",
+		"other": "libros"
+	},
 	"categoryLabels.community": "comunidade",
 	"categoryLabels.deprecated": "obsoleto",
 	"categoryLabels.editable": "editable",
@@ -52,23 +56,37 @@
 	"categoryLabels.marginallyReliable": "marxinalmente fiable",
 	"categoryLabels.multi": "sen consenso",
 	"categoryLabels.news": "noticias",
-	"categoryLabels.opinions.one": "artigo de opinión",
-	"categoryLabels.opinions.other": "artigos de opinión",
-	"categoryLabels.predatory.one": "revista depredadora",
-	"categoryLabels.predatory.other": "revistas depredadoras",
-	"categoryLabels.press.one": "nota de prensa",
-	"categoryLabels.press.other": "notas de prensa",
+	"categoryLabels.opinions": {
+		"one": "artigo de opinión",
+		"other": "artigos de opinión"
+	},
+	"categoryLabels.predatory": {
+		"one": "revista depredadora",
+		"other": "revistas depredadoras"
+	},
+	"categoryLabels.press": {
+		"one": "nota de prensa",
+		"other": "notas de prensa"
+	},
 	"categoryLabels.satire": "satírico",
 	"categoryLabels.social": "redes sociais",
 	"categoryLabels.sponsored": "patrocinado",
-	"categoryLabels.tabloids.one": "tabloide",
-	"categoryLabels.tabloids.other": "tabloides",
-	"categoryLabels.tvPrograms.one": "programa de televisión",
-	"categoryLabels.tvPrograms.other": "programas de televisión",
-	"categoryLabels.unknown.one": "ligazón descoñecida",
-	"categoryLabels.unknown.other": "ligazóns descoñecidas",
-	"citation.one": "cita",
-	"citation.other": "citas",
+	"categoryLabels.tabloids": {
+		"one": "tabloide",
+		"other": "tabloides"
+	},
+	"categoryLabels.tvPrograms": {
+		"one": "programa de televisión",
+		"other": "programas de televisión"
+	},
+	"categoryLabels.unknown": {
+		"one": "ligazón descoñecida",
+		"other": "ligazóns descoñecidas"
+	},
+	"citation": {
+		"one": "cita",
+		"other": "citas"
+	},
 	"citationTooltipAction": "Fai clic na icona para abrir a páxina da lista de verificación e consultar os detalles.",
 	"citationTooltipPrefix": "De",
 	"citationTooltipSuffix": ":",

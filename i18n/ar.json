@@ -39,8 +39,12 @@
 	"categoryLabels.aiGenerated": "المولد بالذكاء الصنعي",
 	"categoryLabels.aiReferred": "مراجع بالذكاء الصنعي",
 	"categoryLabels.blacklisted": "مُدرج في القائمة السوداء",
-	"categoryLabels.blogs": "تدوينات المدونة",
-	"categoryLabels.books": "كتب",
+	"categoryLabels.blogs": {
+		"other": "تدوينات المدونة"
+	},
+	"categoryLabels.books": {
+		"other": "كتب"
+	},
 	"categoryLabels.community": "مجتمع",
 	"categoryLabels.deprecated": "مُهمَل",
 	"categoryLabels.editable": "قابلة للتحرير",
@@ -50,17 +54,31 @@
 	"categoryLabels.marginallyReliable": "موثوق بها بشكل هامشي",
 	"categoryLabels.multi": "لا يوجد إجماع",
 	"categoryLabels.news": "أخبار",
-	"categoryLabels.opinions": "مقالة رأي",
-	"categoryLabels.predatory": "المجلات المفترسة",
-	"categoryLabels.press": "بيان صحفي",
+	"categoryLabels.opinions": {
+		"other": "مقالة رأي"
+	},
+	"categoryLabels.predatory": {
+		"other": "المجلات المفترسة"
+	},
+	"categoryLabels.press": {
+		"other": "بيان صحفي"
+	},
 	"categoryLabels.satire": "ساخر",
 	"categoryLabels.social": "وسائل التواصل الاجتماعي",
 	"categoryLabels.sponsored": "برعاية",
-	"categoryLabels.tabloids": "صحيفة(ات) شعبية",
-	"categoryLabels.tvPrograms": "البرامج التلفزيونية",
-	"categoryLabels.unknown": "روابط غير معروفة",
-	"citation.one": "الاستشهاد",
-	"citation.other": "الاستشهادات",
+	"categoryLabels.tabloids": {
+		"other": "صحيفة(ات) شعبية"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "البرامج التلفزيونية"
+	},
+	"categoryLabels.unknown": {
+		"other": "روابط غير معروفة"
+	},
+	"citation": {
+		"one": "الاستشهاد",
+		"other": "الاستشهادات"
+	},
 	"citationTooltipAction": "انقر على الرمز لفتح صفحة قائمة التحقق لعرض التفاصيل.",
 	"citationTooltipPrefix": "من",
 	"citationTooltipSuffix": ":",

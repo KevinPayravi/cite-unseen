@@ -18,8 +18,12 @@
 	"categoryLabels.aiGenerated": "مصنوعي ځيرکتيا-پنځولې",
 	"categoryLabels.aiReferred": "مصنوعي ځيرکتيا-وړانديز کړې",
 	"categoryLabels.blacklisted": "تورلېست‌شوي",
-	"categoryLabels.blogs": "بلاگ پوست(ونه)",
-	"categoryLabels.books": "کتابونه",
+	"categoryLabels.blogs": {
+		"other": "بلاگ پوست(ونه)"
+	},
+	"categoryLabels.books": {
+		"other": "کتابونه"
+	},
 	"categoryLabels.community": "ټولنه",
 	"categoryLabels.deprecated": "له  پامه غورځول شوی",
 	"categoryLabels.editable": "سمون‌وړ",
@@ -29,16 +33,28 @@
 	"categoryLabels.marginallyReliable": "لږ د باور وړ",
 	"categoryLabels.multi": "د ټولمنلتوب نه‌شتون",
 	"categoryLabels.news": "خبرونه",
-	"categoryLabels.opinions": "اند ټوټه(ې)",
-	"categoryLabels.predatory": "ښکار مهالنۍ",
-	"categoryLabels.press": "چاپي اعلاميه(ې)",
+	"categoryLabels.opinions": {
+		"other": "اند ټوټه(ې)"
+	},
+	"categoryLabels.predatory": {
+		"other": "ښکار مهالنۍ"
+	},
+	"categoryLabels.press": {
+		"other": "چاپي اعلاميه(ې)"
+	},
 	"categoryLabels.satire": "خنداوړ",
 	"categoryLabels.social": "ټولنیزه رسنۍ",
 	"categoryLabels.sponsored": "ملاتړشوی",
-	"categoryLabels.tvPrograms": "تلوېزيوني خپرونه(ې)",
-	"categoryLabels.unknown": "نامالوم تړوني",
-	"citation.one": "اخځ",
-	"citation.other": "اخځونه",
+	"categoryLabels.tvPrograms": {
+		"other": "تلوېزيوني خپرونه(ې)"
+	},
+	"categoryLabels.unknown": {
+		"other": "نامالوم تړوني"
+	},
+	"citation": {
+		"one": "اخځ",
+		"other": "اخځونه"
+	},
 	"citationTooltipPrefix": "له",
 	"citationTooltipSuffix": ":",
 	"clearAllFilters": "ټول سپينول",
