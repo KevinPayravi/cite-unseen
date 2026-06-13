@@ -39,8 +39,12 @@
 	"categoryLabels.aiGenerated": "Yapay zekâ tarafından oluşturulmuş",
 	"categoryLabels.aiReferred": "Yapay zekâya atıfta bulunan",
 	"categoryLabels.blacklisted": "kara listeye alınmış",
-	"categoryLabels.blogs": "blog yazıları",
-	"categoryLabels.books": "kitaplar",
+	"categoryLabels.blogs": {
+		"other": "blog yazıları"
+	},
+	"categoryLabels.books": {
+		"other": "kitaplar"
+	},
 	"categoryLabels.community": "topluluk",
 	"categoryLabels.deprecated": "artık geçerli olmayan",
 	"categoryLabels.editable": "düzenlenebilir",
@@ -50,17 +54,31 @@
 	"categoryLabels.marginallyReliable": "kısmen güvenilir",
 	"categoryLabels.multi": "fikir birliği yok",
 	"categoryLabels.news": "haberler",
-	"categoryLabels.opinions": "görüş yazıları",
-	"categoryLabels.predatory": "yırtıcı dergiler",
-	"categoryLabels.press": "basın bültenleri",
+	"categoryLabels.opinions": {
+		"other": "görüş yazıları"
+	},
+	"categoryLabels.predatory": {
+		"other": "yırtıcı dergiler"
+	},
+	"categoryLabels.press": {
+		"other": "basın bültenleri"
+	},
 	"categoryLabels.satire": "hicivsel",
 	"categoryLabels.social": "sosyal medya",
 	"categoryLabels.sponsored": "sponsorlu",
-	"categoryLabels.tabloids": "tabloid gazeteler",
-	"categoryLabels.tvPrograms": "TV programları",
-	"categoryLabels.unknown": "bilinmeyen bağlantılar",
-	"citation.one": "alıntı",
-	"citation.other": "alıntılar",
+	"categoryLabels.tabloids": {
+		"other": "tabloid gazeteler"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "TV programları"
+	},
+	"categoryLabels.unknown": {
+		"other": "bilinmeyen bağlantılar"
+	},
+	"citation": {
+		"one": "alıntı",
+		"other": "alıntılar"
+	},
 	"citationTooltipAction": "Ayrıntıları görüntülemek için simgeye tıklayarak kontrol listesi sayfasını açın.",
 	"citationTooltipPrefix": "Şuradan:",
 	"citationTooltipSuffix": ":",

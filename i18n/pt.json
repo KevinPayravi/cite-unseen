@@ -27,10 +27,14 @@
 	"categoryHints.unknown": "Esta fonte ainda não foi avaliada.",
 	"categoryLabels.advocacy": "advocacia",
 	"categoryLabels.blacklisted": "na lista negra",
-	"categoryLabels.blogs.one": "artigo de blogue",
-	"categoryLabels.blogs.other": "artigos de blogue",
-	"categoryLabels.books.one": "livro",
-	"categoryLabels.books.other": "livros",
+	"categoryLabels.blogs": {
+		"one": "artigo de blogue",
+		"other": "artigos de blogue"
+	},
+	"categoryLabels.books": {
+		"one": "livro",
+		"other": "livros"
+	},
 	"categoryLabels.community": "comunidade",
 	"categoryLabels.deprecated": "descontinuado",
 	"categoryLabels.editable": "editável",
@@ -40,23 +44,37 @@
 	"categoryLabels.marginallyReliable": "marginalmente confiável",
 	"categoryLabels.multi": "sem consenso",
 	"categoryLabels.news": "notícias",
-	"categoryLabels.opinions.one": "artigo de opinião",
-	"categoryLabels.opinions.other": "artigos de opinião",
-	"categoryLabels.predatory.one": "revista predatória",
-	"categoryLabels.predatory.other": "revistas predatórias",
-	"categoryLabels.press.one": "comunicado de imprensa",
-	"categoryLabels.press.other": "comunicados de imprensa",
+	"categoryLabels.opinions": {
+		"one": "artigo de opinião",
+		"other": "artigos de opinião"
+	},
+	"categoryLabels.predatory": {
+		"one": "revista predatória",
+		"other": "revistas predatórias"
+	},
+	"categoryLabels.press": {
+		"one": "comunicado de imprensa",
+		"other": "comunicados de imprensa"
+	},
 	"categoryLabels.satire": "satírico",
 	"categoryLabels.social": "redes sociais",
 	"categoryLabels.sponsored": "patrocinado",
-	"categoryLabels.tabloids.one": "tablóide",
-	"categoryLabels.tabloids.other": "tablóides",
-	"categoryLabels.tvPrograms.one": "programa de TV",
-	"categoryLabels.tvPrograms.other": "programas de TV",
-	"categoryLabels.unknown.one": "hiperligação desconhecida",
-	"categoryLabels.unknown.other": "hiperligações desconhecidas",
-	"citation.one": "citação",
-	"citation.other": "citações",
+	"categoryLabels.tabloids": {
+		"one": "tablóide",
+		"other": "tablóides"
+	},
+	"categoryLabels.tvPrograms": {
+		"one": "programa de TV",
+		"other": "programas de TV"
+	},
+	"categoryLabels.unknown": {
+		"one": "hiperligação desconhecida",
+		"other": "hiperligações desconhecidas"
+	},
+	"citation": {
+		"one": "citação",
+		"other": "citações"
+	},
 	"citationTooltipAction": "Clique no ícone para abrir a página de lista de verificação para ver os detalhes.",
 	"citationTooltipPrefix": "De",
 	"citationTooltipSuffix": ":",

@@ -192,7 +192,7 @@ function formatCategoryCountText(category, count) {
 
     const pluralForm = new Intl.PluralRules(lang).select(count);
     for (const form of [pluralForm, 'other']) {
-        const entry = i18n.categoryLabels[`${category}.${form}`];
+        const entry = i18n.categoryLabels[category]?.[form];
         if (entry && (entry[langKey] || entry[lang])) {
             return `${count} ${convByVar(entry)}`;
         }

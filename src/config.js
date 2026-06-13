@@ -105,7 +105,9 @@ export function getCategoryDisplayName(categoryId) {
     const i18n = getI18n();
 
     if (i18n.categoryLabels[displayKey]) {
-        return convByVar(i18n.categoryLabels[displayKey]);
+        const entry = i18n.categoryLabels[displayKey];
+        const labelEntry = entry.other || entry.one || entry;
+        return convByVar(labelEntry);
     }
 
     // Fallback to the category ID with proper capitalization

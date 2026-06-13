@@ -42,8 +42,12 @@
 	"categoryLabels.aiGenerated": "AI가 생성함",
 	"categoryLabels.aiReferred": "AI로 생성됨",
 	"categoryLabels.blacklisted": "차단 목록에 속함",
-	"categoryLabels.blogs": "블로그 게시물",
-	"categoryLabels.books": "책",
+	"categoryLabels.blogs": {
+		"other": "블로그 게시물"
+	},
+	"categoryLabels.books": {
+		"other": "책"
+	},
 	"categoryLabels.community": "커뮤니티",
 	"categoryLabels.deprecated": "구식임",
 	"categoryLabels.editable": "편집 가능",
@@ -53,15 +57,27 @@
 	"categoryLabels.marginallyReliable": "제한된 신뢰성",
 	"categoryLabels.multi": "합의 없음",
 	"categoryLabels.news": "뉴스",
-	"categoryLabels.opinions": "의견 조각",
-	"categoryLabels.predatory": "침략적 저널",
-	"categoryLabels.press": "보도 자료",
+	"categoryLabels.opinions": {
+		"other": "의견 조각"
+	},
+	"categoryLabels.predatory": {
+		"other": "침략적 저널"
+	},
+	"categoryLabels.press": {
+		"other": "보도 자료"
+	},
 	"categoryLabels.satire": "풍자적임",
 	"categoryLabels.social": "소셜 미디어",
 	"categoryLabels.sponsored": "후원받음",
-	"categoryLabels.tabloids": "타블로이드",
-	"categoryLabels.tvPrograms": "TV 프로그램",
-	"categoryLabels.unknown": "알 수 없는 링크",
+	"categoryLabels.tabloids": {
+		"other": "타블로이드"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "TV 프로그램"
+	},
+	"categoryLabels.unknown": {
+		"other": "알 수 없는 링크"
+	},
 	"citationPlural": "인용",
 	"citationSingular": "인용",
 	"citationTooltipAction": "체크리스트 페이지를 열어 자세한 내용을 확인하려면 아이콘을 클릭하세요.",

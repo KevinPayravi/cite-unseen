@@ -4,7 +4,8 @@ import i18nFiles from 'cite-unseen-i18n-files';
 // The build script auto-includes every i18n/*.json file in this module.
 
 const FOLDER = 'i18n';
-let _convByVar = null; // Stores the current language variant conversion function
+const PLURAL_FORMS = new Set(['zero', 'one', 'two', 'few', 'many', 'other']);
+let _convByVar = null;
 
 /**
  * Validate the structure of the i18n data
@@ -44,7 +45,7 @@ function fetchJsonFile(filePath) {
 function listI18nFiles() {
     return i18nFiles
         .filter(item => item.type === 'blob' && item.path.startsWith(`${FOLDER}/`) && /\.json$/i.test(item.name))
-        .map(({ name, type }) => ({ name, type }));
+        .map(({ name }) => name);
 }
 
 /**
@@ -57,16 +58,29 @@ function mergeLanguageData(target, lang, flatObj) {
     if (lang.startsWith('zh-')) lang = lang.substring(3); // 'zh-hans' -> 'hans', 'zh-hant' -> 'hant' (to be consistent with HanAssist)
     for (const [fullKey, value] of Object.entries(flatObj)) {
         if (fullKey === '@metadata') continue;
-        if (fullKey.includes('.')) {
-            const dot = fullKey.indexOf('.');
+        const isPlural = value !== null && typeof value === 'object' && !Array.isArray(value)
+            && Object.keys(value).every(k => PLURAL_FORMS.has(k));
+
+        const dot = fullKey.indexOf('.');
+        let node;
+        if (dot !== -1) {
             const root = fullKey.substring(0, dot);
-            const child = fullKey.substring(dot + 1); 
-            if (!target[root]) target[root] = {};
-            if (!target[root][child]) target[root][child] = {};
-            target[root][child][lang] = value;
+            const child = fullKey.substring(dot + 1);
+            target[root] ??= {};
+            target[root][child] ??= {};
+            node = target[root][child];
         } else {
-            if (!target[fullKey]) target[fullKey] = {};
-            target[fullKey][lang] = value;
+            target[fullKey] ??= {};
+            node = target[fullKey];
+        }
+
+        if (isPlural) {
+            for (const [form, text] of Object.entries(value)) {
+                node[form] ??= {};
+                node[form][lang] = text;
+            }
+        } else {
+            node[lang] = value;
         }
     }
 }
@@ -77,18 +91,15 @@ function mergeLanguageData(target, lang, flatObj) {
  * @throws {Error} If loading or processing fails
  */
 function buildI18nObject() {
-    const files = listI18nFiles();
     const result = {};
-
-    files.forEach(f => {
-        const langCode = f.name.replace(/\.json$/i, '');
+    for (const name of listI18nFiles()) {
+        const langCode = name.replace(/\.json$/i, '');
         try {
-            const flat = fetchJsonFile(`${FOLDER}/${f.name}`);
-            mergeLanguageData(result, langCode, flat);
+            mergeLanguageData(result, langCode, fetchJsonFile(`${FOLDER}/${name}`));
         } catch (e) {
-            console.error('[Cite Unseen][i18n] Error loading language file', f.name, e);
+            console.error('[Cite Unseen][i18n] Error loading language file', name, e);
         }
-    });
+    }
 
     return result;
 }
@@ -126,11 +137,8 @@ export async function initializeConvByVar() {
         _convByVar = function (i18nDict) {
             const locale = new Intl.Locale(lang);
             if (locale.language === 'zh') {
-                if (locale.script === 'Hans') {
-                    return i18nDict['hans'] || i18nDict['hant'] || i18nDict['en'] || 'Language undefined!';
-                } else {
-                    return i18nDict['hant'] || i18nDict['hans'] || i18nDict['en'] || 'Language undefined!';
-                }
+                const [primary, fallback] = locale.script === 'Hans' ? ['hans', 'hant'] : ['hant', 'hans'];
+                return i18nDict[primary] || i18nDict[fallback] || i18nDict['en'] || 'Language undefined!';
             }
             return i18nDict[lang] || i18nDict['en'] || 'Language undefined!';
         };

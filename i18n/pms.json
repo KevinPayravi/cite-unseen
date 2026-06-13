@@ -38,8 +38,12 @@
 	"categoryLabels.aiGenerated": "generà da n'anteligensa artifissial",
 	"categoryLabels.aiReferred": "Controlà da n'anteligensa artifissial",
 	"categoryLabels.blacklisted": "ant la lista nèira",
-	"categoryLabels.blogs": "artìcoj dë scartari",
-	"categoryLabels.books": "lìber",
+	"categoryLabels.blogs": {
+		"other": "artìcoj dë scartari"
+	},
+	"categoryLabels.books": {
+		"other": "lìber"
+	},
 	"categoryLabels.community": "comunità",
 	"categoryLabels.deprecated": "dësconsejà",
 	"categoryLabels.editable": "modificàbil",
@@ -49,16 +53,30 @@
 	"categoryLabels.marginallyReliable": "marginalmant fidàbil",
 	"categoryLabels.multi": "gnun acòrd",
 	"categoryLabels.news": "neuve",
-	"categoryLabels.opinions": "tòch d'opinion",
-	"categoryLabels.predatory": "giornal predatòri",
-	"categoryLabels.press": "comunicà dë stampa",
+	"categoryLabels.opinions": {
+		"other": "tòch d'opinion"
+	},
+	"categoryLabels.predatory": {
+		"other": "giornal predatòri"
+	},
+	"categoryLabels.press": {
+		"other": "comunicà dë stampa"
+	},
 	"categoryLabels.satire": "satìrich",
 	"categoryLabels.social": "mojen sossial",
 	"categoryLabels.sponsored": "areclam",
-	"categoryLabels.tabloids": "spetegolum",
-	"categoryLabels.tvPrograms": "programa ëd television",
-	"categoryLabels.unknown": "liure sconossùe",
-	"citation.other": "sitassion",
+	"categoryLabels.tabloids": {
+		"other": "spetegolum"
+	},
+	"categoryLabels.tvPrograms": {
+		"other": "programa ëd television"
+	},
+	"categoryLabels.unknown": {
+		"other": "liure sconossùe"
+	},
+	"citation": {
+		"other": "sitassion"
+	},
 	"citationTooltipAction": "Sgnaché an sla plancia për duverté la pàgina dla lista ëd verìfica pr'ësmon-e ij detaj.",
 	"citationTooltipPrefix": "Da",
 	"citationTooltipSuffix": ":",
