@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-20fa5dee
-// Timestamp: 2026-06-13T07:17:20.970Z
+// Release: dev-3034bdd2
+// Timestamp: 2026-06-16T06:46:48.111Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -130,7 +130,7 @@
   var citeUnseenCategoryData = {
     // Academic
     "academic": {
-      "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAABAklEQVQ4T93SsWrCUBTG8cTFveIu+ALtUNEKOlmpCK5CJ8En0IK4iIuOgotzZmfB4tJNRQTBV3AQbJ2VSqz/Azdgw81gyGTgx73JTb7knFzTCOAwA8gwvEJChCfwiiTmmGCBs/vF1yFRFt+UHGNE85V7FfbJOMa33CMhHRTw6KO0lYRJSB3veLox5E+VObylnBMPLfGFDYqKtrF9FmfYIYsHjLBGBi+w0EbJ6Ym7ih8uSFNtTFVgijEN+WvSXAloIo6j7hc7Ie5w51xCumgghoMuRPbCs1cC12V9gJb6Em1PZL98oAKZO8eWiYWeKqXGGMav322f5+EyqrD9hvyr9s5CLs3cLweBgc2TAAAAEGRlQkc5MEJEOUNGNDk0NjBCRDcx0DiiWQAAAABJRU5ErkJggg==",
+      "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAABIElEQVQ4T7XTv0sCcRjHcQ2zwj+h3JIoUnAQsU1p0ba2hpbCQXAQ3ITmllYFF++f6MckbmKOhkYYiEF/gg4q0fuB50DOb4fEefDiq/fcfXzuua9+nweH34MM30ZDTukwq5Ksr3jBM/rO7u1OQhTOkdMbwy6P+bUU2OTzREJqyCPwj/ksuKcuIVFcIo0UgmuEzbhmjBHKzsHucvJMAzOsCWxjji5aqs16iz08mN7OPoVv7UZmJZ32MNVzdr3Ad6kbQ4YUfvCIJ3T0MS9YxRYiKGkn96ZOJORQf9W0fGpIRUPuTCEDiscuIe/UTtDQkCtTyA3FKmTIzkPmUoQFGa4MNv7Xtt+hGMMRDiAb7ANvkNcrxzVkb1kb/e+4jGS15Eknv5Q3L9IJ2GUEAAAAEGRlQkcwRjc3RDdBNjI3QTI4M0VFZxsFgQAAAABJRU5ErkJggg==",
       "count": 0
     },
     // Advocacy groups
