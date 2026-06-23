@@ -43,6 +43,7 @@
 		"other": "تدوينات المدونة"
 	},
 	"categoryLabels.books": {
+		"one": "كتاب",
 		"other": "كتب"
 	},
 	"categoryLabels.community": "مجتمع",
@@ -55,9 +56,11 @@
 	"categoryLabels.multi": "لا يوجد إجماع",
 	"categoryLabels.news": "أخبار",
 	"categoryLabels.opinions": {
+		"one": "مقالة رأي",
 		"other": "مقالة رأي"
 	},
 	"categoryLabels.predatory": {
+		"one": "المجلات المفترسة",
 		"other": "المجلات المفترسة"
 	},
 	"categoryLabels.press": {
@@ -67,12 +70,15 @@
 	"categoryLabels.social": "وسائل التواصل الاجتماعي",
 	"categoryLabels.sponsored": "برعاية",
 	"categoryLabels.tabloids": {
+		"one": "صحيفة شعبية",
 		"other": "صحيفة(ات) شعبية"
 	},
 	"categoryLabels.tvPrograms": {
+		"one": "برنامج تلفزيوني",
 		"other": "البرامج التلفزيونية"
 	},
 	"categoryLabels.unknown": {
+		"one": "رابط غير معروف",
 		"other": "روابط غير معروفة"
 	},
 	"citation": {

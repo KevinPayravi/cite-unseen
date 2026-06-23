@@ -39,9 +39,11 @@
 	"categoryLabels.aiReferred": "Наведено со ВИ",
 	"categoryLabels.blacklisted": "на црн список",
 	"categoryLabels.blogs": {
-		"other": "блоговска објава"
+		"one": "блоговска објава",
+		"other": "блоговски објави"
 	},
 	"categoryLabels.books": {
+		"one": "книга",
 		"other": "книги"
 	},
 	"categoryLabels.community": "заедница",
@@ -54,24 +56,30 @@
 	"categoryLabels.multi": "нема консензус",
 	"categoryLabels.news": "вести",
 	"categoryLabels.opinions": {
-		"other": "колумна/ни"
+		"one": "колумна",
+		"other": "колумни"
 	},
 	"categoryLabels.predatory": {
-		"other": "предаторски часопис(и)"
+		"one": "предаторски часопис",
+		"other": "предаторски часописи"
 	},
 	"categoryLabels.press": {
-		"other": "соопштение за печат"
+		"one": "соопштение за печат",
+		"other": "соопштенија за печат"
 	},
 	"categoryLabels.satire": "сатирично",
 	"categoryLabels.social": "друштвен медиум",
 	"categoryLabels.sponsored": "спонзорирано",
 	"categoryLabels.tabloids": {
-		"other": "таблоид(и)"
+		"one": "таблоид",
+		"other": "таблоиди"
 	},
 	"categoryLabels.tvPrograms": {
-		"other": "ТВ-емисија"
+		"one": "ТВ-емисија",
+		"other": "ТВ-емисии"
 	},
 	"categoryLabels.unknown": {
+		"one": "непозната врска",
 		"other": "непознати врски"
 	},
 	"citation": {

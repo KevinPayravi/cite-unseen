@@ -33,6 +33,8 @@
 	"categoryHints.tvPrograms": "この情報源はテレビまたはラジオ番組です。その信頼性は個々の番組によって異なります。",
 	"categoryHints.unknown": "この情報源はまだ評価されていません。",
 	"categoryLabels.advocacy": "アドボカシー",
+	"categoryLabels.aiGenerated": "AI生成",
+	"categoryLabels.aiReferred": "AI参照",
 	"categoryLabels.blacklisted": "ブラックリスト入り",
 	"categoryLabels.blogs": {
 		"other": "ブログ"

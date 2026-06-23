@@ -42,7 +42,7 @@
 		"other": "post(anna) bhlag"
 	},
 	"categoryLabels.books": {
-		"other": "leabhair"
+		"other": "aon=leabhar"
 	},
 	"categoryLabels.community": "pobal",
 	"categoryLabels.deprecated": "as feidhm",
@@ -54,10 +54,10 @@
 	"categoryLabels.multi": "gan aon chomhdhearcadh",
 	"categoryLabels.news": "nuacht",
 	"categoryLabels.opinions": {
-		"other": "píosa(í) tuairime"
+		"other": "aon=píosa tuairime"
 	},
 	"categoryLabels.predatory": {
-		"other": "iris(í) chreiche"
+		"other": "aon=iris chreiche"
 	},
 	"categoryLabels.press": {
 		"other": "preasráiteas(anna)"
@@ -72,7 +72,7 @@
 		"other": "Clár(anna) teilifíse"
 	},
 	"categoryLabels.unknown": {
-		"other": "naisc anaithnide"
+		"other": "aon=nasc anaithnid"
 	},
 	"citation": {
 		"one": "lua",
