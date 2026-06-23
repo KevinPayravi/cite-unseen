@@ -5,6 +5,7 @@
 		]
 	},
 	"additionalDomains": "زياتي واک‌سيمې (په هره کرښه کې يو)",
+	"additionalUrlStrings": "زياتي وېبتړ لړلۍ (هره کرښه کې يوه)",
 	"cancel": "ناگارل",
 	"categoryHints.advocacy": "دا سرچينه يو مدافع ټولنه ده.",
 	"categoryHints.blogs": "دا سرچينه يو بلاگ خپرونه ده.",
@@ -13,15 +14,17 @@
 	"categoryHints.predatory": "دا سرچينه د يو ښکارۍ مهالنۍ بڼه ده.",
 	"categoryHints.press": "دا سرچينه يوه چاپي اعلاميه ده.",
 	"categoryHints.satire": "دا سرچينه ټوکې ټکالې يا تمثيلي مواد خپروي.",
+	"categoryHints.tabloids": "دا سرچينه يو جنجالي ورځپاڼه يا اوازې خبرونه دي.",
 	"categoryHints.unknown": "دا سرچينه لاارزول شوې نه ده.",
 	"categoryLabels.advocacy": "استازولي",
 	"categoryLabels.aiGenerated": "مصنوعي ځيرکتيا-پنځولې",
 	"categoryLabels.aiReferred": "مصنوعي ځيرکتيا-وړانديز کړې",
 	"categoryLabels.blacklisted": "تورلېست‌شوي",
 	"categoryLabels.blogs": {
-		"other": "بلاگ پوست(ونه)"
+		"other": "بلاگ پوست"
 	},
 	"categoryLabels.books": {
+		"one": "کتاب",
 		"other": "کتابونه"
 	},
 	"categoryLabels.community": "ټولنه",
@@ -34,32 +37,45 @@
 	"categoryLabels.multi": "د ټولمنلتوب نه‌شتون",
 	"categoryLabels.news": "خبرونه",
 	"categoryLabels.opinions": {
-		"other": "اند ټوټه(ې)"
+		"one": "اند ټوټه",
+		"other": "اند ټوټې"
 	},
 	"categoryLabels.predatory": {
+		"one": "ښکار مهالنۍ",
 		"other": "ښکار مهالنۍ"
 	},
 	"categoryLabels.press": {
-		"other": "چاپي اعلاميه(ې)"
+		"other": "چاپي اعلاميه"
 	},
 	"categoryLabels.satire": "خنداوړ",
 	"categoryLabels.social": "ټولنیزه رسنۍ",
 	"categoryLabels.sponsored": "ملاتړشوی",
+	"categoryLabels.tabloids": {
+		"one": "جنجالي ورځپاڼه",
+		"other": "جنجالي ورځپاڼې"
+	},
 	"categoryLabels.tvPrograms": {
-		"other": "تلوېزيوني خپرونه(ې)"
+		"other": "تلوېزيوني خپرونه"
 	},
 	"categoryLabels.unknown": {
+		"one": "نامالوم تړونی",
 		"other": "نامالوم تړوني"
 	},
 	"citation": {
 		"one": "اخځ",
 		"other": "اخځونه"
 	},
+	"citationTooltipAction": "د سپيناوي کتلو لپاره په انځورن کېکاږئ؛ ترڅو د سم‌کتنې‌لړليک مخ پرانېستل شي.",
 	"citationTooltipPrefix": "له",
 	"citationTooltipSuffix": ":",
 	"clearAllFilters": "ټول سپينول",
 	"clearAllFiltersTooltip": "ټول کارنده چاڼگر سپينول",
+	"commentPlaceholder": "د دې لپاره چې دا ډلبندي مناسبه وي، زياتي مالومات...",
+	"dialogLoadError": "خبربکس بارولو کې پاتې راغی. مهرباني وکړئ بيا هڅه وکړئ.",
 	"documentationLink": "لاسوند",
+	"domainsCorrectedMessage": "لاندې واک‌سيمې په خپلکاري ډول شم شوې دي:",
+	"domainsToIgnore": "هغه واک‌سيمې چې بايد له پامه وغورځول شيي (هره کرښه کې يوه)",
+	"enableDisableCategories": "وېشنيزې چارنوال/ناچارنول",
 	"filtersActive": "کارنده چاڼگر",
 	"showOtherLanguageReliabilityRatings": "کله چې ځايي ډلبندي شتون ولري، د نورو ژبو ويکي‌پېډياگانو باوري ډلبندي وښایاست",
 	"loading": "بارېږي...",
@@ -71,6 +87,14 @@
 	"reliabilityProjects": "باوري پروژې مخونه",
 	"save": "خوندي‌کول",
 	"saving": "خوندي کېږي...",
+	"selectAtLeastOneCategory": "مهرباني وکړئ لږترلږه يو وېشنيزه وټاکئ",
+	"settingsButton": "د ناليدلي‌ اخځ اوڼنې",
+	"settingsButtonTooltip": "د ناليدلي اخځ اوڼنې ترتيبول.",
+	"settingsDialogTitle": "د ناليدلي‌ اخځ اوڼنې",
+	"settingsSaveError": "د اوڼنو خوندي‌کولو تېروتنه:",
+	"settingsSavedSuccess": "اوڼنې په برياليتوب سره خوندي شوې! د بدلونوو پلي‌کولو لپاره مخ بيا بار کړئ؟",
+	"showDashboard": "ليددړه د سرچينولړليکونو دپاسه ښودل",
+	"showSuggestionsButton": "د وړانديزونو تڼۍ ښودل",
 	"showing": "ښودل",
 	"sourceUrl": "سرچينې وېبتړ",
 	"submit": "سمون فورمه پرانېستل",
@@ -78,8 +102,10 @@
 	"suggestCategorization": "د دې اخځ ډلبندۍ لپاره وړانديز کول",
 	"suggestedCategories": "وړانديز شوې وېشنيزې",
 	"suggestionDialogTitle": "وړانديز شوې ډلبندي",
+	"suggestionSubmitError": "د وړانديز فورمې پرانېستلو کې تېروتنه:",
 	"suggestionsToggleButton": "وړانديز شوې وېشنيزې",
 	"tabAdditionalDomains": "زياتي واک‌سيمې",
+	"tabAdditionalStrings": "د زياتي وېبتړ لړۍ",
 	"tabCategories": "وېشنيزې",
 	"tabGeneral": "ټولواله",
 	"tabIgnoreDomains": "واک‌سيمې له پامه غورځول",

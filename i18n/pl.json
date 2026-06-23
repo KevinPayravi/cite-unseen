@@ -43,12 +43,14 @@
 	"categoryLabels.blogs": {
 		"one": "wpis na blogu",
 		"few": "wpisy na blogu",
-		"many": "wpisów na blogu"
+		"many": "wpisów na blogu",
+		"other": "wpisów na blogu"
 	},
 	"categoryLabels.books": {
 		"one": "książka",
 		"few": "książki",
-		"many": "książek"
+		"many": "książek",
+		"other": "książek"
 	},
 	"categoryLabels.community": "społeczność",
 	"categoryLabels.deprecated": "wycofane z użycia",
@@ -62,17 +64,20 @@
 	"categoryLabels.opinions": {
 		"one": "artykuł opiniotwórczy",
 		"few": "artykuły opiniotwórcze",
-		"many": "artykułów opiniotwórczych"
+		"many": "artykułów opiniotwórczych",
+		"other": "artykułów opiniotwórczych"
 	},
 	"categoryLabels.predatory": {
 		"one": "drapieżne czasopismo",
 		"few": "drapieżne czasopisma",
-		"many": "drapieżnych czasopism"
+		"many": "drapieżnych czasopism",
+		"other": "drapieżnych czasopism"
 	},
 	"categoryLabels.press": {
 		"one": "komunikat prasowy",
 		"few": "komunikaty prasowe",
-		"many": "komunikatów prasowych"
+		"many": "komunikatów prasowych",
+		"other": "komunikatów prasowych"
 	},
 	"categoryLabels.satire": "satyryczne",
 	"categoryLabels.social": "media społecznościowe",
@@ -80,22 +85,26 @@
 	"categoryLabels.tabloids": {
 		"one": "tabloid",
 		"few": "tabloidy",
-		"many": "tabloidów"
+		"many": "tabloidów",
+		"other": "tabloidów"
 	},
 	"categoryLabels.tvPrograms": {
 		"one": "program telewizyjny",
 		"few": "programy telewizyjne",
-		"many": "programów telewizyjnych"
+		"many": "programów telewizyjnych",
+		"other": "programów telewizyjnych"
 	},
 	"categoryLabels.unknown": {
 		"one": "nieznany link",
 		"few": "nieznane linki",
-		"many": "nieznanych linków"
+		"many": "nieznanych linków",
+		"other": "nieznanych linków"
 	},
 	"citation": {
 		"one": "cytowanie",
 		"few": "cytowania",
-		"many": "cytowań"
+		"many": "cytowań",
+		"other": "cytowań"
 	},
 	"citationTooltipAction": "Kliknij ikonę, aby otworzyć stronę listy kontrolnej i zobaczyć szczegóły.",
 	"citationTooltipPrefix": "Z",

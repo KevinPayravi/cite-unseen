@@ -19,7 +19,7 @@
 	"categoryHints.community": "Deze bron bevat door de gemeenschap gegenereerd nieuws.",
 	"categoryHints.deprecated": "Deze bron is verouderd en mag niet meer worden gebruikt. Het is echter nog wel toegestaan om deze te gebruiken voor niet-controversiële zelfbeschrijvingen of door experts zelf gepubliceerde inhoud.",
 	"categoryHints.editable": "Deze bron kan door de gemeenschap worden bewerkt (bijvoorbeeld via een wiki of database).",
-	"categoryHints.generallyReliable": "Redacteuren zijn het er over het algemeen mee eens dat deze bron betrouwbaar is voor onderwerpen binnen het expertisegebied.",
+	"categoryHints.generallyReliable": "Bewerkers zijn het er over het algemeen mee eens dat deze bron betrouwbaar is voor onderwerpen binnen het expertisegebied.",
 	"categoryHints.generallyUnreliable": "Deze bron wordt over het algemeen als onbetrouwbaar beschouwd door de gemeenschap. Hij kan echter nog steeds worden gebruikt voor niet-controversiële zelfbeschrijvingen of door experts zelf gepubliceerde inhoud.",
 	"categoryHints.government": "Deze bron wordt aangeduid als een staatsmedium of een overheidsbron.",
 	"categoryHints.marginallyReliable": "Deze bron is niet altijd even betrouwbaar. Het kan nodig zijn om de betrouwbaarheid ervan in elke specifieke context afzonderlijk te beoordelen.",
@@ -71,12 +71,12 @@
 	"categoryLabels.social": "sociale media",
 	"categoryLabels.sponsored": "gesponsord",
 	"categoryLabels.tabloids": {
-		"one": "tabloid",
-		"other": "tabloids"
+		"one": "sensatiekrant",
+		"other": "sensatiekranten"
 	},
 	"categoryLabels.tvPrograms": {
-		"one": "Televisieprogramma",
-		"other": "Televisieprogramma's"
+		"one": "televisieprogramma",
+		"other": "televisieprogramma's"
 	},
 	"categoryLabels.unknown": {
 		"one": "onbekende koppeling",
