@@ -165,6 +165,18 @@ export const checklistSourceData = [
     },
   },
   {
+    id: "frODS",
+    page: "fr:Wikipédia:Observatoire des sources",
+    checklists: {
+      blacklisted: "frOdsBlacklisted",
+      deprecated: "frOdsDeprecated",
+      generallyUnreliable: "frOdsGenerallyUnreliable",
+      marginallyReliable: "frOdsMarginallyReliable",
+      multi: "frOdsMulti",
+      generallyReliable: "frOdsGenerallyReliable",
+    },
+  },
+  {
     id: "ruAIKI",
     page: "ru:Проект:Компьютерные игры/Авторитетные источники по тематике компьютерных игр",
     checklists: {
