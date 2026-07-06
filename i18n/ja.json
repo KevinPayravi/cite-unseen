@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"SuperGrey"
+			"SuperGrey",
+			"Tensama0415"
 		]
 	},
 	"additionalDomains": "追加ドメイン（1行に1つ）",
@@ -22,7 +23,7 @@
 	"categoryHints.government": "この情報源は国有または国営メディア、または政府の情報源として識別されています。",
 	"categoryHints.marginallyReliable": "この情報源は限られた信頼性があります。各コンテキストでの信頼性を判断するために、個別にレビューする必要があるかもしれません。",
 	"categoryHints.multi": "この情報源の信頼性についてコミュニティ内でコンセンサスがありません。その信頼性は、主題領域、著者、または出版時間など、1つ以上の要因によって影響を受ける可能性があります。",
-	"categoryHints.news": "この情報源は信頼できるニュース組織からのニュース記事です。",
+	"categoryHints.news": "この情報源は、編集プロセスに基づき、時事問題や最近の出来事に関するジャーナリズム報道を主な目的とするメディアからのものです。",
 	"categoryHints.opinions": "この情報源は意見記事です。",
 	"categoryHints.predatory": "この情報源はハゲタカジャーナルからのものです。",
 	"categoryHints.press": "この情報源はプレスリリースです。",
