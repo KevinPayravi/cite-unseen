@@ -1,6 +1,11 @@
 // Sources used for icon classification (blogs, news, advocacy, etc.).
 // Entries with subPages expand to multiple source pages that share a category.
 export const categorySourceData = [
+  {
+    id: "academic",
+    category: "academic",
+    subPages: ["institutions", "studentPublications"],
+  },
   { id: "advocacy", category: "advocacy", subPages: ["1", "2", "3", "4"] },
   { id: "aiGenerated" },
   { id: "aiReferred" },
