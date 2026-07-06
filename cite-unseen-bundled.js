@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-845d36cd
-// Timestamp: 2026-07-06T07:54:01.207Z
+// Release: dev-7a509187
+// Timestamp: 2026-07-06T07:54:24.649Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -420,6 +420,18 @@
         generallyUnreliable: "frJvsGenerallyUnreliable",
         marginallyReliable: "frJvsMarginallyReliable",
         generallyReliable: "frJvsGenerallyReliable"
+      }
+    },
+    {
+      id: "frODS",
+      page: "fr:Wikipédia:Observatoire des sources",
+      checklists: {
+        blacklisted: "frOdsBlacklisted",
+        deprecated: "frOdsDeprecated",
+        generallyUnreliable: "frOdsGenerallyUnreliable",
+        marginallyReliable: "frOdsMarginallyReliable",
+        multi: "frOdsMulti",
+        generallyReliable: "frOdsGenerallyReliable"
       }
     },
     {
