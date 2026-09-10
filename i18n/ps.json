@@ -1,12 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
+			"باران",
 			"شاه زمان پټان"
 		]
 	},
 	"additionalDomains": "زياتي واک‌سيمې (په هره کرښه کې يو)",
-	"additionalUrlStrings": "زياتي وېبتړ لړلۍ (هره کرښه کې يوه)",
+	"additionalUrlStrings": "زياتي وېبتړ لړۍ (هره کرښه کې يوه)",
 	"cancel": "ناگارل",
+	"categoryHints.academic": "دا سرچینه د یوې اکاډمیک ادارې څخه ده.",
 	"categoryHints.advocacy": "دا سرچينه يو مدافع ټولنه ده.",
 	"categoryHints.blogs": "دا سرچينه يو بلاگ خپرونه ده.",
 	"categoryHints.community": "دا سرچينه خبر جوړوونکې ټولنه ده.",
@@ -16,10 +18,11 @@
 	"categoryHints.satire": "دا سرچينه ټوکې ټکالې يا تمثيلي مواد خپروي.",
 	"categoryHints.tabloids": "دا سرچينه يو جنجالي ورځپاڼه يا اوازې خبرونه دي.",
 	"categoryHints.unknown": "دا سرچينه لاارزول شوې نه ده.",
+	"categoryLabels.academic": "اکاډميک",
 	"categoryLabels.advocacy": "استازولي",
 	"categoryLabels.aiGenerated": "مصنوعي ځيرکتيا-پنځولې",
 	"categoryLabels.aiReferred": "مصنوعي ځيرکتيا-وړانديز کړې",
-	"categoryLabels.blacklisted": "تورلېست‌شوي",
+	"categoryLabels.blacklisted": "تورلړشوي",
 	"categoryLabels.blogs": {
 		"other": "بلاگ پوست"
 	},
