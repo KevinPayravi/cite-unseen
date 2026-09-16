@@ -11,6 +11,7 @@
 	"additionalUrlStrings": "Ek URL Dizeleri (her satıra bir tane)",
 	"cancel": "İptal",
 	"categoriesTabGuidance": "Belirli alıntı kategorilerini etkinleştirin veya devre dışı bırakın. Devre dışı bırakılan kategoriler simge göstermeyecek ve panoda görünmeyecektir.",
+	"categoryHints.academic": "Bu kaynak bir akademik kurumdan gelmektedir.",
 	"categoryHints.advocacy": "Bu kaynak, bir savunma/çıkar grubu kuruluşudur.",
 	"categoryHints.aiGenerated": "Bu kaynak, düzenlenmemiş yapay zekâ tarafından oluşturulmuş içerikle ilişkilidir. İnsan editör gözetimi olmadan önemli miktarda yapay zekâ tarafından oluşturulmuş materyal yayınlayan bir web sitesi olabilir.",
 	"categoryHints.aiReferred": "Bu kaynağın URL'si, yapay zekâ asistanından kopyalandığını gösteren izleme parametreleri (örneğin utm_source=chatgpt.com) içermektedir. İlişkili metin de yapay zekâ tarafından oluşturulmuş olabilir ve kaynak verilen ifadeleri doğrulayabilir veya doğrulamayabilir.",
@@ -35,6 +36,7 @@
 	"categoryHints.tabloids": "Bu kaynak, bir tabloid ya da magazin haberidir.",
 	"categoryHints.tvPrograms": "Bu kaynak, bir TV ya da radyo programıdır. Güvenilirliği, ilgili programa bağlıdır.",
 	"categoryHints.unknown": "Bu kaynak henüz değerlendirilmemiştir.",
+	"categoryLabels.academic": "akademik",
 	"categoryLabels.advocacy": "savunma",
 	"categoryLabels.aiGenerated": "Yapay zekâ tarafından oluşturulmuş",
 	"categoryLabels.aiReferred": "Yapay zekâya atıfta bulunan",
@@ -43,6 +45,7 @@
 		"other": "blog yazıları"
 	},
 	"categoryLabels.books": {
+		"one": "kitap",
 		"other": "kitaplar"
 	},
 	"categoryLabels.community": "topluluk",
@@ -55,6 +58,7 @@
 	"categoryLabels.multi": "fikir birliği yok",
 	"categoryLabels.news": "haberler",
 	"categoryLabels.opinions": {
+		"one": "görüş yazısı",
 		"other": "görüş yazıları"
 	},
 	"categoryLabels.predatory": {
@@ -67,12 +71,15 @@
 	"categoryLabels.social": "sosyal medya",
 	"categoryLabels.sponsored": "sponsorlu",
 	"categoryLabels.tabloids": {
-		"other": "tabloid gazeteler"
+		"one": "magazin",
+		"other": "magazinler"
 	},
 	"categoryLabels.tvPrograms": {
+		"one": "TV programı",
 		"other": "TV programları"
 	},
 	"categoryLabels.unknown": {
+		"one": "bilinmeyen bağlantı",
 		"other": "bilinmeyen bağlantılar"
 	},
 	"citation": {
