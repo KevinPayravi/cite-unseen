@@ -10,6 +10,7 @@
 	"additionalUrlStrings": "Stringhe d'URL suplementar (un-a për linia)",
 	"cancel": "Anulé",
 	"categoriesTabGuidance": "Abilité o disabilité dle categorìe spessìfiche ëd sitassion. Le categorìe disabilità a smonëran nen dle plance nì a compariran ant ël cruscòt.",
+	"categoryHints.academic": "Costa sorgiss a ven da n'anstitussion académica.",
 	"categoryHints.advocacy": "Costa sorgiss a l'é n'organisassion ëd part.",
 	"categoryHints.aiGenerated": "Sa sorgiss a l'é associà a dël contnù nen controlà generà da n'anteligensa artifissial. A podrìa esse un sit ëd l'aragnà ch'a pùblica dël material generà ëd fasson sostansial da n'anteligensa artifissial sensa na verìfica editoria uman-a.",
 	"categoryHints.aiReferred": "L'URL ëd costa sorgiss a comprend dij paràmeter ëd trassadura (coma utm_source=chatgpt.com), ch'a mostro ch'a l'é stàit copià da n'assistent d'AA. Ël test associà a podrìa ëdcò esse stàit generà da n'AA, e la sorgiss a podrìa confirmé o pa j'afermassion fàite.",
@@ -34,6 +35,7 @@
 	"categoryHints.tabloids": "Costa sorgiss a l'é un giornal ëd costume e petegolum.",
 	"categoryHints.tvPrograms": "Costa sorgiss a l'é un programa dla television o dla radio. Sò afidament a dipend dal programa particolar.",
 	"categoryHints.unknown": "Costa sorgiss a l'é ancor nen valutà.",
+	"categoryLabels.academic": "académich",
 	"categoryLabels.advocacy": "sostegn",
 	"categoryLabels.aiGenerated": "generà da n'anteligensa artifissial",
 	"categoryLabels.aiReferred": "Controlà da n'anteligensa artifissial",
@@ -42,6 +44,7 @@
 		"other": "artìcoj dë scartari"
 	},
 	"categoryLabels.books": {
+		"one": "lìber",
 		"other": "lìber"
 	},
 	"categoryLabels.community": "comunità",
@@ -54,10 +57,12 @@
 	"categoryLabels.multi": "gnun acòrd",
 	"categoryLabels.news": "neuve",
 	"categoryLabels.opinions": {
+		"one": "tòch d'opinion",
 		"other": "tòch d'opinion"
 	},
 	"categoryLabels.predatory": {
-		"other": "giornal predatòri"
+		"one": "giornal predatòri",
+		"other": "giornaj predatòri"
 	},
 	"categoryLabels.press": {
 		"other": "comunicà dë stampa"
@@ -66,12 +71,15 @@
 	"categoryLabels.social": "mojen sossial",
 	"categoryLabels.sponsored": "areclam",
 	"categoryLabels.tabloids": {
+		"one": "spetegolum",
 		"other": "spetegolum"
 	},
 	"categoryLabels.tvPrograms": {
+		"one": "programa ëd television",
 		"other": "programa ëd television"
 	},
 	"categoryLabels.unknown": {
+		"one": "lira sconossùa",
 		"other": "liure sconossùe"
 	},
 	"citation": {
