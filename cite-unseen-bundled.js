@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-fed07378
-// Timestamp: 2026-10-20T16:48:24.754Z
+// Release: dev-6304602f
+// Timestamp: 2026-10-20T16:57:58.015Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -1052,8 +1052,8 @@
     const binStr = percentDecodeToBinStr(str);
     const detected = window.jschardet.detect(binStr);
     const encoding = canonicalEncodingLabel(detected == null ? void 0 : detected.encoding);
-    const decoder = new TextDecoder(encoding);
-    return decoder.decode(new TextEncoder().encode(binStr));
+    const bytes = Uint8Array.from(binStr, (ch) => ch.charCodeAt(0));
+    return new TextDecoder(encoding).decode(bytes);
   }
   function getCitationSiblingSegment(citeTag) {
     const siblingSegment = [];
