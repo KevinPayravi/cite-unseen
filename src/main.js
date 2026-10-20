@@ -49,7 +49,12 @@ function injectStyles() {
 async function importDependencies() {
     injectStyles();
     if (!window.jschardet) { // Used for encoding detection in the parser when decodeURIComponent fails
-        await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
+        try {
+            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
+        } catch (e) {
+            // If jschardet loading fails, parser falls back to the raw string
+            console.warn('[Cite Unseen] Could not load jschardet; encoding detection is disabled.', e);
+        }
     }
     await initializeConvByVar();
     return await loadCategorizedRules();
