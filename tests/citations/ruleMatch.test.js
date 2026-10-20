@@ -150,11 +150,10 @@ test('match ignores its own cached fields when the same constrained rule is reus
     assert.equal(match(staleCoins, rule), false);
 });
 
-test('findReliabilityMatch keeps earlier reliability categories when equal-specificity rules match', () => {
+test('findReliabilityMatch reports multi when one list rates a source in two tiers', () => {
     /**
-     * sourceData.js lists generallyUnreliable before generallyReliable. When
-     * both categories match the same citation with the same specificity, the
-     * earlier checklist order should still decide the visible reliability icon.
+     * A list that puts the same domain in two tiers contradicts itself.
+     * Show "multiple ratings" rather than let checklist order pick one.
      */
     const coins = createCoins('https://www.example.com/article');
     const {
@@ -167,10 +166,34 @@ test('findReliabilityMatch keeps earlier reliability categories when equal-speci
 
     assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
         {
-            type: 'generallyUnreliable',
+            type: 'multi',
             name: 'enRSP',
             language: 'en',
             spec: 0
+        }
+    ]);
+});
+
+test('findReliabilityMatch lets a more specific rule settle a conflict within one list', () => {
+    /**
+     * Within a list, a rule with an author condition beats a bare domain
+     * rule in another tier, so the list is not reported as multi.
+     */
+    const coins = createCoins('https://www.example.com/article', { 'rft.au': 'Jane Doe' });
+    const {
+        categorizedRules,
+        citeUnseenCategories
+    } = createReliabilityFixture();
+
+    categorizedRules.enRspMulti = [{ 'url': 'example.com' }];
+    categorizedRules.enRspGenerallyReliable = [{ 'url': 'example.com', 'author': 'Jane Doe' }];
+
+    assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
+        {
+            type: 'generallyReliable',
+            name: 'enRSP',
+            language: 'en',
+            spec: 1.5
         }
     ]);
 });
@@ -200,10 +223,10 @@ test('findReliabilityMatch keeps earlier checklist names within the same reliabi
     ]);
 });
 
-test('findReliabilityMatch pins multi below direct non-multi reliability matches', () => {
+test('findReliabilityMatch lets a higher-priority multi rating beat a lower-priority tier', () => {
     /**
-     * enNPPSG has a higher source priority than enAMS, but "no consensus"
-     * should not override a direct concrete reliability tier.
+     * "No consensus" from enRSP is a real verdict. A lower-priority
+     * WikiProject list must not override it.
      */
     const coins = createCoins('https://www.example.com/article');
     const {
@@ -211,13 +234,37 @@ test('findReliabilityMatch pins multi below direct non-multi reliability matches
         citeUnseenCategories
     } = createReliabilityFixture();
 
-    categorizedRules.enNppsgMulti = [{ 'url': 'example.com' }];
-    categorizedRules.enAmsGenerallyReliable = [{ 'url': 'example.com' }];
+    categorizedRules.enRspMulti = [{ 'url': 'example.com' }];
+    categorizedRules.enAsGenerallyUnreliable = [{ 'url': 'example.com' }];
 
     assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
         {
-            type: 'generallyReliable',
-            name: 'enAMS',
+            type: 'multi',
+            name: 'enRSP',
+            language: 'en',
+            spec: 0
+        }
+    ]);
+});
+
+test('findReliabilityMatch lets a higher-priority blanket rule beat a dated rule from another list', () => {
+    /**
+     * Priority comes before specificity.
+     * Undated enRSP rule should beat a dated rule from a lower-priority list.
+     */
+    const coins = createCoins('https://www.example.com/article', { 'rft.date': '2017-09-13' });
+    const {
+        categorizedRules,
+        citeUnseenCategories
+    } = createReliabilityFixture();
+
+    categorizedRules.enRspGenerallyUnreliable = [{ 'url': 'example.com' }];
+    categorizedRules.enVgsGenerallyReliable = [{ 'url': 'example.com', 'date': '>= 2010, <= 2022' }];
+
+    assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
+        {
+            type: 'generallyUnreliable',
+            name: 'enRSP',
             language: 'en',
             spec: 0
         }

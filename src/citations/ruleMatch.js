@@ -365,7 +365,9 @@ export function matchUrlString(coins, rule) {
 /**
  * Find matching reliability categories for a citation, prioritizing current language.
  * Returns one match for current language, or all matches from other languages if none for current language.
- * When there are conflicting evaluations within a language, defer to the one that has more conditions.
+ * Reduce each source list's ratings to one verdict.
+ * Use 'multi' if rules disagree.
+ * Pick the list with the highest priority, then specificity, then checklist order.
  * @param {Object} coins - COinS object
  * @param {Object} filteredCategorizedRules - Filtered rules by category
  * @param {Object} options - Matching context
@@ -379,7 +381,7 @@ export function findReliabilityMatch(coins, filteredCategorizedRules, options) {
         currentLanguage,
         showOtherLanguageReliabilityRatings
     } = options;
-    const languageMatches = {}, languageMultiCandidates = {}, languageCache = new Map();
+    const listMatches = new Map(), languageMultiCandidates = {}, languageCache = new Map();
 
     // Function to extract language from checklist name
     const getLanguage = (checklistName) => {
@@ -413,13 +415,14 @@ export function findReliabilityMatch(coins, filteredCategorizedRules, options) {
                 const specificity = (Boolean(rule['author']) ? 1.5 : 0.0) + (Boolean(rule['date']) ? 1.0 : 0.0) + (Boolean(rule['pub']) ? 0.7 : 0.0);
                 if (match(coins, rule)) {
                     hasDirectMatch = true;
-                    addMatch(languageMatches, language, {
-                        type: checklistType,
-                        name: checklistName,
-                        language: language,
-                        spec: specificity,
-                        priority: citeUnseenChecklistPriorities[checklistName] ?? 0
-                    });
+                    if (!listMatches.has(checklistName)) {
+                        listMatches.set(checklistName, {
+                            language: language,
+                            priority: citeUnseenChecklistPriorities[checklistName] ?? 0,
+                            matches: []
+                        });
+                    }
+                    listMatches.get(checklistName).matches.push({ type: checklistType, spec: specificity });
                     if (specificity === 0.0) break;  // No need to check further if matched with no conditions
                 } else if (specificity > 0.0 && (matchUrl(coins, rule) || matchUrlString(coins, rule))) {
                     hasConstrainedMatch = true;
@@ -438,16 +441,24 @@ export function findReliabilityMatch(coins, filteredCategorizedRules, options) {
         }
     }
 
-    // Function to select best match from multiple candidates
-    // Priority followed by specificity
+    // Reduce source list ratings to one verdict; 'multi' if rules disagree
+    const languageMatches = {};
+    for (const [checklistName, { language, priority, matches }] of listMatches) {
+        const topSpec = Math.max(...matches.map(m => m.spec));
+        const topTypes = new Set(matches.filter(m => m.spec === topSpec).map(m => m.type));
+        addMatch(languageMatches, language, {
+            type: topTypes.size > 1 ? 'multi' : topTypes.values().next().value,
+            name: checklistName,
+            language: language,
+            spec: topSpec,
+            priority: priority
+        });
+    }
+
+    // Pick the best list: priority, then specificity, then checklist order
     const selectBestMatch = (matches) => {
         return matches.length === 1 ? matches[0] :
             matches.reduce((best, current) => {
-                // Pin 'multi' matches to the end
-                if (best.type === 'multi' && current.type !== 'multi') return current;
-                if (current.type === 'multi' && best.type !== 'multi') return best;
-
-                // Compare by priority first, then by specificity
                 if (current.priority !== best.priority) return current.priority > best.priority ? current : best;
                 return current.spec > best.spec ? current : best;
             });
