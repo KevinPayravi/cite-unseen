@@ -31,7 +31,10 @@
 	"categoryLabels.academic": "académique",
 	"categoryLabels.aiGenerated": "généré par l'IA",
 	"categoryLabels.blacklisted": "liste noire",
-	"categoryLabels.books": "livres",
+	"categoryLabels.books": {
+		"one": "livre",
+		"other": "livres"
+	},
 	"categoryLabels.community": "communauté",
 	"categoryLabels.deprecated": "obsolète",
 	"categoryLabels.editable": "modifiable",
