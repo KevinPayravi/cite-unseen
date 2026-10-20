@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-648ad532
-// Timestamp: 2026-10-20T16:30:29.452Z
+// Release: dev-0a65714b
+// Timestamp: 2026-10-20T16:45:47.618Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -2998,9 +2998,6 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
     return new Promise((resolve, reject) => {
       try {
         const domain = extractDomain(sourceUrl);
-        const categoryLabels = selectedCategories.map(
-          (catId) => getCategoryDisplayName(catId)
-        ).join(", ");
         const currentPage = mw.config.get("wgPageName");
         const currentWiki = mw.config.get("wgServerName");
         let referenceInfo = `* '''URL:''' ${sourceUrl}`;
@@ -3037,7 +3034,7 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
         referenceInfo += `
 * '''Found on:''' [[${currentWiki.replace(".wikipedia.org", "")}:${currentPage.replace(/_/g, " ")}]]`;
         referenceInfo += `
-* '''Suggested categories:''' ${categoryLabels}`;
+* '''Suggested categories:''' ${selectedCategories.join(", ")}`;
         const editSummary = `Categorization suggestion for ${domain}`;
         const baseUrl = "https://meta.wikimedia.org/w/index.php";
         let editUrl = baseUrl + "?title=" + encodeURIComponent("Talk:Cite_Unseen/Suggestions");
