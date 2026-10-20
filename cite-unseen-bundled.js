@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-6304602f
-// Timestamp: 2026-10-20T16:57:58.015Z
+// Release: dev-2e3663c4
+// Timestamp: 2026-10-20T19:54:12.404Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -1534,7 +1534,7 @@
       currentLanguage,
       showOtherLanguageReliabilityRatings
     } = options;
-    const languageMatches = {}, languageMultiCandidates = {}, languageCache = /* @__PURE__ */ new Map();
+    const listMatches = /* @__PURE__ */ new Map(), languageMultiCandidates = {}, languageCache = /* @__PURE__ */ new Map();
     const getLanguage = (checklistName) => {
       let language = languageCache.get(checklistName);
       if (language === void 0) {
@@ -1559,13 +1559,14 @@
           const specificity = (Boolean(rule["author"]) ? 1.5 : 0) + (Boolean(rule["date"]) ? 1 : 0) + (Boolean(rule["pub"]) ? 0.7 : 0);
           if (match(coins, rule)) {
             hasDirectMatch = true;
-            addMatch(languageMatches, language, {
-              type: checklistType,
-              name: checklistName,
-              language,
-              spec: specificity,
-              priority: (_a = citeUnseenChecklistPriorities2[checklistName]) != null ? _a : 0
-            });
+            if (!listMatches.has(checklistName)) {
+              listMatches.set(checklistName, {
+                language,
+                priority: (_a = citeUnseenChecklistPriorities2[checklistName]) != null ? _a : 0,
+                matches: []
+              });
+            }
+            listMatches.get(checklistName).matches.push({ type: checklistType, spec: specificity });
             if (specificity === 0) break;
           } else if (specificity > 0 && (matchUrl(coins, rule) || matchUrlString(coins, rule))) {
             hasConstrainedMatch = true;
@@ -1582,10 +1583,20 @@
         }
       }
     }
+    const languageMatches = {};
+    for (const [checklistName, { language, priority, matches }] of listMatches) {
+      const topSpec = Math.max(...matches.map((m) => m.spec));
+      const topTypes = new Set(matches.filter((m) => m.spec === topSpec).map((m) => m.type));
+      addMatch(languageMatches, language, {
+        type: topTypes.size > 1 ? "multi" : topTypes.values().next().value,
+        name: checklistName,
+        language,
+        spec: topSpec,
+        priority
+      });
+    }
     const selectBestMatch = (matches) => {
       return matches.length === 1 ? matches[0] : matches.reduce((best, current) => {
-        if (best.type === "multi" && current.type !== "multi") return current;
-        if (current.type === "multi" && best.type !== "multi") return best;
         if (current.priority !== best.priority) return current.priority > best.priority ? current : best;
         return current.spec > best.spec ? current : best;
       });
