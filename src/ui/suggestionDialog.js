@@ -204,10 +204,6 @@ function submitSuggestionToMeta(sourceUrl, selectedCategories, comment, citation
         try {
             const domain = extractDomain(sourceUrl);
 
-            const categoryLabels = selectedCategories.map(catId =>
-                getCategoryDisplayName(catId)
-            ).join(', ');
-
             const currentPage = mw.config.get('wgPageName');
             const currentWiki = mw.config.get('wgServerName');
 
@@ -238,7 +234,7 @@ function submitSuggestionToMeta(sourceUrl, selectedCategories, comment, citation
                 }
             }
             referenceInfo += `\n* '''Found on:''' [[${currentWiki.replace('.wikipedia.org', '')}:${currentPage.replace(/_/g, ' ')}]]`;
-            referenceInfo += `\n* '''Suggested categories:''' ${categoryLabels}`;
+            referenceInfo += `\n* '''Suggested categories:''' ${selectedCategories.join(', ')}`;
 
             const editSummary = `Categorization suggestion for ${domain}`;
             const baseUrl = 'https://meta.wikimedia.org/w/index.php';
