@@ -49,6 +49,29 @@ function listI18nFiles() {
 }
 
 /**
+ * Whether a node already holds plural-form children (one, other, ...)
+ * @param node {object} Merged i18n node
+ * @returns {boolean} True if plural form is present
+ */
+function hasPluralForms(node) {
+    return Object.keys(node).some(k => PLURAL_FORMS.has(k));
+}
+
+/**
+ * Move bare language strings on a node into its "other" plural form.
+ * Called when a plural translation arrives for a key that earlier languages gave as a plain string.
+ * @param node {object} Merged i18n node
+ */
+function liftBareStringsToOther(node) {
+    for (const [key, text] of Object.entries(node)) {
+        if (typeof text !== 'string') continue;
+        node.other ??= {};
+        node.other[key] = text;
+        delete node[key];
+    }
+}
+
+/**
  * Merge flat language data into the target structure
  * @param target {object} Target object to merge into
  * @param lang {string} Language code (e.g., 'en', 'ja', 'zh-hans', 'zh-hant')
@@ -75,10 +98,16 @@ function mergeLanguageData(target, lang, flatObj) {
         }
 
         if (isPlural) {
+            liftBareStringsToOther(node);
             for (const [form, text] of Object.entries(value)) {
                 node[form] ??= {};
                 node[form][lang] = text;
             }
+        } else if (typeof value === 'string' && hasPluralForms(node)) {
+            // If another language defines key with plural forms,
+            // but this one gave a plain string, file the string under "other".
+            node.other ??= {};
+            node.other[lang] = value;
         } else {
             node[lang] = value;
         }
