@@ -82,8 +82,8 @@ export function decodeURI(str) {
     const binStr = percentDecodeToBinStr(str);
     const detected = window.jschardet.detect(binStr);
     const encoding = canonicalEncodingLabel(detected?.encoding);
-    const decoder = new TextDecoder(encoding);
-    return decoder.decode(new TextEncoder().encode(binStr));
+    const bytes = Uint8Array.from(binStr, ch => ch.charCodeAt(0));
+    return new TextDecoder(encoding).decode(bytes);
 }
 
 /**
