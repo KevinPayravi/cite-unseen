@@ -34,7 +34,7 @@ export const categorySourceData = [
 ];
 
 // Wikipedia project pages that classify domains into reliability tiers.
-// Priority breaks ties when two sources match at equal specificity (higher wins, default 0).
+// Highest priority wins when several lists match (default 0).
 export const checklistSourceData = [
   {
     id: "enRSP",
