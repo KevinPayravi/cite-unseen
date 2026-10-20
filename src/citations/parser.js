@@ -75,6 +75,10 @@ export function decodeURI(str) {
         return decodeURIComponent(str);
     } catch (e) { }  // Fallback to detection and decoding
 
+    if (!window.jschardet) {  // Detection library failed to load
+        return str;
+    }
+
     const binStr = percentDecodeToBinStr(str);
     const detected = window.jschardet.detect(binStr);
     const encoding = canonicalEncodingLabel(detected?.encoding);
