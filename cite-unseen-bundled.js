@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-7adbb964
-// Timestamp: 2026-09-16T08:16:15.111Z
+// Release: dev-36550e86
+// Timestamp: 2026-10-20T16:29:51.975Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -1029,6 +1029,9 @@
     try {
       return decodeURIComponent(str);
     } catch (e) {
+    }
+    if (!window.jschardet) {
+      return str;
     }
     const binStr = percentDecodeToBinStr(str);
     const detected = window.jschardet.detect(binStr);
@@ -3242,7 +3245,11 @@ ${comment.trim()}`;
   async function importDependencies() {
     injectStyles();
     if (!window.jschardet) {
-      await mw.loader.getScript("//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript");
+      try {
+        await mw.loader.getScript("//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript");
+      } catch (e) {
+        console.warn("[Cite Unseen] Could not load jschardet; encoding detection is disabled.", e);
+      }
     }
     await initializeConvByVar();
     return await loadCategorizedRules();
