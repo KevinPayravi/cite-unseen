@@ -22,7 +22,7 @@ const cssFilter = /\.css$/;
 const vueTemplateFilter = /\.template\.vue$/;
 
 function createBanner() {
-    return `// Cite Unseen - Bundled Version
+    return `// Cite Unseen - Bundled Version${process.argv.includes("--offline") ? " (Offline)" : ""}
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
 // Release: ${releaseLabel}
@@ -175,8 +175,25 @@ async function main() {
 
     fs.mkdirSync(buildDir, { recursive: true });
     await buildBundle();
+    const bundle = fs.readFileSync(bundledPath, "utf8");
 
-    const bundledSize = fs.statSync(bundledPath).size;
+    // Make the bundled script work when access to Toolforge is down.
+    // Courtesy of https://wikitech.wikimedia.org/wiki/Incidents/2026-10-21_PHP_security_update/Community
+    if (process.argv.includes("--offline")) {
+        console.log("Building in offline mode.");
+        const newText = bundle
+            .replace(
+                "//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript&maxage=2628000",
+                "//meta.wikimedia.org/w/index.php?title=User:SuperHamster/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000"
+            )
+            .replace(
+                "https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain",
+                "https://meta.wikimedia.org/w/index.php?title=User:SuperGrey/cite-unseen-revids.json&action=raw&ctype=text/plain"
+            );
+        fs.writeFileSync(bundledPath, newText, "utf8");
+    }
+
+    const bundledSize = bundle.length;
     writeDeployReadme(bundledSize);
 
     console.log("Build completed!");
