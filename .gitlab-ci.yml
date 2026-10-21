@@ -33,7 +33,7 @@ build:
         - echo "Building bundled version of Cite Unseen..."
         - npm ci
         - npm test
-        - npm run build
+        - npm run build:offline
     artifacts:
         paths:
             - build/
