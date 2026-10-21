@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-2e3663c4
-// Timestamp: 2026-10-20T19:54:12.404Z
+// Release: dev-bcbf9974
+// Timestamp: 2026-10-21T00:20:24.151Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -3270,7 +3270,7 @@ ${comment.trim()}`;
     injectStyles();
     if (!window.jschardet) {
       try {
-        await mw.loader.getScript("//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript");
+        await mw.loader.getScript("//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript&maxage=2628000");
       } catch (e) {
         console.warn("[Cite Unseen] Could not load jschardet; encoding detection is disabled.", e);
       }
