@@ -4,8 +4,8 @@ import {
 } from '../citations/categoryData.js';
 import { citeUnseenChecklists } from '../citations/sourceData.js';
 import {
-    getConvByVar,
-    getI18n
+    getI18n,
+    t
 } from '../i18n.js';
 import { getRefCategories } from './icons.js';
 
@@ -183,22 +183,8 @@ function calculateFacetedCategoryCountsForReflist(reflistData) {
  * @returns {string} Localized category count label
  */
 function formatCategoryCountText(category, count) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
-    const lang = mw.config.get('wgContentLanguage');
-    // mergeLanguageData strips the 'zh-' prefix (zh-hans → hans),
-    // so normalize here too
-    const langKey = lang.startsWith('zh-') ? lang.substring(3) : lang;
-
-    const pluralForm = new Intl.PluralRules(lang).select(count);
-    for (const form of [pluralForm, 'other']) {
-        const entry = i18n.categoryLabels[category]?.[form];
-        if (entry && (entry[langKey] || entry[lang])) {
-            return `${count} ${convByVar(entry)}`;
-        }
-    }
-
-    return `${count} ${convByVar(i18n.categoryLabels[category])}`;
+    return `${count} ${t(i18n.categoryLabels[category], count)}`;
 }
 
 /**
@@ -235,7 +221,6 @@ function refreshDashboardCategoryCounts(dashboard, categoryCounts) {
  * @param {Object} categoryCounts - Category counts for this reflist
  */
 function updateDashboardCategories(dashboard, categoryCounts) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
 
     // Clear existing categories
@@ -253,7 +238,7 @@ function updateDashboardCategories(dashboard, categoryCounts) {
             countNode.classList.add('cite-unseen-category-item');
 
             const countIcon = document.createElement('img');
-            countIcon.alt = convByVar(i18n.categoryHints[category]);
+            countIcon.alt = t(i18n.categoryHints[category]);
             countIcon.src = citeUnseenCategoryData[category].icon;
             countIcon.width = '17';
             countIcon.classList.add("skin-invert");
@@ -273,7 +258,7 @@ function updateDashboardCategories(dashboard, categoryCounts) {
             countNode.setAttribute('role', 'button');
             countNode.setAttribute('tabindex', '0');
             countNode.setAttribute('aria-pressed', 'false');
-            countNode.setAttribute('title', convByVar(i18n.filterToggleTooltip));
+            countNode.setAttribute('title', t(i18n.filterToggleTooltip));
 
             countNode.onkeydown = function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -397,34 +382,23 @@ function applyMultiCategoryFilterForReflist(reflistData) {
  * @param {number} totalCount - Total number of citations
  */
 function updateFilteredCountForReflist(dashboard, visibleCount, totalCount) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     if (!dashboard || !dashboard.total) return;
 
-    const lang = mw.config.get('wgContentLanguage');
-    const langKey = lang.startsWith('zh-') ? lang.substring(3) : lang;
-    const pluralForm = new Intl.PluralRules(lang).select(totalCount);
-    let citationText;
-    for (const form of [pluralForm, 'other']) {
-        const entry = i18n.citation && i18n.citation[form];
-        if (entry && (entry[langKey] || entry[lang])) {
-            citationText = convByVar(entry);
-            break;
-        }
-    }
+    const citationText = t(i18n.citation, totalCount);
     const totalElement = dashboard.total;
     const baseText = "[Cite Unseen] ";
 
     if (visibleCount === totalCount) {
-        totalElement.innerText = baseText + convByVar(i18n.totalCitations) + ' ' + totalCount + ' ' + citationText;
+        totalElement.innerText = baseText + t(i18n.totalCitations) + ' ' + totalCount + ' ' + citationText;
     } else {
         const filterInfo = dashboard.reflistData.selectedCategories.size > 1 ?
-            " (" + dashboard.reflistData.selectedCategories.size + ' ' + convByVar(i18n.filtersActive) + ")" :
+            " (" + dashboard.reflistData.selectedCategories.size + ' ' + t(i18n.filtersActive) + ")" :
             "";
 
         totalElement.innerText = baseText +
-            convByVar(i18n.showing) + ' ' + visibleCount + ' ' +
-            convByVar(i18n.of) + ' ' + totalCount + ' ' +
+            t(i18n.showing) + ' ' + visibleCount + ' ' +
+            t(i18n.of) + ' ' + totalCount + ' ' +
             citationText + filterInfo;
     }
 }
@@ -434,7 +408,6 @@ function updateFilteredCountForReflist(dashboard, visibleCount, totalCount) {
  * @param {Object} reflistData - The reflist data object
  */
 export function createDashboardForReflist(reflistData) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
 
     // Calculate category counts
@@ -463,8 +436,8 @@ export function createDashboardForReflist(reflistData) {
     // 'Clear All' button
     const clearAllButton = document.createElement('span');
     clearAllButton.className = 'cite-unseen-clear-all-header cite-unseen-hidden';
-    clearAllButton.innerText = convByVar(i18n.clearAllFilters);
-    clearAllButton.setAttribute('title', convByVar(i18n.clearAllFiltersTooltip));
+    clearAllButton.innerText = t(i18n.clearAllFilters);
+    clearAllButton.setAttribute('title', t(i18n.clearAllFiltersTooltip));
     clearAllButton.setAttribute('role', 'button');
     clearAllButton.setAttribute('tabindex', '0');
     clearAllButton.onclick = function () {
