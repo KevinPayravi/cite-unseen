@@ -50,7 +50,7 @@ async function importDependencies() {
     injectStyles();
     if (!window.jschardet) { // Used for encoding detection in the parser when decodeURIComponent fails
         try {
-            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript');
+            await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript&maxage=2628000');
         } catch (e) {
             // If jschardet loading fails, parser falls back to the raw string
             console.warn('[Cite Unseen] Could not load jschardet; encoding detection is disabled.', e);
