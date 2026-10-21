@@ -184,7 +184,7 @@ async function main() {
         const newText = bundle
             .replace(
                 "//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript&maxage=2628000",
-                "//meta.wikimedia.org/w/index.php?title=User:SuperGrey/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000"
+                "//meta.wikimedia.org/w/index.php?title=User:SuperHamster/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000"
             )
             .replace(
                 "https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain",
