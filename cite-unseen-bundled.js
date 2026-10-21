@@ -1,8 +1,8 @@
-// Cite Unseen - Bundled Version
+// Cite Unseen - Bundled Version (Offline)
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-bcbf9974
-// Timestamp: 2026-10-21T00:20:24.151Z
+// Release: dev-9b68d8ea
+// Timestamp: 2026-10-21T05:06:35.681Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -526,7 +526,7 @@
   var _sourceRevisions = null;
   var _categorizedRules = null;
   async function citeUnseenSourceRevisions() {
-    const revidJsonUrl = "https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain";
+    const revidJsonUrl = "https://meta.wikimedia.org/w/index.php?title=User:SuperGrey/cite-unseen-revids.json&action=raw&ctype=text/plain";
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5e3);
     try {
@@ -3270,7 +3270,7 @@ ${comment.trim()}`;
     injectStyles();
     if (!window.jschardet) {
       try {
-        await mw.loader.getScript("//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript&maxage=2628000");
+        await mw.loader.getScript("//meta.wikimedia.org/w/index.php?title=User:SuperHamster/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000");
       } catch (e) {
         console.warn("[Cite Unseen] Could not load jschardet; encoding detection is disabled.", e);
       }
