@@ -1,8 +1,8 @@
-// Cite Unseen - Bundled Version
+// Cite Unseen - Bundled Version (Offline)
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.4.1
-// Timestamp: 2026-10-20T19:54:52.449Z
+// Release: 2.4.2
+// Timestamp: 2026-10-22T05:47:25.046Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -113,11 +113,20 @@
       };
     }
   }
-  function getConvByVar() {
-    return _convByVar;
-  }
   function getI18n() {
     return CiteUnseenI18n;
+  }
+  function t(i18nDict, count) {
+    if (i18nDict["en"]) {
+      return _convByVar(i18nDict);
+    }
+    const lang = mw.config.get("wgContentLanguage");
+    const pluralForm = count === void 0 ? "other" : new Intl.PluralRules(lang).select(count);
+    return _convByVar({
+      ...i18nDict.other,
+      ...i18nDict[pluralForm]
+      // Override with the specific plural form if available
+    });
   }
 
   // src/citations/categoryData.js
@@ -526,7 +535,7 @@
   var _sourceRevisions = null;
   var _categorizedRules = null;
   async function citeUnseenSourceRevisions() {
-    const revidJsonUrl = "https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain";
+    const revidJsonUrl = "https://meta.wikimedia.org/w/index.php?title=User:SuperGrey/cite-unseen-revids.json&action=raw&ctype=text/plain";
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5e3);
     try {
@@ -790,12 +799,9 @@
       "rspMulti": "multi"
     };
     const displayKey = categoryMappings[categoryId] || categoryId;
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     if (i18n.categoryLabels[displayKey]) {
-      const entry = i18n.categoryLabels[displayKey];
-      const labelEntry = entry.other || entry.one || entry;
-      return convByVar(labelEntry);
+      return t(i18n.categoryLabels[displayKey]);
     }
     return categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
   }
@@ -1916,7 +1922,6 @@
     citeUnseenCategoryData[type].count++;
   }
   function processIcon(node, type, checklist = null, language = null) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     const iconContainer = document.createElement("span");
     iconContainer.classList.add("cite-unseen-icon-container");
@@ -1925,11 +1930,11 @@
     iconNode.classList.add("cite-unseen-icon-" + type);
     iconNode.classList.add("cite-unseen-icon");
     iconNode.setAttribute("src", citeUnseenCategoryData[type].icon);
-    let message = convByVar(i18n.categoryHints[type]);
+    let message = t(i18n.categoryHints[type]);
     if (checklist) {
       const pageLink = resolveSourceToPageLink(checklist);
       const displayName = pageLink || checklist;
-      message = convByVar(i18n.citationTooltipPrefix) + " " + displayName + convByVar(i18n.citationTooltipSuffix) + " " + message + " " + convByVar(i18n.citationTooltipAction);
+      message = t(i18n.citationTooltipPrefix) + " " + displayName + t(i18n.citationTooltipSuffix) + " " + message + " " + t(i18n.citationTooltipAction);
     }
     iconNode.setAttribute("alt", message);
     iconNode.setAttribute("title", "[Cite Unseen] " + message);
@@ -2158,19 +2163,8 @@
     return calculateCategoryCountsForContainers(reflistData, visibleContainers);
   }
   function formatCategoryCountText(category, count) {
-    var _a;
-    const convByVar = getConvByVar();
     const i18n = getI18n();
-    const lang = mw.config.get("wgContentLanguage");
-    const langKey = lang.startsWith("zh-") ? lang.substring(3) : lang;
-    const pluralForm = new Intl.PluralRules(lang).select(count);
-    for (const form of [pluralForm, "other"]) {
-      const entry = (_a = i18n.categoryLabels[category]) == null ? void 0 : _a[form];
-      if (entry && (entry[langKey] || entry[lang])) {
-        return `${count} ${convByVar(entry)}`;
-      }
-    }
-    return `${count} ${convByVar(i18n.categoryLabels[category])}`;
+    return `${count} ${t(i18n.categoryLabels[category], count)}`;
   }
   function refreshDashboardCategoryCounts(dashboard, categoryCounts) {
     const selectedCategories = dashboard.reflistData.selectedCategories;
@@ -2192,7 +2186,6 @@
     });
   }
   function updateDashboardCategories(dashboard, categoryCounts) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     dashboard.cats.innerHTML = "";
     const categoryTypes = getAllCategoryTypes();
@@ -2205,7 +2198,7 @@
         countNode.setAttribute("data-category", category);
         countNode.classList.add("cite-unseen-category-item");
         const countIcon = document.createElement("img");
-        countIcon.alt = convByVar(i18n.categoryHints[category]);
+        countIcon.alt = t(i18n.categoryHints[category]);
         countIcon.src = citeUnseenCategoryData[category].icon;
         countIcon.width = "17";
         countIcon.classList.add("skin-invert");
@@ -2222,7 +2215,7 @@
         countNode.setAttribute("role", "button");
         countNode.setAttribute("tabindex", "0");
         countNode.setAttribute("aria-pressed", "false");
-        countNode.setAttribute("title", convByVar(i18n.filterToggleTooltip));
+        countNode.setAttribute("title", t(i18n.filterToggleTooltip));
         countNode.onkeydown = function(e) {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -2302,31 +2295,19 @@
     refreshDashboardCategoryCounts(dashboard, calculateCategoryCountsForContainers(reflistData, visibleContainers));
   }
   function updateFilteredCountForReflist(dashboard, visibleCount, totalCount) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     if (!dashboard || !dashboard.total) return;
-    const lang = mw.config.get("wgContentLanguage");
-    const langKey = lang.startsWith("zh-") ? lang.substring(3) : lang;
-    const pluralForm = new Intl.PluralRules(lang).select(totalCount);
-    let citationText;
-    for (const form of [pluralForm, "other"]) {
-      const entry = i18n.citation && i18n.citation[form];
-      if (entry && (entry[langKey] || entry[lang])) {
-        citationText = convByVar(entry);
-        break;
-      }
-    }
+    const citationText = t(i18n.citation, totalCount);
     const totalElement = dashboard.total;
     const baseText = "[Cite Unseen] ";
     if (visibleCount === totalCount) {
-      totalElement.innerText = baseText + convByVar(i18n.totalCitations) + " " + totalCount + " " + citationText;
+      totalElement.innerText = baseText + t(i18n.totalCitations) + " " + totalCount + " " + citationText;
     } else {
-      const filterInfo = dashboard.reflistData.selectedCategories.size > 1 ? " (" + dashboard.reflistData.selectedCategories.size + " " + convByVar(i18n.filtersActive) + ")" : "";
-      totalElement.innerText = baseText + convByVar(i18n.showing) + " " + visibleCount + " " + convByVar(i18n.of) + " " + totalCount + " " + citationText + filterInfo;
+      const filterInfo = dashboard.reflistData.selectedCategories.size > 1 ? " (" + dashboard.reflistData.selectedCategories.size + " " + t(i18n.filtersActive) + ")" : "";
+      totalElement.innerText = baseText + t(i18n.showing) + " " + visibleCount + " " + t(i18n.of) + " " + totalCount + " " + citationText + filterInfo;
     }
   }
   function createDashboardForReflist(reflistData) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     const reflistCategoryCounts = calculateCategoryCountsForReflist(reflistData);
     reflistData.categoryCounts = reflistCategoryCounts;
@@ -2347,8 +2328,8 @@
     dashboard.header.classList.add("cite-unseen-dashboard-header");
     const clearAllButton = document.createElement("span");
     clearAllButton.className = "cite-unseen-clear-all-header cite-unseen-hidden";
-    clearAllButton.innerText = convByVar(i18n.clearAllFilters);
-    clearAllButton.setAttribute("title", convByVar(i18n.clearAllFiltersTooltip));
+    clearAllButton.innerText = t(i18n.clearAllFilters);
+    clearAllButton.setAttribute("title", t(i18n.clearAllFiltersTooltip));
     clearAllButton.setAttribute("role", "button");
     clearAllButton.setAttribute("tabindex", "0");
     clearAllButton.onclick = function() {
@@ -2444,33 +2425,32 @@
     };
   }
   function getDialogI18n() {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     return {
-      documentationLink: convByVar(i18n.documentationLink),
-      viewSettingsFrom: convByVar(i18n.viewSettingsFrom),
-      loading: convByVar(i18n.loading),
-      metaWikiGlobal: convByVar(i18n.metaWikiGlobal),
-      local: convByVar(i18n.local),
-      localSettingGuidance: convByVar(i18n.localSettingGuidance),
-      tabGeneral: convByVar(i18n.tabGeneral),
-      tabCategories: convByVar(i18n.tabCategories),
-      tabIgnoreDomains: convByVar(i18n.tabIgnoreDomains),
-      tabAdditionalDomains: convByVar(i18n.tabAdditionalDomains),
-      tabAdditionalStrings: convByVar(i18n.tabAdditionalStrings),
-      categoriesTabGuidance: convByVar(i18n.categoriesTabGuidance),
-      ignoreDomainsTabGuidance: convByVar(i18n.ignoreDomainsTabGuidance),
-      additionalDomainsTabGuidance: convByVar(i18n.additionalDomainsTabGuidance),
-      additionalStringsTabGuidance: convByVar(i18n.additionalStringsTabGuidance),
-      enableDisableCategories: convByVar(i18n.enableDisableCategories),
-      showDashboard: convByVar(i18n.showDashboard),
-      showSuggestionsButton: convByVar(i18n.showSuggestionsButton),
-      hideSocialMediaReliabilityRatings: convByVar(i18n.hideSocialMediaReliabilityRatings),
-      showOtherLanguageReliabilityRatings: convByVar(i18n.showOtherLanguageReliabilityRatings),
-      showUnknownLinksIcon: convByVar(i18n.showUnknownLinksIcon),
-      domainsToIgnore: convByVar(i18n.domainsToIgnore),
-      additionalDomains: convByVar(i18n.additionalDomains),
-      additionalUrlStrings: convByVar(i18n.additionalUrlStrings)
+      documentationLink: t(i18n.documentationLink),
+      viewSettingsFrom: t(i18n.viewSettingsFrom),
+      loading: t(i18n.loading),
+      metaWikiGlobal: t(i18n.metaWikiGlobal),
+      local: t(i18n.local),
+      localSettingGuidance: t(i18n.localSettingGuidance),
+      tabGeneral: t(i18n.tabGeneral),
+      tabCategories: t(i18n.tabCategories),
+      tabIgnoreDomains: t(i18n.tabIgnoreDomains),
+      tabAdditionalDomains: t(i18n.tabAdditionalDomains),
+      tabAdditionalStrings: t(i18n.tabAdditionalStrings),
+      categoriesTabGuidance: t(i18n.categoriesTabGuidance),
+      ignoreDomainsTabGuidance: t(i18n.ignoreDomainsTabGuidance),
+      additionalDomainsTabGuidance: t(i18n.additionalDomainsTabGuidance),
+      additionalStringsTabGuidance: t(i18n.additionalStringsTabGuidance),
+      enableDisableCategories: t(i18n.enableDisableCategories),
+      showDashboard: t(i18n.showDashboard),
+      showSuggestionsButton: t(i18n.showSuggestionsButton),
+      hideSocialMediaReliabilityRatings: t(i18n.hideSocialMediaReliabilityRatings),
+      showOtherLanguageReliabilityRatings: t(i18n.showOtherLanguageReliabilityRatings),
+      showUnknownLinksIcon: t(i18n.showUnknownLinksIcon),
+      domainsToIgnore: t(i18n.domainsToIgnore),
+      additionalDomains: t(i18n.additionalDomains),
+      additionalUrlStrings: t(i18n.additionalUrlStrings)
     };
   }
   function saveSettingsToWiki(settings, target, onSuccess, onError) {
@@ -2494,7 +2474,6 @@
     });
   }
   function createSettingsDialog() {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     mw.loader.using("@wikimedia/codex").then(function(require2) {
       const Vue = require2("vue");
@@ -2522,18 +2501,18 @@
             return getSettingCategories().filter((category) => category !== "unknown");
           },
           dialogTitle() {
-            return convByVar(i18n.settingsDialogTitle);
+            return t(i18n.settingsDialogTitle);
           },
           primaryAction() {
             return {
-              label: this.isSaving ? convByVar(i18n.saving) : convByVar(i18n.save),
+              label: this.isSaving ? t(i18n.saving) : t(i18n.save),
               actionType: "progressive",
               disabled: this.isSaving
             };
           },
           defaultAction() {
             return {
-              label: convByVar(i18n.cancel)
+              label: t(i18n.cancel)
             };
           },
           targetWikiDisplayName() {
@@ -2735,7 +2714,7 @@
                   correctionMessages.push(`${correction.category} (${correction.type}): "${c.original}" -> "${c.corrected}"`);
                 });
               });
-              const correctionMessage = convByVar(i18n.domainsCorrectedMessage) + "\n\n" + correctionMessages.join("\n");
+              const correctionMessage = t(i18n.domainsCorrectedMessage) + "\n\n" + correctionMessages.join("\n");
               mw.notify(correctionMessage, {
                 type: "info",
                 title: "[Cite Unseen]",
@@ -2752,7 +2731,7 @@
             }
             if (validationErrors.length > 0) {
               this.isSaving = false;
-              const errorMessage = convByVar(i18n.invalidDomainFormatMessage) + "\n\n" + validationErrors.join("\n");
+              const errorMessage = t(i18n.invalidDomainFormatMessage) + "\n\n" + validationErrors.join("\n");
               mw.notify(errorMessage, {
                 type: "error",
                 title: "[Cite Unseen]",
@@ -2765,12 +2744,12 @@
               this.target,
               (result) => {
                 this.closeDialog();
-                if (confirm(convByVar(i18n.settingsSavedSuccess))) {
+                if (confirm(t(i18n.settingsSavedSuccess))) {
                   location.reload();
                 }
               },
               (error) => {
-                mw.notify(convByVar(i18n.settingsSaveError) + " " + (error.message || error), {
+                mw.notify(t(i18n.settingsSaveError) + " " + (error.message || error), {
                   type: "error",
                   title: "[Cite Unseen]"
                 });
@@ -2789,7 +2768,7 @@
       setCurrentDialog(app, mountPoint);
     }).catch(function(error) {
       console.error("[Cite Unseen] Failed to load Codex dependencies:", error);
-      mw.notify(convByVar(i18n.dialogLoadError), { type: "error", title: "[Cite Unseen]" });
+      mw.notify(t(i18n.dialogLoadError), { type: "error", title: "[Cite Unseen]" });
     });
   }
   function generateSettingsContent(settings, target = "meta") {
@@ -2890,7 +2869,6 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
     createSuggestionDialog(citationRef);
   }
   function createSuggestionDialog(citationRef) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     mw.loader.using("@wikimedia/codex").then(function(require2) {
       const Vue = require2("vue");
@@ -2899,18 +2877,18 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
       let app = null;
       app = Vue.createMwApp({
         i18n: {
-          dialogTitle: convByVar(i18n.suggestionDialogTitle),
-          guidance: convByVar(i18n.suggestionsDialogGuidance),
-          sourceUrl: convByVar(i18n.sourceUrl),
-          suggestedCategories: convByVar(i18n.suggestedCategories),
-          selectAtLeastOne: convByVar(i18n.selectAtLeastOneCategory),
-          optionalComment: convByVar(i18n.optionalComment),
-          commentPlaceholder: convByVar(i18n.commentPlaceholder),
-          reliabilityGuidance: convByVar(i18n.suggestionsDialogReliabilityGuidance),
-          reliabilityProjects: convByVar(i18n.reliabilityProjects),
-          submit: convByVar(i18n.submit),
-          submitting: convByVar(i18n.submitting),
-          cancel: convByVar(i18n.cancel)
+          dialogTitle: t(i18n.suggestionDialogTitle),
+          guidance: t(i18n.suggestionsDialogGuidance),
+          sourceUrl: t(i18n.sourceUrl),
+          suggestedCategories: t(i18n.suggestedCategories),
+          selectAtLeastOne: t(i18n.selectAtLeastOneCategory),
+          optionalComment: t(i18n.optionalComment),
+          commentPlaceholder: t(i18n.commentPlaceholder),
+          reliabilityGuidance: t(i18n.suggestionsDialogReliabilityGuidance),
+          reliabilityProjects: t(i18n.reliabilityProjects),
+          submit: t(i18n.submit),
+          submitting: t(i18n.submitting),
+          cancel: t(i18n.cancel)
         },
         data() {
           return {
@@ -2975,13 +2953,13 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
             this.isSubmitting = true;
             submitSuggestionToMeta(this.sourceUrl, this.selectedCategories, this.comment, citationRef).then(() => {
               this.closeDialog();
-              mw.notify(convByVar(i18n.suggestionSubmitted), {
+              mw.notify(t(i18n.suggestionSubmitted), {
                 type: "success",
                 title: "[Cite Unseen]"
               });
             }).catch((error) => {
               console.error("[Cite Unseen] Failed to submit suggestion:", error);
-              mw.notify(convByVar(i18n.suggestionSubmitError) + " " + (error.message || error), {
+              mw.notify(t(i18n.suggestionSubmitError) + " " + (error.message || error), {
                 type: "error",
                 title: "[Cite Unseen]"
               });
@@ -2997,7 +2975,7 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
       setCurrentDialog(app, mountPoint);
     }).catch(function(error) {
       console.error("[Cite Unseen] Failed to load Codex dependencies:", error);
-      mw.notify(convByVar(i18n.dialogLoadError), { type: "error", title: "[Cite Unseen]" });
+      mw.notify(t(i18n.dialogLoadError), { type: "error", title: "[Cite Unseen]" });
     });
   }
   function getAvailableCategories() {
@@ -3101,7 +3079,6 @@ ${comment.trim()}`;
 
   // src/ui/reflistButtons.js
   function createSettingsButton(minerva) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     const settingsButton = document.createElement("a");
     if (minerva) {
@@ -3113,18 +3090,17 @@ ${comment.trim()}`;
     } else {
       settingsButton.classList.add("cite-unseen-edit-style");
       const label = document.createElement("span");
-      label.textContent = convByVar(i18n.settingsButton);
+      label.textContent = t(i18n.settingsButton);
       settingsButton.appendChild(label);
     }
     settingsButton.onclick = function(e) {
       e.preventDefault();
       openSettingsDialog();
     };
-    settingsButton.setAttribute("title", convByVar(i18n.settingsButtonTooltip));
+    settingsButton.setAttribute("title", t(i18n.settingsButtonTooltip));
     return settingsButton;
   }
   function createSuggestionsToggleButton(minerva, reflistData) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     const suggestionsToggleButton = document.createElement("a");
     suggestionsToggleButton.className = "cite-unseen-suggestions-default";
@@ -3137,7 +3113,7 @@ ${comment.trim()}`;
     } else {
       suggestionsToggleButton.classList.add("cite-unseen-edit-style");
       const label = document.createElement("span");
-      label.textContent = convByVar(i18n.suggestionsToggleButton);
+      label.textContent = t(i18n.suggestionsToggleButton);
       suggestionsToggleButton.appendChild(label);
     }
     suggestionsToggleButton.onclick = function(e) {
@@ -3147,11 +3123,10 @@ ${comment.trim()}`;
       const suggestionsMode = suggestionsToggleButton.classList.contains("cite-unseen-suggestions-active");
       toggleSuggestionPlusSigns(suggestionsMode, reflistData);
     };
-    suggestionsToggleButton.setAttribute("title", convByVar(i18n.suggestionsToggleTooltip));
+    suggestionsToggleButton.setAttribute("title", t(i18n.suggestionsToggleTooltip));
     return suggestionsToggleButton;
   }
   function toggleSuggestionPlusSigns(suggestionsMode, reflistData) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     reflistData.refs.forEach((ref) => {
       const citationContainer = getCitationContainer(ref.cite);
@@ -3162,7 +3137,7 @@ ${comment.trim()}`;
           plusSign = document.createElement("img");
           plusSign.className = "cite-unseen-suggestion-plus";
           plusSign.src = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyOGE3NDUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgICA8bGluZSB4MT0iMTIiIHkxPSI4IiB4Mj0iMTIiIHkyPSIxNiIvPgogICAgPGxpbmUgeDE9IjgiIHkxPSIxMiIgeDI9IjE2IiB5Mj0iMTIiLz4KPC9zdmc+Cg==";
-          plusSign.setAttribute("title", convByVar(i18n.suggestCategorization));
+          plusSign.setAttribute("title", t(i18n.suggestCategorization));
           plusSign.onclick = function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -3270,7 +3245,7 @@ ${comment.trim()}`;
     injectStyles();
     if (!window.jschardet) {
       try {
-        await mw.loader.getScript("//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript");
+        await mw.loader.getScript("//meta.wikimedia.org/w/index.php?title=User:SuperHamster/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000");
       } catch (e) {
         console.warn("[Cite Unseen] Could not load jschardet; encoding detection is disabled.", e);
       }
