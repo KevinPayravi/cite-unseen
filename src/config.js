@@ -5,8 +5,8 @@ import {
 import { checklistSourceData, citeUnseenChecklists } from './citations/sourceData.js';
 import { getCategorizedRules } from './citations/sources.js';
 import {
-    getConvByVar,
-    getI18n
+    getI18n,
+    t
 } from './i18n.js';
 
 let _metaRules = null; // Stores rules loaded from meta.wikimedia.org
@@ -101,13 +101,10 @@ export function getCategoryDisplayName(categoryId) {
     };
 
     const displayKey = categoryMappings[categoryId] || categoryId;
-    const convByVar = getConvByVar();
     const i18n = getI18n();
 
     if (i18n.categoryLabels[displayKey]) {
-        const entry = i18n.categoryLabels[displayKey];
-        const labelEntry = entry.other || entry.one || entry;
-        return convByVar(labelEntry);
+        return t(i18n.categoryLabels[displayKey]);
     }
 
     // Fallback to the category ID with proper capitalization

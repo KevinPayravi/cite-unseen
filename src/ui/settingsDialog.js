@@ -9,8 +9,8 @@ import {
     setMetaRules
 } from '../config.js';
 import {
-    getConvByVar,
-    getI18n
+    getI18n,
+    t
 } from '../i18n.js';
 import {
     closeCurrentDialog,
@@ -55,34 +55,33 @@ function getEmptyLocalRules() {
  * @returns {Object} Localized dialog strings
  */
 function getDialogI18n() {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
 
     return {
-        documentationLink: convByVar(i18n.documentationLink),
-        viewSettingsFrom: convByVar(i18n.viewSettingsFrom),
-        loading: convByVar(i18n.loading),
-        metaWikiGlobal: convByVar(i18n.metaWikiGlobal),
-        local: convByVar(i18n.local),
-        localSettingGuidance: convByVar(i18n.localSettingGuidance),
-        tabGeneral: convByVar(i18n.tabGeneral),
-        tabCategories: convByVar(i18n.tabCategories),
-        tabIgnoreDomains: convByVar(i18n.tabIgnoreDomains),
-        tabAdditionalDomains: convByVar(i18n.tabAdditionalDomains),
-        tabAdditionalStrings: convByVar(i18n.tabAdditionalStrings),
-        categoriesTabGuidance: convByVar(i18n.categoriesTabGuidance),
-        ignoreDomainsTabGuidance: convByVar(i18n.ignoreDomainsTabGuidance),
-        additionalDomainsTabGuidance: convByVar(i18n.additionalDomainsTabGuidance),
-        additionalStringsTabGuidance: convByVar(i18n.additionalStringsTabGuidance),
-        enableDisableCategories: convByVar(i18n.enableDisableCategories),
-        showDashboard: convByVar(i18n.showDashboard),
-        showSuggestionsButton: convByVar(i18n.showSuggestionsButton),
-        hideSocialMediaReliabilityRatings: convByVar(i18n.hideSocialMediaReliabilityRatings),
-        showOtherLanguageReliabilityRatings: convByVar(i18n.showOtherLanguageReliabilityRatings),
-        showUnknownLinksIcon: convByVar(i18n.showUnknownLinksIcon),
-        domainsToIgnore: convByVar(i18n.domainsToIgnore),
-        additionalDomains: convByVar(i18n.additionalDomains),
-        additionalUrlStrings: convByVar(i18n.additionalUrlStrings)
+        documentationLink: t(i18n.documentationLink),
+        viewSettingsFrom: t(i18n.viewSettingsFrom),
+        loading: t(i18n.loading),
+        metaWikiGlobal: t(i18n.metaWikiGlobal),
+        local: t(i18n.local),
+        localSettingGuidance: t(i18n.localSettingGuidance),
+        tabGeneral: t(i18n.tabGeneral),
+        tabCategories: t(i18n.tabCategories),
+        tabIgnoreDomains: t(i18n.tabIgnoreDomains),
+        tabAdditionalDomains: t(i18n.tabAdditionalDomains),
+        tabAdditionalStrings: t(i18n.tabAdditionalStrings),
+        categoriesTabGuidance: t(i18n.categoriesTabGuidance),
+        ignoreDomainsTabGuidance: t(i18n.ignoreDomainsTabGuidance),
+        additionalDomainsTabGuidance: t(i18n.additionalDomainsTabGuidance),
+        additionalStringsTabGuidance: t(i18n.additionalStringsTabGuidance),
+        enableDisableCategories: t(i18n.enableDisableCategories),
+        showDashboard: t(i18n.showDashboard),
+        showSuggestionsButton: t(i18n.showSuggestionsButton),
+        hideSocialMediaReliabilityRatings: t(i18n.hideSocialMediaReliabilityRatings),
+        showOtherLanguageReliabilityRatings: t(i18n.showOtherLanguageReliabilityRatings),
+        showUnknownLinksIcon: t(i18n.showUnknownLinksIcon),
+        domainsToIgnore: t(i18n.domainsToIgnore),
+        additionalDomains: t(i18n.additionalDomains),
+        additionalUrlStrings: t(i18n.additionalUrlStrings)
     };
 }
 
@@ -125,7 +124,6 @@ function saveSettingsToWiki(settings, target, onSuccess, onError) {
  * Create and show the Codex settings dialog
  */
 function createSettingsDialog() {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
 
     mw.loader.using('@wikimedia/codex').then(function (require) {
@@ -154,18 +152,18 @@ function createSettingsDialog() {
                     return getSettingCategories().filter(category => category !== 'unknown');
                 },
                 dialogTitle() {
-                    return convByVar(i18n.settingsDialogTitle);
+                    return t(i18n.settingsDialogTitle);
                 },
                 primaryAction() {
                     return {
-                        label: this.isSaving ? convByVar(i18n.saving) : convByVar(i18n.save),
+                        label: this.isSaving ? t(i18n.saving) : t(i18n.save),
                         actionType: 'progressive',
                         disabled: this.isSaving
                     };
                 },
                 defaultAction() {
                     return {
-                        label: convByVar(i18n.cancel)
+                        label: t(i18n.cancel)
                     };
                 },
                 targetWikiDisplayName() {
@@ -446,7 +444,7 @@ function createSettingsDialog() {
                             });
                         });
 
-                        const correctionMessage = convByVar(i18n.domainsCorrectedMessage) + '\n\n' + correctionMessages.join('\n');
+                        const correctionMessage = t(i18n.domainsCorrectedMessage) + '\n\n' + correctionMessages.join('\n');
 
                         mw.notify(correctionMessage, {
                             type: 'info',
@@ -468,7 +466,7 @@ function createSettingsDialog() {
                     // If there are validation errors, show them and stop
                     if (validationErrors.length > 0) {
                         this.isSaving = false;
-                        const errorMessage = convByVar(i18n.invalidDomainFormatMessage) + '\n\n' + validationErrors.join('\n');
+                        const errorMessage = t(i18n.invalidDomainFormatMessage) + '\n\n' + validationErrors.join('\n');
 
                         mw.notify(errorMessage, {
                             type: 'error',
@@ -483,12 +481,12 @@ function createSettingsDialog() {
                         this.target,
                         (result) => {
                             this.closeDialog();
-                            if (confirm(convByVar(i18n.settingsSavedSuccess))) {
+                            if (confirm(t(i18n.settingsSavedSuccess))) {
                                 location.reload();
                             }
                         },
                         (error) => {
-                            mw.notify(convByVar(i18n.settingsSaveError) + ' ' + (error.message || error), {
+                            mw.notify(t(i18n.settingsSaveError) + ' ' + (error.message || error), {
                                 type: 'error',
                                 title: '[Cite Unseen]'
                             });
@@ -515,7 +513,7 @@ function createSettingsDialog() {
         setCurrentDialog(app, mountPoint);
     }).catch(function (error) {
         console.error('[Cite Unseen] Failed to load Codex dependencies:', error);
-        mw.notify(convByVar(i18n.dialogLoadError), { type: 'error', title: '[Cite Unseen]' });
+        mw.notify(t(i18n.dialogLoadError), { type: 'error', title: '[Cite Unseen]' });
     });
 }
 

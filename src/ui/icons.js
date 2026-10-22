@@ -27,8 +27,8 @@ import {
     getCiteUnseenDomainIgnore,
 } from '../config.js';
 import {
-    getConvByVar,
-    getI18n
+    getI18n,
+    t
 } from '../i18n.js';
 
 let refCategories = {};
@@ -60,7 +60,6 @@ function addToCount(type) {
  * @returns {Element} The iconNode element
  */
 function processIcon(node, type, checklist = null, language = null) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     const iconContainer = document.createElement("span");
     iconContainer.classList.add("cite-unseen-icon-container");
@@ -70,13 +69,13 @@ function processIcon(node, type, checklist = null, language = null) {
     iconNode.classList.add("cite-unseen-icon-" + type);
     iconNode.classList.add("cite-unseen-icon");
     iconNode.setAttribute("src", citeUnseenCategoryData[type].icon);
-    let message = convByVar(i18n.categoryHints[type]);
+    let message = t(i18n.categoryHints[type]);
     if (checklist) {
         const pageLink = resolveSourceToPageLink(checklist);
         const displayName = pageLink || checklist;
-        message = convByVar(i18n.citationTooltipPrefix) + ' ' + displayName +
-            convByVar(i18n.citationTooltipSuffix) + ' ' + message + ' ' +
-            convByVar(i18n.citationTooltipAction);
+        message = t(i18n.citationTooltipPrefix) + ' ' + displayName +
+            t(i18n.citationTooltipSuffix) + ' ' + message + ' ' +
+            t(i18n.citationTooltipAction);
     }
     iconNode.setAttribute("alt", message);
     iconNode.setAttribute("title", "[Cite Unseen] " + message);
