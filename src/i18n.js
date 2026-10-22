@@ -175,17 +175,30 @@ export async function initializeConvByVar() {
 }
 
 /**
- * Get the current language variant conversion function.
- * @returns {Function|null} Language variant conversion function
- */
-export function getConvByVar() {
-    return _convByVar;
-}
-
-/**
  * Get the bundled i18n dictionary.
  * @returns {Object} Bundled i18n dictionary
  */
 export function getI18n() {
     return CiteUnseenI18n;
+}
+
+/**
+ * Provide a translated message based on the current language and pluralization rules.
+ * @param i18nDict {object} Dictionary of translations for different languages and plural forms
+ * @param count {number|undefined} Count for pluralization (optional)
+ * @returns {string} Translated message
+ */
+export function t(i18nDict, count) {
+    // If no plural form is provided
+    if (i18nDict['en']) {
+        return _convByVar(i18nDict);
+    }
+
+    const lang = mw.config.get('wgContentLanguage');
+
+    const pluralForm = (count === undefined) ? 'other' : new Intl.PluralRules(lang).select(count);
+    return _convByVar({
+        ...i18nDict.other,
+        ...i18nDict[pluralForm] // Override with the specific plural form if available
+    });
 }

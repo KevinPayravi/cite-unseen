@@ -4,8 +4,8 @@ import {
     getSettingCategories
 } from '../config.js';
 import {
-    getConvByVar,
-    getI18n
+    getI18n,
+    t
 } from '../i18n.js';
 import { getPrimarySourceUrl } from '../citations/parser.js';
 import { checklistSourceData } from '../citations/sourceData.js';
@@ -34,7 +34,6 @@ export function openSuggestionDialog(citationRef) {
  * @param {Object} citationRef - Citation reference data
  */
 function createSuggestionDialog(citationRef) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
 
     // Load Codex and Vue dependencies
@@ -46,18 +45,18 @@ function createSuggestionDialog(citationRef) {
 
         app = Vue.createMwApp({
             i18n: {
-                dialogTitle: convByVar(i18n.suggestionDialogTitle),
-                guidance: convByVar(i18n.suggestionsDialogGuidance),
-                sourceUrl: convByVar(i18n.sourceUrl),
-                suggestedCategories: convByVar(i18n.suggestedCategories),
-                selectAtLeastOne: convByVar(i18n.selectAtLeastOneCategory),
-                optionalComment: convByVar(i18n.optionalComment),
-                commentPlaceholder: convByVar(i18n.commentPlaceholder),
-                reliabilityGuidance: convByVar(i18n.suggestionsDialogReliabilityGuidance),
-                reliabilityProjects: convByVar(i18n.reliabilityProjects),
-                submit: convByVar(i18n.submit),
-                submitting: convByVar(i18n.submitting),
-                cancel: convByVar(i18n.cancel)
+                dialogTitle: t(i18n.suggestionDialogTitle),
+                guidance: t(i18n.suggestionsDialogGuidance),
+                sourceUrl: t(i18n.sourceUrl),
+                suggestedCategories: t(i18n.suggestedCategories),
+                selectAtLeastOne: t(i18n.selectAtLeastOneCategory),
+                optionalComment: t(i18n.optionalComment),
+                commentPlaceholder: t(i18n.commentPlaceholder),
+                reliabilityGuidance: t(i18n.suggestionsDialogReliabilityGuidance),
+                reliabilityProjects: t(i18n.reliabilityProjects),
+                submit: t(i18n.submit),
+                submitting: t(i18n.submitting),
+                cancel: t(i18n.cancel)
             },
             data() {
                 return {
@@ -124,14 +123,14 @@ function createSuggestionDialog(citationRef) {
                     submitSuggestionToMeta(this.sourceUrl, this.selectedCategories, this.comment, citationRef)
                         .then(() => {
                             this.closeDialog();
-                            mw.notify(convByVar(i18n.suggestionSubmitted), {
+                            mw.notify(t(i18n.suggestionSubmitted), {
                                 type: 'success',
                                 title: '[Cite Unseen]'
                             });
                         })
                         .catch((error) => {
                             console.error('[Cite Unseen] Failed to submit suggestion:', error);
-                            mw.notify(convByVar(i18n.suggestionSubmitError) + ' ' + (error.message || error), {
+                            mw.notify(t(i18n.suggestionSubmitError) + ' ' + (error.message || error), {
                                 type: 'error',
                                 title: '[Cite Unseen]'
                             });
@@ -153,7 +152,7 @@ function createSuggestionDialog(citationRef) {
         setCurrentDialog(app, mountPoint);
     }).catch(function (error) {
         console.error('[Cite Unseen] Failed to load Codex dependencies:', error);
-        mw.notify(convByVar(i18n.dialogLoadError), { type: 'error', title: '[Cite Unseen]' });
+        mw.notify(t(i18n.dialogLoadError), { type: 'error', title: '[Cite Unseen]' });
     });
 }
 

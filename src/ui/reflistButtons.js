@@ -1,6 +1,6 @@
 import {
-    getConvByVar,
-    getI18n
+    getI18n,
+    t
 } from '../i18n.js';
 import { getCitationContainer } from './dashboard.js';
 import { openSettingsDialog } from './settingsDialog.js';
@@ -12,7 +12,6 @@ import { openSuggestionDialog } from './suggestionDialog.js';
  * @returns {Element} The settings button element
  */
 function createSettingsButton(minerva) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     const settingsButton = document.createElement('a');
 
@@ -29,7 +28,7 @@ function createSettingsButton(minerva) {
 
         // Settings label
         const label = document.createElement('span');
-        label.textContent = convByVar(i18n.settingsButton);
+        label.textContent = t(i18n.settingsButton);
         settingsButton.appendChild(label);
     }
 
@@ -38,7 +37,7 @@ function createSettingsButton(minerva) {
         openSettingsDialog();
     };
 
-    settingsButton.setAttribute('title', convByVar(i18n.settingsButtonTooltip));
+    settingsButton.setAttribute('title', t(i18n.settingsButtonTooltip));
 
     return settingsButton;
 }
@@ -50,7 +49,6 @@ function createSettingsButton(minerva) {
  * @return {HTMLElement} The suggestions toggle button element
  */
 function createSuggestionsToggleButton(minerva, reflistData) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
     const suggestionsToggleButton = document.createElement('a');
     suggestionsToggleButton.className = 'cite-unseen-suggestions-default';
@@ -68,7 +66,7 @@ function createSuggestionsToggleButton(minerva, reflistData) {
 
         // Suggestion label
         const label = document.createElement('span');
-        label.textContent = convByVar(i18n.suggestionsToggleButton);
+        label.textContent = t(i18n.suggestionsToggleButton);
         suggestionsToggleButton.appendChild(label);
     }
 
@@ -82,7 +80,7 @@ function createSuggestionsToggleButton(minerva, reflistData) {
         toggleSuggestionPlusSigns(suggestionsMode, reflistData);
     };
 
-    suggestionsToggleButton.setAttribute('title', convByVar(i18n.suggestionsToggleTooltip));
+    suggestionsToggleButton.setAttribute('title', t(i18n.suggestionsToggleTooltip));
 
     return suggestionsToggleButton;
 }
@@ -93,7 +91,6 @@ function createSuggestionsToggleButton(minerva, reflistData) {
  * @param {Object} reflistData - Reference list data
  */
 function toggleSuggestionPlusSigns(suggestionsMode, reflistData) {
-    const convByVar = getConvByVar();
     const i18n = getI18n();
 
     reflistData.refs.forEach(ref => {
@@ -108,7 +105,7 @@ function toggleSuggestionPlusSigns(suggestionsMode, reflistData) {
                 plusSign = document.createElement('img');
                 plusSign.className = 'cite-unseen-suggestion-plus';
                 plusSign.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyOGE3NDUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+CiAgICA8bGluZSB4MT0iMTIiIHkxPSI4IiB4Mj0iMTIiIHkyPSIxNiIvPgogICAgPGxpbmUgeDE9IjgiIHkxPSIxMiIgeDI9IjE2IiB5Mj0iMTIiLz4KPC9zdmc+Cg==';
-                plusSign.setAttribute('title', convByVar(i18n.suggestCategorization));
+                plusSign.setAttribute('title', t(i18n.suggestCategorization));
 
                 plusSign.onclick = function (e) {
                     e.preventDefault();
