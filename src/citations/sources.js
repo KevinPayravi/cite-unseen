@@ -4,33 +4,48 @@ let _sourceRevisions = null; // Stores revision IDs fetched from cite-unseen-rev
 let _categorizedRules = null; // Stores source rules loaded from source definition pages
 
 /**
- * Revision IDs for source pages. When specified, these revision IDs will be used
- * instead of fetching the latest revision. Set to null to use latest revision.
- * @type {Promise<Object.<string, number>>}
- * @constant
+ * Fetch the community-maintained "latest reviewed revision IDs" of the source pages.
+ * This ensures that Cite Unseen uses the most recent vetted content rather than the latest revision, which may be unreviewed or vandalized.
+ * @return {Promise<Object.<string, number>>}
  */
 async function citeUnseenSourceRevisions() {
-    const revidJsonUrl = 'https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain';
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    async function fetchRevisionIds(revidJsonUrl) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        try {
+            const response = await fetch(revidJsonUrl, {
+                signal: controller.signal
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                throw new Error(
+                    'Failed to fetch revision IDs: Request timed out after 5 seconds'
+                );
+            }
+            throw error;
+        } finally {
+            clearTimeout(timeoutId);
+        }
+    }
 
     try {
-        const response = await fetch(revidJsonUrl, {
-            signal: controller.signal
-        });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
-        }
-        return await response.json();
+        return await fetchRevisionIds('https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain');
     } catch (error) {
-        clearTimeout(timeoutId);
-        if (error.name === 'AbortError') {
-            throw new Error('Failed to fetch revision IDs: Request timed out after 5 seconds');
-        }
-        throw error;
+        console.warn(
+            '[Cite Unseen][sources] Failed to fetch revision IDs from Toolforge, trying Meta.',
+            error
+        );
     }
+
+    // Let outer try-catch handle if this also fails
+    return fetchRevisionIds('https://meta.wikimedia.org/w/index.php?title=User:SuperGrey/cite-unseen-revids.json&action=raw&ctype=text/plain');
 }
 
 /**

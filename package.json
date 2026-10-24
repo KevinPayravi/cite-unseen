@@ -4,7 +4,6 @@
     "type": "module",
     "scripts": {
         "build": "node build.js",
-        "build:offline": "node build.js --offline",
         "test": "node --test \"tests/**/*.test.js\""
     },
     "engines": {
