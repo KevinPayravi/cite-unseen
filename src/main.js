@@ -52,8 +52,12 @@ async function importDependencies() {
         try {
             await mw.loader.getScript('//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript&maxage=2628000');
         } catch (e) {
-            // If jschardet loading fails, parser falls back to the raw string
-            console.warn('[Cite Unseen] Could not load jschardet; encoding detection is disabled.', e);
+            try {
+                await mw.loader.getScript('//meta.wikimedia.org/w/index.php?title=User:SuperHamster/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000');
+            } catch (e) {
+                // If jschardet loading fails, parser falls back to the raw string
+                console.warn('[Cite Unseen] Could not load jschardet; encoding detection is disabled.', e);
+            }
         }
     }
     await initializeConvByVar();
