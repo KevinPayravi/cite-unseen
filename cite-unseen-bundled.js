@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-f793356b
-// Timestamp: 2026-10-24T05:42:44.994Z
+// Release: dev-b949565c
+// Timestamp: 2026-10-27T06:04:14.260Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -557,15 +557,7 @@
         clearTimeout(timeoutId);
       }
     }
-    try {
-      return await fetchRevisionIds("https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain");
-    } catch (error) {
-      console.warn(
-        "[Cite Unseen][sources] Failed to fetch revision IDs from Toolforge, trying Meta.",
-        error
-      );
-    }
-    return fetchRevisionIds("https://meta.wikimedia.org/w/index.php?title=User:SuperGrey/cite-unseen-revids.json&action=raw&ctype=text/plain");
+    return fetchRevisionIds("https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain");
   }
   var expandedSourceIds = [
     ...categorySourceData.flatMap((s) => s.subPages ? s.subPages.map((p) => `${s.id}/${p}`) : [s.id]),
