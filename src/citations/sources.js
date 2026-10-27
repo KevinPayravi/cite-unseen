@@ -35,17 +35,7 @@ async function citeUnseenSourceRevisions() {
         }
     }
 
-    try {
-        return await fetchRevisionIds('https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain');
-    } catch (error) {
-        console.warn(
-            '[Cite Unseen][sources] Failed to fetch revision IDs from Toolforge, trying Meta.',
-            error
-        );
-    }
-
-    // Let outer try-catch handle if this also fails
-    return fetchRevisionIds('https://meta.wikimedia.org/w/index.php?title=User:SuperGrey/cite-unseen-revids.json&action=raw&ctype=text/plain');
+    return fetchRevisionIds('https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain');
 }
 
 /**
