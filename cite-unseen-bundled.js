@@ -1,8 +1,8 @@
-// Cite Unseen - Bundled Version (Offline)
+// Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: 2.4.2
-// Timestamp: 2026-10-22T05:47:25.046Z
+// Release: 2.4.3
+// Timestamp: 2026-10-27T15:12:47.981Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -535,25 +535,29 @@
   var _sourceRevisions = null;
   var _categorizedRules = null;
   async function citeUnseenSourceRevisions() {
-    const revidJsonUrl = "https://meta.wikimedia.org/w/index.php?title=User:SuperGrey/cite-unseen-revids.json&action=raw&ctype=text/plain";
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5e3);
-    try {
-      const response = await fetch(revidJsonUrl, {
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
+    async function fetchRevisionIds(revidJsonUrl) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5e3);
+      try {
+        const response = await fetch(revidJsonUrl, {
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to fetch revision IDs: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+      } catch (error) {
+        if (error.name === "AbortError") {
+          throw new Error(
+            "Failed to fetch revision IDs: Request timed out after 5 seconds"
+          );
+        }
+        throw error;
+      } finally {
+        clearTimeout(timeoutId);
       }
-      return await response.json();
-    } catch (error) {
-      clearTimeout(timeoutId);
-      if (error.name === "AbortError") {
-        throw new Error("Failed to fetch revision IDs: Request timed out after 5 seconds");
-      }
-      throw error;
     }
+    return fetchRevisionIds("https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain");
   }
   var expandedSourceIds = [
     ...categorySourceData.flatMap((s) => s.subPages ? s.subPages.map((p) => `${s.id}/${p}`) : [s.id]),
@@ -3245,9 +3249,13 @@ ${comment.trim()}`;
     injectStyles();
     if (!window.jschardet) {
       try {
-        await mw.loader.getScript("//meta.wikimedia.org/w/index.php?title=User:SuperHamster/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000");
+        await mw.loader.getScript("//gitlab-content.toolforge.org/kevinpayravi/jschardet/-/raw/main/dist/jschardet.min.js?mime=text/javascript&maxage=2628000");
       } catch (e) {
-        console.warn("[Cite Unseen] Could not load jschardet; encoding detection is disabled.", e);
+        try {
+          await mw.loader.getScript("//meta.wikimedia.org/w/index.php?title=User:SuperHamster/jschardet.js&action=raw&ctype=text/javascript&maxage=2628000");
+        } catch (e2) {
+          console.warn("[Cite Unseen] Could not load jschardet; encoding detection is disabled.", e2);
+        }
       }
     }
     await initializeConvByVar();
