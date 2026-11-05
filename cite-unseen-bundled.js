@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-c213179d
-// Timestamp: 2026-11-05T17:26:25.993Z
+// Release: dev-cc11d424
+// Timestamp: 2026-11-05T18:12:41.764Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -1922,22 +1922,16 @@
     iconsDiv.classList.add("cite-unseen-icons");
     return iconsDiv;
   }
-  function findExistingIcon(node, key) {
-    for (const container of node.children) {
-      if (container.dataset.citeUnseenKey === key) {
-        return container.querySelector(".cite-unseen-icon");
-      }
-    }
-    return null;
-  }
   function addToCount(type) {
     citeUnseenCategoryData[type].count++;
   }
-  function createIcon(node, type, checklist, language, key) {
+  function addToAttribute(node, type) {
+    node.dataset.citeUnseenIcons = node.dataset.citeUnseenIcons ? node.dataset.citeUnseenIcons + "," + type : type;
+  }
+  function processIcon(node, type, checklist = null, language = null) {
     const i18n = getI18n();
     const iconContainer = document.createElement("span");
     iconContainer.classList.add("cite-unseen-icon-container");
-    iconContainer.dataset.citeUnseenKey = key;
     const iconNode = document.createElement("img");
     iconNode.classList.add("skin-invert");
     iconNode.classList.add("cite-unseen-icon-" + type);
@@ -1951,6 +1945,8 @@
     }
     iconNode.setAttribute("alt", message);
     iconNode.setAttribute("title", "[Cite Unseen] " + message);
+    addToCount(type);
+    addToAttribute(node, type);
     if (checklist) {
       const iconNodeLink = document.createElement("a");
       const pageLink = resolveSourceToPageLink(checklist);
@@ -1974,12 +1970,6 @@
       iconContainer.appendChild(iconNode);
       node.appendChild(iconContainer);
     }
-    return iconNode;
-  }
-  function processIcon(node, type, checklist = null, language = null) {
-    const key = `${type}:${language || ""}`;
-    const iconNode = findExistingIcon(node, key) || createIcon(node, type, checklist, language, key);
-    addToCount(type);
     if (!refCategories[type]) {
       refCategories[type] = [];
     }
@@ -1989,6 +1979,7 @@
   function trackUnknownCitation(node) {
     const type = "unknown";
     addToCount(type);
+    addToAttribute(node, type);
     if (!refCategories[type]) {
       refCategories[type] = [];
     }
@@ -2011,11 +2002,18 @@
     const pageRuleKeyMap = buildRuleKeyMap(pageCandidateCategorizedRules);
     const typeCategories = citeUnseenCategoryTypes;
     refs2.forEach((ref) => {
-      let iconsDiv = ref.cite.querySelector(":scope > .cite-unseen-icons");
-      if (!iconsDiv) {
-        iconsDiv = createIconsDiv();
-        ref.cite.prepend(iconsDiv);
+      var _a, _b, _c;
+      const existingIconsDiv = ref.cite.querySelector(":scope > .cite-unseen-icons");
+      if (existingIconsDiv) {
+        for (const type of new Set((_b = (_a = existingIconsDiv.dataset.citeUnseenIcons) == null ? void 0 : _a.split(",")) != null ? _b : [])) {
+          addToCount(type);
+          (_c = refCategories[type]) != null ? _c : refCategories[type] = [];
+          refCategories[type].push(ref.cite);
+        }
+        return;
       }
+      const iconsDiv = createIconsDiv();
+      ref.cite.prepend(iconsDiv);
       const processedCategories = /* @__PURE__ */ new Set();
       const classList = (ref.classListSource || ref.cite).classList;
       const bookClasses = ["book", "journal", "encyclopaedia", "conference", "thesis", "magazine"];
