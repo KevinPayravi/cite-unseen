@@ -276,7 +276,7 @@ export function ensureArray(value) {
  */
 export function mergeRftIds(coins, hrefs) {
     const hideWikimediaIcons = (window.cite_unseen_hide_wikimedia_icons !== false) && (!(/wikipedia\.org/i.test(mw.config.get('wgServerName'))) || mw.config.get('wgNamespaceNumber') !== 0);
-    const wikimediaDomainRegex = /(?:\.|\/)(?:wikipedia\.org|wikimedia\.org|mediawiki\.org|wikibooks\.org|wikicities\.com|wikidata\.org|wikifunctions\.org|wikinews\.org|wikiquote\.org|wikisource\.org|wikitravel\.org|wikiversity\.org|wikivoyage\.org|wiktionary\.org)(?:$|\/)/i;
+    const wikimediaDomainRegex = /(?:\.|\/)(?:wikipedia\.org|wikimedia\.org|mediawiki\.org|wikibooks\.org|wikicities\.com|wikidata\.org|wikifunctions\.org|wikinews\.org|wikiquote\.org|wikisource\.org|wikitech\.org|wikitravel\.org|wikiversity\.org|wikivoyage\.org|wiktionary\.org)(?:$|\/)/i;
 
     let merged = [...new Set(
         ensureArray(coins['rft_id']).concat(ensureArray(hrefs))
