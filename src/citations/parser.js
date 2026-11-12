@@ -275,9 +275,13 @@ export function ensureArray(value) {
  * @param {string[]|string} hrefs - DOM hrefs to merge in
  */
 export function mergeRftIds(coins, hrefs) {
-    const merged = [...new Set(
+    const hideWikimediaIcons = (window.cite_unseen_hide_wikimedia_icons !== false) && (!(/wikipedia\.org/i.test(mw.config.get('wgServerName'))) || mw.config.get('wgNamespaceNumber') !== 0);
+    const wikimediaDomainRegex = /(?:\.|\/)(?:wikipedia\.org|wikimedia\.org|mediawiki\.org|wikibooks\.org|wikicities\.com|wikidata\.org|wikifunctions\.org|wikinews\.org|wikiquote\.org|wikisource\.org|wikitravel\.org|wikiversity\.org|wikivoyage\.org|wiktionary\.org)(?:$|\/)/i;
+
+    let merged = [...new Set(
         ensureArray(coins['rft_id']).concat(ensureArray(hrefs))
     )];
+    merged = merged.filter(url => !(hideWikimediaIcons && wikimediaDomainRegex.test(url)));
 
     if (merged.length === 0) {
         delete coins['rft_id'];

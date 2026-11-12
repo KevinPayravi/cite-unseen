@@ -22,11 +22,12 @@ let ruleConfig = {
         'cite_unseen_dashboard',
         'cite_unseen_show_suggestions',
         'cite_unseen_hide_social_media_reliability_ratings',
+        'cite_unseen_hide_wikimedia_icons',
         'cite_unseen_show_unknown_links_icon'
     ],
 
     mergeableProps: ['categories', 'domainIgnore', 'additionalDomains', 'additionalStrings'],
-    booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings', 'showOtherLanguageReliabilityRatings', 'showUnknownLinksIcon'],
+    booleanProps: ['dashboard', 'showSuggestions', 'hideSocialMediaReliabilityRatings', 'hideWikimediaIcons', 'showOtherLanguageReliabilityRatings', 'showUnknownLinksIcon'],
 
     globalMapping: {
         categories: 'cite_unseen_categories',
@@ -36,6 +37,7 @@ let ruleConfig = {
         dashboard: 'cite_unseen_dashboard',
         showSuggestions: 'cite_unseen_show_suggestions',
         hideSocialMediaReliabilityRatings: 'cite_unseen_hide_social_media_reliability_ratings',
+        hideWikimediaIcons: 'cite_unseen_hide_wikimedia_icons',
         showOtherLanguageReliabilityRatings: 'cite_unseen_show_other_language_reliability_ratings',
         showUnknownLinksIcon: 'cite_unseen_show_unknown_links_icon'
     }
@@ -315,6 +317,7 @@ export async function importCustomRules() {
             dashboard: metaState.dashboard !== undefined ? metaState.dashboard : true,
             showSuggestions: metaState.showSuggestions !== undefined ? metaState.showSuggestions : true,
             hideSocialMediaReliabilityRatings: metaState.hideSocialMediaReliabilityRatings === true || false,
+            hideWikimediaIcons: metaState.hideWikimediaIcons !== false,
             showOtherLanguageReliabilityRatings: metaState.showOtherLanguageReliabilityRatings === true || false,
             showUnknownLinksIcon: metaState.showUnknownLinksIcon === true || false
         };
@@ -333,6 +336,7 @@ export async function importCustomRules() {
             dashboard: localRules?.dashboard !== undefined ? localRules.dashboard : true,
             showSuggestions: localRules?.showSuggestions !== undefined ? localRules.showSuggestions : true,
             hideSocialMediaReliabilityRatings: localRules?.hideSocialMediaReliabilityRatings === true || false,
+            hideWikimediaIcons: localRules?.hideWikimediaIcons,
             showOtherLanguageReliabilityRatings: localRules?.showOtherLanguageReliabilityRatings === true || false,
             showUnknownLinksIcon: localRules?.showUnknownLinksIcon === true || false
         };
@@ -362,6 +366,7 @@ export function getMetaRulesFromGlobals() {
         dashboard: true,
         showSuggestions: true,
         hideSocialMediaReliabilityRatings: false,
+        hideWikimediaIcons: true,
         showOtherLanguageReliabilityRatings: false,
         showUnknownLinksIcon: false
     };
