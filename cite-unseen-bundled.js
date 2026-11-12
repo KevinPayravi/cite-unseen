@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-a321367f
-// Timestamp: 2026-10-27T05:24:20.703Z
+// Release: dev-e99dd10d
+// Timestamp: 2026-11-12T07:13:04.480Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -1925,6 +1925,9 @@
   function addToCount(type) {
     citeUnseenCategoryData[type].count++;
   }
+  function addToAttribute(node, type) {
+    node.dataset.citeUnseenIcons = node.dataset.citeUnseenIcons ? node.dataset.citeUnseenIcons + "," + type : type;
+  }
   function processIcon(node, type, checklist = null, language = null) {
     const i18n = getI18n();
     const iconContainer = document.createElement("span");
@@ -1943,6 +1946,7 @@
     iconNode.setAttribute("alt", message);
     iconNode.setAttribute("title", "[Cite Unseen] " + message);
     addToCount(type);
+    addToAttribute(node, type);
     if (checklist) {
       const iconNodeLink = document.createElement("a");
       const pageLink = resolveSourceToPageLink(checklist);
@@ -1975,6 +1979,7 @@
   function trackUnknownCitation(node) {
     const type = "unknown";
     addToCount(type);
+    addToAttribute(node, type);
     if (!refCategories[type]) {
       refCategories[type] = [];
     }
@@ -1997,6 +2002,16 @@
     const pageRuleKeyMap = buildRuleKeyMap(pageCandidateCategorizedRules);
     const typeCategories = citeUnseenCategoryTypes;
     refs2.forEach((ref) => {
+      var _a, _b, _c;
+      const existingIconsDiv = ref.cite.querySelector(":scope > .cite-unseen-icons");
+      if (existingIconsDiv) {
+        for (const type of new Set((_b = (_a = existingIconsDiv.dataset.citeUnseenIcons) == null ? void 0 : _a.split(",")) != null ? _b : [])) {
+          addToCount(type);
+          (_c = refCategories[type]) != null ? _c : refCategories[type] = [];
+          refCategories[type].push(ref.cite);
+        }
+        return;
+      }
       const iconsDiv = createIconsDiv();
       ref.cite.prepend(iconsDiv);
       const processedCategories = /* @__PURE__ */ new Set();
