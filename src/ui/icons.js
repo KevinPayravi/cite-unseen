@@ -52,6 +52,15 @@ function addToCount(type) {
 }
 
 /**
+ * Add to the data-cite-unseen-icons attribute for tracking and reuse.
+ * @param {Element} node - The iconsDiv node
+ * @param {String} type - The type
+ */
+function addToAttribute(node, type) {
+    node.dataset.citeUnseenIcons = node.dataset.citeUnseenIcons ? node.dataset.citeUnseenIcons + ',' + type : type;
+}
+
+/**
  * Add an icon and tooltip to a node.
  * @param {Element} node - The iconsDiv node
  * @param {String} type - The type
@@ -81,6 +90,8 @@ function processIcon(node, type, checklist = null, language = null) {
     iconNode.setAttribute("title", "[Cite Unseen] " + message);
 
     addToCount(type);
+    addToAttribute(node, type);
+
     if (checklist) {
         // If there is a checklist, wrap the icon in a link.
         const iconNodeLink = document.createElement("a");
@@ -122,6 +133,7 @@ function processIcon(node, type, checklist = null, language = null) {
 function trackUnknownCitation(node) {
     const type = "unknown";
     addToCount(type);
+    addToAttribute(node, type);
 
     if (!refCategories[type]) {
         refCategories[type] = [];
@@ -157,6 +169,16 @@ export function addIcons() {
     const typeCategories = citeUnseenCategoryTypes;
 
     refs.forEach(ref => {
+        const existingIconsDiv = ref.cite.querySelector(':scope > .cite-unseen-icons');
+        if (existingIconsDiv) {
+            // Reuse existing icons if they are already present in the citation.
+            for (const type of new Set(existingIconsDiv.dataset.citeUnseenIcons?.split(',') ?? [])) {
+                addToCount(type);
+                refCategories[type] ??= [];
+                refCategories[type].push(ref.cite);
+            }
+            return;
+        }
         // Insert icon area before the <cite> tag
         const iconsDiv = createIconsDiv();
         ref.cite.prepend(iconsDiv);
