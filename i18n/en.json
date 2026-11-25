@@ -96,6 +96,7 @@
 	"enableDisableCategories": "Enable/Disable Categories",
 	"filterToggleTooltip": "Click to toggle this category filter. You can select multiple categories. Press Escape to clear all filters.",
 	"filtersActive": "filters active",
+	"hideWikimediaIcons": "Hide icons for references linking to Wikimedia-related sites on non-article Wikipedia pages and other Wikimedia sites",
 	"hideSocialMediaReliabilityRatings": "Hide reliability ratings for social media links from unrated publishers",
 	"showOtherLanguageReliabilityRatings": "Show reliability ratings from other language Wikipedias when local ratings are available",
 	"showUnknownLinksIcon": "Display \"unknown links\" icon in the reflist (category has to be enabled first)",

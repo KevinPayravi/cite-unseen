@@ -32,6 +32,7 @@ function getDefaultSettings() {
         dashboard: true,
         showSuggestions: true,
         hideSocialMediaReliabilityRatings: false,
+        hideWikimediaIcons: true,
         showOtherLanguageReliabilityRatings: false,
         showUnknownLinksIcon: false
     };
@@ -77,6 +78,7 @@ function getDialogI18n() {
         showDashboard: t(i18n.showDashboard),
         showSuggestionsButton: t(i18n.showSuggestionsButton),
         hideSocialMediaReliabilityRatings: t(i18n.hideSocialMediaReliabilityRatings),
+        hideWikimediaIcons: t(i18n.hideWikimediaIcons),
         showOtherLanguageReliabilityRatings: t(i18n.showOtherLanguageReliabilityRatings),
         showUnknownLinksIcon: t(i18n.showUnknownLinksIcon),
         domainsToIgnore: t(i18n.domainsToIgnore),
@@ -287,6 +289,7 @@ function createSettingsDialog() {
                         'cite_unseen_dashboard',
                         'cite_unseen_show_suggestions',
                         'cite_unseen_hide_social_media_reliability_ratings',
+                        'cite_unseen_hide_wikimedia_icons',
                         'cite_unseen_show_other_language_reliability_ratings',
                         'cite_unseen_show_unknown_links_icon'
                     ];
@@ -344,6 +347,7 @@ function createSettingsDialog() {
                         this.settings.dashboard = targetRules.dashboard !== false;
                         this.settings.showSuggestions = targetRules.showSuggestions !== false;
                         this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings === true;
+                        this.settings.hideWikimediaIcons = targetRules.hideWikimediaIcons !== false;
                         this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings === true;
                         this.settings.showUnknownLinksIcon = targetRules.showUnknownLinksIcon === true;
                     } else {
@@ -369,6 +373,10 @@ function createSettingsDialog() {
                         this.settings.hideSocialMediaReliabilityRatings = targetRules.hideSocialMediaReliabilityRatings !== undefined ?
                             targetRules.hideSocialMediaReliabilityRatings :
                             (metaRules.hideSocialMediaReliabilityRatings === true);
+
+                        this.settings.hideWikimediaIcons = targetRules.hideWikimediaIcons !== undefined ?
+                            targetRules.hideWikimediaIcons :
+                            (metaRules.hideWikimediaIcons === true);
 
                         this.settings.showOtherLanguageReliabilityRatings = targetRules.showOtherLanguageReliabilityRatings !== undefined ?
                             targetRules.showOtherLanguageReliabilityRatings :
@@ -397,6 +405,7 @@ function createSettingsDialog() {
                         dashboard: this.settings.dashboard,
                         showSuggestions: this.settings.showSuggestions,
                         hideSocialMediaReliabilityRatings: this.settings.hideSocialMediaReliabilityRatings,
+                        hideWikimediaIcons: this.settings.hideWikimediaIcons,
                         showOtherLanguageReliabilityRatings: this.settings.showOtherLanguageReliabilityRatings,
                         showUnknownLinksIcon: this.settings.showUnknownLinksIcon
                     };
@@ -558,6 +567,11 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
 cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
         }
 
+        if (settings.hideWikimediaIcons === false) {
+            content += `\n// Hide Wikimedia reliability ratings setting
+cite_unseen_hide_wikimedia_icons = ${settings.hideWikimediaIcons};`;
+        }
+
         if (settings.showOtherLanguageReliabilityRatings === true) {
             content += `\n// Show other language reliability ratings setting
 cite_unseen_show_other_language_reliability_ratings = ${settings.showOtherLanguageReliabilityRatings};`;
@@ -574,6 +588,7 @@ cite_unseen_show_unknown_links_icon = ${settings.showUnknownLinksIcon};`;
         const metaDashboard = metaRules.dashboard !== false; // Meta default logic
         const metaShowSuggestions = metaRules.showSuggestions !== false; // Meta default logic
         const metaRulesHideSocialMedia = metaRules.hideSocialMediaReliabilityRatings === true; // Meta default logic
+        const metaRulesHideWikimedia = metaRules.hideWikimediaIcons !== false; // Meta default logic
         const metaRulesShowOtherLanguage = metaRules.showOtherLanguageReliabilityRatings === true; // Meta default logic
         const metaRulesShowUnknownLinksIcon = metaRules.showUnknownLinksIcon === true; // Meta default logic
 
@@ -590,6 +605,11 @@ cite_unseen_show_suggestions = ${settings.showSuggestions};`;
         if (settings.hideSocialMediaReliabilityRatings !== metaRulesHideSocialMedia) {
             content += `\n\n// Hide social media reliability ratings setting
 cite_unseen_hide_social_media_reliability_ratings = ${settings.hideSocialMediaReliabilityRatings};`;
+        }
+
+        if (settings.hideWikimediaIcons !== metaRulesHideWikimedia) {
+            content += `\n\n// Hide Wikimedia reliability ratings setting
+cite_unseen_hide_wikimedia_icons = ${settings.hideWikimediaIcons};`;
         }
 
         if (settings.showOtherLanguageReliabilityRatings !== metaRulesShowOtherLanguage) {
