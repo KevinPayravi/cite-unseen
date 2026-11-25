@@ -1,8 +1,8 @@
 // Cite Unseen - Bundled Version
 // Maintainers: SuperHamster and SuperGrey
 // Repository: https://gitlab.wikimedia.org/kevinpayravi/cite-unseen
-// Release: dev-95aa1d3f
-// Timestamp: 2026-11-25T18:46:02.010Z
+// Release: dev-8d9a65c8
+// Timestamp: 2026-11-25T20:28:04.069Z
 // <nowiki>
 (() => {
   // cite-unseen-i18n:cite-unseen-i18n-files
@@ -383,18 +383,12 @@
       }
     },
     {
-      id: "enNPPSG/1",
+      id: "enNPPSG",
+      subPages: ["1", "2"],
       page: "en:Wikipedia:New pages patrol source guide",
       priority: 6,
       checklists: {
-        generallyUnreliable: "enNppsgGenerallyUnreliable"
-      }
-    },
-    {
-      id: "enNPPSG/2",
-      page: "en:Wikipedia:New pages patrol source guide",
-      priority: 6,
-      checklists: {
+        generallyUnreliable: "enNppsgGenerallyUnreliable",
         multi: "enNppsgMulti",
         generallyReliable: "enNppsgGenerallyReliable"
       }
@@ -559,10 +553,16 @@
     }
     return fetchRevisionIds("https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain");
   }
-  var expandedSourceIds = [
-    ...categorySourceData.flatMap((s) => s.subPages ? s.subPages.map((p) => `${s.id}/${p}`) : [s.id]),
-    ...checklistSourceData.map((s) => s.id)
-  ];
+  var expandedSourceIds = [];
+  for (const source of [...categorySourceData, ...checklistSourceData]) {
+    if (!source.subPages) {
+      expandedSourceIds.push(source.id);
+      continue;
+    }
+    for (const subPage of source.subPages) {
+      expandedSourceIds.push(`${source.id}/${subPage}`);
+    }
+  }
   var sourcePageMap = new Map(checklistSourceData.filter((s) => s.page).map((s) => [s.id, s.page]));
   var sourceCategoryMap = new Map(
     categorySourceData.flatMap(
@@ -891,7 +891,7 @@
     });
   }
   function applyUserConfigurations() {
-    var _a, _b;
+    var _a;
     const categorizedRules = getCategorizedRules() || {};
     if (window.cite_unseen_categories && typeof window.cite_unseen_categories === "object") {
       for (const key in window.cite_unseen_categories) {
@@ -911,8 +911,19 @@
     }
     if (window.cite_unseen_domain_ignore && typeof window.cite_unseen_domain_ignore === "object") {
       for (const key in window.cite_unseen_domain_ignore) {
-        if (((_b = window.cite_unseen_domain_ignore[key]) == null ? void 0 : _b.length) && key in categorizedRules) {
-          citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
+        const domains = window.cite_unseen_domain_ignore[key];
+        if (!(domains == null ? void 0 : domains.length)) {
+          continue;
+        }
+        if (key in categorizedRules) {
+          citeUnseenDomainIgnore[key] = domains;
+          continue;
+        }
+        for (const source of checklistSourceData) {
+          const checklistId = source.checklists[key];
+          if (checklistId !== void 0) {
+            citeUnseenDomainIgnore[checklistId] = domains;
+          }
         }
       }
     }
