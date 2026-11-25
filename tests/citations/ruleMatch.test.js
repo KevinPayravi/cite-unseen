@@ -5,7 +5,8 @@ import {
     findReliabilityMatch,
     match,
     matchUrl,
-    matchUrlString
+    matchUrlString,
+    removeRepositoryLinks
 } from '../../src/citations/ruleMatch.js';
 import { citeUnseenChecklists, citeUnseenChecklistPriorities } from '../../src/citations/sourceData.js';
 
@@ -269,4 +270,29 @@ test('findReliabilityMatch lets a higher-priority blanket rule beat a dated rule
             spec: 0
         }
     ]);
+});
+
+test('removeRepositoryLinks drops repository copies from a journal article', () => {
+    const repositoryRules = [{ 'url': 'example.org' }];
+    const coins = createCoins([
+        'https://www.example.com/article',
+        'https://www.example.org/copy'
+    ], {
+        'rft.genre': 'article',
+        'rft.jtitle': 'Example Journal'
+    });
+
+    assert.deepEqual(removeRepositoryLinks(coins, repositoryRules)['rft_id'], [
+        'https://www.example.com/article'
+    ]);
+});
+
+test('removeRepositoryLinks keeps links when the repository is the only venue', () => {
+    const repositoryRules = [{ 'url': 'example.org', 'pub': 'Example Repository' }];
+    const urls = ['https://www.example.org/copy'];
+    const preprint = createCoins(urls, { 'rft.genre': 'preprint' });
+    const repositoryAsJournal = createCoins(urls, { 'rft.genre': 'article', 'rft.jtitle': 'Example Repository' });
+
+    assert.deepEqual(removeRepositoryLinks(preprint, repositoryRules)['rft_id'], urls);
+    assert.deepEqual(removeRepositoryLinks(repositoryAsJournal, repositoryRules)['rft_id'], urls);
 });

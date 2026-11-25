@@ -363,6 +363,27 @@ export function matchUrlString(coins, rule) {
 }
 
 /**
+ * Drop repository links from journal articles to prevent reliability ratings.
+ * Links are kept when citation names the repository as its journal ("pub").
+ * @param {Object} coins - COinS object
+ * @param {Object[]} repositoryRules - Repository rules
+ * @returns {Object} COinS object
+ */
+export function removeRepositoryLinks(coins, repositoryRules) {
+    if (coins['rft.genre'] !== 'article' || !coins['rft.jtitle']) {
+        return coins;
+    }
+
+    const urls = ensureArray(coins['rft_id']).filter(url => {
+        const link = { 'rft_id': url };
+        const repositories = repositoryRules.filter(rule => matchUrl(link, rule) || matchUrlString(link, rule));
+        return repositories.length === 0 || repositories.some(rule => matchPublisher(coins, rule));
+    });
+
+    return { ...coins, 'rft_id': urls };
+}
+
+/**
  * Find matching reliability categories for a citation, prioritizing current language.
  * Returns one match for current language, or all matches from other languages if none for current language.
  * Reduce each source list's ratings to one verdict.

@@ -15,7 +15,8 @@ import {
 } from '../citations/sources.js';
 import {
     findReliabilityMatch,
-    findTypeMatches
+    findTypeMatches,
+    removeRepositoryLinks
 } from '../citations/ruleMatch.js';
 import {
     buildRuleKeyMap,
@@ -220,7 +221,8 @@ export function addIcons() {
             const refCategorizedRules = getRulesForUrlKeys(pageRuleKeyMap, refUrlKeySet, rftIds).categorizedRules;
 
             // Find reliability and type matches
-            const reliabilityMatches = findReliabilityMatch(ref.coins, refCategorizedRules, {
+            const reliabilityCoins = removeRepositoryLinks(ref.coins, refCategorizedRules.repositories || []);
+            const reliabilityMatches = findReliabilityMatch(reliabilityCoins, refCategorizedRules, {
                 citeUnseenChecklists,
                 citeUnseenCategories,
                 citeUnseenChecklistPriorities,

@@ -31,6 +31,7 @@ export const categorySourceData = [
   { id: "sponsored" },
   { id: "tabloids" },
   { id: "tvPrograms" },
+  { id: "repositories" }, // No icon
 ];
 
 // Wikipedia project pages that classify domains into reliability tiers.
