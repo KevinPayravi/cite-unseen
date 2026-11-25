@@ -51,6 +51,9 @@
             <cdx-checkbox v-model="settings.hideSocialMediaReliabilityRatings">
                 {{ $options.i18n.hideSocialMediaReliabilityRatings }}
             </cdx-checkbox>
+            <cdx-checkbox v-model="settings.hideWikimediaIcons">
+                {{ $options.i18n.hideWikimediaIcons }}
+            </cdx-checkbox>
             <cdx-checkbox v-model="settings.showOtherLanguageReliabilityRatings">
                 {{ $options.i18n.showOtherLanguageReliabilityRatings }}
             </cdx-checkbox>
