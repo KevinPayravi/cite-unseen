@@ -49,9 +49,12 @@ export function parseCoinsString(query) {
     const pairs = query.split('&').filter(Boolean);
 
     pairs.forEach(pair => {
+        // Split before decoding
         const index = pair.indexOf('=');
-        const key = (index === -1 ? pair : pair.substring(0, index)).replace(/\+/g, ' ');
-        const value = (index === -1 ? '' : pair.substring(index + 1)).replace(/\+/g, ' ');
+        const rawKey = index === -1 ? pair : pair.substring(0, index);
+        const rawValue = index === -1 ? '' : pair.substring(index + 1);
+        const key = decodeURI(rawKey.replace(/\+/g, ' '));
+        const value = decodeURI(rawValue.replace(/\+/g, ' '));
 
         if (!result[key]) {
             result[key] = value;
@@ -372,8 +375,7 @@ export async function findCitations() {
             mergeRftIds(coinsObject, domLinks);
         } else {
             // Parse COinS string
-            const coinsString = decodeURI(coinsTag.getAttribute('title'));
-            coinsObject = parseCoinsString(coinsString);
+            coinsObject = parseCoinsString(coinsTag.getAttribute('title'));
 
             // Fallback to rfr_id if rft_id is missing
             if (!coinsObject['rft_id'] && coinsObject['rfr_id']) {
