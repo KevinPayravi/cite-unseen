@@ -105,18 +105,12 @@ export const checklistSourceData = [
     },
   },
   {
-    id: "enNPPSG/1",
+    id: "enNPPSG",
+    subPages: ["1", "2"],
     page: "en:Wikipedia:New pages patrol source guide",
     priority: 6,
     checklists: {
       generallyUnreliable: "enNppsgGenerallyUnreliable",
-    },
-  },
-  {
-    id: "enNPPSG/2",
-    page: "en:Wikipedia:New pages patrol source guide",
-    priority: 6,
-    checklists: {
       multi: "enNppsgMulti",
       generallyReliable: "enNppsgGenerallyReliable",
     },

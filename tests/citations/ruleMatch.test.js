@@ -174,6 +174,30 @@ test('findReliabilityMatch reports multi when one list rates a source in two tie
     ]);
 });
 
+test('findReliabilityMatch reports multi when a list split across source pages disagrees', () => {
+    /// Need to account for enNPPSG reliability lists being split between two pages
+    const coins = createCoins([
+        'https://www.example.com/article',
+        'https://www.example.org/article'
+    ]);
+    const {
+        categorizedRules,
+        citeUnseenCategories
+    } = createReliabilityFixture();
+
+    categorizedRules.enNppsgGenerallyUnreliable = [{ 'url': 'example.org' }];
+    categorizedRules.enNppsgGenerallyReliable = [{ 'url': 'example.com' }];
+
+    assert.deepEqual(findReliabilityMatches(coins, categorizedRules, citeUnseenCategories), [
+        {
+            type: 'multi',
+            name: 'enNPPSG',
+            language: 'en',
+            spec: 0
+        }
+    ]);
+});
+
 test('findReliabilityMatch lets a more specific rule settle a conflict within one list', () => {
     /**
      * Within a list, a rule with an author condition beats a bare domain

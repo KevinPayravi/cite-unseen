@@ -38,16 +38,17 @@ async function citeUnseenSourceRevisions() {
     return fetchRevisionIds('https://gitlab-content.toolforge.org/kevinpayravi/cite-unseen-revids/-/raw/main/revids.json?mime=text/plain');
 }
 
-/**
- * Resolve a source page name to its corresponding category.
- * If no mapping exists, returns the original page name.
- * @param {string} sourcePageName - The source page name to resolve.
- * @returns {string} The resolved category name.
- */
-const expandedSourceIds = [
-    ...categorySourceData.flatMap(s => s.subPages ? s.subPages.map(p => `${s.id}/${p}`) : [s.id]),
-    ...checklistSourceData.map(s => s.id),
-];
+const expandedSourceIds = [];
+for (const source of [...categorySourceData, ...checklistSourceData]) {
+    if (!source.subPages) {
+        expandedSourceIds.push(source.id);
+        continue;
+    }
+
+    for (const subPage of source.subPages) {
+        expandedSourceIds.push(`${source.id}/${subPage}`);
+    }
+}
 
 const sourcePageMap = new Map(checklistSourceData.filter(s => s.page).map(s => [s.id, s.page]));
 
@@ -59,6 +60,12 @@ const sourceCategoryMap = new Map(
     )
 );
 
+/**
+ * Resolve a source page name to its corresponding category.
+ * If no mapping exists, returns the original page name.
+ * @param {string} sourcePageName - The source page name to resolve.
+ * @returns {string} The resolved category name.
+ */
 function resolveSourceToCategory(sourcePageName) {
     return sourceCategoryMap.get(sourcePageName) ?? sourcePageName;
 }

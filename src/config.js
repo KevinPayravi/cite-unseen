@@ -269,8 +269,22 @@ function applyUserConfigurations() {
     // Apply domain ignore lists
     if (window.cite_unseen_domain_ignore && typeof window.cite_unseen_domain_ignore === 'object') {
         for (const key in window.cite_unseen_domain_ignore) {
-            if (window.cite_unseen_domain_ignore[key]?.length && key in categorizedRules) {
-                citeUnseenDomainIgnore[key] = window.cite_unseen_domain_ignore[key];
+            const domains = window.cite_unseen_domain_ignore[key];
+            if (!domains?.length) {
+                continue;
+            }
+
+            if (key in categorizedRules) {
+                citeUnseenDomainIgnore[key] = domains;
+                continue;
+            }
+
+            // Handle grouped categories (blacklisted, deprecated, etc.)
+            for (const source of checklistSourceData) {
+                const checklistId = source.checklists[key];
+                if (checklistId !== undefined) {
+                    citeUnseenDomainIgnore[checklistId] = domains;
+                }
             }
         }
     }
