@@ -196,7 +196,7 @@ function createButtonSection(sectionClass, reflistData) {
         // Add divider if not using Minerva skin
         if (!minerva) {
             const divider = document.createElement('span');
-            divider.className = 'cite-unseen-editsection-divider';
+            divider.className = 'mw-editsection-divider cite-unseen-editsection-divider';
             divider.textContent = ' | ';
             section.appendChild(divider);
         }
