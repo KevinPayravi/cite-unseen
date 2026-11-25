@@ -209,10 +209,6 @@ function submitSuggestionToMeta(sourceUrl, selectedCategories, comment, citation
             let referenceInfo = `* '''URL:''' ${sourceUrl}`;
             if (citationRef && citationRef.coins) {
                 const coins = citationRef.coins;
-                const title = coins['rft.title'] || coins['rft.btitle'] || coins['rft.atitle'];
-                if (title) {
-                    referenceInfo += `\n* '''Title:''' ${[].concat(title).join(', ')}`;
-                }
                 if (coins['rft.au']) {
                     referenceInfo += `\n* '''Author(s):''' ${[].concat(coins['rft.au']).join(', ')}`;
                 }
