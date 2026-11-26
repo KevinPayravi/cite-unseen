@@ -122,6 +122,7 @@
 	"enableDisableCategories": "Włącz/wyłącz kategorie",
 	"filterToggleTooltip": "Kliknij, aby włączyć lub wyłączyć ten filtr kategorii. Możesz wybrać wiele kategorii. Naciśnij klawisz Escape, aby wyczyścić wszystkie filtry.",
 	"filtersActive": "aktywnych filtrów",
+	"hideWikimediaIcons": "Ukryj ikony dla przypisów, które odsyłają do stron powiązanych z projektami Wikimedia, na stronach Wikipedii niebędących artykułami oraz na innych stronach Wikimedia",
 	"hideSocialMediaReliabilityRatings": "Ukryj oceny wiarygodności linków do serwisów społecznościowych pochodzących od nieocenionych instytucji odpowiedzialnych",
 	"showOtherLanguageReliabilityRatings": "Pokaż ocenę wiarygodności z innych wersji językowych Wikipedii, jeśli dostępna jest ocena lokalna",
 	"showUnknownLinksIcon": "Pokaż ikonę „nieznanych linków” na liście przypisów (jeśli wcześniej włączono tę kategorię)",
